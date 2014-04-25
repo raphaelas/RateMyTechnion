@@ -1,0 +1,642 @@
+<body>
+
+<div align="center">
+<table width="90%" cellspacing="0" cellpadding="0" border="0">
+<tbody><tr><td><br><img alt="" src="images/MainHeader.gif"></td></tr><tr><td><br><font size="3" face="Arial" color="#003366">
+Dep. of Materials ֲ¸ Engineering</font></td></tr>
+</tbody></table>
+
+<form name="MyForm" method="post" action="empdetail.asp">
+    <input type="hidden" value="None" name="code">
+</form>
+<script language="javascript">
+function SendUrl(location)
+{
+
+  document.MyForm.code.value=location;
+  document.forms[0].submit()
+}
+</script>
+<form name="TelForm" method="post">
+    <input type="hidden" name="tel">
+    <table width="90%" cellspacing="2" cellpadding="0" border="0" id="searchtable">
+        <tbody><tr>
+            <th>Full Name</th>
+            <th>Tel</th>
+            <th>Fax</th>
+            <th>Email</th>
+            <th>Home Site</th>
+        </tr>
+        <tr>
+<td><a href="empdetail-jquery.asp?code=1137" rel="Group" class="iframe" title="Employment Details :Amouyal Yaron">Amouyal Yaron</a></td>
+<td valign="middle" rowspan="1">
+077-8871915
+</td>
+
+            <td>5677</td>
+            <td class="center">&nbsp;<a href="mailto:amouyal@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2132" rel="Group" class="iframe" title="Employment Details :Aviram Ronen">Aviram Ronen</a></td>
+<td valign="middle" rowspan="1">
+4289
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:ronenmt@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=225" rel="Group" class="iframe" title="Employment Details :Bamberger Menachem">Bamberger Menachem</a></td>
+<td valign="middle" rowspan="1">
+4587
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:mtrbam@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://www.technion.ac.il/technion/materials/bamberger.html"><img alt="Home Page of 'Bamberger Menachem'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1436" rel="Group" class="iframe" title="Employment Details :Bar Ester">Bar Ester</a></td>
+<td valign="middle" rowspan="1">
+4591
+/ 4592
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:etibar@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1468" rel="Group" class="iframe" title="Employment Details :Barchad Zipora">Barchad Zipora</a></td>
+<td valign="middle" rowspan="1">
+4591
+/ 4592
+/ 4593
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:bzipi@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2473" rel="Group" class="iframe" title="Employment Details :Beregovsky Michael">Beregovsky Michael</a></td>
+<td valign="middle" rowspan="1">
+5113
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:bereg@ee.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1795" rel="Group" class="iframe" title="Employment Details :Berger Shlomo">Berger Shlomo</a></td>
+<td valign="middle" rowspan="1">
+4770
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:berger@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://www.technion.ac.il/technion/materials/berger.html"><img alt="Home Page of 'Berger Shlomo'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=376" rel="Group" class="iframe" title="Employment Details :Brandon David">Brandon David</a></td>
+<td valign="middle" rowspan="1">
+4577
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:brandon@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://www.technion.ac.il/technion/materials/brandon.html"><img alt="Home Page of 'Brandon David'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2621" rel="Group" class="iframe" title="Employment Details :Brener Alexander">Brener Alexander</a></td>
+<td valign="middle" rowspan="1">
+4568
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:berner@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1243" rel="Group" class="iframe" title="Employment Details :Caspary-Toroker Maytal Maytal">Caspary-Toroker Maytal Maytal</a></td>
+<td valign="middle" rowspan="1">
+<br>
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:maytalc@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=381" rel="Group" class="iframe" title="Employment Details :Chaim Rachman">Chaim Rachman</a></td>
+<td valign="middle" rowspan="1">
+4589
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:rchaim@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://www.technion.ac.il/technion/materials/chaim.html"><img alt="Home Page of 'Chaim Rachman'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=846" rel="Group" class="iframe" title="Employment Details :Cohen-Hyams Tzipi">Cohen-Hyams Tzipi</a></td>
+<td valign="middle" rowspan="1">
+5125
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:tzipic@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2222" rel="Group" class="iframe" title="Employment Details :David Ruth">David Ruth</a></td>
+<td valign="middle" rowspan="1">
+3845
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:ruthi@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=675" rel="Group" class="iframe" title="Employment Details :Ein-Eli Yair">Ein-Eli Yair</a></td>
+<td valign="middle" rowspan="1">
+4588
+</td>
+
+            <td>8295677</td>
+            <td class="center">&nbsp;<a href="mailto:eineli@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://www.technion.ac.il/technion/materials/eineli.html"><img alt="Home Page of 'Ein-Eli Yair'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=113" rel="Group" class="iframe" title="Employment Details :Eizenberg Moshe">Eizenberg Moshe</a></td>
+<td valign="middle" rowspan="1">
+4585
+</td>
+
+            <td>5677</td>
+            <td class="center">&nbsp;<a href="mailto:eizen@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://www.technion.ac.il/technion/materials/eizenberg.html"><img alt="Home Page of 'Eizenberg Moshe'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2388" rel="Group" class="iframe" title="Employment Details :Even David">Even David</a></td>
+<td valign="middle" rowspan="1">
+4565
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:mtrdeven@technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=584" rel="Group" class="iframe" title="Employment Details :Frant Gregory">Frant Gregory</a></td>
+<td valign="middle" rowspan="1">
+4597
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:frant@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=390" rel="Group" class="iframe" title="Employment Details :Frey Gitti">Frey Gitti</a></td>
+<td valign="middle" rowspan="1">
+4572
+</td>
+
+            <td>8295677</td>
+            <td class="center">&nbsp;<a href="mailto:gitti@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://www.technion.ac.il/technion/materials/frey.html"><img alt="Home Page of 'Frey Gitti'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2786" rel="Group" class="iframe" title="Employment Details :Goldshein Valentina">Goldshein Valentina</a></td>
+<td valign="middle" rowspan="1">
+4052
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:g_val@mt.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=527" rel="Group" class="iframe" title="Employment Details :Gotman Irena">Gotman Irena</a></td>
+<td valign="middle" rowspan="1">
+2112
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:gotman@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2876" rel="Group" class="iframe" title="Employment Details :Gourianova Lioudmila">Gourianova Lioudmila</a></td>
+<td valign="middle" rowspan="1">
+4296
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:liudmila@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=562" rel="Group" class="iframe" title="Employment Details :Gutmanas Elazar">Gutmanas Elazar</a></td>
+<td valign="middle" rowspan="1">
+4296
+/ 4586
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:gutmanas@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://www.technion.ac.il/technion/materials/gutmanas.html"><img alt="Home Page of 'Gutmanas Elazar'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2401" rel="Group" class="iframe" title="Employment Details :Hazan Joseph">Hazan Joseph</a></td>
+<td valign="middle" rowspan="1">
+4294
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:hazanj@mt.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1098" rel="Group" class="iframe" title="Employment Details :Hofmann Michal">Hofmann Michal</a></td>
+<td valign="middle" rowspan="1">
+4593
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:michalhf@technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2862" rel="Group" class="iframe" title="Employment Details :Kalina Mikhail">Kalina Mikhail</a></td>
+<td valign="middle" rowspan="1">
+4568
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:mkalina@technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=552" rel="Group" class="iframe" title="Employment Details :Kaplan Wayne D.">Kaplan Wayne D.</a></td>
+<td valign="middle" rowspan="1">
+4580
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:kaplan@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://www.technion.ac.il/technion/materials/kaplan.html"><img alt="Home Page of 'Kaplan Wayne D.'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1282" rel="Group" class="iframe" title="Employment Details :Karubi Gil Pazit">Karubi Gil Pazit</a></td>
+<td valign="middle" rowspan="1">
+4591
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:pazitkg@technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2553" rel="Group" class="iframe" title="Employment Details :Katsman Alexander">Katsman Alexander</a></td>
+<td valign="middle" rowspan="1">
+4583
+/ 4595
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:akatsman@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2284" rel="Group" class="iframe" title="Employment Details :Katz Moshe">Katz Moshe</a></td>
+<td valign="middle" rowspan="1">
+4290
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:bzipi@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2614" rel="Group" class="iframe" title="Employment Details :Klinger Leonid">Klinger Leonid</a></td>
+<td valign="middle" rowspan="1">
+4595
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:klinger@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=180" rel="Group" class="iframe" title="Employment Details :Komem Yigal">Komem Yigal</a></td>
+<td valign="middle" rowspan="1">
+4581
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:komem@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://www.technion.ac.il/technion/materials/komem.html"><img alt="Home Page of 'Komem Yigal'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2918" rel="Group" class="iframe" title="Employment Details :Kraytsberg Alexander">Kraytsberg Alexander</a></td>
+<td valign="middle" rowspan="1">
+4618
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:alexkra@mt.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2875" rel="Group" class="iframe" title="Employment Details :Kuperman Michael">Kuperman Michael</a></td>
+<td valign="middle" rowspan="1">
+4591
+/ 4592
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:bzipi@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2309" rel="Group" class="iframe" title="Employment Details :Levin Lev">Levin Lev</a></td>
+<td valign="middle" rowspan="1">
+4583
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:mtrlal@vmsa.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://www.technion.ac.il/technion/materials/levin.html"><img alt="Home Page of 'Levin Lev'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1390" rel="Group" class="iframe" title="Employment Details :Lifshitz Yeshayahu">Lifshitz Yeshayahu</a></td>
+<td valign="middle" rowspan="1">
+2997
+</td>
+
+            <td>8295677</td>
+            <td class="center">&nbsp;<a href="mailto:shayli@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://www.technion.ac.il/technion/materials/lifshitz.html"><img alt="Home Page of 'Lifshitz Yeshayahu'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2594" rel="Group" class="iframe" title="Employment Details :Likholat Anatoly">Likholat Anatoly</a></td>
+<td valign="middle" rowspan="1">
+4519
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:lanatoly@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1861" rel="Group" class="iframe" title="Employment Details :Machpuda Yoseph">Machpuda Yoseph</a></td>
+<td valign="middle" rowspan="1">
+4594
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:myosi@mt.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=536" rel="Group" class="iframe" title="Employment Details :Mehlman Alexander">Mehlman Alexander</a></td>
+<td valign="middle" rowspan="1">
+5041
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:alex.mehlmann@mt.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1154" rel="Group" class="iframe" title="Employment Details :Meshi Ido">Meshi Ido</a></td>
+<td valign="middle" rowspan="1">
+<br>
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:idomeshi@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1034" rel="Group" class="iframe" title="Employment Details :Nnamffuak Noray">Nnamffuak Noray</a></td>
+<td valign="middle" rowspan="1">
+4567
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:mtyaron@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://materials.technuon.ac.il/kaplan/kauffmann.htm"><img alt="Home Page of 'Nnamffuak Noray'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2442" rel="Group" class="iframe" title="Employment Details :Palumbu Felix">Palumbu Felix</a></td>
+<td valign="middle" rowspan="1">
+5798
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:palumbo@mt.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1112" rel="Group" class="iframe" title="Employment Details :Pokroy Boaz">Pokroy Boaz</a></td>
+<td valign="middle" rowspan="1">
+4584
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:bpokroy@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2956" rel="Group" class="iframe" title="Employment Details :Polishchuk Iryna">Polishchuk Iryna</a></td>
+<td valign="middle" rowspan="1">
+5792
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:piryna@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2753" rel="Group" class="iframe" title="Employment Details :Rabkin Eugen">Rabkin Eugen</a></td>
+<td valign="middle" rowspan="1">
+4579
+</td>
+
+            <td>8295677</td>
+            <td class="center">&nbsp;<a href="mailto:erabkin@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://www.technion.ac.il/technion/materials/rabkin.html"><img alt="Home Page of 'Rabkin Eugen'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1033" rel="Group" class="iframe" title="Employment Details :Rothschild Avner">Rothschild Avner</a></td>
+<td valign="middle" rowspan="1">
+4576
+</td>
+
+            <td>5677</td>
+            <td class="center">&nbsp;<a href="mailto:avnerrot@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=806" rel="Group" class="iframe" title="Employment Details :Saraf Shimon">Saraf Shimon</a></td>
+<td valign="middle" rowspan="1">
+5497
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:shimon@mt.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2730" rel="Group" class="iframe" title="Employment Details :Sezin Nina">Sezin Nina</a></td>
+<td valign="middle" rowspan="1">
+4288
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:nsezin@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2356" rel="Group" class="iframe" title="Employment Details :Shechter Yehoshua">Shechter Yehoshua</a></td>
+<td valign="middle" rowspan="1">
+4566
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:chuly@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=29" rel="Group" class="iframe" title="Employment Details :Shechtman Dan">Shechtman Dan</a></td>
+<td valign="middle" rowspan="1">
+4299
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:mtrdan@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://www.technion.ac.il/technion/materials/shechtman.html"><img alt="Home Page of 'Shechtman Dan'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1538" rel="Group" class="iframe" title="Employment Details :Sheps Lea">Sheps Lea</a></td>
+<td valign="middle" rowspan="1">
+4562
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:leas@mt.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1736" rel="Group" class="iframe" title="Employment Details :Sherman Dov">Sherman Dov</a></td>
+<td valign="middle" rowspan="1">
+4561
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:dsherman@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://www.technion.ac.il/technion/materials/sherman.html"><img alt="Home Page of 'Sherman Dov'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=106" rel="Group" class="iframe" title="Employment Details :Siegmann Arnon">Siegmann Arnon</a></td>
+<td valign="middle" rowspan="1">
+4590
+</td>
+
+            <td>5677</td>
+            <td class="center">&nbsp;<a href="mailto:siegmann@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://www.technion.ac.il/technion/materials/siegmann.html"><img alt="Home Page of 'Siegmann Arnon'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2470" rel="Group" class="iframe" title="Employment Details :Silverstein Michael">Silverstein Michael</a></td>
+<td valign="middle" rowspan="1">
+4582
+</td>
+
+            <td>5677</td>
+            <td class="center">&nbsp;<a href="mailto:michaels@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://www.technion.ac.il/technion/materials/silverstein.html"><img alt="Home Page of 'Silverstein Michael'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2798" rel="Group" class="iframe" title="Employment Details :Sosnik Alejandro">Sosnik Alejandro</a></td>
+<td valign="middle" rowspan="1">
+077-8871971
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:sosnik@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2636" rel="Group" class="iframe" title="Employment Details :Strosvetsky David">Strosvetsky David</a></td>
+<td valign="middle" rowspan="1">
+4295
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:davstar@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1719" rel="Group" class="iframe" title="Employment Details :Tamar Arie">Tamar Arie</a></td>
+<td valign="middle" rowspan="1">
+4565
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center"><br></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1367" rel="Group" class="iframe" title="Employment Details :Uadnal Tanso">Uadnal Tanso</a></td>
+<td valign="middle" rowspan="1">
+4103
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:osnatlan@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=258" rel="Group" class="iframe" title="Employment Details :Yahalom Joseph">Yahalom Joseph</a></td>
+<td valign="middle" rowspan="1">
+4578
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:yahalom@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://www.technion.ac.il/technion/materials/yahalom.html"><img alt="Home Page of 'Yahalom Joseph'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2504" rel="Group" class="iframe" title="Employment Details :Zolotoyabko Emil">Zolotoyabko Emil</a></td>
+<td valign="middle" rowspan="1">
+4545
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:zloto@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://www.technion.ac.il/technion/materials/zolotoyabko.html"><img alt="Home Page of 'Zolotoyabko Emil'" src="Images/site.gif"></a></td>
+</tr>
+</tbody></table>
+</form>
+<br><table width="90%" cellspacing="0" cellpadding="0"><tbody><tr><td><a style="color:#808080;font-size:12px;" href="javascript:history.go(-1)">Back to the Previous Page</a></td></tr></tbody></table><br><br>
+<br>
+<br>
+<font size="2" face="Arial" color="#808080">To Call From Outside Dial 972-4-829-XXXX</font>
+<br><font size="2" face="Arial" color="#808080">This Page has been visited</font>
+<img align="top" alt="Pages Counter" src="/scripts/count.exe?df=EngTelEmpByCode.dat&amp;tr=1&amp;comma=T&amp;dd=TelBook&amp;ft=1&amp;prgb=55;102;153;"><font size="2" face="Arial" color="#808080">&nbsp;times</font>
+
+        
+    
+
+
+
+
+
+</div><div id="fancybox-tmp"></div><div id="fancybox-loading"><div></div></div><div id="fancybox-overlay"></div><div id="fancybox-wrap"><div id="fancybox-outer"><div id="fancy-bg-n" class="fancy-bg"></div><div id="fancy-bg-ne" class="fancy-bg"></div><div id="fancy-bg-e" class="fancy-bg"></div><div id="fancy-bg-se" class="fancy-bg"></div><div id="fancy-bg-s" class="fancy-bg"></div><div id="fancy-bg-sw" class="fancy-bg"></div><div id="fancy-bg-w" class="fancy-bg"></div><div id="fancy-bg-nw" class="fancy-bg"></div><div id="fancybox-inner"></div><a id="fancybox-close"></a><a id="fancybox-left" href="javascript:;"><span id="fancybox-left-ico" class="fancy-ico"></span></a><a id="fancybox-right" href="javascript:;"><span id="fancybox-right-ico" class="fancy-ico"></span></a></div></div></body>

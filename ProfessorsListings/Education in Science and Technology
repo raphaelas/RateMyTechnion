@@ -1,0 +1,223 @@
+<body>
+
+<div align="center">
+<table width="90%" cellspacing="0" cellpadding="0" border="0">
+<tbody><tr><td><br><img alt="" src="images/MainHeader.gif"></td></tr><tr><td><br><font size="3" face="Arial" color="#003366">
+Dep' of Educationin Science ֲ¸ Tecnology</font></td></tr>
+</tbody></table>
+
+<form name="MyForm" method="post" action="empdetail.asp">
+    <input type="hidden" value="None" name="code">
+</form>
+<script language="javascript">
+function SendUrl(location)
+{
+
+  document.MyForm.code.value=location;
+  document.forms[0].submit()
+}
+</script>
+<form name="TelForm" method="post">
+    <input type="hidden" name="tel">
+    <table width="90%" cellspacing="2" cellpadding="0" border="0" id="searchtable">
+        <tbody><tr>
+            <th>Full Name</th>
+            <th>Tel</th>
+            <th>Fax</th>
+            <th>Email</th>
+            <th>Home Site</th>
+        </tr>
+        <tr>
+<td><a href="empdetail-jquery.asp?code=2739" rel="Group" class="iframe" title="Employment Details :Aisman Lisa">Aisman Lisa</a></td>
+<td valign="middle" rowspan="1">
+3438
+/ 3507
+/ 3932
+/ 8221532
+</td>
+
+            <td>5660</td>
+            <td class="center">&nbsp;<a href="mailto:lisa@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2203" rel="Group" class="iframe" title="Employment Details :Ben-Anat Ruchama">Ben-Anat Ruchama</a></td>
+<td valign="middle" rowspan="1">
+3507
+/ 3932
+/ 8221532
+</td>
+
+            <td>5660</td>
+            <td class="center">&nbsp;<a href="mailto:ruchamab@dp.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=505" rel="Group" class="iframe" title="Employment Details :Dror Gladys">Dror Gladys</a></td>
+<td valign="middle" rowspan="1">
+3802
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:tdror@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=150" rel="Group" class="iframe" title="Employment Details :Gershgoren Aharon">Gershgoren Aharon</a></td>
+<td valign="middle" rowspan="1">
+2278
+/ 3911
+</td>
+
+            <td>8222435</td>
+            <td class="center">&nbsp;<a href="mailto:aarong8@walla.co.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=366" rel="Group" class="iframe" title="Employment Details :Hahn-Michaeli Brigitte">Hahn-Michaeli Brigitte</a></td>
+<td valign="middle" rowspan="1">
+3203
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:brigitte@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://humanities.technion.ac.il/brigitte__hahn-michaeli.htm"><img alt="Home Page of 'Hahn-Michaeli Brigitte'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1688" rel="Group" class="iframe" title="Employment Details :Harel Ilana">Harel Ilana</a></td>
+<td valign="middle" rowspan="1">
+3438
+/ 3507
+/ 8221532
+</td>
+
+            <td>5660</td>
+            <td class="center">&nbsp;<a href="mailto:ilanah1@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1941" rel="Group" class="iframe" title="Employment Details :Khouri Akram">Khouri Akram</a></td>
+<td valign="middle" rowspan="1">
+2278
+/ 3036
+</td>
+
+            <td>8222435</td>
+            <td class="center">&nbsp;<a href="mailto:lisa@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1836" rel="Group" class="iframe" title="Employment Details :Lev Efraim">Lev Efraim</a></td>
+<td valign="middle" rowspan="1">
+<br>
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:elev@univ.haifa.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1391" rel="Group" class="iframe" title="Employment Details :Levi Eli">Levi Eli</a></td>
+<td valign="middle" rowspan="1">
+3914
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:elevy@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=538" rel="Group" class="iframe" title="Employment Details :Magid Keith">Magid Keith</a></td>
+<td valign="middle" rowspan="1">
+2278
+/ 3036
+</td>
+
+            <td>8222435</td>
+            <td class="center">&nbsp;<a href="mailto:lisa@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=446" rel="Group" class="iframe" title="Employment Details :Margalit Hava">Margalit Hava</a></td>
+<td valign="middle" rowspan="1">
+2278
+/ 3036
+/ 3911
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:hava.margalit@gmail.com"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2283" rel="Group" class="iframe" title="Employment Details :Paltieli Rachel">Paltieli Rachel</a></td>
+<td valign="middle" rowspan="1">
+3642
+/ 3817
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:hupalti@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://humanities.technion.ac.il/rachel__paltieli.htm"><img alt="Home Page of 'Paltieli Rachel'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2746" rel="Group" class="iframe" title="Employment Details :Rakedzon Tzipora">Rakedzon Tzipora</a></td>
+<td valign="middle" rowspan="1">
+3859
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:maor_7@netvision.net.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><br></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2345" rel="Group" class="iframe" title="Employment Details :Schapira Charlotte">Schapira Charlotte</a></td>
+<td valign="middle" rowspan="1">
+3438
+/ 3507
+/ 8221532
+</td>
+
+            <td>5660</td>
+            <td class="center">&nbsp;<a href="mailto:gsrchar@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://humanities.technion.ac.il/charlotte_shapira.htm"><img alt="Home Page of 'Schapira Charlotte'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=2571" rel="Group" class="iframe" title="Employment Details :Yelenevskaya Maria">Yelenevskaya Maria</a></td>
+<td valign="middle" rowspan="1">
+3567
+/ 3640
+/ 3859
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:ymaria@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://humanities.technion.ac.il/masha_yelenevskaya.htm"><img alt="Home Page of 'Yelenevskaya Maria'" src="Images/site.gif"></a></td>
+</tr>
+<tr>
+<td><a href="empdetail-jquery.asp?code=1543" rel="Group" class="iframe" title="Employment Details :Zohar Uriel">Zohar Uriel</a></td>
+<td valign="middle" rowspan="1">
+3207
+</td>
+
+            <td>&nbsp;</td>
+            <td class="center">&nbsp;<a href="mailto:theatre@tx.technion.ac.il"><img alt="" src="Images/envelop.gif"></a></td>
+<td class="center"><a href="http://humanities.technion.ac.il/ouriel_zohar.htm"><img alt="Home Page of 'Zohar Uriel'" src="Images/site.gif"></a></td>
+</tr>
+</tbody></table>
+</form>
+<br><table width="90%" cellspacing="0" cellpadding="0"><tbody><tr><td><a style="color:#808080;font-size:12px;" href="javascript:history.go(-1)">Back to the Previous Page</a></td></tr></tbody></table><br><br>
+<br>
+<br>
+<font size="2" face="Arial" color="#808080">To Call From Outside Dial 972-4-829-XXXX</font>
+<br><font size="2" face="Arial" color="#808080">This Page has been visited</font>
+<img align="top" alt="Pages Counter" src="/scripts/count.exe?df=EngTelEmpByCode.dat&amp;tr=1&amp;comma=T&amp;dd=TelBook&amp;ft=1&amp;prgb=55;102;153;"><font size="2" face="Arial" color="#808080">&nbsp;times</font>
+
+        
+    
+
+
+
+
+
+</div><div id="fancybox-tmp"></div><div id="fancybox-loading"><div></div></div><div id="fancybox-overlay"></div><div id="fancybox-wrap"><div id="fancybox-outer"><div id="fancy-bg-n" class="fancy-bg"></div><div id="fancy-bg-ne" class="fancy-bg"></div><div id="fancy-bg-e" class="fancy-bg"></div><div id="fancy-bg-se" class="fancy-bg"></div><div id="fancy-bg-s" class="fancy-bg"></div><div id="fancy-bg-sw" class="fancy-bg"></div><div id="fancy-bg-w" class="fancy-bg"></div><div id="fancy-bg-nw" class="fancy-bg"></div><div id="fancybox-inner"></div><a id="fancybox-close"></a><a id="fancybox-left" href="javascript:;"><span id="fancybox-left-ico" class="fancy-ico"></span></a><a id="fancybox-right" href="javascript:;"><span id="fancybox-right-ico" class="fancy-ico"></span></a></div></div></body>
