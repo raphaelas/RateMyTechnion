@@ -17,10 +17,9 @@
         android:textSize="20sp" />
 
     <ListView
-        android:id="@+id/search_results_view"
+        android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:entries="@array/search_results_array" >
+        android:layout_height="wrap_content" >
     </ListView>
 
 </LinearLayout>

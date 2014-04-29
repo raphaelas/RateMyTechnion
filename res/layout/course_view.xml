@@ -202,6 +202,7 @@
 
             <LinearLayout
                 android:id="@+id/third_lin_layout"
+                android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
