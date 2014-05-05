@@ -235,7 +235,7 @@ public class DatabaseRequirements {
 	//Note to self: We never should have to use this method - just adding in case.
 	public StudentProfessorCourse getUserProfessorCourse(int studentID) {
 		open();
-		String SQL_QUERY= "Select * from users where _id="+studentID;
+		String SQL_QUERY= "Select * from users_professors_courses where student_id="+studentID;
 		Statement stmt;
 		StudentProfessorCourse upc = null;
 		try {
@@ -572,7 +572,7 @@ public class DatabaseRequirements {
 	 */
 	public HashSet<ProfessorComment> getProfessorCommentsByProfessor(int professorID) {
 		open();
-		String SQL_QUERY= "Select * from professor_comments where student_id="+professorID;
+		String SQL_QUERY= "Select * from professor_comments where professor_id="+professorID;
 		Statement stmt;
 		HashSet<ProfessorComment> pcSet = new HashSet<ProfessorComment>();
 		ProfessorComment pc = null;
@@ -603,7 +603,7 @@ public class DatabaseRequirements {
 	 */
 	public boolean insertCourseComment(CourseComment cc) {
 		open();
-		String SQL_QUERY = "INSERT INTO professor_comments (course_number, student_id, "
+		String SQL_QUERY = "INSERT INTO course_comments (course_number, student_id, "
 				+ "comment, datetime, likes)" +
 	                   "VALUES (?, ?, ?, ?, ?)";
 		PreparedStatement pst;
