@@ -1,113 +1,103 @@
 package com.technionrankerv1;
 
-/*
-* Courses(
-ID:integer, (auto-generated)
-Name:string,
-Number:string, (because courses may begin with 0 digit and 0s must be retained)
-Professor_ID:integer,
-Semester:string,
-Active:boolean
-)*/
 public class Course {
-	private int id;
-	private String name;
-	private String number;
-	private int professorID;
-	private String semester;
-	private boolean active;
-	
-	public Course(int i, String na, String nu, int pID, String se, boolean a) {
-		id = i;
-		name = na;
-		number = nu;
-		professorID = pID;
-		semester = se;
-		active = a;
-	}
+  private Long id;
+  private String name;
+  private String number;
+  private Long professorID;
+  private String semester;
+  private boolean active;
 
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
+  public Course(String na, String nu, Long pID, String se, boolean a) {
+    name = na;
+    number = nu;
+    professorID = pID;
+    semester = se;
+    active = a;
+  }
 
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
+  Course() {
+  }
 
-	/**
-	 * @return the number
-	 */
-	public String getNumber() {
-		return number;
-	}
+  /**
+   * @return the name
+   */
+  public String getName() {
+    return name;
+  }
 
-	/**
-	 * @param number the number to set
-	 */
-	public void setNumber(String number) {
-		this.number = number;
-	}
+  /**
+   * @param name1
+   *          the name to set
+   */
+  public void setName(String name1) {
+    name = name1;
+  }
 
-	/**
-	 * @return the professorID
-	 */
-	public int getProfessorID() {
-		return professorID;
-	}
+  /**
+   * @return the number
+   */
+  public String getNumber() {
+    return number;
+  }
 
-	/**
-	 * @param professorID the professorID to set
-	 */
-	public void setProfessorID(int professor_id) {
-		this.professorID = professor_id;
-	}
+  /**
+   * @param number1
+   *          the number to set
+   */
+  public void setNumber(String number1) {
+    number = number1;
+  }
 
-	/**
-	 * @return the semester
-	 */
-	public String getSemester() {
-		return semester;
-	}
+  /**
+   * @return the professorID
+   */
+  public Long getProfessorID() {
+    return professorID;
+  }
 
-	/**
-	 * @param semester the semester to set
-	 */
-	public void setSemester(String semester) {
-		this.semester = semester;
-	}
+  /**
+   * @param professorID
+   *          the professorID to set
+   */
+  public void setProfessorID(Long professor_id) {
+    professorID = professor_id;
+  }
 
-	/**
-	 * @return the active
-	 */
-	public boolean isActive() {
-		return active;
-	}
+  /**
+   * @return the semester
+   */
+  public String getSemester() {
+    return semester;
+  }
 
-	/**
-	 * @param active the active to set
-	 */
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+  /**
+   * @param semester1
+   *          the semester to set
+   */
+  public void setSemester(String semester1) {
+    semester = semester1;
+  }
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
+  /**
+   * @return the active
+   */
+  public boolean isActive() {
+    return active;
+  }
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-	
+  /**
+   * @param active1
+   *          the active to set
+   */
+  public void setActive(boolean active1) {
+    active = active1;
+  }
+
+  /**
+   * @return the id
+   */
+  public Long getId() {
+    return id;
+  }
 }

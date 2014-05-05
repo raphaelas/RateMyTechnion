@@ -1,130 +1,129 @@
 package com.technionrankerv1;
 
-/*
- * Course_Rating(
-    ID:integer,
-    Course_Number:string,
-    Overall_Rating:integer,
-    Enjoyability:integer,
-    Difficulty:integer,
-    Usefulness:integer,
-)
- */
 public class CourseRating {
-	private int id;
-	private int studentID;
-	private String courseNumber;
-	private int overallRating;
-	private int enjoyability;
-	private int difficulty;
-	private int usefulness;
-	
-	public CourseRating(int id, int studentID, String courseNumber, int overallRating,
-			int enjoyability, int difficulty, int usefulness) {
-		this.id = id;
-		this.studentID = studentID;
-		this.courseNumber = courseNumber;
-		this.overallRating = overallRating;
-		this.enjoyability = enjoyability;
-		this.difficulty = difficulty;
-		this.usefulness = usefulness;
-	}
+  private Long id;
+  private Long studentID;
+  private String courseID;
+  private int overallRating;
+  private int enjoyability;
+  private int difficulty;
+  private int usefulness;
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
+  public CourseRating(Long studentID1, String courseID1, int overallRating1,
+      int enjoyability1, int difficulty1, int usefulness1) {
+    studentID = studentID1;
+    courseID = courseID1;
+    overallRating = overallRating1;
+    enjoyability = enjoyability1;
+    difficulty = difficulty1;
+    usefulness = usefulness1;
+  }
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
+  CourseRating() {
+  }
 
-	/**
-	 * @return the courseNumber
-	 */
-	public String getCourseNumber() {
-		return courseNumber;
-	}
+  /**
+   * @return the id
+   */
+  public Long getId() {
+    return id;
+  }
 
-	/**
-	 * @param courseNumber the courseNumber to set
-	 */
-	public void setCourseNumber(String courseNumber) {
-		this.courseNumber = courseNumber;
-	}
+  /**
+   * @param id1
+   *          the id to set
+   */
+  public void setId(Long id1) {
+    id = id1;
+  }
 
-	/**
-	 * @return the overallRating
-	 */
-	public int getOverallRating() {
-		return overallRating;
-	}
+  /**
+   * @return the courseNumber
+   */
+  public String getCourseId() {
+    return courseID;
+  }
 
-	/**
-	 * @param overallRating the overallRating to set
-	 */
-	public void setOverallRating(int overallRating) {
-		this.overallRating = overallRating;
-	}
+  /**
+   * @param courseNumber1
+   *          the courseNumber to set
+   */
+  public void setCourseId(String courseNumber1) {
+    courseID = courseNumber1;
+  }
 
-	/**
-	 * @return the enjoyability
-	 */
-	public int getEnjoyability() {
-		return enjoyability;
-	}
+  /**
+   * @return the overallRating
+   */
+  public int getOverallRating() {
+    return overallRating;
+  }
 
-	/**
-	 * @param enjoyability the enjoyability to set
-	 */
-	public void setEnjoyability(int enjoyability) {
-		this.enjoyability = enjoyability;
-	}
+  /**
+   * @param overallRating1
+   *          the overallRating to set
+   */
+  public void setOverallRating(int overallRating1) {
+    overallRating = overallRating1;
+  }
 
-	/**
-	 * @return the difficulty
-	 */
-	public int getDifficulty() {
-		return difficulty;
-	}
+  /**
+   * @return the enjoyability
+   */
+  public int getEnjoyability() {
+    return enjoyability;
+  }
 
-	/**
-	 * @param difficulty the difficulty to set
-	 */
-	public void setDifficulty(int difficulty) {
-		this.difficulty = difficulty;
-	}
+  /**
+   * @param enjoyability1
+   *          the enjoyability to set
+   */
+  public void setEnjoyability(int enjoyability1) {
+    enjoyability = enjoyability1;
+  }
 
-	/**
-	 * @return the usefulness
-	 */
-	public int getUsefulness() {
-		return usefulness;
-	}
+  /**
+   * @return the difficulty
+   */
+  public int getDifficulty() {
+    return difficulty;
+  }
 
-	/**
-	 * @param usefulness the usefulness to set
-	 */
-	public void setUsefulness(int usefulness) {
-		this.usefulness = usefulness;
-	}
+  /**
+   * @param difficulty1
+   *          the difficulty to set
+   */
+  public void setDifficulty(int difficulty1) {
+    difficulty = difficulty1;
+  }
 
-	/**
-	 * @return the studentID
-	 */
-	public int getStudentID() {
-		return studentID;
-	}
+  /**
+   * @return the usefulness
+   */
+  public int getUsefulness() {
+    return usefulness;
+  }
 
-	/**
-	 * @param studentID the studentID to set
-	 */
-	public void setStudentID(int studentID) {
-		this.studentID = studentID;
-	}
+  /**
+   * @param usefulness1
+   *          the usefulness to set
+   */
+  public void setUsefulness(int usefulness1) {
+    usefulness = usefulness1;
+  }
+
+  /**
+   * @return the studentID
+   */
+  public Long getStudentID() {
+    return studentID;
+  }
+
+  /**
+   * @param studentID1
+   *          the studentID to set
+   */
+  public void setStudentID(Long studentID1) {
+    studentID = studentID1;
+  }
 }

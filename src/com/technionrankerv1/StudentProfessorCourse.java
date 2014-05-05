@@ -1,79 +1,78 @@
 package com.technionrankerv1;
 
-/*
- * Users_Professors_And_Courses(
-	ID:integer,
-    Student_ID:integer,
-    Professor_ID:integer
-)
- */
 public class StudentProfessorCourse {
-	private int id;
-	private int studentID;
-	private int professorID;
-	private String courseNumber;
-	
-	public StudentProfessorCourse(int i, int sID, int pID, String cID) {
-		id = i;
-		studentID = sID;
-		professorID = pID;
-		courseNumber = cID;
-	}
+  private Long id;
+  private Long studentID;
+  private Long professorID;
+  private String courseID;
 
-	/**
-	 * @return the studentID
-	 */
-	public int getStudentID() {
-		return studentID;
-	}
+  public StudentProfessorCourse(Long sID, Long pID, String cID) {
+    studentID = sID;
+    professorID = pID;
+    courseID = cID;
+  }
 
-	/**
-	 * @param studentID the studentID to set
-	 */
-	public void setStudentID(int studentID) {
-		this.studentID = studentID;
-	}
+  StudentProfessorCourse() {
+  }
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
+  /**
+   * @return the studentID
+   */
+  public Long getStudentID() {
+    return studentID;
+  }
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
+  /**
+   * @param studentID1
+   *          the studentID to set
+   */
+  public void setStudentID(Long studentID1) {
+    studentID = studentID1;
+  }
 
-	/**
-	 * @return the professorID
-	 */
-	public int getProfessorID() {
-		return professorID;
-	}
+  /**
+   * @return the id
+   */
+  public Long getId() {
+    return id;
+  }
 
-	/**
-	 * @param professorID the professorID to set
-	 */
-	public void setProfessorID(int professorID) {
-		this.professorID = professorID;
-	}
+  /**
+   * @param id1
+   *          the id to set
+   */
+  public void setId(Long id1) {
+    id = id1;
+  }
 
-	/**
-	 * @return the courseNumber
-	 */
-	public String getCourseNumber() {
-		return courseNumber;
-	}
+  /**
+   * @return the professorID
+   */
+  public Long getProfessorID() {
+    return professorID;
+  }
 
-	/**
-	 * @param courseNumber the courseNumber to set
-	 */
-	public void setCourseNumber(String courseID) {
-		this.courseNumber = courseID;
-	}
+  /**
+   * @param professorID1
+   *          the professorID to set
+   */
+  public void setProfessorID(Long professorID1) {
+    professorID = professorID1;
+  }
+
+  /**
+   * @return the courseNumber
+   */
+  public String getCourseId() {
+    return courseID;
+  }
+
+  /**
+   * @param courseNumber
+   *          the courseNumber to set
+   */
+  public void setCourseId(String _courseID) {
+    courseID = _courseID;
+  }
 
 }

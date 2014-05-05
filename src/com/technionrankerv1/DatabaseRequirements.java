@@ -59,7 +59,7 @@ public class DatabaseRequirements {
 			pst = con.prepareStatement(SQL_QUERY);
 			pst.setString(1, c.getName());
 			pst.setString(2, c.getNumber());
-			pst.setInt(3, c.getProfessorID());
+			pst.setLong(3, c.getProfessorID());
 			pst.setString(4, c.getSemester());
 			pst.setBoolean(5, c.isActive());
 			return (pst.executeUpdate()>0);
@@ -86,8 +86,8 @@ public class DatabaseRequirements {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(SQL_QUERY);
 			if(rs.next()) {
-				c = new Course(rs.getInt("_id"), rs.getString("name"), courseNumber,
-						rs.getInt("professor_id"), rs.getString("semester"),
+				c = new Course(rs.getString("name"), courseNumber,
+						rs.getLong("professor_id"), rs.getString("semester"),
 						rs.getBoolean("active"));
 			}
 		} catch (SQLException e) {
@@ -126,7 +126,7 @@ public class DatabaseRequirements {
 			    Active:boolean
 			    )
 				 */
-	public Professor getProfessor(int professorID) {
+	public Professor getProfessor(Long professorID) {
 		open();
 		String SQL_QUERY= "Select * from professors where _id="+professorID;
 		Statement stmt;
@@ -135,7 +135,7 @@ public class DatabaseRequirements {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(SQL_QUERY);
 			if(rs.next()) {
-				p = new Professor(rs.getInt("_id"), rs.getString("name"), 
+				p = new Professor(rs.getString("name"), 
 						rs.getBoolean("active"));
 			}
 		} catch (SQLException e) {
@@ -161,7 +161,6 @@ public class DatabaseRequirements {
 		PreparedStatement pst;
 		try {
 			pst = con.prepareStatement(SQL_QUERY);
-			pst.setInt(1, u.getStudentID());
 			pst.setString(2, u.getPasswordHash());
 			pst.setString(3, u.getName());
 			pst.setBoolean(4, u.isActive());
@@ -180,7 +179,7 @@ public class DatabaseRequirements {
 	    Active:boolean
 	)
 	 */
-	public StudentUser getUser(int userID) {
+	public StudentUser getUser(Long userID) {
 		open();
 		String SQL_QUERY= "Select * from users where _id="+userID;
 		Statement stmt;
@@ -189,8 +188,7 @@ public class DatabaseRequirements {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(SQL_QUERY);
 			if(rs.next()) {
-				u = new StudentUser(rs.getInt("_id"), rs.getInt("student_id"), rs.getString("password_hash"),
-						rs.getString("name"), rs.getBoolean("active"));
+				u = new StudentUser(rs.getLong("student_id"), rs.getString("name"), rs.getBoolean("active"));
 		}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -214,9 +212,9 @@ public class DatabaseRequirements {
 		PreparedStatement pst;
 		try {
 			pst = con.prepareStatement(SQL_QUERY);
-			pst.setInt(1, upc.getStudentID());
-			pst.setInt(2, upc.getProfessorID());
-			pst.setString(3, upc.getCourseNumber());
+			pst.setLong(1, upc.getStudentID());
+			pst.setLong(2, upc.getProfessorID());
+			pst.setString(3, upc.getCourseId());
 			return (pst.executeUpdate()>0);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -233,7 +231,7 @@ public class DatabaseRequirements {
 )
 	 */
 	//Note to self: We never should have to use this method - just adding in case.
-	public StudentProfessorCourse getUserProfessorCourse(int studentID) {
+	public StudentProfessorCourse getUserProfessorCourse(Long studentID) {
 		open();
 		String SQL_QUERY= "Select * from users_professors_courses where student_id="+studentID;
 		Statement stmt;
@@ -242,8 +240,8 @@ public class DatabaseRequirements {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(SQL_QUERY);
 			if(rs.next()) {
-				upc = new StudentProfessorCourse(rs.getInt("_id"), rs.getInt("student_id"),
-						rs.getInt("professor_id"), rs.getString("course_number"));
+				upc = new StudentProfessorCourse(rs.getLong("student_id"),
+						rs.getLong("professor_id"), rs.getString("course_number"));
 		}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -259,7 +257,7 @@ public class DatabaseRequirements {
     Course_ID:integer
 )
 	 */
-	public HashSet<Professor> getStudentProfessors(int studentID) {
+	public HashSet<Professor> getStudentProfessors(Long studentID) {
 		open();
 		String SQL_QUERY= "Select * from users_professors_courses where student_id="+studentID;
 		Statement stmt;
@@ -269,8 +267,8 @@ public class DatabaseRequirements {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(SQL_QUERY);
 			while(rs.next()) {
-				upc = new StudentProfessorCourse(rs.getInt("_id"), rs.getInt("student_id"),
-						rs.getInt("professor_id"), rs.getString("course_id"));
+				upc = new StudentProfessorCourse(rs.getLong("student_id"),
+						rs.getLong("professor_id"), rs.getString("course_id"));
 				Professor tempP = getProfessor(upc.getProfessorID());
 				pSet.add(tempP);
 		}
@@ -288,7 +286,7 @@ public class DatabaseRequirements {
     Course_ID:integer
 )
 	 */
-	public HashSet<Course> getStudentCourses(int studentID) {
+	public HashSet<Course> getStudentCourses(Long studentID) {
 		open();
 		String SQL_QUERY= "Select * from users_professors_courses where student_id="+studentID;
 		Statement stmt;
@@ -298,9 +296,9 @@ public class DatabaseRequirements {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(SQL_QUERY);
 			while(rs.next()) {
-				upc = new StudentProfessorCourse(rs.getInt("_id"), rs.getInt("student_id"),
-						rs.getInt("professor_id"), rs.getString("course_id"));
-				Course tempC = getCourse(upc.getCourseNumber());
+				upc = new StudentProfessorCourse(rs.getLong("student_id"),
+						rs.getLong("professor_id"), rs.getString("course_id"));
+				Course tempC = getCourse(upc.getCourseId());
 				cSet.add(tempC);
 		}
 		} catch (SQLException e) {
@@ -327,8 +325,8 @@ public class DatabaseRequirements {
 		PreparedStatement pst;
 		try {
 			pst = con.prepareStatement(SQL_QUERY);
-			pst.setInt(1, pr.getProfessorID());
-			pst.setInt(1, pr.getStudentID());
+			pst.setLong(1, pr.getProfessorID());
+			pst.setLong(1, pr.getStudentID());
 			pst.setInt(3, pr.getOverallRating());
 			pst.setInt(4, pr.getClarity());
 			pst.setInt(5, pr.getPreparedness());
@@ -350,7 +348,7 @@ public class DatabaseRequirements {
 	    Interactivity:integer,
 	)
 	 */
-	public HashSet<ProfessorRating> getProfessorRatingsByProfessor(int professorID) {
+	public HashSet<ProfessorRating> getProfessorRatingsByProfessor(Long professorID) {
 		open();
 		String SQL_QUERY= "Select * from professor_ratings where professor_id="+professorID;
 		Statement stmt;
@@ -360,8 +358,8 @@ public class DatabaseRequirements {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(SQL_QUERY);
 			if(rs.next()) {
-				pr = new ProfessorRating(rs.getInt("_id"), rs.getInt("student_id"),
-						rs.getInt("professor_id"), rs.getInt("overall_rating"),
+				pr = new ProfessorRating(rs.getLong("student_id"),
+						rs.getLong("professor_id"), rs.getInt("overall_rating"),
 						rs.getInt("clarity"), rs.getInt("preparedness"),
 						rs.getInt("interactivity"));
 				prSet.add(pr);
@@ -382,7 +380,7 @@ public class DatabaseRequirements {
 	    Interactivity:integer,
 	)
 	 */
-	public HashSet<ProfessorRating> getProfessorRatingsByStudent(int studentID) {
+	public HashSet<ProfessorRating> getProfessorRatingsByStudent(Long studentID) {
 		open();
 		String SQL_QUERY= "Select * from professor_ratings where student_id="+studentID;
 		Statement stmt;
@@ -392,8 +390,8 @@ public class DatabaseRequirements {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(SQL_QUERY);
 			if(rs.next()) {
-				pr = new ProfessorRating(rs.getInt("_id"), rs.getInt("student_id"),
-						rs.getInt("professor_id"), rs.getInt("overall_rating"),
+				pr = new ProfessorRating(rs.getLong("student_id"),
+						rs.getLong("professor_id"), rs.getInt("overall_rating"),
 						rs.getInt("clarity"), rs.getInt("preparedness"),
 						rs.getInt("interactivity"));
 				prSet.add(pr);
@@ -422,8 +420,8 @@ public class DatabaseRequirements {
 		PreparedStatement pst;
 		try {
 			pst = con.prepareStatement(SQL_QUERY);
-			pst.setString(1, cr.getCourseNumber());
-			pst.setInt(2, cr.getStudentID());
+			pst.setString(1, cr.getCourseId());
+			pst.setLong(2, cr.getStudentID());
 			pst.setInt(3, cr.getOverallRating());
 			pst.setInt(4, cr.getEnjoyability());
 			pst.setInt(5, cr.getDifficulty());
@@ -455,7 +453,7 @@ public class DatabaseRequirements {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(SQL_QUERY);
 			if(rs.next()) {
-				cr = new CourseRating(rs.getInt("_id"), rs.getInt("student_id"),
+				cr = new CourseRating(rs.getLong("student_id"),
 						rs.getString("course_number"), rs.getInt("overall_rating"),
 						rs.getInt("clarity"), rs.getInt("preparedness"),
 						rs.getInt("interactivity"));
@@ -487,7 +485,7 @@ public class DatabaseRequirements {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(SQL_QUERY);
 			if(rs.next()) {
-				cr = new CourseRating(rs.getInt("_id"), rs.getInt("student_id"),
+				cr = new CourseRating(rs.getLong("student_id"),
 						rs.getString("course_number"), rs.getInt("overall_rating"),
 						rs.getInt("clarity"), rs.getInt("preparedness"),
 						rs.getInt("interactivity"));
@@ -517,8 +515,8 @@ public class DatabaseRequirements {
 		PreparedStatement pst;
 		try {
 			pst = con.prepareStatement(SQL_QUERY);
-			pst.setInt(1, pc.getProfessorID());
-			pst.setInt(2, pc.getStudentID());
+			pst.setLong(1, pc.getProfessorID());
+			pst.setLong(2, pc.getStudentID());
 			pst.setString(3, pc.getComment());
 			pst.setTime(4, pc.getDatetime());
 			pst.setInt(5, pc.getLikes());
@@ -549,8 +547,8 @@ public class DatabaseRequirements {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(SQL_QUERY);
 			if(rs.next()) {
-				pc = new ProfessorComment(rs.getInt("_id"), rs.getInt("professor_id"),
-						rs.getInt("student_id"), rs.getString("comment"),
+				pc = new ProfessorComment(rs.getLong("professor_id"),
+						rs.getLong("student_id"), rs.getString("comment"),
 						rs.getTime("datetime"), rs.getInt("likes"));
 				pcSet.add(pc);
 		}
@@ -580,8 +578,8 @@ public class DatabaseRequirements {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(SQL_QUERY);
 			if(rs.next()) {
-				pc = new ProfessorComment(rs.getInt("_id"), rs.getInt("professor_id"),
-						rs.getInt("student_id"), rs.getString("comment"),
+				pc = new ProfessorComment(rs.getLong("professor_id"),
+						rs.getLong("student_id"), rs.getString("comment"),
 						rs.getTime("datetime"), rs.getInt("likes"));
 				pcSet.add(pc);
 		}
@@ -610,7 +608,7 @@ public class DatabaseRequirements {
 		try {
 			pst = con.prepareStatement(SQL_QUERY);
 			pst.setString(1, cc.getCourseNumber());
-			pst.setInt(2, cc.getStudentID());
+			pst.setLong(2, cc.getStudentID());
 			pst.setString(3, cc.getComment());
 			pst.setTime(4, cc.getDatetime());
 			pst.setInt(5, cc.getLikes());
@@ -641,8 +639,8 @@ public class DatabaseRequirements {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(SQL_QUERY);
 			if(rs.next()) {
-				cc = new CourseComment(rs.getInt("_id"), rs.getString("course_number"),
-						rs.getInt("student_id"), rs.getString("comment"),
+				cc = new CourseComment(rs.getString("course_number"),
+						rs.getLong("student_id"), rs.getString("comment"),
 						rs.getTime("datetime"), rs.getInt("likes"));
 				ccSet.add(cc);
 		}
@@ -672,8 +670,8 @@ public class DatabaseRequirements {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery(SQL_QUERY);
 			if(rs.next()) {
-				cc = new CourseComment(rs.getInt("_id"), rs.getString("course_number"),
-						rs.getInt("student_id"), rs.getString("comment"),
+				cc = new CourseComment(rs.getString("course_number"),
+						rs.getLong("student_id"), rs.getString("comment"),
 						rs.getTime("datetime"), rs.getInt("likes"));
 				ccSet.add(cc);
 		}

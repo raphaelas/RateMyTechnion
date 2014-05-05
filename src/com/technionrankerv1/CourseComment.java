@@ -2,79 +2,71 @@ package com.technionrankerv1;
 
 import java.sql.Time;
 
-/*
- * Course_Comment(
-	ID:integer,
-	Course_Number:integer,
-	Student_ID:integer,
-	Comment:string,
-    DateTime:datetime
-    Likes:integer
-)
- */
 public class CourseComment {
-	private int id;
-	private String courseNumber;
-	private int studentID;
-	private String comment;
-	private Time datetime;
-	private int likes;
-	
-	public CourseComment(int id, String courseNumber, int studentID,
-			String comment, Time datetime, int likes) {
-		this.id = id;
-		this.courseNumber = courseNumber;
-		this.studentID = studentID;
-		this.comment = comment;
-		this.datetime = datetime;
-		this.likes = likes;
-	}
-	
-	public int getId() {
-		return id;
-	}
+  private Long id;
+  private String courseNumber;
+  private Long studentID;
+  private String comment;
+  private Time datetime;
+  private int likes;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+  public CourseComment(String courseNumber1, Long studentID1, String comment1,
+      Time datetime1, int likes1) {
+    courseNumber = courseNumber1;
+    studentID = studentID1;
+    comment = comment1;
+    datetime = datetime1;
+    likes = likes1;
+  }
 
-	public String getCourseNumber() {
-		return courseNumber;
-	}
+  CourseComment() {
+  }
 
-	public void setCourseNumber(String courseNumber) {
-		this.courseNumber = courseNumber;
-	}
+  public Long getId() {
+    return id;
+  }
 
-	public int getStudentID() {
-		return studentID;
-	}
+  public void setId(Long id1) {
+    id = id1;
+  }
 
-	public void setStudentID(int studentID) {
-		this.studentID = studentID;
-	}
+  public String getCourseNumber() {
+    return courseNumber;
+  }
 
-	public String getComment() {
-		return comment;
-	}
+  public void setCourseNumber(String courseNumber1) {
+    courseNumber = courseNumber1;
+  }
 
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
+  public Long getStudentID() {
+    return studentID;
+  }
 
-	public Time getDatetime() {
-		return datetime;
-	}
+  public void setStudentID(Long studentID1) {
+    studentID = studentID1;
+  }
 
-	public void setDatetime(Time datetime) {
-		this.datetime = datetime;
-	}
+  public String getComment() {
+    return comment;
+  }
 
-	public int getLikes() {
-		return likes;
-	}
+  public void setComment(String comment1) {
+    comment = comment1;
+  }
 
-	public void setLikes(int likes) {
-		this.likes = likes;
-	}
+  public Time getDatetime() {
+    return datetime;
+  }
+
+  public void setDatetime(Time datetime1) {
+    datetime = datetime1;
+  }
+
+  public int getLikes() {
+    return likes;
+  }
+
+  public void setLikes(int likes1) {
+    likes = likes1;
+  }
 }

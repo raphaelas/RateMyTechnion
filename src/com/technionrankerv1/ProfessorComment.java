@@ -2,115 +2,113 @@ package com.technionrankerv1;
 
 import java.sql.Time;
 
-/*
- * Professor_Comment(
-	ID:integer,
-	Student_ID,
-	Professor_ID:integer,
-	Comment:string,
-    DateTime:datetime,
-    Likes:integer
-)
- */
 public class ProfessorComment {
-	private int id;
-	private int professorID;
-	private int studentID;
-	private String comment;
-	private Time datetime;
-	private int likes;
+  private Long id;
+  private Long professorID;
+  private Long studentID;
+  private String comment;
+  private Time datetime;
+  private int likes;
 
-	public ProfessorComment(int id, int professorID, int studentID, 
-			String comment, Time datetime, int likes) {
-		this.id = id;
-		this.studentID = studentID;
-		this.professorID = professorID;
-		this.comment = comment;
-		this.datetime = datetime;
-		this.likes = likes;
-	}
+  public ProfessorComment(Long professorID1, Long studentID1, String comment1,
+      Time datetime1, int likes1) {
+    studentID = studentID1;
+    professorID = professorID1;
+    comment = comment1;
+    datetime = datetime1;
+    likes = likes1;
+  }
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
+  ProfessorComment() {
+  }
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
+  /**
+   * @return the id
+   */
+  public Long getId() {
+    return id;
+  }
 
-	/**
-	 * @return the studentID
-	 */
-	public int getStudentID() {
-		return studentID;
-	}
+  /**
+   * @param id1
+   *          the id to set
+   */
+  public void setId(Long id1) {
+    id = id1;
+  }
 
-	/**
-	 * @param studentID the studentID to set
-	 */
-	public void setStudentID(int studentID) {
-		this.studentID = studentID;
-	}
+  /**
+   * @return the studentID
+   */
+  public Long getStudentID() {
+    return studentID;
+  }
 
-	/**
-	 * @return the professorID
-	 */
-	public int getProfessorID() {
-		return professorID;
-	}
+  /**
+   * @param studentID1
+   *          the studentID to set
+   */
+  public void setStudentID(Long studentID1) {
+    studentID = studentID1;
+  }
 
-	/**
-	 * @param professorID the professorID to set
-	 */
-	public void setProfessorID(int professorID) {
-		this.professorID = professorID;
-	}
+  /**
+   * @return the professorID
+   */
+  public Long getProfessorID() {
+    return professorID;
+  }
 
-	/**
-	 * @return the comment
-	 */
-	public String getComment() {
-		return comment;
-	}
+  /**
+   * @param professorID1
+   *          the professorID to set
+   */
+  public void setProfessorID(Long professorID1) {
+    professorID = professorID1;
+  }
 
-	/**
-	 * @param comment the comment to set
-	 */
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
+  /**
+   * @return the comment
+   */
+  public String getComment() {
+    return comment;
+  }
 
-	/**
-	 * @return the datetime
-	 */
-	public Time getDatetime() {
-		return datetime;
-	}
+  /**
+   * @param comment1
+   *          the comment to set
+   */
+  public void setComment(String comment1) {
+    comment = comment1;
+  }
 
-	/**
-	 * @param datetime the datetime to set
-	 */
-	public void setDatetime(Time datetime) {
-		this.datetime = datetime;
-	}
+  /**
+   * @return the datetime
+   */
+  public Time getDatetime() {
+    return datetime;
+  }
 
-	/**
-	 * @return the likes
-	 */
-	public int getLikes() {
-		return likes;
-	}
+  /**
+   * @param datetime1
+   *          the datetime to set
+   */
+  public void setDatetime(Time datetime1) {
+    datetime = datetime1;
+  }
 
-	/**
-	 * @param likes the likes to set
-	 */
-	public void setLikes(int likes) {
-		this.likes = likes;
-	}
+  /**
+   * @return the likes
+   */
+  public int getLikes() {
+    return likes;
+  }
+
+  /**
+   * @param likes1
+   *          the likes to set
+   */
+  public void setLikes(int likes1) {
+    likes = likes1;
+  }
 }

@@ -1,131 +1,130 @@
 package com.technionrankerv1;
 
-/*
- * Professor_Rating(
-    ID:integer,
-    Professor_ID:integer,
-    Overall_Rating:integer,
-    Clarity:integer,
-    Preparedness:integer,
-    Interactivity:integer,
-)
- */
 public class ProfessorRating {
-	private int id;
-	private int studentID;
-	private int professorID;
-	private int overallRating;
-	private int clarity;
-	private int preparedness;
-	private int interactivity;
-	
-	public ProfessorRating(int id, int studentID, int professorID, int overallRating,
-			int clarity, int preparedness, int interactivity) {
-		this.id = id;
-		this.studentID = studentID;
-		this.professorID = professorID;
-		this.overallRating = overallRating;
-		this.clarity = clarity;
-		this.preparedness = preparedness;
-		this.interactivity = interactivity;
-	}
+  private Long id;
+  private Long studentID;
+  private Long professorID;
+  private int overallRating;
+  private int clarity;
+  private int preparedness;
+  private int interactivity;
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
+  public ProfessorRating(Long studentID1, Long professorID1,
+      int overallRating1, int clarity1, int preparedness1, int interactivity1) {
+    studentID = studentID1;
+    professorID = professorID1;
+    overallRating = overallRating1;
+    clarity = clarity1;
+    preparedness = preparedness1;
+    interactivity = interactivity1;
+  }
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
+  ProfessorRating() {
+  }
 
-	/**
-	 * @return the professorID
-	 */
-	public int getProfessorID() {
-		return professorID;
-	}
+  /**
+   * @return the id
+   */
+  public Long getId() {
+    return id;
+  }
 
-	/**
-	 * @param professorID the professorID to set
-	 */
-	public void setProfessorID(int professorID) {
-		this.professorID = professorID;
-	}
+  /**
+   * @param id1
+   *          the id to set
+   */
+  public void setId(Long id1) {
+    id = id1;
+  }
 
-	/**
-	 * @return the overallRating
-	 */
-	public int getOverallRating() {
-		return overallRating;
-	}
+  /**
+   * @return the professorID
+   */
+  public Long getProfessorID() {
+    return professorID;
+  }
 
-	/**
-	 * @param overallRating the overallRating to set
-	 */
-	public void setOverallRating(int overallRating) {
-		this.overallRating = overallRating;
-	}
+  /**
+   * @param professorID1
+   *          the professorID to set
+   */
+  public void setProfessorID(Long professorID1) {
+    professorID = professorID1;
+  }
 
-	/**
-	 * @return the clarity
-	 */
-	public int getClarity() {
-		return clarity;
-	}
+  /**
+   * @return the overallRating
+   */
+  public int getOverallRating() {
+    return overallRating;
+  }
 
-	/**
-	 * @param clarity the clarity to set
-	 */
-	public void setClarity(int clarity) {
-		this.clarity = clarity;
-	}
+  /**
+   * @param overallRating1
+   *          the overallRating to set
+   */
+  public void setOverallRating(int overallRating1) {
+    overallRating = overallRating1;
+  }
 
-	/**
-	 * @return the preparedness
-	 */
-	public int getPreparedness() {
-		return preparedness;
-	}
+  /**
+   * @return the clarity
+   */
+  public int getClarity() {
+    return clarity;
+  }
 
-	/**
-	 * @param preparedness the preparedness to set
-	 */
-	public void setPreparedness(int preparedness) {
-		this.preparedness = preparedness;
-	}
+  /**
+   * @param clarity1
+   *          the clarity to set
+   */
+  public void setClarity(int clarity1) {
+    clarity = clarity1;
+  }
 
-	/**
-	 * @return the interactivity
-	 */
-	public int getInteractivity() {
-		return interactivity;
-	}
+  /**
+   * @return the preparedness
+   */
+  public int getPreparedness() {
+    return preparedness;
+  }
 
-	/**
-	 * @param interactivity the interactivity to set
-	 */
-	public void setInteractivity(int interactivity) {
-		this.interactivity = interactivity;
-	}
+  /**
+   * @param preparedness1
+   *          the preparedness to set
+   */
+  public void setPreparedness(int preparedness1) {
+    preparedness = preparedness1;
+  }
 
-	/**
-	 * @return the studentID
-	 */
-	public int getStudentID() {
-		return studentID;
-	}
+  /**
+   * @return the interactivity
+   */
+  public int getInteractivity() {
+    return interactivity;
+  }
 
-	/**
-	 * @param studentID the studentID to set
-	 */
-	public void setStudentID(int studentID) {
-		this.studentID = studentID;
-	}
-	
+  /**
+   * @param interactivity1
+   *          the interactivity to set
+   */
+  public void setInteractivity(int interactivity1) {
+    interactivity = interactivity1;
+  }
+
+  /**
+   * @return the studentID
+   */
+  public Long getStudentID() {
+    return studentID;
+  }
+
+  /**
+   * @param studentID1
+   *          the studentID to set
+   */
+  public void setStudentID(Long studentID1) {
+    studentID = studentID1;
+  }
+
 }

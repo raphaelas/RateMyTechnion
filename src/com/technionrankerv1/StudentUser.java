@@ -1,95 +1,93 @@
 package com.technionrankerv1;
 
-/*
- * Users(
-    Student_ID:integer,
-    Student_Password_Hash:string,
-    Name:string,
-    Active:boolean
-)
- */
 public class StudentUser {
-	private int id;
-	private int studentID;
-	private String passwordHash; //TODO
-	private String name;
-	private boolean active;
-	
-	public StudentUser(int i, int sID, String ph, String n, boolean a) {
-		id = i;
-		studentID = sID;
-		ph = passwordHash;
-		name = n;
-		active = a;
-	}
+  private Long id;
+  private Long studentID;
+  private String passwordHash; // TODO
+  private String name;
+  private boolean active;
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
+  public StudentUser(Long sID, String n, boolean a) {
+    studentID = sID;
+    name = n;
+    active = a;
+  }
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
+  StudentUser() {
+  }
 
-	/**
-	 * @return the studentID
-	 */
-	public int getStudentID() {
-		return studentID;
-	}
+  /**
+   * @return the id
+   */
+  public Long getId() {
+    return id;
+  }
 
-	/**
-	 * @param studentID the studentID to set
-	 */
-	public void setStudentID(int student_id) {
-		this.studentID = student_id;
-	}
+  /**
+   * @param id1
+   *          the id to set
+   */
+  public void setId(Long id1) {
+    id = id1;
+  }
 
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
+  /**
+   * @return the studentID
+   */
+  public Long getStudentID() {
+    return studentID;
+  }
 
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
+  /**
+   * @param studentID
+   *          the studentID to set
+   */
+  public void setStudentID(Long student_id) {
+    studentID = student_id;
+  }
 
-	/**
-	 * @return the passwordHash
-	 */
-	public String getPasswordHash() {
-		return passwordHash;
-	}
+  /**
+   * @return the name
+   */
+  public String getName() {
+    return name;
+  }
 
-	/**
-	 * @param passwordHash the passwordHash to set
-	 */
-	public void setPasswordHash(String password_hash) {
-		this.passwordHash = password_hash;
-	}
+  /**
+   * @param name1
+   *          the name to set
+   */
+  public void setName(String name1) {
+    name = name1;
+  }
 
-	/**
-	 * @return the active
-	 */
-	public boolean isActive() {
-		return active;
-	}
+  /**
+   * @return the passwordHash
+   */
+  public String getPasswordHash() {
+    return passwordHash;
+  }
 
-	/**
-	 * @param active the active to set
-	 */
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+  /**
+   * @param passwordHash
+   *          the passwordHash to set
+   */
+  public void setPasswordHash(String password_hash) {
+    passwordHash = password_hash;
+  }
+
+  /**
+   * @return the active
+   */
+  public boolean isActive() {
+    return active;
+  }
+
+  /**
+   * @param active1
+   *          the active to set
+   */
+  public void setActive(boolean active1) {
+    active = active1;
+  }
 }
