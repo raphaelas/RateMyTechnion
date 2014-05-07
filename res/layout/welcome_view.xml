@@ -42,16 +42,15 @@
 		    android:textAppearance="?android:attr/textAppearanceMedium"
 		    android:textColor="@color/white" />
 
-		<SearchView
-		    android:id="@+id/searchView17"
-		    android:layout_width="260dp"
-		    android:layout_height="wrap_content"
-		    android:layout_marginLeft="35dp"
-		    android:layout_marginTop="20dp"
-		    android:background="@color/gray"
-		    android:onClick="showSearchResults" >
-		</SearchView>
-		
+		<AutoCompleteTextView
+		     android:id="@+id/autoCompleteView"
+		     android:layout_width="wrap_content"
+		     android:layout_height="wrap_content"
+		     android:layout_marginLeft="35dp"
+		     android:layout_marginTop="20dp"
+		     android:background="@color/gray"
+  			 android:ems="10"
+		     />
 		
 		<ImageView
 		    android:id="@+id/imageView110"
@@ -73,9 +72,17 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    />
-		    
-		    "
-	
+		
+		<SearchView
+		    android:id="@+id/searchView17"
+		    android:layout_width="260dp"
+		    android:layout_height="wrap_content"
+		    android:layout_marginLeft="35dp"
+		    android:layout_marginTop="20dp"
+		    android:background="@color/gray"
+		    android:onClick="showSearchResults" >
+		</SearchView>
+		 
 	</LinearLayout>
 	
 </ScrollView>	
