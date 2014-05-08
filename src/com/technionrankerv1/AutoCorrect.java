@@ -1,5 +1,11 @@
 package com.technionrankerv1;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
 import com.serverapi.TechnionRankerAPI;
 
 import android.app.Activity;
@@ -20,9 +26,16 @@ public class AutoCorrect extends Activity implements OnClickListener {
 	protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.welcome_view);
-
+        String[] professors = null;
+        try {
+        	professors = concat(parse(), parseProfessors());
+        }
+        catch (Exception e) {
+			e.printStackTrace();
+        }
+        
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, ITEMS);
+                android.R.layout.simple_dropdown_item_1line, professors);
         AutoCompleteTextView textView = (AutoCompleteTextView)
                 findViewById(R.id.autoCompleteView);
         textView.setAdapter(adapter);
@@ -46,6 +59,67 @@ public class AutoCorrect extends Activity implements OnClickListener {
     private static final String[] ITEMS = new String[] {
         "Belgium", "France", "Italy", "Germany", "Spain"
     };
+    
+	public String[] parseProfessors() throws Exception {
+		ArrayList<String> profList= new ArrayList<String>();
+		String inputLine = "";
+		String[] temp;
+		String[] profListArray = null;
+		String[] professorFiles = getAssets().list("ProfessorListings");
+		for (int i = 0; i < professorFiles.length; i++) {
+		    BufferedReader infile = new BufferedReader(new InputStreamReader(getAssets().open("ProfessorListings/" + professorFiles[i])));
+			while (infile.ready()) {// while more info exists
+			inputLine = infile.readLine();
+			if(inputLine.startsWith("<td><a href=")){
+				inputLine = inputLine.substring(1,inputLine.length()-9);
+				temp = inputLine.split(">");
+				profList.add(temp[2]);
+			}
+		}
+		profListArray = profList.toArray(new String[profList.size()]);
+		infile.close();	
+		}
+	return profListArray;
+	}
+	
+	public String[] parse() throws Exception { 
+		 //create Hashmap, where the numbers are the keys and the Titles are the values
+		HashMap<String,String> map = new HashMap<String,String>();
+		String inputLine = "";
+		String[] temp;
+		String[] allCourses = new String[0];
+		String[] courseFiles = getAssets().list("CourseListings");
+		for (int i = 0; i < courseFiles.length; i++) {
+			int lineNumber = 0;
+		    BufferedReader infile = new BufferedReader(new InputStreamReader(getAssets().open("CourseListings/" + courseFiles[i])));
+			while (infile.ready()) {// while more info exists
+				if(lineNumber>=13 && lineNumber%3==1){ // only take numbers 13 and up for every 3
+					temp = inputLine.split(" - ");
+					for (int t = 0; t<temp.length; t++){
+						String number = temp[0].trim();//number;
+						String name = temp[1].replaceAll("</A>","").trim();//name
+						map.put(number,name); // trim and place only the number and name in
+					} //for temp
+				} //if
+				inputLine = infile.readLine(); // read the next line of the text
+				lineNumber++;
+			} //while infile
+			infile.close();	
+			Object[] temp1 = map.values().toArray();
+			String[] oneFacultyCourses = Arrays.copyOf(temp1, temp1.length, String[].class);
+			allCourses = concat(allCourses, oneFacultyCourses);
+		} //for courseFiles
+		return allCourses;
+	} //parse()
+	
+	String[] concat(String[] a, String[] b) {
+		int aLen = a.length;
+		int bLen = b.length;
+		String[] c= new String[aLen+bLen];
+		System.arraycopy(a, 0, c, 0, aLen);
+		System.arraycopy(b, 0, c, aLen, bLen);
+		return c;
+	}
     
 	@Override
 	public void onClick(View v) {
