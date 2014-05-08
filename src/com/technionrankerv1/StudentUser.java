@@ -2,13 +2,14 @@ package com.technionrankerv1;
 
 public class StudentUser {
   private Long id;
-  private Long studentID;
+  private String studentID;
   private String passwordHash; // TODO
   private String name;
   private boolean active;
 
-  public StudentUser(Long sID, String n, boolean a) {
+  public StudentUser(String sID, String n, String pH, boolean a) {
     studentID = sID;
+    passwordHash = pH;
     name = n;
     active = a;
   }
@@ -34,7 +35,7 @@ public class StudentUser {
   /**
    * @return the studentID
    */
-  public Long getStudentID() {
+  public String getStudentID() {
     return studentID;
   }
 
@@ -42,7 +43,7 @@ public class StudentUser {
    * @param studentID
    *          the studentID to set
    */
-  public void setStudentID(Long student_id) {
+  public void setStudentID(String student_id) {
     studentID = student_id;
   }
 
