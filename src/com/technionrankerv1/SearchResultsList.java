@@ -2,8 +2,10 @@ package com.technionrankerv1;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,7 +27,7 @@ public class SearchResultsList extends ListActivity {
 		//resultsListView = (ListView) findViewById(R.id.listview);
 		String[] values = null;
 		try {
-			values = parse();
+			values = parseProfessors();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -89,6 +91,29 @@ public class SearchResultsList extends ListActivity {
 		} //for courseFiles
 		return allCourses;
 	} //parse()
+	
+	public String[] parseProfessors() throws Exception {
+		ArrayList<String> profList= new ArrayList<String>();
+		String inputLine = "";
+		String[] temp;
+		String[] profListArray = null;
+		String[] professorFiles = getAssets().list("ProfessorListings");
+		for (int i = 0; i < professorFiles.length; i++) {
+		    BufferedReader infile = new BufferedReader(new InputStreamReader(getAssets().open("ProfessorListings/" + professorFiles[i])));
+			while (infile.ready()) {// while more info exists
+			inputLine = infile.readLine();
+			if(inputLine.startsWith("<td><a href=")){
+				inputLine = inputLine.substring(1,inputLine.length()-9);
+				temp = inputLine.split(">");
+				profList.add(temp[2]);
+			}
+		}
+		profListArray = profList.toArray(new String[profList.size()]);
+		infile.close();	
+		}
+	return profListArray;
+	}
+	
 	
 	String[] concat(String[] a, String[] b) {
 		int aLen = a.length;
