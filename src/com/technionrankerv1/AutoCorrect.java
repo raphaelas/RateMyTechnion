@@ -55,10 +55,6 @@ public class AutoCorrect extends Activity implements OnClickListener {
 		 * message);
 		 */
 	}
-
-    private static final String[] ITEMS = new String[] {
-        "Belgium", "France", "Italy", "Germany", "Spain"
-    };
     
 	public String[] parseProfessors() throws Exception {
 		ArrayList<String> profList= new ArrayList<String>();
