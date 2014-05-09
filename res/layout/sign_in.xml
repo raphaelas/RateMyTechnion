@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/login"
             android:ems="10"
             android:hint="@string/username"
@@ -53,15 +53,6 @@
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             android:textColorLink="@color/black" />
-
-        <ImageView
-            android:id="@+id/imageView111"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
-            android:contentDescription="@string/desc"
-            android:src="@drawable/homelogo1" />
     </LinearLayout>
 
 </ScrollView>
