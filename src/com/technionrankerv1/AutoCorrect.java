@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -105,9 +106,9 @@ public class AutoCorrect extends Activity implements OnClickListener {
 	public String[] parseCourses() throws Exception { 
 		 //create Hashmap, where the numbers are the keys and the Titles are the values
 		HashMap<String,String> map = new HashMap<String,String>();
+		HashSet<Course> set = new HashSet<Course>();
 		String inputLine = "";
 		String[] temp;
-		String[] allCourses = new String[0];
 		String[] courseFiles = getAssets().list("CourseListings");
 		for (int i = 0; i < courseFiles.length; i++) {
 			int lineNumber = 0;
@@ -119,16 +120,18 @@ public class AutoCorrect extends Activity implements OnClickListener {
 						String number = temp[0].trim();//number;
 						String name = temp[1].replaceAll("</A>","").trim();//name
 						map.put(number,name); // trim and place only the number and name in
+						set.add(new Course(name, number, null, null, true));
 					} //for temp
 				} //if
 				inputLine = infile.readLine(); // read the next line of the text
 				lineNumber++;
 			} //while infile
-			infile.close();	
-			Object[] temp1 = map.values().toArray();
-			String[] oneFacultyCourses = Arrays.copyOf(temp1, temp1.length, String[].class);
-			allCourses = concat(allCourses, oneFacultyCourses);
+			infile.close();
 		} //for courseFiles
+		Object[] courseNumberObjectArray = map.keySet().toArray();
+		Object[] courseNameObjectArray = map.values().toArray();
+		String[] allCourses = Arrays.copyOf(courseNameObjectArray, courseNameObjectArray.length, String[].class);
+		String[] allNumbers = Arrays.copyOf(courseNumberObjectArray, courseNumberObjectArray.length, String[].class);
 		return allCourses;
 	} //parse()
 	
