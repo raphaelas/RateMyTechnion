@@ -25,7 +25,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		String viewToStartOn = "welcome_view";
+		String viewToStartOn = "prof_view";
 
 		if (viewToStartOn.equals("course_view")) {
 			setContentView(R.layout.course_view);
