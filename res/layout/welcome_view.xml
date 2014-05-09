@@ -31,17 +31,6 @@
 		    android:textAppearance="?android:attr/textAppearanceMedium"
 		    android:textColor="@color/white" />
 
-		<TextView
-		    android:id="@+id/textView11"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_marginLeft="35dp"
-		    android:layout_marginRight="20dp"
-		    android:layout_marginTop="10dp"
-		    android:text="@string/string2"
-		    android:textAppearance="?android:attr/textAppearanceMedium"
-		    android:textColor="@color/white" />
-
 		<AutoCompleteTextView
 		     android:id="@+id/autoCompleteView"
 		     android:layout_width="match_parent"
@@ -51,15 +40,6 @@
 		     android:background="@color/gray"
   			 android:ems="10"
 		     />
-		
-		<ImageView
-		    android:id="@+id/imageView110"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:src="@drawable/homelogo1"
-		    android:contentDescription="@string/desc"
-		    android:layout_gravity="center_horizontal"
-		    android:layout_marginTop="15dp" />
 		
 		<Button 
 		    android:id="@+id/bSend"
