@@ -27,16 +27,16 @@ public class AutoCorrect extends Activity implements OnClickListener {
 	protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.welcome_view);
-        String[] professors = null;
+        String[] professorsAndCourses = null;
         try {
-        	professors = concat(parse(), parseProfessors());
+        	professorsAndCourses = concat(parseCourses(), parseProfessors());
         }
         catch (Exception e) {
 			e.printStackTrace();
         }
         
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, professors);
+                android.R.layout.simple_dropdown_item_1line, professorsAndCourses);
         AutoCompleteTextView textView = (AutoCompleteTextView)
                 findViewById(R.id.autoCompleteView);
         textView.setAdapter(adapter);
@@ -68,18 +68,33 @@ public class AutoCorrect extends Activity implements OnClickListener {
 			while (infile.ready()) {// while more info exists
 			inputLine = infile.readLine();
 			if(inputLine.startsWith("<td><a href=")){
+				int start = inputLine.indexOf("code=") + 5;
+				int end = inputLine.indexOf(" rel") - 1;
+				String id = inputLine.substring(start, end);
+				Log.d(professorFiles[i], id);
 				inputLine = inputLine.substring(1,inputLine.length()-9);
 				temp = inputLine.split(">");
 				profList.add(temp[2]);
 			}
+			/*
 			else if (inputLine.startsWith("            <td class=")) {
 				try {
 					String email = inputLine.substring(53, inputLine.length()-48);
+			
 				}
 				catch (StringIndexOutOfBoundsException e) {
 					Log.d(getLocalClassName(), "Email unavailable");
 				}
 			}
+			*/
+			/*
+			else if (inputLine.contains("empdetail-jquery.asp")) {
+				int start = inputLine.indexOf("code=") + 5;
+				int end = inputLine.indexOf(" rel") - 1;
+				String id = inputLine.substring(start, end);
+				Log.d(professorFiles[i], id);
+			}
+			*/
 		}
 		profListArray = profList.toArray(new String[profList.size()]);
 		infile.close();	
@@ -87,7 +102,7 @@ public class AutoCorrect extends Activity implements OnClickListener {
 	return profListArray;
 	}
 	
-	public String[] parse() throws Exception { 
+	public String[] parseCourses() throws Exception { 
 		 //create Hashmap, where the numbers are the keys and the Titles are the values
 		HashMap<String,String> map = new HashMap<String,String>();
 		String inputLine = "";
