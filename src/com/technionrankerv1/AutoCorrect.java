@@ -6,18 +6,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import com.serverapi.TechnionRankerAPI;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.serverapi.TechnionRankerAPI;
 
 public class AutoCorrect extends Activity implements OnClickListener {
 	Button bSend;
@@ -55,7 +56,7 @@ public class AutoCorrect extends Activity implements OnClickListener {
 		 * message);
 		 */
 	}
-    
+
 	public String[] parseProfessors() throws Exception {
 		ArrayList<String> profList= new ArrayList<String>();
 		String inputLine = "";
@@ -70,6 +71,14 @@ public class AutoCorrect extends Activity implements OnClickListener {
 				inputLine = inputLine.substring(1,inputLine.length()-9);
 				temp = inputLine.split(">");
 				profList.add(temp[2]);
+			}
+			else if (inputLine.startsWith("            <td class=")) {
+				try {
+					String email = inputLine.substring(53, inputLine.length()-48);
+				}
+				catch (StringIndexOutOfBoundsException e) {
+					Log.d(getLocalClassName(), "Email unavailable");
+				}
 			}
 		}
 		profListArray = profList.toArray(new String[profList.size()]);

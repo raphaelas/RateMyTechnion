@@ -25,11 +25,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		String viewToStartOn = "welcome_view";
+		String viewToStartOn = "course_view";
 
 		if (viewToStartOn.equals("course_view")) {
 			setContentView(R.layout.course_view);
-
 		} else if (viewToStartOn.equals("search_view")) {
 			setContentView(R.layout.search_view2);
 			listView = (ListView) findViewById(R.id.search_results_view);
@@ -41,7 +40,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 		} else if (viewToStartOn.equals("main")) {
 			setContentView(R.layout.fragment_main);
-
 		}
 		else if (viewToStartOn.equals("prof_view")){
 			setContentView(R.layout.prof_view);
