@@ -41,9 +41,10 @@ public class AutoCorrect extends Activity implements OnClickListener {
                 findViewById(R.id.autoCompleteView);
         textView.setAdapter(adapter);
         
-	    tvStatus = (TextView) findViewById(R.id.tvStatus);
-	    bSend = (Button) findViewById(R.id.bSend);
-	    bSend.setOnClickListener(this);
+        //Sample database calls:
+	    //tvStatus = (TextView) findViewById(R.id.tvStatus);
+	    //bSend = (Button) findViewById(R.id.bSend);
+	    //bSend.setOnClickListener(this);
     }
 	
 	public void showSearchResults(View view) {

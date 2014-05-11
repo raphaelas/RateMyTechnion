@@ -40,7 +40,7 @@
 		     android:background="@color/gray"
   			 android:ems="10"
 		     />
-		
+		<!--  Buttons for sample database calls:
 		<Button 
 		    android:id="@+id/bSend"
 		    android:layout_width="wrap_content"
@@ -52,6 +52,9 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    />
+		-->
+		
+		<!-- The search view that opens up a results page of parsed professors.
 		
 		<SearchView
 		    android:id="@+id/searchView17"
@@ -62,6 +65,8 @@
 		    android:background="@color/gray"
 		    android:onClick="showSearchResults" >
 		</SearchView>
+		 
+		 -->
 		 
 	</LinearLayout>
 	
