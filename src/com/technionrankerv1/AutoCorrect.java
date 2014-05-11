@@ -76,25 +76,6 @@ public class AutoCorrect extends Activity implements OnClickListener {
 				temp = inputLine.split(">");
 				profList.add(temp[2]);
 			}
-			/*
-			else if (inputLine.startsWith("            <td class=")) {
-				try {
-					String email = inputLine.substring(53, inputLine.length()-48);
-			
-				}
-				catch (StringIndexOutOfBoundsException e) {
-					Log.d(getLocalClassName(), "Email unavailable");
-				}
-			}
-			*/
-			/*
-			else if (inputLine.contains("empdetail-jquery.asp")) {
-				int start = inputLine.indexOf("code=") + 5;
-				int end = inputLine.indexOf(" rel") - 1;
-				String id = inputLine.substring(start, end);
-				Log.d(professorFiles[i], id);
-			}
-			*/
 		}
 		profListArray = profList.toArray(new String[profList.size()]);
 		infile.close();	
@@ -129,8 +110,7 @@ public class AutoCorrect extends Activity implements OnClickListener {
 		Object[] courseNameObjectArray = map.values().toArray();
 		String[] allCourses = Arrays.copyOf(courseNameObjectArray, courseNameObjectArray.length, String[].class);
 		String[] allNumbers = Arrays.copyOf(courseNumberObjectArray, courseNumberObjectArray.length, String[].class);
-		Log.d(getLocalClassName(), allNumbers.toString());
-		return allCourses;
+		return concat(allCourses, allNumbers);
 	} //parse()
 	
 	String[] concat(String[] a, String[] b) {
