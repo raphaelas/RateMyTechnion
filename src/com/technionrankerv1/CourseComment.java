@@ -4,15 +4,15 @@ import java.sql.Time;
 
 public class CourseComment {
   private Long id;
-  private String courseNumber;
+  private Long courseID;
   private Long studentID;
   private String comment;
   private Time datetime;
   private int likes;
 
-  public CourseComment(String courseNumber1, Long studentID1, String comment1,
+  public CourseComment(Long courseID1, Long studentID1, String comment1,
       Time datetime1, int likes1) {
-    courseNumber = courseNumber1;
+    courseID = courseID1;
     studentID = studentID1;
     comment = comment1;
     datetime = datetime1;
@@ -30,12 +30,12 @@ public class CourseComment {
     id = id1;
   }
 
-  public String getCourseNumber() {
-    return courseNumber;
+  public Long getCourseID() {
+    return courseID;
   }
 
-  public void setCourseNumber(String courseNumber1) {
-    courseNumber = courseNumber1;
+  public void setCourseNumber(Long courseID1) {
+    courseID = courseID1;
   }
 
   public Long getStudentID() {

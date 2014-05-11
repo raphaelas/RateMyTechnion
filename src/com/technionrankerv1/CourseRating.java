@@ -1,15 +1,16 @@
 package com.technionrankerv1;
 
+
 public class CourseRating {
   private Long id;
   private Long studentID;
-  private String courseID;
+  private Long courseID;
   private int overallRating;
   private int enjoyability;
   private int difficulty;
   private int usefulness;
 
-  public CourseRating(Long studentID1, String courseID1, int overallRating1,
+  public CourseRating(Long studentID1, Long courseID1, int overallRating1,
       int enjoyability1, int difficulty1, int usefulness1) {
     studentID = studentID1;
     courseID = courseID1;
@@ -38,18 +39,18 @@ public class CourseRating {
   }
 
   /**
-   * @return the courseNumber
+   * @return the courseID
    */
-  public String getCourseId() {
+  public Long getCourseId() {
     return courseID;
   }
 
   /**
-   * @param courseNumber1
-   *          the courseNumber to set
+   * @param courseID1
+   *          the courseID to set
    */
-  public void setCourseId(String courseNumber1) {
-    courseID = courseNumber1;
+  public void setCourseId(Long courseID1) {
+    courseID = courseID1;
   }
 
   /**

@@ -4,9 +4,10 @@ public class StudentProfessorCourse {
   private Long id;
   private Long studentID;
   private Long professorID;
-  private String courseID;
+  private Long courseID;
 
-  public StudentProfessorCourse(Long sID, Long pID, String cID) {
+  public StudentProfessorCourse(Long _id, Long sID, Long pID, Long cID) {
+    id = _id;
     studentID = sID;
     professorID = pID;
     courseID = cID;
@@ -38,14 +39,6 @@ public class StudentProfessorCourse {
   }
 
   /**
-   * @param id1
-   *          the id to set
-   */
-  public void setId(Long id1) {
-    id = id1;
-  }
-
-  /**
    * @return the professorID
    */
   public Long getProfessorID() {
@@ -63,7 +56,7 @@ public class StudentProfessorCourse {
   /**
    * @return the courseNumber
    */
-  public String getCourseId() {
+  public Long getCourseId() {
     return courseID;
   }
 
@@ -71,7 +64,7 @@ public class StudentProfessorCourse {
    * @param courseNumber
    *          the courseNumber to set
    */
-  public void setCourseId(String _courseID) {
+  public void setCourseId(Long _courseID) {
     courseID = _courseID;
   }
 

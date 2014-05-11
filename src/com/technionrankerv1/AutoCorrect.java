@@ -143,7 +143,7 @@ public class AutoCorrect extends Activity implements OnClickListener {
 
 	    @Override
 	    protected String doInBackground(String... params) {
-	      Course c = new Course("01", "Geology", (long) 5, "Spring 2011", true);
+	      Course c = new Course(null, "Geology", "01", (long) 5, "Spring 2011", true);
 	      return new TechnionRankerAPI().insertCourse(c).toString();
 	    }
 

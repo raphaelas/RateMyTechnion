@@ -8,7 +8,8 @@ public class Course {
   private String semester;
   private boolean active;
 
-  public Course(String na, String nu, Long pID, String se, boolean a) {
+  public Course(Long _id, String na, String nu, Long pID, String se, boolean a) {
+    id = _id;
     name = na;
     number = nu;
     professorID = pID;
@@ -100,4 +101,5 @@ public class Course {
   public Long getId() {
     return id;
   }
+
 }

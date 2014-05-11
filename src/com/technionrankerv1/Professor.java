@@ -5,7 +5,8 @@ public class Professor {
   private String name;
   private boolean active;
 
-  public Professor(String n, boolean a) {
+  public Professor(Long _id, String n, boolean a) {
+    id = _id;
     name = n;
     active = a;
   }
@@ -50,11 +51,4 @@ public class Professor {
     return id;
   }
 
-  /**
-   * @param id1
-   *          the id to set
-   */
-  public void setId(Long id1) {
-    id = id1;
-  }
 }

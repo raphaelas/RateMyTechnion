@@ -1,5 +1,6 @@
 package com.technionrankerv1;
 
+
 public class ProfessorRating {
   private Long id;
   private Long studentID;
@@ -9,8 +10,9 @@ public class ProfessorRating {
   private int preparedness;
   private int interactivity;
 
-  public ProfessorRating(Long studentID1, Long professorID1,
+  public ProfessorRating(Long _id, Long studentID1, Long professorID1,
       int overallRating1, int clarity1, int preparedness1, int interactivity1) {
+    id = _id;
     studentID = studentID1;
     professorID = professorID1;
     overallRating = overallRating1;
@@ -27,14 +29,6 @@ public class ProfessorRating {
    */
   public Long getId() {
     return id;
-  }
-
-  /**
-   * @param id1
-   *          the id to set
-   */
-  public void setId(Long id1) {
-    id = id1;
   }
 
   /**
