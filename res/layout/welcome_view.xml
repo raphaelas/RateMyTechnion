@@ -40,6 +40,14 @@
 		     android:background="@color/gray"
   			 android:ems="10"
 		     />
+		
+			<Button 
+		    android:id="@+id/login1"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:background="@color/gray"
+		    android:onClick="goToLogin"
+		    />
 		<!--  Buttons for sample database calls:
 		<Button 
 		    android:id="@+id/bSend"

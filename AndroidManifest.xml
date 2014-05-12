@@ -32,6 +32,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.technionrankerv1.MainActivity" />
         </activity>
+                <activity
+            android:name="com.technionrankerv1.Login"
+            android:label="@string/app_name"
+            android:parentActivityName="com.technionrankerv1.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.technionrankerv1.MainActivity" />
+        </activity>
         <activity
             android:name="com.technionrankerv1.UserCourseViewMain"
             android:label="@string/app_name" >

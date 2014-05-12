@@ -22,6 +22,7 @@ import com.serverapi.TechnionRankerAPI;
 
 public class AutoCorrect extends Activity implements OnClickListener {
 	Button bSend;
+	Button login1;
 	TextView tvStatus;
 
 	protected void onCreate(Bundle icicle) {
@@ -39,11 +40,21 @@ public class AutoCorrect extends Activity implements OnClickListener {
 				professorsAndCourses);
 		AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.autoCompleteView);
 		textView.setAdapter(adapter);
+		/*
 
+		login1 = (Button) findViewById(R.id.login1);
+		login1.setOnClickListener(new OnClickListener(this) {*/
+		
+		
 		// Sample database calls:
 		// tvStatus = (TextView) findViewById(R.id.tvStatus);
 		// bSend = (Button) findViewById(R.id.bSend);
 		// bSend.setOnClickListener(this);
+	}
+	
+	public void goToLogin(View v) {
+		Intent intent = new Intent(this, Login.class);
+		startActivity(intent);
 	}
 
 	public void showSearchResults(View view) {
@@ -72,7 +83,7 @@ public class AutoCorrect extends Activity implements OnClickListener {
 					int start = inputLine.indexOf("code=") + 5;
 					int end = inputLine.indexOf(" rel") - 1;
 					String id = inputLine.substring(start, end);
-					Log.d(professorFiles[i], id);
+					//Log.d(professorFiles[i], id);
 					inputLine = inputLine.substring(1, inputLine.length() - 9);
 					temp = inputLine.split(">");
 					profList.add(temp[2]);
