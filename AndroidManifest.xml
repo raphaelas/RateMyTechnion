@@ -14,7 +14,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/Theme.AppCompat.Light" >
         <activity android:name="com.technionrankerv1.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +22,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            android:label="@string/app_name" >
         </activity>
         <activity
             android:name="com.technionrankerv1.SearchResultsList"
@@ -35,7 +34,6 @@
         <activity
             android:name="com.technionrankerv1.UserCourseViewMain"
             android:label="@string/app_name" >
-            android:parentActivityName="com.technionrankerv1.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.technionrankerv1.MainActivity" />
@@ -49,11 +47,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.technionrankerv1.ActionActivity"
-            android:theme="@style/Theme.AppCompat.Light"
-            android:label="@string/app_name" >
-        </activity>
+     
     </application>
 
 </manifest>
