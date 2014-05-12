@@ -21,6 +21,7 @@
     <string name="OperatingSystems">Operating Systems</string>
     <string name="OperatingSystemsnum">234123</string>
     <string name="Professor">Tom Smith</string>
+    <string name="action_logout">Logout</string>
     <string name="action_search">Search</string>
     <string name="username">UG Username</string>
     <string name="search">Course, Professor, or Faculty</string>
