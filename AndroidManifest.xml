@@ -4,10 +4,12 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="11" 
+    <uses-sdk
+        android:minSdkVersion="7"
         android:targetSdkVersion="19" />
+
     <uses-permission android:name="android.permission.INTERNET" />
-    
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -39,13 +41,19 @@
                 android:value="com.technionrankerv1.MainActivity" />
         </activity>
         <activity
-         android:name="com.technionrankerv1.AutoCorrect"
-         android:label="@string/app_name" >
-         <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-         </intent-filter>
-      </activity>
+            android:name="com.technionrankerv1.AutoCorrect"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.technionrankerv1.ActionActivity"
+            android:theme="@style/Theme.AppCompat.Light"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>
