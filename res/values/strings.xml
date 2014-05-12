@@ -50,5 +50,11 @@
     </string-array>
 
     <string name="search_view1">Results</string>
+    <string name="enjoyability">Enjoyability </string>
+    <string name="usefulness">Usefulness  </string>
+    <string name="overall">Usefulness  </string>
+    <string name="difficulty">Difficulty      </string>
+    <string name="commentHint">Comment&#3280;</string>
+    <string name="submit">Submit</string>
 
 </resources>

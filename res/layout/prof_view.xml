@@ -86,7 +86,7 @@
                     android:textColor="@color/white" />
 
                 <RatingBar
-                    android:id="@id/ratingBar1"
+                    android:id="@+id/ratingBar1"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:numStars="@integer/three" />

@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -29,6 +30,9 @@ public class AutoCorrect extends Activity implements OnClickListener {
 		super.onCreate(icicle);
 		setContentView(R.layout.welcome_view);
 		String[] professorsAndCourses = null;
+		//Course c1 = new Course(new Long(1), null, null, null, null, false);
+		//Course c = new TechnionRankerAPI().getCourse(c1);
+		//Log.d(getLocalClassName(), c.toString());
 		try {
 			professorsAndCourses = concat(capsFix(parseCourses()), parseProfessors());
 		} catch (Exception e) {
@@ -80,10 +84,11 @@ public class AutoCorrect extends Activity implements OnClickListener {
 			while (infile.ready()) {// while more info exists
 				inputLine = infile.readLine();
 				if (inputLine.startsWith("<td><a href=")) {
+					/* This would parse the professor's ID #.
 					int start = inputLine.indexOf("code=") + 5;
 					int end = inputLine.indexOf(" rel") - 1;
 					String id = inputLine.substring(start, end);
-					//Log.d(professorFiles[i], id);
+					Log.d(professorFiles[i], id);*/
 					inputLine = inputLine.substring(1, inputLine.length() - 9);
 					temp = inputLine.split(">");
 					profList.add(temp[2]);
@@ -189,11 +194,11 @@ public class AutoCorrect extends Activity implements OnClickListener {
 						|| temp[t].equals("THE") || temp[t].equals("OF")
 						|| temp[t].equals("AND") || temp[t].equals("IN")
 						|| temp[t].equals("AT") || temp[t].equals("AN")) {
-					temp[t] = temp[t].toLowerCase();
+					temp[t] = temp[t].toLowerCase(Locale.ENGLISH);
 				}
 				String firstLetter = temp[t].substring(0, 1); // take the first
 																// letter
-				temp[t] = temp[t].toLowerCase(); // make the word lowercase
+				temp[t] = temp[t].toLowerCase(Locale.ENGLISH); // make the word lowercase
 				String end = temp[t].substring(1, temp[t].length()); // get ride
 																		// of
 																		// the
