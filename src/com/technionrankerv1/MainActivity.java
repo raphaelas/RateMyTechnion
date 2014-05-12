@@ -3,9 +3,12 @@ package com.technionrankerv1;
 import java.util.HashMap;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -14,7 +17,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnItemClickListener {
+public class MainActivity extends ActionBarActivity implements
+		OnItemClickListener {
 
 	ListView listView;
 	ExpandableListAdapter listAdapter;
@@ -25,7 +29,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		String viewToStartOn = "course_view";
+		String viewToStartOn = "welcome_view";
 
 		if (viewToStartOn.equals("course_view")) {
 			setContentView(R.layout.course_view);
@@ -40,8 +44,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 		} else if (viewToStartOn.equals("main")) {
 			setContentView(R.layout.fragment_main);
-		}
-		else if (viewToStartOn.equals("prof_view")){
+		} else if (viewToStartOn.equals("prof_view")) {
 			setContentView(R.layout.prof_view);
 		}
 	}
@@ -50,12 +53,35 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		Intent intent = new Intent(this, UserCourseViewMain.class);
 		startActivity(intent);
 	}
-	
+
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View view, int position,
 			long id) {
 		Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
 				Toast.LENGTH_SHORT).show();
 	}
-	
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle presses on the action bar items
+
+		switch (item.getItemId()) {
+		case R.id.action_search:
+			// openSearch();
+			return true;
+		case R.id.action_settings:
+			// openSettings();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 }
