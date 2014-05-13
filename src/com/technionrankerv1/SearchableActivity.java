@@ -26,22 +26,9 @@ public class SearchableActivity extends ListActivity {
 	}
 
 	public void doMySearch(String query) {
-		AutoCorrect ac = new AutoCorrect();
-		try {
-			String[] corArray = ac.parseCourses();
-			String[] proArray = ac.parseProfessors();
-			String[] bothArrays = ac.concat(corArray, proArray);
-
-			for (int i = 0; i < bothArrays.length; i++) {
-				if (bothArrays[i].contains(query)) {
-
-				}
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		Context context=getBaseContext();
+		SearchableAdapter sa=new SearchableAdapter(getBaseContext());
+		sa.
 	}
 /*
 	public class MyAdapter {
