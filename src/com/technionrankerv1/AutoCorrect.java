@@ -86,9 +86,9 @@ public class AutoCorrect extends Activity implements OnClickListener {
 					/* This would parse the professor's ID #.
 					int start = inputLine.indexOf("code=") + 5;
 					int end = inputLine.indexOf(" rel") - 1;
-<<<<<<< HEAD
-			//		String id = inputLine.substring(start, end);
-					//Log.d(professorFiles[i], id);
+					String id = inputLine.substring(start, end);
+					Log.d(professorFiles[i], id);
+					*/
 					inputLine = inputLine.substring(1, inputLine.length() - 9);
 					temp = inputLine.split(">");
 					profList.add(temp[2]);
