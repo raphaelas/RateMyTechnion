@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity implements
 		OnItemClickListener {
-
+	
 	ListView listView;
 	ExpandableListAdapter listAdapter;
 	ExpandableListView expListView;
@@ -29,8 +29,8 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		String viewToStartOn = "welcome_view";
-
+		String viewToStartOn = "sign_in";
+		
 		if (viewToStartOn.equals("course_view")) {
 			setContentView(R.layout.course_view);
 		} else if (viewToStartOn.equals("search_view")) {
@@ -39,14 +39,14 @@ public class MainActivity extends ActionBarActivity implements
 			listView.setOnItemClickListener(this);
 		} else if (viewToStartOn.equals("welcome_view")) {
 			setContentView(R.layout.welcome_view);
-		} else if (viewToStartOn.equals("log_in")) {
+		} else if (viewToStartOn.equals("sign_in")) {
 			setContentView(R.layout.sign_in);
-
 		} else if (viewToStartOn.equals("main")) {
 			setContentView(R.layout.fragment_main);
 		} else if (viewToStartOn.equals("prof_view")) {
 			setContentView(R.layout.prof_view);
 		}
+		
 	}
 
 	public void initUserCourseView(View view) {
@@ -78,15 +78,20 @@ public class MainActivity extends ActionBarActivity implements
 			// openSearch();
 			return true;
 		case R.id.action_logout:
-			openLoginPage(item);
+			// openLoginPage(item);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
 
-	public void openLoginPage(MenuItem item) {
-		Intent intent = new Intent(this, Login.class);
-	    startActivity(intent);
+	public void goToLogin(View v) {
+		Intent intent = new Intent(this, Login.class);;
+		startActivity(intent);
 	}
+	/*
+	 * public void openLoginPage(MenuItem item) { Intent intent = new
+	 * Intent(this, Login.class); startActivity(intent); }
+	 */
+
 }
