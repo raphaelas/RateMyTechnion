@@ -16,7 +16,7 @@ public class Login extends Activity{
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.sign_in);
-		doLogin();
+	//	doLogin();
 	}
 	
 	public void doLogin(){

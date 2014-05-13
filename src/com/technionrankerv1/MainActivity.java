@@ -77,11 +77,16 @@ public class MainActivity extends ActionBarActivity implements
 		case R.id.action_search:
 			// openSearch();
 			return true;
-		case R.id.action_settings:
-			// openSettings();
+		case R.id.action_logout:
+			openLoginPage(item);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	public void openLoginPage(MenuItem item) {
+		Intent intent = new Intent(this, Login.class);
+	    startActivity(intent);
 	}
 }

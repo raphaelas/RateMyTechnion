@@ -10,7 +10,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -82,7 +81,7 @@ public class AutoCorrect extends Activity implements OnClickListener {
 				if (inputLine.startsWith("<td><a href=")) {
 					int start = inputLine.indexOf("code=") + 5;
 					int end = inputLine.indexOf(" rel") - 1;
-					String id = inputLine.substring(start, end);
+			//		String id = inputLine.substring(start, end);
 					//Log.d(professorFiles[i], id);
 					inputLine = inputLine.substring(1, inputLine.length() - 9);
 					temp = inputLine.split(">");
