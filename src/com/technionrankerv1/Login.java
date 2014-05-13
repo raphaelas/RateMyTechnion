@@ -41,8 +41,8 @@ public class Login extends Activity{
 		password = Input2.getText().toString();
 		
 		if (username != null && password != null) {
-			Log.d(getLocalClassName(), username);
-			Log.d(getLocalClassName(), password);
+			//Log.d(getLocalClassName(), username);
+			//Log.d(getLocalClassName(), password);
 			doLogin();
 		}
 	}
@@ -81,6 +81,9 @@ public class Login extends Activity{
 						Log.d(getLocalClassName(), doc.toString().substring(51,58));
 					}else{
 						Log.d(getLocalClassName(), "Log in Sucessful");
+						String [] temp =  doc.toString().substring(6058,6095).split(" ");
+						String name = temp[1] +" "+ temp[2];
+						Log.d(getLocalClassName(), name);
 					}
 
 				} catch (IOException e) {
@@ -88,6 +91,7 @@ public class Login extends Activity{
 				}
 			}
 			// OP=LI&UID=922130174&PWD=43150202&Login.x=%D7%94%D7%AA%D7%97%D7%91%D7%A8
+			//32016463
 		};
 		downloadThread.start();
 	}

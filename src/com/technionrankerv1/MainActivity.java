@@ -121,13 +121,12 @@ public class MainActivity extends ActionBarActivity implements
 		}
 	}
 
-<<<<<<< HEAD
 	public void goToLogin(View v) {
-		Intent intent = new Intent(this, Login.class);;
-=======
+		Intent intent = new Intent(this, Login.class);
+		startActivity(intent);
+	}
 	public void openLoginPage(MenuItem item) {
 		Intent intent = new Intent(this, Login.class);
->>>>>>> f54253af8e5bc12725a7e671c34830a3c4f5c7ff
 		startActivity(intent);
 	}
 	/*

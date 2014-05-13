@@ -28,7 +28,6 @@ public class SearchableActivity extends ListActivity {
 	public void doMySearch(String query) {
 		Context context=getBaseContext();
 		SearchableAdapter sa=new SearchableAdapter(getBaseContext());
-		sa.
 	}
 /*
 	public class MyAdapter {
