@@ -42,7 +42,8 @@
 
             <requestFocus />
         </EditText>
-	<!-- android:onClick="goToLogin" -->
+        <!-- android:onClick="goToLogin" -->
+
         <Button
             android:id="@+id/button1"
             android:layout_width="215dp"
@@ -54,6 +55,18 @@
             android:textColor="@color/black"
             android:textColorHint="@color/black"
             android:textColorLink="@color/black" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:ellipsize="none"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="@string/blank"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/red" />
     </LinearLayout>
 
 </ScrollView>

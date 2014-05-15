@@ -51,7 +51,6 @@ public class MainActivity extends ActionBarActivity implements
 		} else if (viewToStartOn.equals("prof_view")) {
 			setContentView(R.layout.prof_view);
 		}
-		
 	}
 
 	public void initUserCourseView(View view) {
