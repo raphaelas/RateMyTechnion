@@ -38,8 +38,14 @@ public class SearchableActivity extends ListActivity {
 			startActivity(newIntent);
 		}
 
-		//Toast.makeText(getApplicationContext(), "bbb", Toast.LENGTH_LONG)
-			//	.show();
+	}
+}
+/*
+	public class MyAdapter {
+		public MyAdapter(Context context, int layoutResourceId, String[] places) {
+			super(context, layoutResourceId, places);
+			this.context = context;
+>>>>>>> origin/master
 
 		// }
 
@@ -58,7 +64,6 @@ public class SearchableActivity extends ListActivity {
 		 * 
 		 * } }
 		 */
-	}
 
 	/*
 	 * @Override public boolean onCreateOptionsMenu(Menu menu) { // Inflate the
@@ -95,4 +100,3 @@ public class SearchableActivity extends ListActivity {
 		 * 
 		 * return true; }
 		 */
-}

@@ -30,11 +30,12 @@ public class AutoCorrect extends Activity implements OnClickListener {
 		super.onCreate(icicle);
 		setContentView(R.layout.welcome_view);
 		String[] professorsAndCourses = null;
-		//Course c1 = new Course(new Long(1), null, null, null, null, false);
-		//Course c = new TechnionRankerAPI().getCourse(c1);
-		//Log.d(getLocalClassName(), c.toString());
+		// Course c1 = new Course(new Long(1), null, null, null, null, false);
+		// Course c = new TechnionRankerAPI().getCourse(c1);
+		// Log.d(getLocalClassName(), c.toString());
 		try {
-			professorsAndCourses = concat(capsFix(parseCourses()), parseProfessors());
+			professorsAndCourses = concat(capsFix(parseCourses()),
+					parseProfessors());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -45,17 +46,17 @@ public class AutoCorrect extends Activity implements OnClickListener {
 		AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.autoCompleteView);
 		textView.setAdapter(adapter);
 		/*
+		 * 
+		 * login1 = (Button) findViewById(R.id.login1);
+		 * login1.setOnClickListener(new OnClickListener(this) {
+		 */
 
-		login1 = (Button) findViewById(R.id.login1);
-		login1.setOnClickListener(new OnClickListener(this) {*/
-		
-		
 		// Sample database calls:
 		// tvStatus = (TextView) findViewById(R.id.tvStatus);
 		// bSend = (Button) findViewById(R.id.bSend);
 		// bSend.setOnClickListener(this);
 	}
-	
+
 	public void goToLogin(View v) {
 		Intent intent = new Intent(this, Login.class);
 		startActivity(intent);
@@ -84,12 +85,13 @@ public class AutoCorrect extends Activity implements OnClickListener {
 			while (infile.ready()) {// while more info exists
 				inputLine = infile.readLine();
 				if (inputLine.startsWith("<td><a href=")) {
-					/* This would parse the professor's ID #.
-					int start = inputLine.indexOf("code=") + 5;
-					int end = inputLine.indexOf(" rel") - 1;
-					String id = inputLine.substring(start, end);
-					Log.d(professorFiles[i], id);
-					*/
+					/*
+					 * This would parse the professor's ID #. int start =
+					 * inputLine.indexOf("code=") + 5; int end =
+					 * inputLine.indexOf(" rel") - 1; String id =
+					 * inputLine.substring(start, end); Log.d(professorFiles[i],
+					 * id);
+					 */
 					inputLine = inputLine.substring(1, inputLine.length() - 9);
 					temp = inputLine.split(">");
 					profList.add(temp[2]);
@@ -209,7 +211,8 @@ public class AutoCorrect extends Activity implements OnClickListener {
 				}
 				String firstLetter = temp[t].substring(0, 1); // take the first
 																// letter
-				temp[t] = temp[t].toLowerCase(Locale.ENGLISH); // make the word lowercase
+				temp[t] = temp[t].toLowerCase(Locale.ENGLISH); // make the word
+																// lowercase
 				String end = temp[t].substring(1, temp[t].length()); // get ride
 																		// of
 																		// the

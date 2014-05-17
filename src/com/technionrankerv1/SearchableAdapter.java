@@ -15,7 +15,7 @@ import android.widget.TextView;
 class SearchableAdapter extends BaseAdapter {
 	private static LayoutInflater inflater = null;
 	private int count;
-
+	
 	private ArrayList<String> filteredData = null;
 	// private ItemFilter mFilter = new ItemFilter();
 	String contstaint;
