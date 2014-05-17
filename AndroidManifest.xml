@@ -22,6 +22,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchableActivity" />
         </activity>
         <activity
             android:name="com.technionrankerv1.SearchResultsList"
@@ -47,6 +54,13 @@
                 android:value="com.technionrankerv1.MainActivity" />
         </activity>
         <activity
+            android:name="com.technionrankerv1.SearchResults"
+            android:label="@string/app_name" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.technionrankerv1.MainActivity" />
+        </activity>
+        <activity
             android:name="com.technionrankerv1.AutoCorrect"
             android:label="@string/app_name" >
             <intent-filter>
@@ -59,6 +73,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />

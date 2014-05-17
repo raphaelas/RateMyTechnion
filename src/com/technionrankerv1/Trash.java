@@ -11,13 +11,13 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-public class SearchableAdapter extends BaseAdapter implements Filterable {
+public class Trash extends BaseAdapter implements Filterable {
 	
 	private ArrayList<String> filteredData = null;
 	private LayoutInflater mInflater;
 	private ItemFilter mFilter = new ItemFilter();
 	
-	public SearchableAdapter(Context context) {
+	public Trash(Context context) {
     	mInflater = LayoutInflater.from(context);
     }
 
