@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -105,10 +106,16 @@ public class AutoCorrect extends Activity implements OnClickListener {
 	public String[] parseCourses() throws Exception {
 		// create Hashmap, where the numbers are the keys and the Titles are the
 		// values
+		Log.d("MyApp", "OK1");
+
 		HashMap<String, String> map = new HashMap<String, String>();
 		String inputLine = "";
 		String[] temp;
+		Log.d("MyApp", "OK1.5");
+
 		String[] courseFiles = getAssets().list("CourseListings");
+		Log.d("MyApp", "OK2");
+
 		for (int i = 0; i < courseFiles.length; i++) {
 			int lineNumber = 0;
 			BufferedReader infile = new BufferedReader(new InputStreamReader(
@@ -131,12 +138,16 @@ public class AutoCorrect extends Activity implements OnClickListener {
 			} // while infile
 			infile.close();
 		} // for courseFiles
+		Log.d("MyApp", "OK3");
+
 		Object[] courseNumberObjectArray = map.keySet().toArray();
 		Object[] courseNameObjectArray = map.values().toArray();
 		String[] allCourses = Arrays.copyOf(courseNameObjectArray,
 				courseNameObjectArray.length, String[].class);
 		String[] allNumbers = Arrays.copyOf(courseNumberObjectArray,
 				courseNumberObjectArray.length, String[].class);
+		Log.d("MyApp", "OK4");
+
 		return concat(allCourses, allNumbers);
 	} // parse()
 

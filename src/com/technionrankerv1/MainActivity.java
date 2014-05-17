@@ -7,8 +7,11 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,8 +22,6 @@ import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 
 public class MainActivity extends ActionBarActivity implements
 		OnItemClickListener {
@@ -51,6 +52,8 @@ public class MainActivity extends ActionBarActivity implements
 		} else if (viewToStartOn.equals("prof_view")) {
 			setContentView(R.layout.prof_view);
 		}
+		Toast.makeText(getApplicationContext(), "aaa", Toast.LENGTH_LONG)
+				.show();
 	}
 
 	public void initUserCourseView(View view) {
@@ -71,12 +74,21 @@ public class MainActivity extends ActionBarActivity implements
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_activity_actions, menu);
 		// Get the SearchView and set the searchable configuration
-	    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-	    SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-	    // Assumes current activity is the searchable activity
-	    searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-	    searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
-	    searchView.setSubmitButtonEnabled(true);
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+		SearchView searchView = (SearchView) MenuItemCompat
+				.getActionView(searchItem);
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		// SearchView searchView = (SearchView)
+		// menu.findItem(R.id.action_search)
+		// .getActionView();
+		// Assumes current activity is the searchable activity
+		searchView.setSearchableInfo(searchManager
+				.getSearchableInfo(getComponentName()));
+		searchView.setIconifiedByDefault(false); // Do not iconify the
+		// widget;
+		// expand it by default
+		// searchView.setSubmitButtonEnabled(true);
+
 		return true;
 	}
 
@@ -107,11 +119,9 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
+		Log.w("MyApp", "In options");
 
 		switch (item.getItemId()) {
-		case R.id.action_search:
-			// openSearch();
-			return true;
 		case R.id.action_logout:
 			// openLoginPage(item);
 			return true;
@@ -119,18 +129,11 @@ public class MainActivity extends ActionBarActivity implements
 			return super.onOptionsItemSelected(item);
 		}
 	}
-
-	public void goToLogin(View v) {
-		Intent intent = new Intent(this, Login.class);
-		startActivity(intent);
-	}
 	public void openLoginPage(MenuItem item) {
 		Intent intent = new Intent(this, Login.class);
 		startActivity(intent);
 	}
-	/*
-	 * public void openLoginPage(MenuItem item) { Intent intent = new
-	 * Intent(this, Login.class); startActivity(intent); }
-	 */
+
+
 
 }
