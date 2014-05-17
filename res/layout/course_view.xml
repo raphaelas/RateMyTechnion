@@ -178,6 +178,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:numStars="@integer/three" />
+                
+               <Button
+                    android:id="@+id/rating_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@color/LoginBorderColor"
+                    android:orientation="horizontal"
+                    android:shadowColor="@android:color/black"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="1"
+                    android:text="@string/submit"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <View
@@ -216,7 +230,7 @@
                     android:text="@string/submit"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
-<Button
+				<Button
             android:id="@+id/button1"
             android:layout_width="215dp"
             android:layout_height="wrap_content"

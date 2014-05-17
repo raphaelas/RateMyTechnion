@@ -15,21 +15,6 @@
             android:layout_height="260dp"
             android:orientation="vertical" >
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="0.49"
-                android:orientation="horizontal" >
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical" >
-                </LinearLayout>
-            </LinearLayout>
-
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="0.1dp"
@@ -55,13 +40,6 @@
                     android:textColor="@color/white" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal" >
-            </LinearLayout>
-
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="0.1dp"
@@ -81,12 +59,12 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="33dp"
-                    android:text="Overall            "
+                    android:text="@string/professorOverall"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/white" />
 
                 <RatingBar
-                    android:id="@+id/ratingBar1"
+                    android:id="@+id/professorRatingBarOverall"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:numStars="@integer/three" />
@@ -111,12 +89,12 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="33dp"
-                    android:text="Clarity            "
+                    android:text="@string/clarity"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/white" />
 
                 <RatingBar
-                    android:id="@id/ratingBar1"
+                    android:id="@+id/professorRatingBarClarity"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:numStars="@integer/three" />
@@ -141,12 +119,12 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="33dp"
-                    android:text="Preparedness"
+                    android:text="@string/preparedness"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/white" />
 
                 <RatingBar
-                    android:id="@id/ratingBar1"
+                    android:id="@+id/professorRatingBarPreparedness"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:numStars="@integer/three" />
@@ -171,12 +149,12 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="33dp"
-                    android:text="Interactivity    "
+                    android:text="@string/interactivity"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/white" />
 
                 <RatingBar
-                    android:id="@id/ratingBar1"
+                    android:id="@+id/professorRatingBarInteractivity"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:numStars="@integer/three" />
@@ -192,29 +170,21 @@
                 android:id="@+id/third_lin_layout"
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
+                android:layout_height="0dip"
                 android:layout_marginBottom="2dp"
                 android:layout_weight="0.36"
                 android:background="@android:color/white" >
 
-                <LinearLayout
-                    android:layout_width="0px"
-                    android:layout_height="0px"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true" />
-
                 <EditText
                     android:id="@+id/comment"
-                    android:layout_width="170dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:hint="Comment..." >
+                    android:hint="@string/professorCommentHint" >
                 </EditText>
 
                 <Button
                     android:id="@+id/comment_button"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:background="@color/LoginBorderColor"
                     android:orientation="horizontal"
@@ -222,7 +192,7 @@
                     android:shadowDx="1"
                     android:shadowDy="1"
                     android:shadowRadius="1"
-                    android:text="Submit"
+                    android:text="@string/professorSubmit"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 <Button

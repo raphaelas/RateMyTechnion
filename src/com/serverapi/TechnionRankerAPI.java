@@ -201,7 +201,7 @@ public class TechnionRankerAPI implements ITechnionRankerAPI {
     return gson.fromJson(Communicator.execute(servlet, function,
         TechnionRankerFunctions.GET_COURSE_COMMENT_BY_STUDENT.value(),
         courseComment, gson.toJson(cc)),
-        new TypeToken<List<ProfessorComment>>() {
+        new TypeToken<List<CourseComment>>() { //Raphi edited this line. Was List<ProfessorComment>
           // default usage
         }.getType());
   }
@@ -211,9 +211,190 @@ public class TechnionRankerAPI implements ITechnionRankerAPI {
     return gson.fromJson(Communicator.execute(servlet, function,
         TechnionRankerFunctions.GET_COURSE_COMMENT_BY_COURSE.value(),
         courseComment, gson.toJson(cc)),
-        new TypeToken<List<ProfessorComment>>() {
+        new TypeToken<List<CourseComment>>() { //Raphi edited this line. Was List<CourseComment>
           // default usage
         }.getType());
   }
+
+ /**
+  * Raphi added all the methods from here on down on May 17th, 2014.
+  */
+@Override
+public Course getCourseByCourseNumber(Course c) {
+    return gson.fromJson(Communicator.execute(servlet, function,
+            TechnionRankerFunctions.GET_COURSE_BY_COURSE_NUMBER.value(),
+            course, gson.toJson(c)), Course.class);
+}
+
+@Override
+public TechnionRankerReturnCodes removeCourse(Course c) {
+    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
+            function, TechnionRankerFunctions.REMOVE_COURSE.value(),
+            course, gson.toJson(c)));
+}
+
+@Override
+public TechnionRankerReturnCodes dropAllCourses() {
+    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
+            function, TechnionRankerFunctions.DROP_COURSES.value(),
+            course));
+}
+
+@Override
+public TechnionRankerReturnCodes removeProfessor(Professor p) {
+    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
+            function, TechnionRankerFunctions.REMOVE_PROFESSOR.value(),
+            professor, gson.toJson(p)));
+}
+
+@Override
+public TechnionRankerReturnCodes dropAllProfessors() {
+    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
+            function, TechnionRankerFunctions.DROP_PROFESSORS.value(),
+            professor));
+}
+
+@Override
+public TechnionRankerReturnCodes removeStudentUser(StudentUser s) {
+    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
+            function, TechnionRankerFunctions.REMOVE_STUDENT_USER.value(),
+            studentUser, gson.toJson(s)));
+}
+
+@Override
+public TechnionRankerReturnCodes dropAllStudentUsers() {
+    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
+            function, TechnionRankerFunctions.DROP_STUDENT_USERS.value(),
+            studentUser));
+}
+
+@Override
+public TechnionRankerReturnCodes removeStudentProfessorCourse(
+		StudentProfessorCourse spc) {
+    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
+            function, TechnionRankerFunctions.REMOVE_STUDENT_PROFESSOR_COURSE.value(),
+            studentProfessorCourse, gson.toJson(spc)));
+}
+
+@Override
+public TechnionRankerReturnCodes dropAllStudentProfessorCourses() {
+    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
+            function, TechnionRankerFunctions.DROP_STUDENT_PROFESSOR_COURSES.value(),
+            studentProfessorCourse));
+}
+
+@Override
+public TechnionRankerReturnCodes removeProfessorRating(ProfessorRating pr) {
+    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
+            function, TechnionRankerFunctions.REMOVE_PROFESSOR_RATING.value(),
+            professorRating, gson.toJson(pr)));
+}
+
+@Override
+public TechnionRankerReturnCodes dropAllProfessorRatings() {
+    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
+            function, TechnionRankerFunctions.DROP_PROFESSOR_RATINGS.value(),
+            professorRating));
+}
+
+@Override
+public TechnionRankerReturnCodes removeCourseRating(CourseRating cr) {
+    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
+            function, TechnionRankerFunctions.REMOVE_COURSE_RATING.value(),
+            courseRating, gson.toJson(cr)));
+}
+
+@Override
+public TechnionRankerReturnCodes dropAllCourseRatings() {
+    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
+            function, TechnionRankerFunctions.DROP_COURSE_RATINGS.value(),
+            professorRating));
+}
+
+@Override
+public TechnionRankerReturnCodes removeProfessorComment(ProfessorComment pc) {
+    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
+            function, TechnionRankerFunctions.REMOVE_PROFESSOR_COMMENT.value(),
+            professorComment, gson.toJson(pc)));
+}
+
+@Override
+public TechnionRankerReturnCodes dropAllProfessorComments() {
+    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
+            function, TechnionRankerFunctions.DROP_COURSE_RATINGS.value(),
+            professorRating));
+}
+
+@Override
+public TechnionRankerReturnCodes removeCourseComment(CourseComment cc) {
+    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
+            function, TechnionRankerFunctions.REMOVE_COURSE_COMMENT.value(),
+            courseComment, gson.toJson(cc)));
+}
+
+@Override
+public TechnionRankerReturnCodes dropAllCourseComments() {
+    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
+            function, TechnionRankerFunctions.DROP_COURSE_COMMENTS.value(),
+            courseComment));
+}
+
+@Override
+public List<Course> getAllCourses() {
+    return gson.fromJson(Communicator.execute(servlet, function,
+            TechnionRankerFunctions.GET_ALL_COURSES.value(),
+            course),
+            new TypeToken<List<Course>>() {
+              // default usage
+            }.getType());
+}
+
+@Override
+public List<Professor> getAllProfessors() {
+    return gson.fromJson(Communicator.execute(servlet, function,
+            TechnionRankerFunctions.GET_ALL_PROFESSORS.value(),
+            professor),
+            new TypeToken<List<Professor>>() {
+              // default usage
+            }.getType());
+}
+
+@Override
+public List<StudentUser> getAllStudentUsers() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public List<StudentProfessorCourse> getAllStudentProfessorCourses() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public List<ProfessorRating> getAllProfessorRatings() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public List<CourseRating> getAllCourseRatings() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public List<ProfessorComment> getAllProfessorComments() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public List<CourseComment> getAllCourseComments() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+
 
 }

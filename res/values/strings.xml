@@ -59,5 +59,11 @@
     <string name="difficulty">Difficulty      </string>
     <string name="commentHint">Comment&#3280;</string>
     <string name="submit">Submit</string>
+    <string name="interactivity">Interactivity    </string>
+    <string name="preparedness">Preparedness</string>
+    <string name="clarity">Clarity            </string>
+    <string name="professorOverall">Overall            </string>
+    <string name="professorSubmit">Submit</string>
+    <string name="professorCommentHint">Comment&amp;#8230;</string>
 
 </resources>
