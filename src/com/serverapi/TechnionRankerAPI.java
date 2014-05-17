@@ -227,6 +227,13 @@ public Course getCourseByCourseNumber(Course c) {
 }
 
 @Override
+public Professor getProfessorByProfessorName(Professor p) {
+    return gson.fromJson(Communicator.execute(servlet, function,
+            TechnionRankerFunctions.GET_PROFESSOR_BY_PROFESSOR_NAME.value(),
+            professor, gson.toJson(p)), Professor.class);
+}
+
+@Override
 public TechnionRankerReturnCodes removeCourse(Course c) {
     return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
             function, TechnionRankerFunctions.REMOVE_COURSE.value(),
@@ -361,40 +368,63 @@ public List<Professor> getAllProfessors() {
 
 @Override
 public List<StudentUser> getAllStudentUsers() {
-	// TODO Auto-generated method stub
-	return null;
+    return gson.fromJson(Communicator.execute(servlet, function,
+            TechnionRankerFunctions.GET_ALL_STUDENT_USERS.value(),
+            studentUser),
+            new TypeToken<List<StudentUser>>() {
+              // default usage
+            }.getType());
 }
 
 @Override
 public List<StudentProfessorCourse> getAllStudentProfessorCourses() {
-	// TODO Auto-generated method stub
-	return null;
+    return gson.fromJson(Communicator.execute(servlet, function,
+            TechnionRankerFunctions.GET_ALL_STUDENT_PROFESSOR_COURSES.value(),
+            studentProfessorCourse),
+            new TypeToken<List<StudentProfessorCourse>>() {
+              // default usage
+            }.getType());
 }
 
 @Override
 public List<ProfessorRating> getAllProfessorRatings() {
-	// TODO Auto-generated method stub
-	return null;
+    return gson.fromJson(Communicator.execute(servlet, function,
+            TechnionRankerFunctions.GET_ALL_PROFESSOR_RATINGS.value(),
+            professorRating),
+            new TypeToken<List<ProfessorRating>>() {
+              // default usage
+            }.getType());
 }
 
 @Override
 public List<CourseRating> getAllCourseRatings() {
-	// TODO Auto-generated method stub
-	return null;
+    return gson.fromJson(Communicator.execute(servlet, function,
+            TechnionRankerFunctions.GET_ALL_COURSE_RATINGS.value(),
+            courseRating),
+            new TypeToken<List<CourseRating>>() {
+              // default usage
+            }.getType());
 }
 
 @Override
 public List<ProfessorComment> getAllProfessorComments() {
-	// TODO Auto-generated method stub
-	return null;
+    return gson.fromJson(Communicator.execute(servlet, function,
+            TechnionRankerFunctions.GET_ALL_PROFESSOR_COMMENTS.value(),
+            professorComment),
+            new TypeToken<List<ProfessorComment>>() {
+              // default usage
+            }.getType());
 }
 
 @Override
 public List<CourseComment> getAllCourseComments() {
-	// TODO Auto-generated method stub
-	return null;
+    return gson.fromJson(Communicator.execute(servlet, function,
+            TechnionRankerFunctions.GET_ALL_COURSE_COMMENTS.value(),
+            courseComment),
+            new TypeToken<List<CourseComment>>() {
+              // default usage
+            }.getType());
 }
-
 
 
 }

@@ -13,6 +13,11 @@ import android.widget.RatingBar.OnRatingBarChangeListener;
 
 import com.serverapi.TechnionRankerAPI;
 
+/**
+ * This class requires two variables to be passed in: "studentId" and "courseNumber"
+ * @author raphaelas
+ *
+ */
 public class CourseView extends Activity {
 	
     protected void onCreate(Bundle savedInstanceState) {

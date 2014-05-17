@@ -158,6 +158,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:numStars="@integer/three" />
+                
+                                <Button
+                    android:id="@+id/professorRatingButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:background="@color/LoginBorderColor"
+                    android:orientation="horizontal"
+                    android:shadowColor="@android:color/black"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="1"
+                    android:text="@string/professorSubmit"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <View
@@ -176,14 +190,14 @@
                 android:background="@android:color/white" >
 
                 <EditText
-                    android:id="@+id/comment"
+                    android:id="@+id/professorComment"
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:hint="@string/professorCommentHint" >
                 </EditText>
 
                 <Button
-                    android:id="@+id/comment_button"
+                    android:id="@+id/professorCommentButton"
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:background="@color/LoginBorderColor"

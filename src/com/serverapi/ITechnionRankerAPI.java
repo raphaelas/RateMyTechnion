@@ -30,6 +30,8 @@ public interface ITechnionRankerAPI {
 
   Professor getProfessor(Professor p);
   
+  Professor getProfessorByProfessorName(Professor p);
+  
   List<Professor> getAllProfessors();
   
   TechnionRankerReturnCodes removeProfessor(Professor p);
