@@ -8,7 +8,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class welcomeView extends ActionBarActivity implements
+public class WelcomeView extends ActionBarActivity implements
 		OnItemClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

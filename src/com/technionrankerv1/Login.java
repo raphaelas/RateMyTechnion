@@ -99,7 +99,7 @@ public class Login extends Activity {
 						// .findViewById(R.id.textView23);
 						// myText.setText("Welcome " + name + "!");
 						// Log.d(getLocalClassName(), "in1");
-						Intent i = new Intent(Login.this, welcomeView.class);
+						Intent i = new Intent(Login.this, WelcomeView.class);
 						i.putExtra("the username", "Welcome " + name + "!");
 						startActivity(i);
 						// startActivity(new Intent(Login.this,

@@ -12,7 +12,7 @@ public class SearchResults extends Activity {
 		super.onCreate(savedInstance);
 		Log.d("MyApp", "11111");
 
-		setContentView(R.layout.search_resaults);
+		setContentView(R.layout.search_results);
 		Log.d("MyApp", "22222");
 		Bundle b = getIntent().getExtras();
 		String query =b.getString("query");
