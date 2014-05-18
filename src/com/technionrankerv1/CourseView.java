@@ -34,6 +34,7 @@ public class CourseView extends Activity {
     	courseId = Long.valueOf(0);//theCourse.getId();
 		ClientAsync as = new ClientAsync();
 		as.execute(c);
+		/* Bring this code back when you have an Internet connection
 		try {
 			as.get(); //This will block until as.execute completes
 		} catch (InterruptedException e) {
@@ -43,6 +44,7 @@ public class CourseView extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 		/* Bring this code back once we implement comments:
     	Button commentButton = (Button) findViewById(R.id.comment_button);
     	commentButton.setOnClickListener(new OnClickListener() {

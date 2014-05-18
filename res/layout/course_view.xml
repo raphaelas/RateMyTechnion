@@ -30,19 +30,17 @@
 
                 <TextView
                     android:id="@+id/textViewCourseName"
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
+                    android:gravity="center"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="85dp"
-                    android:layout_marginRight="33dp"
                     android:text="@string/OperatingSystems"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/white" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal" >
@@ -51,10 +49,8 @@
                     android:id="@+id/textViewCourseNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
+                    android:gravity="center"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="130dp"
-                    android:layout_marginRight="33dp"
                     android:text="@string/OperatingSystemsnum"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/white" />
@@ -67,26 +63,30 @@
                 android:background="@android:color/white" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="33dp"
+                    android:layout_weight="1"
                     android:text="@string/usefulness"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/white" />
 
                 <RatingBar
                     android:id="@+id/ratingBarOverall"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:gravity="right"
+                    android:layout_marginRight="30dp"
                     android:numStars="@integer/three" />
 
             </LinearLayout>
@@ -98,27 +98,31 @@
                 android:background="@android:color/white" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="33dp"
+                    android:layout_weight="1"
                     android:text="@string/enjoyability"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/white" />
 
                 <RatingBar
                     android:id="@+id/ratingBarEnjoyability"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="50dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="30dp"
                     android:numStars="@integer/three" />
+
             </LinearLayout>
 
             <View
@@ -128,27 +132,31 @@
                 android:background="@android:color/white" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="33dp"
+                    android:layout_weight="1"
                     android:text="@string/difficulty"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/white" />
 
                 <RatingBar
                     android:id="@+id/ratingBarDifficulty"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="50dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="30dp"
                     android:numStars="@integer/three" />
+
             </LinearLayout>
 
             <View
@@ -158,27 +166,31 @@
                 android:background="@android:color/white" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="33dp"
+                    android:layout_weight="1"
                     android:text="@string/usefulness"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/white" />
 
                 <RatingBar
                     android:id="@+id/ratingBarUsefulness"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="50dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="30dp"
                     android:numStars="@integer/three" />
+
             </LinearLayout>
             <View
                 android:layout_width="fill_parent"
