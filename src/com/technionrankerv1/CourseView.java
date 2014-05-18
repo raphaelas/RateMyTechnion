@@ -1,9 +1,12 @@
 package com.technionrankerv1;
 
 import java.sql.Time;
+import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -19,15 +22,29 @@ import com.serverapi.TechnionRankerAPI;
  *
  */
 public class CourseView extends Activity {
+	Long courseId = Long.valueOf(0);
 	
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     	setContentView(R.layout.course_view);
-    	final String courseNumber = savedInstanceState.getString("courseNumber");
-    	final Long studentId = savedInstanceState.getLong("studentId");
-    	Course courseToLookUp = new Course(null, null, courseNumber, null, null, false);
-    	Course theCourse = new TechnionRankerAPI().getCourseByCourseNumber(courseToLookUp);
-    	final Long courseId = theCourse.getId();
+    	final String courseNumber = "0";
+    	final Long studentId = Long.valueOf(0);
+    	//Uncomment this eventually:
+    	//final String courseNumber = savedInstanceState.getString("courseNumber");
+    	//final Long studentId = savedInstanceState.getLong("studentId");
+    	Course c = new Course(null, null, courseNumber, null, null, false);
+    	courseId = Long.valueOf(0);//theCourse.getId();
+		ClientAsync as = new ClientAsync();
+		as.execute(c);
+		try {
+			Course toGetID = as.get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	Button commentButton = (Button) findViewById(R.id.comment_button);
     	commentButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -86,8 +103,9 @@ public class CourseView extends Activity {
     	});
     }
     protected void saveRatings(CourseRating cr) {
-    	new TechnionRankerAPI().insertCourseRating(cr);
-	}
+    	CourseRatingClientAsync as3 = new CourseRatingClientAsync();
+    	as3.execute(cr);
+    }
     
 	public void createComment(Long courseId, Long studentId) {
     	EditText et = (EditText) findViewById(R.id.comment);
@@ -95,7 +113,110 @@ public class CourseView extends Activity {
     	long currTimeMillis = System.currentTimeMillis();
     	Time currentTime = new Time(currTimeMillis);
     	CourseComment cc = new CourseComment(courseId, studentId, commentText, currentTime, 0);
-    	new TechnionRankerAPI().insertCourseComment(cc);
-
+    	CourseCommentClientAsync as2 = new CourseCommentClientAsync();
+    	as2.execute(cc);
     }
+	
+	private class ClientAsync extends AsyncTask<Course, Void, Course> {
+		public ClientAsync() {
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			//tvStatus.setText("wait..");
+		}
+
+		@Override
+		protected Course doInBackground(Course... params) {
+			//Course c = new Course(null, "Geology", "01", (long) 5,
+			//		"Spring 2011", true);
+			//return new TechnionRankerAPI().insertCourse(c).toString();
+			Log.d(getLocalClassName(), String.valueOf(params.length));
+			//TODO: check that 50 - 100 succeeded.
+	    	Course courseToLookUp = params[0];
+	    	Course theCourse = new TechnionRankerAPI().getCourse(courseToLookUp);
+			return theCourse;
+		}
+
+		@Override
+		protected void onPostExecute(Course res) {
+			if (res == null)
+				Log.d(getLocalClassName(), "Course clientAsync unsuccessful");
+			else {
+			    //delegate.processFinish(res);
+				Log.d(getLocalClassName(), res.getName());
+		    	courseId = res.getId();
+			}
+		}
+	}
+	
+	private class CourseCommentClientAsync extends AsyncTask<CourseComment, Void, String> {
+		public CourseCommentClientAsync() {
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			//tvStatus.setText("wait..");
+		}
+
+		@Override
+		protected String doInBackground(CourseComment... params) {
+			//Course c = new Course(null, "Geology", "01", (long) 5,
+			//		"Spring 2011", true);
+			//return new TechnionRankerAPI().insertCourse(c).toString();
+			//TODO: check that 50 - 100 succeeded.
+	    	CourseComment cc = params[0];
+	    	String result = new TechnionRankerAPI().insertCourseComment(cc).toString();
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(String res) {
+			if (res == null)
+				Log.d(getLocalClassName(), "CourseComment clientAsync unsuccessful");
+			else {
+			    //delegate.processFinish(res);
+				Log.d(getLocalClassName(), res);
+			}
+		}
+	}
+	
+	private class CourseRatingClientAsync extends AsyncTask<CourseRating, Void, String> {
+		public CourseRatingClientAsync() {
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			//tvStatus.setText("wait..");
+		}
+
+		@Override
+		protected String doInBackground(CourseRating... params) {
+			//Course c = new Course(null, "Geology", "01", (long) 5,
+			//		"Spring 2011", true);
+			//return new TechnionRankerAPI().insertCourse(c).toString();
+			Log.d(getLocalClassName(), String.valueOf(params.length));
+			//TODO: check that 50 - 100 succeeded.
+	    	CourseRating cr = params[0];
+	    	String result = new TechnionRankerAPI().insertCourseRating(cr).toString();
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(String res) {
+			if (res == null)
+				Log.d(getLocalClassName(), "CourseRating ClientAsync unsuccessful");
+			else {
+			    //delegate.processFinish(res);
+				Log.d(getLocalClassName(), res);
+			}
+		}
+	}
+
 }

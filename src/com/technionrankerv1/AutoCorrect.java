@@ -20,16 +20,19 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.serverapi.TechnionRankerAPI;
+import com.serverapi.utilities.TechnionRankerReturnCodes;
 
 public class AutoCorrect extends Activity implements OnClickListener {
 	Button bSend;
 	Button login1;
 	TextView tvStatus;
+	TechnionRankerAPI db;
 
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.welcome_view);
 		String[] professorsAndCourses = null;
+		db = new TechnionRankerAPI();
 		// Course c1 = new Course(new Long(1), null, null, null, null, false);
 		// Course c = new TechnionRankerAPI().getCourse(c1);
 		// Log.d(getLocalClassName(), c.toString());
@@ -100,6 +103,9 @@ public class AutoCorrect extends Activity implements OnClickListener {
 			profListArray = profList.toArray(new String[profList.size()]);
 			infile.close();
 		}
+		//This is code to populate the database.  There is more code in the AsyncTask class below.
+		//ClientAsync as = new ClientAsync();
+		//as.execute(profListArray);
 		return profListArray;
 	}
 
@@ -131,6 +137,9 @@ public class AutoCorrect extends Activity implements OnClickListener {
 						String name = temp[1].replaceAll("</A>", "").trim();// name
 						map.put(number, name); // trim and place only the number
 												// and name in
+						/*These two lines are the code to populate the Courses table in the database:
+						Course c = new Course(null, name, number, null, null, true);
+						db.insertCourse(c);*/
 					} // for temp
 				} // if
 				inputLine = infile.readLine(); // read the next line of the text
@@ -176,22 +185,33 @@ public class AutoCorrect extends Activity implements OnClickListener {
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
-			tvStatus.setText("wait..");
+			//tvStatus.setText("wait..");
 		}
 
 		@Override
 		protected String doInBackground(String... params) {
-			Course c = new Course(null, "Geology", "01", (long) 5,
-					"Spring 2011", true);
-			return new TechnionRankerAPI().insertCourse(c).toString();
+			//Course c = new Course(null, "Geology", "01", (long) 5,
+			//		"Spring 2011", true);
+			//return new TechnionRankerAPI().insertCourse(c).toString();
+			Log.d(getLocalClassName(), String.valueOf(params.length));
+			String result = null;
+			//TODO: check that 50 - 100 succeeded.
+			for (int i = 300; i < 500; i++) {
+				Professor p = new Professor(null, params[i], true);
+				result = db.insertProfessor(p).toString();
+			}
+			return result;
 		}
 
 		@Override
 		protected void onPostExecute(String res) {
 			if (res == null)
-				tvStatus.setText("null");
-			else
-				tvStatus.setText(res);
+				//tvStatus.setText("null");
+				Log.d(getLocalClassName(), "unsuccessful");
+			else {
+				//tvStatus.setText(res);
+				Log.d(getLocalClassName(), res);
+			}
 		}
 	}
 

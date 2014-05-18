@@ -85,8 +85,7 @@ public class Login extends Activity {
 						// myText.getText().toString());
 					} else {
 						Log.d(getLocalClassName(), "Log in Sucessful");
-						String[] temp = doc.toString().substring(5325, 5350)
-								.split(" ");
+						String[] temp = doc.toString().substring(5325, 5350).split(" ");
 						// Log.d(getLocalClassName(),
 						// doc.toString().substring(5325, 5350));
 						String name = temp[2] + " " + temp[3];
