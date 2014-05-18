@@ -20,16 +20,44 @@ class SearchableAdapter extends BaseAdapter {
 	// private ItemFilter mFilter = new ItemFilter();
 	String contstaint;
 	ArrayList<String> values;
+	String[] list=null;
 
 	// public ImageLoader imageLoader;
 
-	public SearchableAdapter(String constraint, Activity activity) {
-		ItemFilter fil = new ItemFilter();
-		values = fil.mich(constraint);
+	public SearchableAdapter(String constraint, Activity activity, String[] professorsAndCourses) {
+		
 		// values = new ArrayList<String>();
 		// values.add("found1");
 		// values.add("found2");
+		list = professorsAndCourses;
+		/*
+		AutoCorrect ac = new AutoCorrect();
+		String[] corArray = null;
+		String[] proArray = null;
+		
+		try {
+			Log.d("MyApp", "Trying to parse.");
+
+			corArray = ac.parseCourses();
+			Log.d("MyApp", "Did i parse anything?");
+
+			proArray = ac.parseProfessors();
+			Log.d("MyApp", "No way I parsed everything.");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		this.list = ac.concat(corArray, proArray);
+		*/
+		ItemFilter fil = new ItemFilter(list);
+		Log.d("MyApp", "Back from filter1.");
+
+		values = fil.mich(constraint);
+		Log.d("MyApp", "Back from filter2.");
+
 		count = values.size();
+
 		this.contstaint = constraint;
 		this.inflater = (LayoutInflater) activity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -64,50 +92,37 @@ class SearchableAdapter extends BaseAdapter {
 	}
 
 	private class ItemFilter extends Filter {
-		public ItemFilter() {
-
+		String [] list1=null;
+		public ItemFilter(String[] list) {
+			list1=list;
 		}
 
 		public FilterResults performFiltering(CharSequence constraint) {
 			Log.d("MyApp", "Im fucking Filtering");
 
 			String filterString = constraint.toString().toLowerCase();
+			Log.d("MyApp", "Im fucking Filtering1");
 
 			FilterResults results = new FilterResults();
+			Log.d("MyApp", "Im fucking Filtering2");
 
-			AutoCorrect ac = new AutoCorrect();
-			String[] corArray = null;
-			String[] proArray = null;
-			/*
-			try {
-				Log.d("MyApp", "die bitch die");
+			
+			int count = list1.length;
+			Log.d("MyApp", "count is:"+ count);
 
-				corArray = ac.parseCourses();
-				Log.d("MyApp", "aieeeeee");
-
-				proArray = ac.parseProfessors();
-				Log.d("MyApp", "Im fucking NOT bla blu Filtering");
-
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-*/
-		//	final String[] list = ac.concat(corArray, proArray);
-			String[] list= new String[3];
-			list[0]="adam hi";
-			list[1]="adam bye";
-			list[2]="blablieblue";
-			int count = list.length;
 			final ArrayList<String> nlist = new ArrayList<String>(count);
+			Log.d("MyApp", "Im fucking Filtering3");
 
-			for (int i = 0; i < list.length; i++) {
-				if (list[i].toLowerCase().contains(constraint)) {
-					nlist.add(list[i]);
+			for (int i = 0; i < list1.length; i++) {
+				if (list1[i].toLowerCase().contains(constraint)) {
+					nlist.add(list1[i]);
 				}
 			}
+			Log.d("MyApp", "Im fucking Filtering4");
+
 			results.values = nlist;
 			results.count = nlist.size();
+			Log.d("MyApp", "Im done Filtering");
 
 			return results;
 		}

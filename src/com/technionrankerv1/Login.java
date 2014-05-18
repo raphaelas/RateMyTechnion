@@ -19,8 +19,8 @@ import android.widget.TextView;
 
 public class Login extends Activity {
 
-	private String username;
-	private String password;
+    private String username;
+    private String password;
 
 	protected void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
