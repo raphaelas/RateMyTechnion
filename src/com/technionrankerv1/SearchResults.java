@@ -5,14 +5,19 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 
+import com.serverapi.TechnionRankerAPI;
+
 public class SearchResults extends Activity {
+	TechnionRankerAPI db;
 	//@override
 	public void onCreate(Bundle savedInstance){
 
@@ -66,6 +71,9 @@ public class SearchResults extends Activity {
 				}
 			}
 			profListArray = profList.toArray(new String[profList.size()]);
+			//This is code to populate the database.  There is more code in the AsyncTask class below.
+			//ClientAsync as = new ClientAsync();
+			//as.execute(profListArray);
 			infile.close();
 		}
 		return profListArray;
@@ -74,15 +82,13 @@ public class SearchResults extends Activity {
 	public String[] parseCourses() throws Exception {
 		// create Hashmap, where the numbers are the keys and the Titles are the
 		// values
-		Log.d("MyApp", "OK1");
 
 		HashMap<String, String> map = new HashMap<String, String>();
+		HashSet<String> numberAndName = new HashSet<String>();
 		String inputLine = "";
 		String[] temp;
-		Log.d("MyApp", "OK1.5");
 
 		String[] courseFiles = getAssets().list("CourseListings");
-		Log.d("MyApp", "OK2");
 
 		for (int i = 0; i < courseFiles.length; i++) {
 			int lineNumber = 0;
@@ -99,6 +105,7 @@ public class SearchResults extends Activity {
 						String name = temp[1].replaceAll("</A>", "").trim();// name
 						map.put(number, name); // trim and place only the number
 												// and name in
+						numberAndName.add("" + number + " - " + name);
 					} // for temp
 				} // if
 				inputLine = infile.readLine(); // read the next line of the text
@@ -106,7 +113,6 @@ public class SearchResults extends Activity {
 			} // while infile
 			infile.close();
 		} // for courseFiles
-		Log.d("MyApp", "OK3");
 
 		Object[] courseNumberObjectArray = map.keySet().toArray();
 		Object[] courseNameObjectArray = map.values().toArray();
@@ -114,9 +120,12 @@ public class SearchResults extends Activity {
 				courseNameObjectArray.length, String[].class);
 		String[] allNumbers = Arrays.copyOf(courseNumberObjectArray,
 				courseNumberObjectArray.length, String[].class);
-		Log.d("MyApp", "OK4");
+		Object[] allNumbersAndNames = numberAndName.toArray();
+		String[] numbersAndNamesToReturn = Arrays.copyOf(allNumbersAndNames,
+				allNumbersAndNames.length, String[].class);
 
-		return concat(allCourses, allNumbers);
+		return numbersAndNamesToReturn;
+		//return concat(allCourses, allNumbers);
 	} // parse()
 
 	String[] concat(String[] a, String[] b) {
@@ -126,6 +135,41 @@ public class SearchResults extends Activity {
 		System.arraycopy(a, 0, c, 0, aLen);
 		System.arraycopy(b, 0, c, aLen, bLen);
 		return c;
+	}
+	
+	private class ClientAsync extends AsyncTask<String, Void, String> {
+
+		public ClientAsync() {
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			//tvStatus.setText("wait..");
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			Log.d(getLocalClassName(), String.valueOf(params.length));
+			String result = null;
+			for (int i = 300; i < 500; i++) {
+				Professor p = new Professor(null, params[i], true);
+				result = db.insertProfessor(p).toString();
+			}
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(String res) {
+			if (res == null)
+				//tvStatus.setText("null");
+				Log.d(getLocalClassName(), "unsuccessful");
+			else {
+				//tvStatus.setText(res);
+				Log.d(getLocalClassName(), res);
+			}
+		}
 	}
 	
 	public String[] capsFix(String[] s) {
