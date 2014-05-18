@@ -45,23 +45,7 @@ public class MainActivity extends ActionBarActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		String viewToStartOn = "sign_in";
-		
-		if (viewToStartOn.equals("course_view")) {
-			setContentView(R.layout.course_view);
-		} else if (viewToStartOn.equals("search_view")) {
-			setContentView(R.layout.search_view2);
-			listView = (ListView) findViewById(R.id.search_results_view);
-			listView.setOnItemClickListener(this);
-		} else if (viewToStartOn.equals("welcome_view")) {
-			setContentView(R.layout.welcome_view);
-		} else if (viewToStartOn.equals("sign_in")) {
-			setContentView(R.layout.sign_in);
-		} else if (viewToStartOn.equals("main")) {
-			setContentView(R.layout.fragment_main);
-		} else if (viewToStartOn.equals("prof_view")) {
-			setContentView(R.layout.prof_view);
-		}
+		setContentView(R.layout.sign_in);			
 		
 		Button loginButton = (Button) findViewById(R.id.button1);
 
@@ -106,7 +90,7 @@ public class MainActivity extends ActionBarActivity implements
 					 */
 					Connection.Response res = Jsoup
 							.connect("https://ug3.technion.ac.il/rishum/login")
-							.data("OP", "LI", "UID", username, "PWD", password,
+							.data("OP", "LI", "UID", "922130141", "PWD", "32016463",
 									"Login.x", "%D7%94%D7%AA%D7%97%D7%91%D7%A8")
 							.method(Method.POST).execute();
 					doc = res.parse();

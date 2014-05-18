@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blueish"
     android:fillViewport="true" >
     
 	<LinearLayout
@@ -32,6 +33,12 @@
 		    android:text="@string/string1"
 		    android:textAppearance="?android:attr/textAppearanceMedium"
 		    android:textColor="@color/white" />
+		
+		<ExpandableListView
+		    android:id="@+id/lvExp"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent" />
+  
 		<!--  Buttons for sample database calls:
 		<Button 
 		    android:id="@+id/bSend"

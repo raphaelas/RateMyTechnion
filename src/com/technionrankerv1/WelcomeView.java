@@ -1,5 +1,9 @@
 package com.technionrankerv1;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
@@ -13,11 +17,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class WelcomeView extends ActionBarActivity implements
 		OnItemClickListener {
+	
+	ExpandableListAdapter listAdapter;
+    ExpandableListView expListView;
+    List<String> listDataHeader;
+    HashMap<String, List<String>> listDataChild;
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.welcome_view);
@@ -33,6 +44,16 @@ public class WelcomeView extends ActionBarActivity implements
 		myText.setText(personName);
 		//Log.d(getLocalClassName(), myText.getText().toString());
 		
+		// get the listview
+        expListView = (ExpandableListView) findViewById(R.id.lvExp);
+ 
+        // preparing list data
+        prepareListData();
+ 
+        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+ 
+        // setting list adapter
+        expListView.setAdapter(listAdapter);
 	}
 
 	@Override
@@ -78,6 +99,32 @@ public class WelcomeView extends ActionBarActivity implements
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	 private void prepareListData() {
+	        listDataHeader = new ArrayList<String>();
+	        listDataChild = new HashMap<String, List<String>>();
+	 
+	        // Adding child data
+	        listDataHeader.add("Your Courses");
+	        listDataHeader.add("Your Professors");
+	 
+	        // Adding child data
+	        List<String> yourCourses = new ArrayList<String>();
+	        yourCourses.add("Algorithms 2");
+	        yourCourses.add("Object-Oriented Programming");
+	        yourCourses.add("Database Systems");
+	        yourCourses.add("Project in Software");
+	        yourCourses.add("Hebrew 2");
+	 
+	        List<String> yourProfessors = new ArrayList<String>();
+	        yourProfessors.add("Sarah Blom");
+	        yourProfessors.add("Tom Smith");
+	        yourProfessors.add("Arthur Moore");
+	        yourProfessors.add("Jeff Rice");
+	        yourProfessors.add("Simon Jones");
+
+	        listDataChild.put(listDataHeader.get(0), yourCourses); // Header, Child data
+	        listDataChild.put(listDataHeader.get(1), yourProfessors);
+	    }
 	public void openLoginPage(){
 		setContentView(R.layout.sign_in);
 	}
