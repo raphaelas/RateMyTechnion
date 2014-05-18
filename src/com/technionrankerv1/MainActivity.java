@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.jsoup.Connection;
-import org.jsoup.Jsoup;
 import org.jsoup.Connection.Method;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import android.app.SearchManager;
@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -63,8 +62,6 @@ public class MainActivity extends ActionBarActivity implements
 		} else if (viewToStartOn.equals("prof_view")) {
 			setContentView(R.layout.prof_view);
 		}
-		Toast.makeText(getApplicationContext(), "aaa", Toast.LENGTH_LONG)
-				.show();
 		
 		Button loginButton = (Button) findViewById(R.id.button1);
 
@@ -143,7 +140,7 @@ public class MainActivity extends ActionBarActivity implements
 						// myText.setText("Welcome " + name + "!");
 						// Log.d(getLocalClassName(), "in1");
 						Intent i = new Intent(MainActivity.this, WelcomeView.class);
-						i.putExtra("the username", "ωμεν " + name + "!");
+						i.putExtra("the username", "Χ©ΧΧ•Χ " + name + "!");
 						startActivity(i);
 						// startActivity(new Intent(Login.this,
 						// welcomeView.class));
