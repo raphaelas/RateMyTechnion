@@ -7,12 +7,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 
+import com.serverapi.TechnionRankerAPI;
+
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 
 public class SearchResults extends Activity {
+	TechnionRankerAPI db;
 	//@override
 	public void onCreate(Bundle savedInstance){
 
@@ -66,6 +70,9 @@ public class SearchResults extends Activity {
 				}
 			}
 			profListArray = profList.toArray(new String[profList.size()]);
+			//This is code to populate the database.  There is more code in the AsyncTask class below.
+			//ClientAsync as = new ClientAsync();
+			//as.execute(profListArray);
 			infile.close();
 		}
 		return profListArray;
@@ -126,6 +133,41 @@ public class SearchResults extends Activity {
 		System.arraycopy(a, 0, c, 0, aLen);
 		System.arraycopy(b, 0, c, aLen, bLen);
 		return c;
+	}
+	
+	private class ClientAsync extends AsyncTask<String, Void, String> {
+
+		public ClientAsync() {
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			//tvStatus.setText("wait..");
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			Log.d(getLocalClassName(), String.valueOf(params.length));
+			String result = null;
+			for (int i = 300; i < 500; i++) {
+				Professor p = new Professor(null, params[i], true);
+				result = db.insertProfessor(p).toString();
+			}
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(String res) {
+			if (res == null)
+				//tvStatus.setText("null");
+				Log.d(getLocalClassName(), "unsuccessful");
+			else {
+				//tvStatus.setText(res);
+				Log.d(getLocalClassName(), res);
+			}
+		}
 	}
 	
 	public String[] capsFix(String[] s) {

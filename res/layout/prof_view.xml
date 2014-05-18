@@ -180,6 +180,7 @@
                 android:layout_marginBottom="5dp"
                 android:background="@android:color/white" />
 
+            <!--  Comment functionality:
             <LinearLayout
                 android:id="@+id/third_lin_layout"
                 android:orientation="horizontal"
@@ -221,6 +222,7 @@
             android:textColorHint="@color/black"
             android:textColorLink="@color/black" />
             </LinearLayout>
+            -->
         </LinearLayout>
     </ScrollView>
 

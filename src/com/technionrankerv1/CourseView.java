@@ -1,6 +1,5 @@
 package com.technionrankerv1;
 
-import java.sql.Time;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
@@ -10,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
 
@@ -37,7 +35,7 @@ public class CourseView extends Activity {
 		ClientAsync as = new ClientAsync();
 		as.execute(c);
 		try {
-			Course toGetID = as.get();
+			as.get(); //This will block until as.execute completes
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -45,6 +43,7 @@ public class CourseView extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		/* Bring this code back once we implement comments:
     	Button commentButton = (Button) findViewById(R.id.comment_button);
     	commentButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -52,6 +51,7 @@ public class CourseView extends Activity {
 				createComment(courseId, studentId);
 			}
 		});
+		*/
     	//Only one of these "given" variables will be used.  Hopefully givenCourse.
     	//String givenCourseName = savedInstanceState.getString("courseName");
     	//Course givenCourse = (Course) savedInstanceState.get("course");
@@ -108,13 +108,14 @@ public class CourseView extends Activity {
     }
     
 	public void createComment(Long courseId, Long studentId) {
-    	EditText et = (EditText) findViewById(R.id.comment);
+    	/* Bring this code back once we implement comments:
     	String commentText = et.getText().toString();
     	long currTimeMillis = System.currentTimeMillis();
     	Time currentTime = new Time(currTimeMillis);
     	CourseComment cc = new CourseComment(courseId, studentId, commentText, currentTime, 0);
     	CourseCommentClientAsync as2 = new CourseCommentClientAsync();
     	as2.execute(cc);
+    	*/
     }
 	
 	private class ClientAsync extends AsyncTask<Course, Void, Course> {
@@ -152,6 +153,7 @@ public class CourseView extends Activity {
 		}
 	}
 	
+	/*
 	private class CourseCommentClientAsync extends AsyncTask<CourseComment, Void, String> {
 		public CourseCommentClientAsync() {
 		}
@@ -184,6 +186,7 @@ public class CourseView extends Activity {
 			}
 		}
 	}
+	*/
 	
 	private class CourseRatingClientAsync extends AsyncTask<CourseRating, Void, String> {
 		public CourseRatingClientAsync() {
