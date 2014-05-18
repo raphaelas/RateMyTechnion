@@ -57,11 +57,6 @@ public class AutoCorrect extends Activity implements OnClickListener {
 		// bSend.setOnClickListener(this);
 	}
 
-	public void goToLogin(View v) {
-		Intent intent = new Intent(this, Login.class);
-		startActivity(intent);
-	}
-
 	public void showSearchResults(View view) {
 		Intent intent = new Intent(this, SearchResultsList.class);
 		startActivity(intent);
