@@ -3,22 +3,26 @@
     package="com.technionrankerv1"
     android:versionCode="1"
     android:versionName="1.0" >
+
     <uses-permission android:name="android.permission.INTERNET" />
-    
+
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="14"
         android:targetSdkVersion="19" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.AppCompat.Light.DarkActionBar" >
-        <!--  
+         >
+
+        <!--
         <provider android:name="com.technionrankerv1.MySuggestionProvider"
               android:authorities="com.technionrankerv1.MySuggestionProvider" />
-              -->
-        <activity android:name="com.technionrankerv1.MainActivity" >
+        -->
+        <activity
+            android:name="com.technionrankerv1.MainActivity"
+            android:theme="@style/MyTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.SPLASH" />
@@ -78,16 +82,18 @@
         <activity
             android:name="com.technionrankerv1.ProfessorView"
             android:label="@string/app_name" >
-    		<meta-data
-    		    android:name="android.support.PARENT_ACTIVITY"
-    		    android:value="com.technionrankerv1.MainActivity" />
-		</activity>
-		        <activity
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.technionrankerv1.MainActivity" />
+        </activity>
+        <activity
             android:name="com.technionrankerv1.WelcomeView"
+            android:theme="@style/MyTheme"
             android:label="@string/app_name" >
-    		<meta-data
-    		    android:name="android.support.PARENT_ACTIVITY"
-    		    android:value="com.technionrankerv1.MainActivity" />
-		</activity>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.technionrankerv1.MainActivity" />
+        </activity>
     </application>
+
 </manifest>
