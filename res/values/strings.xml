@@ -14,7 +14,7 @@
     <string android:id="@+id/string6" name="string6" android:layout_width="wrap_content" android:layout_height="wrap_content">Home</string>
     <string android:id="@+id/string7" name="string7" android:layout_width="wrap_content" android:layout_height="wrap_content">Tom Smith</string>
     <string android:id="@+id/string8" name="string8" android:layout_width="wrap_content" android:layout_height="wrap_content">Sumbit</string>
-    <string android:id="@+id/string9" name="string9" android:layout_width="wrap_content" android:layout_height="wrap_content">Hello visiter!</string>
+    <string android:id="@+id/string9" name="string9" android:layout_width="wrap_content" android:layout_height="wrap_content">Hello visitor!</string>
     <string android:id="@+id/string10" name="string10" android:layout_width="wrap_content" android:layout_height="wrap_content">Welcome to the TechnionRanker.</string>
     <string android:id="@+id/string11" name="string11" android:layout_width="wrap_content" android:layout_height="wrap_content">Database Systems</string>
     <string android:id="@+id/string12" name="string12" android:layout_width="wrap_content" android:layout_height="wrap_content">584698</string>
@@ -43,15 +43,7 @@
     <color name="black">#000000</color>
     <color name="blueish">#680000</color>
     <color name="LoginBorderColor">#DD7500</color>
-
-    <string-array name="search_results_array">
-        <item>Tom Smith</item>
-        <item>Robotics</item>
-        <item>James Moore</item>
-        <item>Project in Software</item>
-        <item>Jason Wilson</item>
-    </string-array>
-
+    
     <string name="search_view1">Results</string>
     <string name="enjoyability">Enjoyability </string>
     <string name="usefulness">Usefulness  </string>

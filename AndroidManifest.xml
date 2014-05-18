@@ -14,6 +14,10 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar" >
+        <!--  
+        <provider android:name="com.technionrankerv1.MySuggestionProvider"
+              android:authorities="com.technionrankerv1.MySuggestionProvider" />
+              -->
         <activity android:name="com.technionrankerv1.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -25,14 +29,6 @@
         </activity>
         <activity
             android:name="com.technionrankerv1.SearchResultsList"
-            android:label="@string/app_name"
-            android:parentActivityName="com.technionrankerv1.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.technionrankerv1.MainActivity" />
-        </activity>
-        <activity
-            android:name="com.technionrankerv1.Login"
             android:label="@string/app_name"
             android:parentActivityName="com.technionrankerv1.MainActivity" >
             <meta-data

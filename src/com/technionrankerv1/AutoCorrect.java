@@ -46,8 +46,8 @@ public class AutoCorrect extends Activity implements OnClickListener {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_dropdown_item_1line,
 				professorsAndCourses);
-		AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.autoCompleteView);
-		textView.setAdapter(adapter);
+		// AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.autoCompleteView);
+		// textView.setAdapter(adapter);
 		/*
 		 * 
 		 * login1 = (Button) findViewById(R.id.login1);
@@ -58,11 +58,6 @@ public class AutoCorrect extends Activity implements OnClickListener {
 		// tvStatus = (TextView) findViewById(R.id.tvStatus);
 		// bSend = (Button) findViewById(R.id.bSend);
 		// bSend.setOnClickListener(this);
-	}
-
-	public void goToLogin(View v) {
-		Intent intent = new Intent(this, Login.class);
-		startActivity(intent);
 	}
 
 	public void showSearchResults(View view) {

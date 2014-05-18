@@ -1,21 +1,10 @@
 package com.technionrankerv1;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import android.app.ListActivity;
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.ListView;
-import android.widget.Toast;
 
 public class SearchableActivity extends ListActivity {
 
@@ -30,6 +19,9 @@ public class SearchableActivity extends ListActivity {
 		Intent intent = getIntent();
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
+//			SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
+//	                MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE);
+//	        suggestions.saveRecentQuery(query, null);
 			Log.d("MyApp", "value:"+query);
 			Bundle b = new Bundle();
 			b.putString("query", query);
