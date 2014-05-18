@@ -90,7 +90,7 @@ public class MainActivity extends ActionBarActivity implements
 					 */
 					Connection.Response res = Jsoup
 							.connect("https://ug3.technion.ac.il/rishum/login")
-							.data("OP", "LI", "UID", "922130141", "PWD", "32016463",
+							.data("OP", "LI", "UID", username, "PWD", password,
 									"Login.x", "%D7%94%D7%AA%D7%97%D7%91%D7%A8")
 							.method(Method.POST).execute();
 					doc = res.parse();
