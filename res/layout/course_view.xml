@@ -76,7 +76,7 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="33dp"
                     android:layout_weight="1"
-                    android:text="@string/usefulness"
+                    android:text="@string/overall"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/white" />
 
@@ -85,7 +85,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:gravity="right"
                     android:layout_marginRight="30dp"
                     android:numStars="@integer/three" />
 

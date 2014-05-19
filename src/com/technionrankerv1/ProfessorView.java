@@ -36,7 +36,7 @@ public class ProfessorView extends Activity {
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
-    	final Long studentId = savedInstanceState.getLong("studentId");
+    	final Long studentId = Long.valueOf(0); //savedInstanceState.getLong("studentId");
     	/* Bring back when we implement comments:
     	Button commentButton = (Button) findViewById(R.id.professorCommentButton);
     	commentButton.setOnClickListener(new OnClickListener() {

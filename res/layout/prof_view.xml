@@ -23,14 +23,14 @@
                 android:background="@android:color/white" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal" >
 
                 <TextView
                     android:id="@+id/textView28"
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:layout_marginBottom="10dp"
@@ -46,25 +46,31 @@
                 android:background="@android:color/white" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dip"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="33dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="left"
                     android:text="@string/professorOverall"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/white" />
 
                 <RatingBar
                     android:id="@+id/professorRatingBarOverall"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="50dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="30dp"
                     android:numStars="@integer/three" />
+
             </LinearLayout>
 
             <View
@@ -74,27 +80,31 @@
                 android:background="@android:color/white" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="33dp"
+                    android:layout_weight="1"
                     android:text="@string/clarity"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/white" />
 
                 <RatingBar
                     android:id="@+id/professorRatingBarClarity"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="50dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="30dp"
                     android:numStars="@integer/three" />
+
             </LinearLayout>
 
             <View
@@ -104,27 +114,31 @@
                 android:background="@android:color/white" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="33dp"
+                    android:layout_weight="1"
                     android:text="@string/preparedness"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/white" />
 
                 <RatingBar
                     android:id="@+id/professorRatingBarPreparedness"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="50dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="30dp"
                     android:numStars="@integer/three" />
+
             </LinearLayout>
 
             <View
@@ -134,31 +148,41 @@
                 android:background="@android:color/white" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginBottom="10dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="33dp"
+                    android:layout_weight="1"
                     android:text="@string/interactivity"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/white" />
 
                 <RatingBar
                     android:id="@+id/professorRatingBarInteractivity"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="50dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="30dp"
                     android:numStars="@integer/three" />
                 
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginBottom="5dp"
+                android:background="@android:color/white" />
                                 <Button
                     android:id="@+id/professorRatingButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="fill_parent"
                     android:background="@color/LoginBorderColor"
                     android:orientation="horizontal"
@@ -169,14 +193,6 @@
                     android:text="@string/professorSubmit"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="0.1dp"
-                android:layout_marginBottom="5dp"
-                android:background="@android:color/white" />
-
             <!--  Comment functionality:
             <LinearLayout
                 android:id="@+id/third_lin_layout"

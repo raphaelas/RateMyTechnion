@@ -17,18 +17,15 @@ import android.widget.ListView;
 import com.serverapi.TechnionRankerAPI;
 
 public class SearchResults extends Activity {
-	TechnionRankerAPI db;
+	TechnionRankerAPI db = new TechnionRankerAPI();
 	//@override
 	public void onCreate(Bundle savedInstance){
 
 		super.onCreate(savedInstance);
-		Log.d("MyApp", "11111");
 
 		setContentView(R.layout.search_results);
-		Log.d("MyApp", "22222");
 		Bundle b = getIntent().getExtras();
 		String query =b.getString("query");
-		Log.d("MyApp", "query:"+query);
 		
 		
 		String[] professorsAndCourses = null;
@@ -71,9 +68,6 @@ public class SearchResults extends Activity {
 				}
 			}
 			profListArray = profList.toArray(new String[profList.size()]);
-			//This is code to populate the database.  There is more code in the AsyncTask class below.
-			//ClientAsync as = new ClientAsync();
-			//as.execute(profListArray);
 			infile.close();
 		}
 		return profListArray;
@@ -105,7 +99,7 @@ public class SearchResults extends Activity {
 						String name = temp[1].replaceAll("</A>", "").trim();// name
 						map.put(number, name); // trim and place only the number
 												// and name in
-						numberAndName.add("" + number + " - " + name);
+						numberAndName.add("" + number + " - " + capsFix2(name));
 					} // for temp
 				} // if
 				inputLine = infile.readLine(); // read the next line of the text
@@ -123,7 +117,9 @@ public class SearchResults extends Activity {
 		Object[] allNumbersAndNames = numberAndName.toArray();
 		String[] numbersAndNamesToReturn = Arrays.copyOf(allNumbersAndNames,
 				allNumbersAndNames.length, String[].class);
-
+		//Code to populate database:
+		ClientAsync as = new ClientAsync();
+		as.execute(numbersAndNamesToReturn);
 		return numbersAndNamesToReturn;
 		//return concat(allCourses, allNumbers);
 	} // parse()
@@ -135,41 +131,6 @@ public class SearchResults extends Activity {
 		System.arraycopy(a, 0, c, 0, aLen);
 		System.arraycopy(b, 0, c, aLen, bLen);
 		return c;
-	}
-	
-	private class ClientAsync extends AsyncTask<String, Void, String> {
-
-		public ClientAsync() {
-		}
-
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
-			//tvStatus.setText("wait..");
-		}
-
-		@Override
-		protected String doInBackground(String... params) {
-			Log.d(getLocalClassName(), String.valueOf(params.length));
-			String result = null;
-			for (int i = 300; i < 500; i++) {
-				Professor p = new Professor(null, params[i], true);
-				result = db.insertProfessor(p).toString();
-			}
-			return result;
-		}
-
-		@Override
-		protected void onPostExecute(String res) {
-			if (res == null)
-				//tvStatus.setText("null");
-				Log.d(getLocalClassName(), "unsuccessful");
-			else {
-				//tvStatus.setText(res);
-				Log.d(getLocalClassName(), res);
-			}
-		}
 	}
 	
 	public String[] capsFix(String[] s) {
@@ -204,6 +165,77 @@ public class SearchResults extends Activity {
 			}
 		}
 		return s;
+	}
+	
+	public String capsFix2(String s) {
+			String[] temp = s.split(" ");
+
+			for (int t = 0; t < temp.length; t++) {
+				if (t == 0 && temp[t].equals("A")) {
+					t++;
+				}
+				if (temp[t].equals("A") || temp[t].equals("FOR")
+						|| temp[t].equals("THE") || temp[t].equals("OF")
+						|| temp[t].equals("AND") || temp[t].equals("IN")
+						|| temp[t].equals("AT") || temp[t].equals("AN")) {
+					temp[t] = temp[t].toLowerCase(Locale.ENGLISH);
+				}
+				String firstLetter = temp[t].substring(0, 1); // take the first
+																// letter
+				temp[t] = temp[t].toLowerCase(Locale.ENGLISH); // make the word
+																// lowercase
+				String end = temp[t].substring(1, temp[t].length()); // get ride
+																		// of
+																		// the
+																		// first
+																		// letter
+				temp[t] = firstLetter + end; // add firstletter and the rest of
+												// the word
+			}
+			s = "";
+			for (int q = 0; q < temp.length; q++) {
+				s = s + temp[q] + " ";
+			}
+		return s;
+	}
+	
+	private class ClientAsync extends AsyncTask<String, Void, String> {
+
+		public ClientAsync() {
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			//tvStatus.setText("wait..");
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			Log.d(getLocalClassName(), String.valueOf(params.length));
+			String result = null;
+			for (int i = 100; i < params.length; i++) {
+				String[] splitted = params[i].split(" - ");
+				String number = splitted[0];
+				String name = splitted[1];
+				Log.d(number, name);
+				Course c = new Course(null, name, number, null, null, true);
+				result = db.insertCourse(c).toString();
+			}
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(String res) {
+			if (res == null)
+				//tvStatus.setText("null");
+				Log.d(getLocalClassName(), "unsuccessful");
+			else {
+				//tvStatus.setText(res);
+				Log.d(getLocalClassName(), res);
+			}
+		}
 	}
 }
 

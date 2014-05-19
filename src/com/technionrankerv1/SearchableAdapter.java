@@ -98,31 +98,24 @@ class SearchableAdapter extends BaseAdapter {
 		}
 
 		public FilterResults performFiltering(CharSequence constraint) {
-			Log.d("MyApp", "Im fucking Filtering");
 
 			String filterString = constraint.toString().toLowerCase();
-			Log.d("MyApp", "Im fucking Filtering1");
 
 			FilterResults results = new FilterResults();
-			Log.d("MyApp", "Im fucking Filtering2");
 
 			
 			int count = list1.length;
-			Log.d("MyApp", "count is:"+ count);
 
 			final ArrayList<String> nlist = new ArrayList<String>(count);
-			Log.d("MyApp", "Im fucking Filtering3");
 
 			for (int i = 0; i < list1.length; i++) {
 				if (list1[i].toLowerCase().contains(constraint)) {
 					nlist.add(list1[i]);
 				}
 			}
-			Log.d("MyApp", "Im fucking Filtering4");
 
 			results.values = nlist;
 			results.count = nlist.size();
-			Log.d("MyApp", "Im done Filtering");
 
 			return results;
 		}
