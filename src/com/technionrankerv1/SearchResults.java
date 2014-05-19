@@ -9,10 +9,15 @@ import java.util.HashSet;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.serverapi.TechnionRankerAPI;
 
@@ -33,14 +38,39 @@ public class SearchResults extends Activity {
 		// Course c = new TechnionRankerAPI().getCourse(c1);
 		// Log.d(getLocalClassName(), c.toString());
 		try {
-			professorsAndCourses = concat(capsFix(parseCourses()),
-					parseProfessors());
+			professorsAndCourses = concat(capsFix(parseCourses()), parseProfessors());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		SearchableAdapter adapt = new SearchableAdapter(query,SearchResults.this, professorsAndCourses);
-		ListView view = (ListView) findViewById(R.id.list);
+		final ListView view = (ListView) findViewById(R.id.list);
 		view.setAdapter(adapt);
+		
+		view.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapter, View v,
+					int position, long arg3) {
+				Log.d(getLocalClassName(), view.getItemAtPosition(position).toString());
+				String value = view.getItemAtPosition(position).toString();
+				if (Character.isDigit(value.charAt(0))) {
+					Log.d(getLocalClassName(), value);
+					Log.d(getLocalClassName(), value.charAt(0)+"");
+					String courseNumber = value.split(" - ")[0];
+					Intent i = new Intent(SearchResults.this, CourseView.class);
+					i.putExtra("courseNumber", courseNumber);
+					startActivity(i);
+				}
+				else {
+					Log.d(getLocalClassName(), "in professors");
+					Intent i = new Intent(SearchResults.this, ProfessorView.class);
+					i.putExtra("professorName", value);
+					startActivity(i);
+				}
+				// assuming string and if you want to get the value on click of
+				// list item
+				// do what you intend to do on click of listview row
+			}
+		});
 	}
 	
 	public String[] parseProfessors() throws Exception {
