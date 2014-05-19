@@ -68,12 +68,12 @@ public class SearchResults extends Activity {
 					Intent i = new Intent(SearchResults.this, CourseView.class);
 					i.putExtra("courseNumber", courseNumber);
 					i.putExtra("courseName", courseName);
-
-					
 					startActivity(i);
 				}
+				else if (value.equals("No Results")) {
+					return;
+				}
 				else {
-					Log.d(getLocalClassName(), "in professors");
 					Intent i = new Intent(SearchResults.this, ProfessorView.class);
 					i.putExtra("professorName", value);
 					startActivity(i);

@@ -1,10 +1,10 @@
 package com.technionrankerv1;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +16,7 @@ class SearchableAdapter extends BaseAdapter {
 	private static LayoutInflater inflater = null;
 	private int count;
 
-	private ArrayList<String> filteredData = null;
+	//private ArrayList<String> filteredData = null;
 	// private ItemFilter mFilter = new ItemFilter();
 	String contstaint;
 	ArrayList<String> values;
@@ -101,7 +101,7 @@ class SearchableAdapter extends BaseAdapter {
 
 		public FilterResults performFiltering(CharSequence constraint) {
 
-			String filterString = constraint.toString().toLowerCase();
+			String filterString = constraint.toString().toLowerCase(Locale.ENGLISH);
 
 			FilterResults results = new FilterResults();
 
@@ -110,13 +110,19 @@ class SearchableAdapter extends BaseAdapter {
 			final ArrayList<String> nlist = new ArrayList<String>(count);
 
 			for (int i = 0; i < list1.length; i++) {
-				if (list1[i].toLowerCase().contains(filterString)) {
+				if (list1[i].toLowerCase(Locale.ENGLISH).contains(filterString)) {
 					nlist.add(list1[i]);
 				}
 			}
 
 			results.values = nlist;
 			results.count = nlist.size();
+			if (results.count == 0) {
+				ArrayList<String> toUse = new ArrayList<String>();
+				toUse.add("No Results");
+				results.values = toUse;
+				results.count = 1;
+			}
 			return results;
 		}
 
@@ -124,11 +130,10 @@ class SearchableAdapter extends BaseAdapter {
 			return (ArrayList<String>) performFiltering(constraint).values;
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		protected void publishResults(CharSequence constraint,
 				FilterResults results) {
-			filteredData = (ArrayList<String>) results.values;
+				//filteredData = (ArrayList<String>) results.values;
 			notifyDataSetChanged();
 		}
 

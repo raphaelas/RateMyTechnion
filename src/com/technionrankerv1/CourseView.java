@@ -147,8 +147,6 @@ public class CourseView extends ActionBarActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
-		Log.w("MyApp", "In options");
-
 		switch (item.getItemId()) {
 		case R.id.action_logout:
 			// openLoginPage(item);
@@ -197,7 +195,6 @@ public class CourseView extends ActionBarActivity {
 			//Course c = new Course(null, "Geology", "01", (long) 5,
 			//		"Spring 2011", true);
 			//return new TechnionRankerAPI().insertCourse(c).toString();
-			Log.d(getLocalClassName(), String.valueOf(params.length));
 			//TODO: check that 50 - 100 succeeded.
 	    	Course courseToLookUp = params[0];
 	    	Course theCourse = new TechnionRankerAPI().getCourse(courseToLookUp);
@@ -267,7 +264,6 @@ public class CourseView extends ActionBarActivity {
 			//Course c = new Course(null, "Geology", "01", (long) 5,
 			//		"Spring 2011", true);
 			//return new TechnionRankerAPI().insertCourse(c).toString();
-			Log.d(getLocalClassName(), String.valueOf(params.length));
 			//TODO: check that 50 - 100 succeeded.
 	    	CourseRating cr = params[0];
 	    	String result = new TechnionRankerAPI().insertCourseRating(cr).toString();
