@@ -106,7 +106,17 @@ public class SearchResults extends Activity {
 					 */
 					inputLine = inputLine.substring(1, inputLine.length() - 9);
 					temp = inputLine.split(">");
-					profList.add(temp[2]);
+					String[] splittedOnSpace = temp[2].split(" ");
+					String firstNameLastName;
+					if (splittedOnSpace.length == 2) {
+						firstNameLastName = "" + splittedOnSpace[1] + " " + splittedOnSpace[0];
+						//Log.d(splittedOnSpace[0], splittedOnSpace[1]);
+					}
+					else {
+						firstNameLastName = "" + splittedOnSpace[0];
+						//Log.d(getLocalClassName(), splittedOnSpace[0]);
+					}
+					profList.add(firstNameLastName);
 				}
 			}
 			profListArray = profList.toArray(new String[profList.size()]);
