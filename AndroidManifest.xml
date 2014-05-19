@@ -32,39 +32,14 @@
 
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".SearchableActivity" />
-        </activity>
-        <activity
-            android:name="com.technionrankerv1.SearchResultsList"
-            android:label="@string/app_name"
-            android:parentActivityName="com.technionrankerv1.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.technionrankerv1.MainActivity" />
-        </activity>
-        <activity
-            android:name="com.technionrankerv1.UserCourseViewMain"
-            android:label="@string/app_name" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.technionrankerv1.MainActivity" />
+                android:value=".SearchResults" />
         </activity>
         <activity
             android:name="com.technionrankerv1.SearchResults"
             android:label="@string/app_name" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.technionrankerv1.MainActivity" />
-        </activity>
-        <activity
-            android:name="com.technionrankerv1.AutoCorrect"
-            android:label="@string/app_name" >
-        </activity>
-        <activity android:name="com.technionrankerv1.SearchableActivity" >
-            <intent-filter>
+                        <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -75,7 +50,7 @@
             android:theme="@style/MyTheme" >
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".SearchableActivity" />
+                android:value=".SearchResults" />
         </activity>
         <activity
             android:name="com.technionrankerv1.ProfessorView"
@@ -84,7 +59,7 @@
             
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".SearchableActivity" />
+                android:value=".SearchResults" />
         </activity>
         <activity
             android:name="com.technionrankerv1.WelcomeView"
@@ -92,7 +67,7 @@
             android:theme="@style/MyTheme" >
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".SearchableActivity" />
+                android:value=".SearchResults" />
         </activity>
     </application>
 

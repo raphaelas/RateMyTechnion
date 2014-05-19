@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,11 +29,13 @@ public class SearchResults extends Activity {
 	public void onCreate(Bundle savedInstance){
 
 		super.onCreate(savedInstance);
-
 		setContentView(R.layout.search_results);
-		Bundle b = getIntent().getExtras();
-		String query =b.getString("query");
-		
+		Log.d(getLocalClassName(), "In Searchable");
+		Intent intent = getIntent();
+		String query = null;
+		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			query = intent.getStringExtra(SearchManager.QUERY);
+		}
 		
 		String[] professorsAndCourses = null;
 		// Course c1 = new Course(new Long(1), null, null, null, null, false);
