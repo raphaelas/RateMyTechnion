@@ -202,7 +202,7 @@
             android:ellipsize="none"
             android:singleLine="true"
             android:text="@string/blank"
-            android:gravity="center"
+            android:layout_gravity="center"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/red" />
             <!--  Comment functionality:

@@ -1,8 +1,6 @@
 package com.technionrankerv1;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
 
 import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
@@ -22,25 +20,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class MainActivity extends ActionBarActivity implements
-		OnItemClickListener {
+public class MainActivity extends ActionBarActivity {
 	
 	private String username;
     private String password;
-	ListView listView;
-	ExpandableListAdapter listAdapter;
-	ExpandableListView expListView;
-	List<String> listDataHeader;
-	HashMap<String, List<String>> listDataChild;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -145,24 +132,12 @@ public class MainActivity extends ActionBarActivity implements
 				final TextView errorM = (TextView) findViewById(R.id.textView1);
 				errorM.setMaxLines(1);
 				if (x==1){
-					errorM.setText("Incorrect username or password. Please ty again.");
+					errorM.setText("Incorrect username or password. Please try again.");
 				}else{
 					errorM.setText("The Technion UG website is down. Please try again Later");
 				}
 			}
 		});
-	}
-	
-	public void initUserCourseView(View view) {
-		Intent intent = new Intent(this, UserCourseViewMain.class);
-		startActivity(intent);
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> adapter, View view, int position,
-			long id) {
-		Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
-				Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
