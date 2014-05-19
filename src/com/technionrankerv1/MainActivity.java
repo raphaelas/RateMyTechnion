@@ -134,7 +134,7 @@ public class MainActivity extends ActionBarActivity {
 				if (x==1){
 					errorM.setText("Incorrect username or password. Please try again.");
 				}else{
-					errorM.setText("The Technion UG website is down. Please try again Later");
+					errorM.setText("The Technion UG website is down. Please try again later");
 				}
 			}
 		});
