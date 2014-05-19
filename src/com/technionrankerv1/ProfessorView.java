@@ -1,7 +1,5 @@
 package com.technionrankerv1;
 
-import java.util.concurrent.ExecutionException;
-
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -38,11 +36,13 @@ public class ProfessorView extends ActionBarActivity {
         super.onCreate(savedInstanceState);
     	setContentView(R.layout.prof_view);
     	textViewProfessorRatingSubmitted = (TextView) findViewById(R.id.textViewProfessorRatingSubmitted);
+		textViewProfessorRatingSubmitted.setMaxLines(1);
 		Bundle bundle = getIntent().getExtras();
     	String lookupProfessorName = bundle.getString("professorName");
     	TextView professorNameText = (TextView) findViewById(R.id.professorNameText);
     	professorNameText.setText(lookupProfessorName);
     	Professor lookupProfessor = new Professor(null, lookupProfessorName, true);
+    	/* Bring this back as soon as our database really works:
     	ProfessorClientAsync as = new ProfessorClientAsync();
     	as.execute(lookupProfessor);
     	try {
@@ -52,7 +52,7 @@ public class ProfessorView extends ActionBarActivity {
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
-
+    	 */
     	final Long studentId = Long.valueOf(0); //savedInstanceState.getLong("studentId");
     	/* Bring back when we implement comments:
     	Button commentButton = (Button) findViewById(R.id.professorCommentButton);
@@ -150,6 +150,8 @@ public class ProfessorView extends ActionBarActivity {
 	
 	protected void saveProfessorRating(ProfessorRating pr) {
 		if (!alreadySubmitted) {
+			textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
+			textViewProfessorRatingSubmitted.setText("Please wait while we record your response.");
 			ProfessorRatingClientAsync as3 = new ProfessorRatingClientAsync();
 			as3.execute(pr);
 		}
@@ -224,15 +226,14 @@ public class ProfessorView extends ActionBarActivity {
 
 		@Override
 		protected void onPostExecute(String res) {
-			textViewProfessorRatingSubmitted.setMaxLines(1);
 			if (res == null) {
-				Log.d(getLocalClassName(), "ProfessorRating ClientAsync unsuccessful");
+				//Log.d(getLocalClassName(), "ProfessorRating ClientAsync unsuccessful");
 				textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.red));
 				textViewProfessorRatingSubmitted.setText("Sorry, please try submitting your rating again.");
 			}
 			else {
 			    //delegate.processFinish(res);
-				Log.d(getLocalClassName(), res);
+				//Log.d(getLocalClassName(), res);
 				textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
 				textViewProfessorRatingSubmitted.setText("Thank you.  Your rating was received.");
 				alreadySubmitted = true;

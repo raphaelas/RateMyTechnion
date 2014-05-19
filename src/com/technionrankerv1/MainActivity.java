@@ -25,14 +25,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
-	
+	private TextView errorM;
 	private String username;
     private String password;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.sign_in);			
+		setContentView(R.layout.sign_in);
+		errorM = (TextView) findViewById(R.id.textView1);
+		errorM.setMaxLines(1);
+
 		
 		Button loginButton = (Button) findViewById(R.id.button1);
 
@@ -45,6 +48,8 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	public void setText() {
+		errorM.setTextColor(getResources().getColor(R.color.gray));
+		errorM.setText("Please wait.  Connecting to UG System.");
 		final EditText Input1 = (EditText) findViewById(R.id.editText1);
 		final EditText Input2 = (EditText) findViewById(R.id.editText2);
 		username = Input1.getText().toString();
@@ -129,8 +134,7 @@ public class MainActivity extends ActionBarActivity {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				final TextView errorM = (TextView) findViewById(R.id.textView1);
-				errorM.setMaxLines(1);
+				errorM.setTextColor(getResources().getColor(R.color.red));
 				if (x==1){
 					errorM.setText("Incorrect username or password. Please try again.");
 				}else{
