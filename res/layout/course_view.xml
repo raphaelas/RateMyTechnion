@@ -209,6 +209,19 @@
                     android:text="@string/submit"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
+                                       
+  		<TextView
+  		    android:id="@+id/textViewCourseRatingSubmitted"
+  		    android:layout_width="wrap_content"
+  		    android:layout_height="wrap_content"
+  		    android:layout_marginTop="25dp"
+  		    android:ellipsize="none"
+  		    android:gravity="center"
+  		    android:singleLine="true"
+  		    android:text="@string/blank"
+  		    android:textAppearance="?android:attr/textAppearanceMedium"
+  		    android:textColor="@color/red" />
+
 <!--   This is the comments section: 
             <LinearLayout
                 android:id="@+id/third_lin_layout"

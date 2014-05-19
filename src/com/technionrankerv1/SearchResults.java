@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -50,14 +51,22 @@ public class SearchResults extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View v,
 					int position, long arg3) {
-				Log.d(getLocalClassName(), view.getItemAtPosition(position).toString());
-				String value = view.getItemAtPosition(position).toString();
+				//Log.d(getLocalClassName(), v.getItemAtPosition(position).toString());
+				//String value = view.getItemAtPosition(position).toString();
+			    LinearLayout parent = (LinearLayout) v;
+				TextView name = (TextView) parent.findViewById(R.id.lblListItem);
+				String value = name.getText().toString();
 				if (Character.isDigit(value.charAt(0))) {
 					Log.d(getLocalClassName(), value);
 					Log.d(getLocalClassName(), value.charAt(0)+"");
-					String courseNumber = value.split(" - ")[0];
+					String[] splitted = value.split(" - ");
+					String courseNumber = splitted[0];
+					String courseName = splitted[1];
 					Intent i = new Intent(SearchResults.this, CourseView.class);
 					i.putExtra("courseNumber", courseNumber);
+					i.putExtra("courseName", courseName);
+
+					
 					startActivity(i);
 				}
 				else {
@@ -148,8 +157,8 @@ public class SearchResults extends Activity {
 		String[] numbersAndNamesToReturn = Arrays.copyOf(allNumbersAndNames,
 				allNumbersAndNames.length, String[].class);
 		//Code to populate database:
-		ClientAsync as = new ClientAsync();
-		as.execute(numbersAndNamesToReturn);
+		//ClientAsync as = new ClientAsync();
+		//as.execute(numbersAndNamesToReturn);
 		return numbersAndNamesToReturn;
 		//return concat(allCourses, allNumbers);
 	} // parse()

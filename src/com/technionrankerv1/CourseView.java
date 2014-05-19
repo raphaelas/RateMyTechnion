@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
+import android.widget.TextView;
 
 import com.serverapi.TechnionRankerAPI;
 
@@ -21,14 +22,23 @@ import com.serverapi.TechnionRankerAPI;
  */
 public class CourseView extends Activity {
 	Long courseId = Long.valueOf(0);
+	boolean alreadySubmitted = false;
+	TextView textViewCourseRatingSubmitted;
 	
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     	setContentView(R.layout.course_view);
+    	textViewCourseRatingSubmitted = (TextView) findViewById(R.id.textViewCourseRatingSubmitted);
     	//final String courseNumber = "236369";
     	final Long studentId = Long.valueOf(0);
     	//Uncomment this eventually:
-    	final String courseNumber = savedInstanceState.getString("courseNumber");
+		Bundle bundle = getIntent().getExtras();
+    	final String courseNumber = bundle.getString("courseNumber");
+    	final String courseName = bundle.getString("courseName");
+		TextView textViewCourseName = (TextView) findViewById(R.id.textViewCourseName);
+		textViewCourseName.setText(courseName);
+		TextView textViewCourseNumber = (TextView) findViewById(R.id.textViewCourseNumber);
+		textViewCourseNumber.setText(courseNumber);
     	//final Long studentId = savedInstanceState.getLong("studentId");
     	Course c = new Course(null, null, courseNumber, null, null, false);
     	courseId = Long.valueOf(0);//theCourse.getId();
@@ -103,8 +113,15 @@ public class CourseView extends Activity {
     	});
     }
     protected void saveRatings(CourseRating cr) {
+		if (!alreadySubmitted) {
+
     	CourseRatingClientAsync as3 = new CourseRatingClientAsync();
     	as3.execute(cr);
+		}
+		else {
+			textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
+			textViewCourseRatingSubmitted.setText("Whoops, you already submitted and cannot submit again.");
+		}
     }
     
 	public void createComment(Long courseId, Long studentId) {
@@ -213,11 +230,21 @@ public class CourseView extends Activity {
 
 		@Override
 		protected void onPostExecute(String res) {
-			if (res == null)
+			textViewCourseRatingSubmitted.setMaxLines(1);
+			if (res == null) {
 				Log.d(getLocalClassName(), "CourseRating ClientAsync unsuccessful");
+				
+				textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.red));
+				textViewCourseRatingSubmitted.setText("Sorry, please try submitting your rating again.");
+			}
+			
 			else {
 			    //delegate.processFinish(res);
 				Log.d(getLocalClassName(), res);
+				textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
+				textViewCourseRatingSubmitted.setText("Thank you.  Your rating was received.");
+				alreadySubmitted = true;
+
 			}
 		}
 	}

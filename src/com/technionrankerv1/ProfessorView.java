@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
+import android.widget.TextView;
 
 import com.serverapi.TechnionRankerAPI;
 
@@ -21,11 +22,19 @@ import com.serverapi.TechnionRankerAPI;
  */
 public class ProfessorView extends Activity {
     public Long professorId;
+    public Professor professor;
+    public boolean alreadySubmitted = false;
+    public TextView textViewProfessorRatingSubmitted;
+
 
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     	setContentView(R.layout.prof_view);
-    	String lookupProfessorName = savedInstanceState.getString("professorName");
+    	textViewProfessorRatingSubmitted = (TextView) findViewById(R.id.textViewProfessorRatingSubmitted);
+		Bundle bundle = getIntent().getExtras();
+    	String lookupProfessorName = bundle.getString("professorName");
+    	TextView professorNameText = (TextView) findViewById(R.id.professorNameText);
+    	professorNameText.setText(lookupProfessorName);
     	Professor lookupProfessor = new Professor(null, lookupProfessorName, true);
     	ProfessorClientAsync as = new ProfessorClientAsync();
     	as.execute(lookupProfessor);
@@ -36,6 +45,7 @@ public class ProfessorView extends Activity {
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
+
     	final Long studentId = Long.valueOf(0); //savedInstanceState.getLong("studentId");
     	/* Bring back when we implement comments:
     	Button commentButton = (Button) findViewById(R.id.professorCommentButton);
@@ -94,8 +104,14 @@ public class ProfessorView extends Activity {
     }
 
 	protected void saveProfessorRating(ProfessorRating pr) {
-		ProfessorRatingClientAsync as3 = new ProfessorRatingClientAsync();
-		as3.execute(pr);
+		if (!alreadySubmitted) {
+			ProfessorRatingClientAsync as3 = new ProfessorRatingClientAsync();
+			as3.execute(pr);
+		}
+		else {
+			textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
+			textViewProfessorRatingSubmitted.setText("Whoops, you already submitted and cannot submit again.");
+		}
 	}
 
 	protected void createProfessorComment(Long professorId, Long studentId) {
@@ -139,6 +155,7 @@ public class ProfessorView extends Activity {
 			    //delegate.processFinish(res);
 				Log.d(getLocalClassName(), res.getName());
 		    	professorId = res.getId();
+		    	professor = res;
 			}
 		}
 	}
@@ -162,11 +179,18 @@ public class ProfessorView extends Activity {
 
 		@Override
 		protected void onPostExecute(String res) {
-			if (res == null)
+			textViewProfessorRatingSubmitted.setMaxLines(1);
+			if (res == null) {
 				Log.d(getLocalClassName(), "ProfessorRating ClientAsync unsuccessful");
+				textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.red));
+				textViewProfessorRatingSubmitted.setText("Sorry, please try submitting your rating again.");
+			}
 			else {
 			    //delegate.processFinish(res);
 				Log.d(getLocalClassName(), res);
+				textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
+				textViewProfessorRatingSubmitted.setText("Thank you.  Your rating was received.");
+				alreadySubmitted = true;
 			}
 		}
 	}
