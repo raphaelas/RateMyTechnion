@@ -48,10 +48,8 @@ class SearchableAdapter extends BaseAdapter {
 		 * this.list = ac.concat(corArray, proArray);
 		 */
 		ItemFilter fil = new ItemFilter(list);
-
 		values = fil.mich(constraint);
 		
-
 		count = values.size();
 		this.contstaint = constraint;
 		this.inflater = (LayoutInflater) activity

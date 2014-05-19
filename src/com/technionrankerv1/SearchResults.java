@@ -22,18 +22,18 @@ import android.widget.TextView;
 import com.serverapi.TechnionRankerAPI;
 
 public class SearchResults extends Activity {
-	TechnionRankerAPI db;
+	TechnionRankerAPI db = new TechnionRankerAPI();
 	//@override
 	public void onCreate(Bundle savedInstance){
 
 		super.onCreate(savedInstance);
-		Log.d("MyApp", "11111");
+		//Log.d("MyApp", "11111");
 
 		setContentView(R.layout.search_results);
-		Log.d("MyApp", "22222");
+		//Log.d("MyApp", "22222");
 		Bundle b = getIntent().getExtras();
 		String query =b.getString("query");
-		Log.d("MyApp", "query:"+query);
+		//Log.d("MyApp", "query:"+query);
 		
 		
 		String[] professorsAndCourses = null;
@@ -102,10 +102,11 @@ public class SearchResults extends Activity {
 			}
 			profListArray = profList.toArray(new String[profList.size()]);
 			//This is code to populate the database.  There is more code in the AsyncTask class below.
+			infile.close();
+			}
 			//ClientAsync as = new ClientAsync();
 			//as.execute(profListArray);
-			infile.close();
-		}
+			
 		return profListArray;
 	}
 
@@ -183,7 +184,8 @@ public class SearchResults extends Activity {
 		protected String doInBackground(String... params) {
 			Log.d(getLocalClassName(), String.valueOf(params.length));
 			String result = null;
-			for (int i = 300; i < 500; i++) {
+			for (int i = 300; i < 2150; i++) { // max 2150
+				Log.d(getLocalClassName(), i+" "+params[i]);
 				Professor p = new Professor(null, params[i], true);
 				result = db.insertProfessor(p).toString();
 			}

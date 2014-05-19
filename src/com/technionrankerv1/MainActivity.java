@@ -74,46 +74,38 @@ public class MainActivity extends ActionBarActivity implements
 			public void run() {
 				Document doc;
 				try {
-					// Log.d(getLocalClassName(), "in");
-					/*
-					 * doc = Jsoup.connect("http://en.wikipedia.org/").get();
-					 * Elements newsHeadlines = doc.select("#mp-itn b a");
-					 * Log.d(getLocalClassName(), newsHeadlines.toString());
-					 */
-					/*
-					 * Connection.Response res =
-					 * Jsoup.connect("https://ug3.technion.ac.il/rishum/login")
-					 * .data("OP", "LI", "UID", "922130174", "PWD", "43150202",
-					 * "Login.x", "%D7%94%D7%AA%D7%97%D7%91%D7%A8")
-					 * .method(Method.POST) .execute();
-					 * Log.d(getLocalClassName(), "have a res");
-					 */
 					Connection.Response res = Jsoup
 							.connect("https://ug3.technion.ac.il/rishum/login")
 							.data("OP", "LI", "UID", username, "PWD", password,
 									"Login.x", "%D7%94%D7%AA%D7%97%D7%91%D7%A8")
 							.method(Method.POST).execute();
 					doc = res.parse();
-
+					int x = 1;
+					Log.d(getLocalClassName(), doc.toString().length()+"");
+					if (doc.toString().length() < 4920){
+						//Log.d(getLocalClassName(), "fail");
+						x = 0;
+						reportError(x);
+					}
+					
 					// Log.d(getLocalClassName(),doc.toString());
-					// Log.d(getLocalClassName(),
-					// doc.toString().substring(4609, 4618));
-					if (doc.toString().substring(4609, 4618)
-							.equals("error-msg")) {
-						Log.d(getLocalClassName(), "Log in unsucessful");
-						reportError();
-						// Log.d(getLocalClassName(),
+					// Log.d(getLocalClassName(), doc.toString().substring(4920, 4930));
+					if (!doc.toString().substring(4609, 4618)
+							.equals("error-msg") && x == 1) {
 						// myText.getText().toString());
-					} else {
+						
 						String temp[] = null;
 						Log.d(getLocalClassName(), "Log in Sucessful");
-						if (doc.toString().length() > 5350){
-							temp = doc.toString().substring(5325, 5350)
+						
+						temp = doc.toString().substring(5325, 5350)
 								.split(" ");
-						}
+						
+								
 						// Log.d(getLocalClassName(),
 						// doc.toString().substring(5325, 5350));
-						String name = temp[2] + " " + temp[3];
+						String name = "visitor";
+							if(temp[2] != null && temp[3] != null)
+								name = temp[2] + " " + temp[3];
 						// Log.d(getLocalClassName(), name);
 
 						// LinearLayout v = (LinearLayout) getLayoutInflater()
@@ -128,8 +120,12 @@ public class MainActivity extends ActionBarActivity implements
 						startActivity(i);
 						// startActivity(new Intent(Login.this,
 						// welcomeView.class));
+						
+					} else if (x != 0){
+						Log.d(getLocalClassName(), "Log in unsucessful");
+						reportError(1);
+						// Log.d(getLocalClassName(),
 					}
-
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -142,13 +138,17 @@ public class MainActivity extends ActionBarActivity implements
 		downloadThread.start();
 	}
 
-	protected void reportError() {
+	protected void reportError(final int x) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				final TextView errorM = (TextView) findViewById(R.id.textView1);
 				errorM.setMaxLines(1);
-				errorM.setText("Incorrect username or password. Please ty again.");
+				if (x==1){
+					errorM.setText("Incorrect username or password. Please ty again.");
+				}else{
+					errorM.setText("The Technion UG website is down. Please try again Later");
+				}
 			}
 		});
 	}
