@@ -26,6 +26,7 @@
     <string name="action_search">Search</string>
     <string name="username">UG Username</string>
     <string name="search">Course, Professor, or Faculty</string>
+    <string name="searchfailed">Results not found.</string>
     <string name="desc"></string>
     <string android:id="@+id/blank" name="blank" android:layout_width="wrap_content" android:layout_height="wrap_content"></string>
 
@@ -37,13 +38,13 @@
     </string-array>
 
     <color name="silver">#C0C0C0</color>
-    <color name ="red">#FF0000</color>
+    <color name="red">#FF0000</color>
     <color name="gray">#808080</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="blueish">#680000</color>
     <color name="LoginBorderColor">#DD7500</color>
-    
+
     <string name="search_view1">Results</string>
     <string name="enjoyability">Enjoyability </string>
     <string name="usefulness">Usefulness  </string>
