@@ -21,7 +21,7 @@ import com.serverapi.TechnionRankerAPI;
  *
  */
 public class ProfessorView extends Activity {
-    public Long professorId;
+    public Long professorId = Long.valueOf(0);
     public Professor professor;
     public boolean alreadySubmitted = false;
     public TextView textViewProfessorRatingSubmitted;
