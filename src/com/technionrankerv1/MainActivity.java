@@ -15,14 +15,17 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 	private TextView errorM;
@@ -35,6 +38,19 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.sign_in);
 		errorM = (TextView) findViewById(R.id.textView1);
 		errorM.setMaxLines(1);
+		final EditText passwordInput = (EditText) findViewById(R.id.editText2);
+		passwordInput.setOnKeyListener(new OnKeyListener() {
+		    public boolean onKey(View v, int keyCode, KeyEvent event) {
+		        // If the event is a key-down event on the "enter" button
+		        if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+		            (keyCode == KeyEvent.KEYCODE_ENTER)) {
+		          // Perform action on key press
+		        	setText();
+		        	return true;
+		        }
+		        return false;
+		    }
+		});
 
 		
 		Button loginButton = (Button) findViewById(R.id.button1);
