@@ -18,11 +18,12 @@
         
     </style>
 
+    <!--   It does not seem like this is being used:
     <style name="foodRatingBar" parent="@android:style/Widget.RatingBar">
-        <item name="android:minHeight">48dip</item>
-        <item name="android:maxHeight">48dip</item>
+        <item name="android:minHeight">24dip</item>
+        <item name="android:maxHeight">24dip</item>
     </style>
-
+-->
     <style name="MyTheme" parent="style/Theme.AppCompat.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/MyActionBar</item>
         <item name="android:actionBarWidgetTheme">@style/Theme.yourapp.Widget</item>

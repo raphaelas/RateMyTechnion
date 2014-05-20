@@ -13,7 +13,7 @@
     <string android:id="@+id/string5" name="string5" android:layout_width="wrap_content" android:layout_height="wrap_content">Log out</string>
     <string android:id="@+id/string6" name="string6" android:layout_width="wrap_content" android:layout_height="wrap_content">Home</string>
     <string android:id="@+id/string7" name="string7" android:layout_width="wrap_content" android:layout_height="wrap_content">Tom Smith</string>
-    <string android:id="@+id/string8" name="string8" android:layout_width="wrap_content" android:layout_height="wrap_content">Sumbit</string>
+    <string android:id="@+id/string8" name="string8" android:layout_width="wrap_content" android:layout_height="wrap_content">Submit</string>
     <string android:id="@+id/string9" name="string9" android:layout_width="wrap_content" android:layout_height="wrap_content">Hello visitor!</string>
     <string android:id="@+id/string10" name="string10" android:layout_width="wrap_content" android:layout_height="wrap_content">Welcome to the TechnionRanker.</string>
     <string android:id="@+id/string11" name="string11" android:layout_width="wrap_content" android:layout_height="wrap_content">Database Systems</string>
