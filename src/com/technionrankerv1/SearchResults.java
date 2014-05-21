@@ -1,6 +1,7 @@
 package com.technionrankerv1;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,11 +12,15 @@ import java.util.Locale;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.MatrixCursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnSuggestionListener;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,8 +28,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import com.serverapi.TechnionRankerAPI;
@@ -91,47 +98,53 @@ public class SearchResults extends ActionBarActivity {
 		});
 	}
 	
-	public String[] parseProfessors() throws Exception {
+	public String[] parseProfessors() {
 		ArrayList<String> profList = new ArrayList<String>();
 		String inputLine = "";
 		String[] temp;
 		String[] profListArray = null;
-		String[] professorFiles = getAssets().list("ProfessorListings");
-		for (int i = 0; i < professorFiles.length; i++) {
-			BufferedReader infile = new BufferedReader(new InputStreamReader(
-					getAssets().open("ProfessorListings/" + professorFiles[i])));
-			while (infile.ready()) {// while more info exists
-				inputLine = infile.readLine();
-				if (inputLine.startsWith("<td><a href=")) {
-					/*
-					 * This would parse the professor's ID #. int start =
-					 * inputLine.indexOf("code=") + 5; int end =
-					 * inputLine.indexOf(" rel") - 1; String id =
-					 * inputLine.substring(start, end); Log.d(professorFiles[i],
-					 * id);
-					 */
-					inputLine = inputLine.substring(1, inputLine.length() - 9);
-					temp = inputLine.split(">");
-					String[] splittedOnSpace = temp[2].split(" ");
-					String firstNameLastName;
-					if (splittedOnSpace.length == 2) {
-						firstNameLastName = "" + splittedOnSpace[1] + " " + splittedOnSpace[0];
-						//Log.d(splittedOnSpace[0], splittedOnSpace[1]);
+		String[] professorFiles;
+		try {
+			professorFiles = getAssets().list("ProfessorListings");
+			for (int i = 0; i < professorFiles.length; i++) {
+				BufferedReader infile = new BufferedReader(new InputStreamReader(
+						getAssets().open("ProfessorListings/" + professorFiles[i])));
+				while (infile.ready()) {// while more info exists
+					inputLine = infile.readLine();
+					if (inputLine.startsWith("<td><a href=")) {
+						/*
+						 * This would parse the professor's ID #. int start =
+						 * inputLine.indexOf("code=") + 5; int end =
+						 * inputLine.indexOf(" rel") - 1; String id =
+						 * inputLine.substring(start, end); Log.d(professorFiles[i],
+						 * id);
+						 */
+						inputLine = inputLine.substring(1, inputLine.length() - 9);
+						temp = inputLine.split(">");
+						String[] splittedOnSpace = temp[2].split(" ");
+						String firstNameLastName;
+						if (splittedOnSpace.length == 2) {
+							firstNameLastName = "" + splittedOnSpace[1] + " " + splittedOnSpace[0];
+							//Log.d(splittedOnSpace[0], splittedOnSpace[1]);
+						}
+						else {
+							firstNameLastName = "" + splittedOnSpace[0];
+							//Log.d(getLocalClassName(), splittedOnSpace[0]);
+						}
+						profList.add(firstNameLastName);
 					}
-					else {
-						firstNameLastName = "" + splittedOnSpace[0];
-						//Log.d(getLocalClassName(), splittedOnSpace[0]);
-					}
-					profList.add(firstNameLastName);
 				}
+				profListArray = profList.toArray(new String[profList.size()]);
+				infile.close();
 			}
-			profListArray = profList.toArray(new String[profList.size()]);
-			infile.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return profListArray;
 	}
 
-	public String[] parseCourses() throws Exception {
+	public String[] parseCourses() {
 		// create Hashmap, where the numbers are the keys and the Titles are the
 		// values
 
@@ -140,32 +153,36 @@ public class SearchResults extends ActionBarActivity {
 		String inputLine = "";
 		String[] temp;
 
-		String[] courseFiles = getAssets().list("CourseListings");
-
-		for (int i = 0; i < courseFiles.length; i++) {
-			int lineNumber = 0;
-			BufferedReader infile = new BufferedReader(new InputStreamReader(
-					getAssets().open("CourseListings/" + courseFiles[i])));
-			while (infile.ready()) {// while more info exists
-				if (lineNumber >= 13 && lineNumber % 3 == 1) { // only take
-																// numbers 13
-																// and up for
-																// every 3
-					temp = inputLine.split(" - ");
-					for (int t = 0; t < temp.length; t++) {
-						String number = temp[0].trim();// number;
-						String name = temp[1].replaceAll("</A>", "").trim();// name
-						map.put(number, name); // trim and place only the number
-												// and name in
-						numberAndName.add("" + number + " - " + capsFix2(name));
-					} // for temp
-				} // if
-				inputLine = infile.readLine(); // read the next line of the text
-				lineNumber++;
-			} // while infile
-			infile.close();
-		} // for courseFiles
-
+		String[] courseFiles;
+		try {
+			courseFiles = getAssets().list("CourseListings");
+			for (int i = 0; i < courseFiles.length; i++) {
+				int lineNumber = 0;
+				BufferedReader infile = new BufferedReader(new InputStreamReader(
+						getAssets().open("CourseListings/" + courseFiles[i])));
+				while (infile.ready()) {// while more info exists
+					if (lineNumber >= 13 && lineNumber % 3 == 1) { // only take
+																	// numbers 13
+																	// and up for
+																	// every 3
+						temp = inputLine.split(" - ");
+						for (int t = 0; t < temp.length; t++) {
+							String number = temp[0].trim();// number;
+							String name = temp[1].replaceAll("</A>", "").trim();// name
+							map.put(number, name); // trim and place only the number
+													// and name in
+							numberAndName.add("" + number + " - " + capsFix2(name));
+						} // for temp
+					} // if
+					inputLine = infile.readLine(); // read the next line of the text
+					lineNumber++;
+				} // while infile
+				infile.close();
+			} // for courseFiles
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Object[] courseNumberObjectArray = map.keySet().toArray();
 		Object[] courseNameObjectArray = map.values().toArray();
 		String[] allCourses = Arrays.copyOf(courseNameObjectArray,
@@ -277,8 +294,39 @@ public class SearchResults extends ActionBarActivity {
 		// widget;
 		// expand it by default
 		// searchView.setSubmitButtonEnabled(true);
+	    String[] columnNames = {"_id","text"};
+	    MatrixCursor cursor = new MatrixCursor(columnNames);
+	    String[] array = concat(capsFix(parseCourses()), parseProfessors());
+	    String[] temp = new String[2];
+	    int id = 0;
+	    for(String item : array){
+	        temp[0] = Integer.toString(id++);
+	        temp[1] = item;
+	        Log.d(getLocalClassName(), item);
+	        cursor.addRow(temp);
+	    }               
+	    String[] from = {"text"}; 
+	    int[] to = {R.id.lblListItem};
+	    final android.support.v4.widget.CursorAdapter cursorAdapter = 
+	    		new android.support.v4.widget.SimpleCursorAdapter(getApplicationContext(), R.layout.list_item, cursor, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER );
+        searchView.setSuggestionsAdapter(cursorAdapter);
+        searchView.setOnQueryTextListener(searchQueryListener);
+        
+        searchView.setOnSuggestionListener(new OnSuggestionListener() {
 
-		return true;
+           @Override
+           public boolean onSuggestionClick(int position) {
+               String selectedItem = (String)cursorAdapter.getItem(position);
+               Log.v("search view", selectedItem);
+               return false;
+           }
+
+           @Override
+           public boolean onSuggestionSelect(int position) {
+               return false;
+           }
+        });
+        return true;
 	}
 	
 	@Override
@@ -294,6 +342,28 @@ public class SearchResults extends ActionBarActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	private OnQueryTextListener searchQueryListener = new OnQueryTextListener() {
+	    @Override
+	    public boolean onQueryTextSubmit(String query) {
+	        search(query);
+	        return true;
+	    }
+
+	    @Override
+	    public boolean onQueryTextChange(String newText) {
+	        if (TextUtils.isEmpty(newText)) { //searchView.isExpanded() && 
+	            search("");
+	        }
+
+	        return true;
+	    }
+
+	    public void search(String query) {
+	        // reset loader, swap cursor, etc.
+	    }
+
+	};
 	
 	private class ClientAsync extends AsyncTask<String, Void, String> {
 
