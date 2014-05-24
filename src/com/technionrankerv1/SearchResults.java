@@ -295,7 +295,7 @@ public class SearchResults extends ActionBarActivity {
 		// searchView.setSubmitButtonEnabled(true);
 	    String[] columnNames = {"_id","text"};
 	    MatrixCursor cursor = new MatrixCursor(columnNames);
-	    String[] from = {"text"}; 
+	    String[] from = {"coursesAndProfessors"}; 
 	    int[] to = {R.id.lblListItem};
 	    cursorAdapter = 
 	    		new android.support.v4.widget.SimpleCursorAdapter(getApplicationContext(), R.layout.list_item, cursor, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER );
@@ -306,10 +306,8 @@ public class SearchResults extends ActionBarActivity {
            @Override
            public boolean onSuggestionClick(int position) {
         	   Cursor c = (MatrixCursor) cursorAdapter.getItem(position);
-        	   String value =  c.getString(c.getColumnIndexOrThrow("text"));
+        	   String value =  c.getString(c.getColumnIndexOrThrow("coursesAndProfessors"));
                Log.d(getLocalClassName(), value);
-               //String selectedItem = ((MatrixCursor) cursorAdapter.getItem(position))
-        	   //String selectedItem = cursorAdapter.getItem(position).getClass().getSimpleName();
         	   if (Character.isDigit(value.charAt(0))) {
 					String[] splitted = value.split(" - ");
 					String courseNumber = splitted[0];
@@ -318,8 +316,6 @@ public class SearchResults extends ActionBarActivity {
 					i.putExtra("courseNumber", courseNumber);
 					i.putExtra("courseName", courseName);
 					startActivity(i);
-				}
-				else if (value.equals("No Results")) { //Do nothing
 				}
 				else {
 					Intent i = new Intent(SearchResults.this, ProfessorView.class);
