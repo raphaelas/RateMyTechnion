@@ -1,16 +1,8 @@
 package com.technionrankerv1;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -25,14 +17,14 @@ import com.serverapi.TechnionRankerAPI;
  * @author raphaelas
  *
  */
-public class ProfessorView extends ActionBarActivity {
+public class ProfessorView extends SearchResults {
     public Long professorId = Long.valueOf(0);
     public Professor professor;
     public boolean alreadySubmitted = false;
     public TextView textViewProfessorRatingSubmitted;
 
 
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     	setContentView(R.layout.prof_view);
     	textViewProfessorRatingSubmitted = (TextView) findViewById(R.id.textViewProfessorRatingSubmitted);
@@ -110,6 +102,7 @@ public class ProfessorView extends ActionBarActivity {
     	});
     }
 
+	/*
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar
@@ -146,6 +139,7 @@ public class ProfessorView extends ActionBarActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	*/
 	
 	protected void saveProfessorRating(ProfessorRating pr) {
 		if (!alreadySubmitted) {

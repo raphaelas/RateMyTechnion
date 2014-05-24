@@ -19,25 +19,18 @@ import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.SearchView.OnSuggestionListener;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.support.v7.widget.SearchView.OnSuggestionListener;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CursorAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 
 import com.serverapi.TechnionRankerAPI;
 
-public class SearchResults extends ActionBarActivity {
+public abstract class SearchResults extends ActionBarActivity {
 	TechnionRankerAPI db = new TechnionRankerAPI();
 	String[] professorsAndCourses = null;
 	android.support.v4.widget.CursorAdapter cursorAdapter;
@@ -46,12 +39,12 @@ public class SearchResults extends ActionBarActivity {
 
 		super.onCreate(savedInstance);
 		setContentView(R.layout.search_results);
-		Intent intent = getIntent();
+		/*Intent intent = getIntent();
 		String query = null;
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			query = intent.getStringExtra(SearchManager.QUERY);
 		}
-		query = "era";
+		query = "era";*/
 		// Course c1 = new Course(new Long(1), null, null, null, null, false);
 		// Course c = new TechnionRankerAPI().getCourse(c1);
 		// Log.d(getLocalClassName(), c.toString());
@@ -60,7 +53,7 @@ public class SearchResults extends ActionBarActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		final ListView view = (ListView) findViewById(R.id.list);
+		/*final ListView view = (ListView) findViewById(R.id.list);
 		SearchableAdapter adapt = new SearchableAdapter(query,SearchResults.this, professorsAndCourses);
 		view.setAdapter(adapt);
 		
@@ -94,7 +87,7 @@ public class SearchResults extends ActionBarActivity {
 				// list item
 				// do what you intend to do on click of listview row
 			}
-		});
+		});*/
 	}
 	
 	public String[] parseProfessors() {
@@ -293,7 +286,7 @@ public class SearchResults extends ActionBarActivity {
 		// widget;
 		// expand it by default
 		// searchView.setSubmitButtonEnabled(true);
-	    String[] columnNames = {"_id","text"};
+	    String[] columnNames = {"_id","coursesAndProfessors"};
 	    MatrixCursor cursor = new MatrixCursor(columnNames);
 	    String[] from = {"coursesAndProfessors"}; 
 	    int[] to = {R.id.lblListItem};
@@ -357,17 +350,19 @@ public class SearchResults extends ActionBarActivity {
 	    @Override
 	    public boolean onQueryTextChange(String newText) {
 	    	Log.d(getLocalClassName() + " -> onQueryTextChange()", newText);
-	        if (TextUtils.isEmpty(newText)) { //searchView.isExpanded() && 
-	            search("");
+	        if (!TextUtils.isEmpty(newText) && newText.length() > 1) { //searchView.isExpanded() && 
+		        search(newText);
 	        }
-	        search(newText);
+	        else {
+	        	search("ZZZZZZZZ");
+	        }
 	        return true;
 	    }
 
 	    public void search(String query) {
 	    	query = query.toLowerCase(Locale.ENGLISH);
 	    	Log.d(getLocalClassName() + " -> search()", query);
-		    String[] columnNames = {"_id","text"};
+		    String[] columnNames = {"_id","coursesAndProfessors"};
 		    MatrixCursor cursor = new MatrixCursor(columnNames);
 		    String[] temp = new String[2];
 		    int id = 0;

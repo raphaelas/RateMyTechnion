@@ -27,7 +27,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends SearchResults {
 	private TextView errorM;
 	private String username;
     private String password;
@@ -159,7 +159,7 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 	}
-
+/*
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar
@@ -182,7 +182,7 @@ public class MainActivity extends ActionBarActivity {
 		// searchView.setSubmitButtonEnabled(true);
 
 		return true;
-	}
+	}*/
 
 	/*
 	 * @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -208,7 +208,8 @@ public class MainActivity extends ActionBarActivity {
 	 * 
 	 * return true; }
 	 */
-	@Override
+	//@Override
+	/*
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
 
@@ -219,5 +220,5 @@ public class MainActivity extends ActionBarActivity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-	}
+	}*/
 }
