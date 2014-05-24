@@ -38,19 +38,19 @@ import com.serverapi.TechnionRankerAPI;
 
 public class SearchResults extends ActionBarActivity {
 	TechnionRankerAPI db = new TechnionRankerAPI();
+	String[] professorsAndCourses = null;
+	android.support.v4.widget.CursorAdapter cursorAdapter;
 	//@override
 	public void onCreate(Bundle savedInstance){
 
 		super.onCreate(savedInstance);
 		setContentView(R.layout.search_results);
-		Log.d(getLocalClassName(), "In Searchable");
 		Intent intent = getIntent();
 		String query = null;
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			query = intent.getStringExtra(SearchManager.QUERY);
 		}
 		
-		String[] professorsAndCourses = null;
 		// Course c1 = new Course(new Long(1), null, null, null, null, false);
 		// Course c = new TechnionRankerAPI().getCourse(c1);
 		// Log.d(getLocalClassName(), c.toString());
@@ -73,8 +73,6 @@ public class SearchResults extends ActionBarActivity {
 				TextView name = (TextView) parent.findViewById(R.id.lblListItem);
 				String value = name.getText().toString();
 				if (Character.isDigit(value.charAt(0))) {
-					Log.d(getLocalClassName(), value);
-					Log.d(getLocalClassName(), value.charAt(0)+"");
 					String[] splitted = value.split(" - ");
 					String courseNumber = splitted[0];
 					String courseName = splitted[1];
@@ -296,27 +294,18 @@ public class SearchResults extends ActionBarActivity {
 		// searchView.setSubmitButtonEnabled(true);
 	    String[] columnNames = {"_id","text"};
 	    MatrixCursor cursor = new MatrixCursor(columnNames);
-	    String[] array = concat(capsFix(parseCourses()), parseProfessors());
-	    String[] temp = new String[2];
-	    int id = 0;
-	    for(String item : array){
-	        temp[0] = Integer.toString(id++);
-	        temp[1] = item;
-	        Log.d(getLocalClassName(), item);
-	        cursor.addRow(temp);
-	    }               
 	    String[] from = {"text"}; 
 	    int[] to = {R.id.lblListItem};
-	    final android.support.v4.widget.CursorAdapter cursorAdapter = 
+	    cursorAdapter = 
 	    		new android.support.v4.widget.SimpleCursorAdapter(getApplicationContext(), R.layout.list_item, cursor, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER );
-        searchView.setSuggestionsAdapter(cursorAdapter);
         searchView.setOnQueryTextListener(searchQueryListener);
+        searchView.setSuggestionsAdapter(cursorAdapter);
         
-        searchView.setOnSuggestionListener(new OnSuggestionListener() {
+        /*searchView.setOnSuggestionListener(new OnSuggestionListener() {
 
            @Override
            public boolean onSuggestionClick(int position) {
-               String selectedItem = (String)cursorAdapter.getItem(position);
+               String selectedItem = cursorAdapter.getItem(position).toString();
                Log.v("search view", selectedItem);
                return false;
            }
@@ -325,15 +314,13 @@ public class SearchResults extends ActionBarActivity {
            public boolean onSuggestionSelect(int position) {
                return false;
            }
-        });
+        });*/
         return true;
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
-		Log.w("MyApp", "In options");
-
 		switch (item.getItemId()) {
 		case R.id.action_logout:
 			// openLoginPage(item);
@@ -346,21 +333,39 @@ public class SearchResults extends ActionBarActivity {
 	private OnQueryTextListener searchQueryListener = new OnQueryTextListener() {
 	    @Override
 	    public boolean onQueryTextSubmit(String query) {
+	    	Log.d(getLocalClassName() + " -> onQueryTextSubmit()", query);
+
 	        search(query);
 	        return true;
 	    }
 
 	    @Override
 	    public boolean onQueryTextChange(String newText) {
+	    	Log.d(getLocalClassName() + " -> onQueryTextChange()", newText);
 	        if (TextUtils.isEmpty(newText)) { //searchView.isExpanded() && 
 	            search("");
 	        }
-
+	        search(newText);
 	        return true;
 	    }
 
 	    public void search(String query) {
+	    	query = query.toLowerCase(Locale.ENGLISH);
+	    	Log.d(getLocalClassName() + " -> search()", query);
+		    String[] columnNames = {"_id","text"};
+		    MatrixCursor cursor = new MatrixCursor(columnNames);
+		    String[] temp = new String[2];
+		    int id = 0;
 	        // reset loader, swap cursor, etc.
+		    for(String item : professorsAndCourses){
+		    	String toCheck = item.toLowerCase(Locale.ENGLISH);
+		    	if (toCheck.contains(query)) {
+			        temp[0] = Integer.toString(id++);
+			        temp[1] = item;
+			        cursor.addRow(temp);
+		    	}
+		    }
+		    cursorAdapter.swapCursor(cursor);
 	    }
 
 	};

@@ -35,10 +35,8 @@ public class CourseView extends ActionBarActivity {
     	setContentView(R.layout.course_view);
     	textViewCourseRatingSubmitted = (TextView) findViewById(R.id.textViewCourseRatingSubmitted);
 		textViewCourseRatingSubmitted.setMaxLines(1);
-    	//final String courseNumber = "236369";
     	final Long studentId = Long.valueOf(0);
-    	//Uncomment this eventually:
-		Bundle bundle = getIntent().getExtras();
+    			Bundle bundle = getIntent().getExtras();
     	final String courseNumber = bundle.getString("courseNumber");
     	final String courseName = bundle.getString("courseName");
 		TextView textViewCourseName = (TextView) findViewById(R.id.textViewCourseName);
