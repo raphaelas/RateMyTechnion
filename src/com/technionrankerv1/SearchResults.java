@@ -38,7 +38,7 @@ public abstract class SearchResults extends ActionBarActivity {
 	public void onCreate(Bundle savedInstance){
 
 		super.onCreate(savedInstance);
-		setContentView(R.layout.search_results);
+		//setContentView(R.layout.search_results);
 		/*Intent intent = getIntent();
 		String query = null;
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
