@@ -354,7 +354,10 @@ public abstract class SearchResults extends ActionBarActivity {
 		        search(newText);
 	        }
 	        else {
-	        	search("ZZZZZZZZ");
+	        	//Swap cursor with blank cursor to remove all suggestions.
+			    String[] columnNames = {"_id","coursesAndProfessors"};
+			    MatrixCursor cursor = new MatrixCursor(columnNames);
+	        	cursorAdapter.swapCursor(cursor);
 	        }
 	        return true;
 	    }
