@@ -108,7 +108,6 @@ public class WelcomeView extends ActionBarActivity implements
 	}
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
-		Log.w("MyApp", "In options");
 
 		switch (item.getItemId()) {
 		case R.id.action_logout:

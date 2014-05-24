@@ -12,6 +12,7 @@ import java.util.Locale;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -50,7 +51,7 @@ public class SearchResults extends ActionBarActivity {
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			query = intent.getStringExtra(SearchManager.QUERY);
 		}
-		
+		query = "era";
 		// Course c1 = new Course(new Long(1), null, null, null, null, false);
 		// Course c = new TechnionRankerAPI().getCourse(c1);
 		// Log.d(getLocalClassName(), c.toString());
@@ -59,8 +60,8 @@ public class SearchResults extends ActionBarActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		SearchableAdapter adapt = new SearchableAdapter(query,SearchResults.this, professorsAndCourses);
 		final ListView view = (ListView) findViewById(R.id.list);
+		SearchableAdapter adapt = new SearchableAdapter(query,SearchResults.this, professorsAndCourses);
 		view.setAdapter(adapt);
 		
 		view.setOnItemClickListener(new OnItemClickListener() {
@@ -281,7 +282,7 @@ public class SearchResults extends ActionBarActivity {
 		MenuItem searchItem = menu.findItem(R.id.action_search);
 		SearchView searchView = (SearchView) MenuItemCompat
 				.getActionView(searchItem);
-		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 		// SearchView searchView = (SearchView)
 		// menu.findItem(R.id.action_search)
 		// .getActionView();
@@ -300,21 +301,39 @@ public class SearchResults extends ActionBarActivity {
 	    		new android.support.v4.widget.SimpleCursorAdapter(getApplicationContext(), R.layout.list_item, cursor, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER );
         searchView.setOnQueryTextListener(searchQueryListener);
         searchView.setSuggestionsAdapter(cursorAdapter);
-        
-        /*searchView.setOnSuggestionListener(new OnSuggestionListener() {
+        searchView.setOnSuggestionListener(new OnSuggestionListener() {
 
            @Override
            public boolean onSuggestionClick(int position) {
-               String selectedItem = cursorAdapter.getItem(position).toString();
-               Log.v("search view", selectedItem);
-               return false;
+        	   Cursor c = (MatrixCursor) cursorAdapter.getItem(position);
+        	   String value =  c.getString(c.getColumnIndexOrThrow("text"));
+               Log.d(getLocalClassName(), value);
+               //String selectedItem = ((MatrixCursor) cursorAdapter.getItem(position))
+        	   //String selectedItem = cursorAdapter.getItem(position).getClass().getSimpleName();
+        	   if (Character.isDigit(value.charAt(0))) {
+					String[] splitted = value.split(" - ");
+					String courseNumber = splitted[0];
+					String courseName = splitted[1];
+					Intent i = new Intent(SearchResults.this, CourseView.class);
+					i.putExtra("courseNumber", courseNumber);
+					i.putExtra("courseName", courseName);
+					startActivity(i);
+				}
+				else if (value.equals("No Results")) { //Do nothing
+				}
+				else {
+					Intent i = new Intent(SearchResults.this, ProfessorView.class);
+					i.putExtra("professorName", value);
+					startActivity(i);
+				}
+               return true;
            }
 
            @Override
            public boolean onSuggestionSelect(int position) {
                return false;
            }
-        });*/
+        });
         return true;
 	}
 	
