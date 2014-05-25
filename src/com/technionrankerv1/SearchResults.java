@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
@@ -40,12 +41,72 @@ public abstract class SearchResults extends ActionBarActivity {
 	public void onCreate(Bundle savedInstance){
 
 		super.onCreate(savedInstance);
+		professorsAndCourses = concat(capsFix(parseCourses()), parseProfessors());
+		//Uncomment this if you want a hashmap translating professor names hebrew/english:
+		//HashMap<String, String> hebrewTranslations = parseHebrewProfessors();
+	}
+	
+	public HashMap<String, String> parseHebrewProfessors() {
+		HashMap<String, String> hebrewTranslations = new HashMap<String, String>();
+		String inputLine;
+		BufferedReader infile;
+		int start;
+		int end;
+		String englishName = null;
+		String hebrewName;
+		boolean arrivedAtProfessors = false;
 		try {
-			professorsAndCourses = concat(capsFix(parseCourses()), parseProfessors());
-		} catch (Exception e) {
+			String[] hebrewProfessorFiles = getAssets().list("HebrewProfessorListingsEncoded");
+			for (int i = 0; i < hebrewProfessorFiles.length; i++) {
+				arrivedAtProfessors = false;
+				infile = new BufferedReader(new InputStreamReader(
+						getAssets().open("HebrewProfessorListingsEncoded/" + hebrewProfessorFiles[i])));
+				while (infile.ready()) {// while more info exists
+					inputLine = infile.readLine();
+					if (inputLine.contains("mailto:")  && arrivedAtProfessors == true) {
+						start = inputLine.indexOf("[") + 1;
+						end = inputLine.indexOf("]");
+						englishName = inputLine.substring(start, end);
+						//Make name first name last name.
+						String[] splittedOnSpace = englishName.split(" ");
+						if (splittedOnSpace.length == 2) {
+							englishName = "" + splittedOnSpace[1] + " " + splittedOnSpace[0];
+						}
+						else {
+							englishName = "" + splittedOnSpace[0];
+						}
+					}
+					else if (inputLine.contains("GetEmployeeDetails") && arrivedAtProfessors == true) {
+						start = inputLine.indexOf(">") + 1;
+						end = inputLine.length();
+						hebrewName = inputLine.substring(start, end);
+						String[] splittedOnSpace = hebrewName.split(" ");
+						if (splittedOnSpace.length == 2) {
+							hebrewName = "" + splittedOnSpace[1] + " " + splittedOnSpace[0];
+						}
+						else {
+							hebrewName = "" + splittedOnSpace[0];
+						}
+						if (englishName == null || hebrewName == null) {
+							//There's a null name, so throw an exception 
+							//(albeit IOException is not proper type but it works)
+							throw new IOException(); 
+						}
+						hebrewTranslations.put(englishName, hebrewName);
+					}
+					else if (inputLine.contains("searchtable")) {
+						arrivedAtProfessors = true;
+					}
+				}
+				infile.close();
+			}
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
+		return hebrewTranslations;
 	}
+	
 	
 	public String[] parseProfessors() {
 		ArrayList<String> profList = new ArrayList<String>();
@@ -85,7 +146,6 @@ public abstract class SearchResults extends ActionBarActivity {
 				infile.close();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return profListArray;
@@ -134,8 +194,8 @@ public abstract class SearchResults extends ActionBarActivity {
 		String[] numbersAndNamesToReturn = Arrays.copyOf(allNumbersAndNames,
 				allNumbersAndNames.length, String[].class);
 		//Code to populate database:
-		//ClientAsync as = new ClientAsync();
-		//as.execute(numbersAndNamesToReturn);
+		ClientAsync as = new ClientAsync();
+		as.execute(numbersAndNamesToReturn);
 		return numbersAndNamesToReturn;
 	} // parse()
 
@@ -298,15 +358,12 @@ public abstract class SearchResults extends ActionBarActivity {
 	private OnQueryTextListener searchQueryListener = new OnQueryTextListener() {
 	    @Override
 	    public boolean onQueryTextSubmit(String query) {
-	    	Log.d(getLocalClassName() + " -> onQueryTextSubmit()", query);
-
 	        search(query);
 	        return true;
 	    }
 
 	    @Override
 	    public boolean onQueryTextChange(String newText) {
-	    	Log.d(getLocalClassName() + " -> onQueryTextChange()", newText);
 	        if (!TextUtils.isEmpty(newText) && newText.length() > 1) { //searchView.isExpanded() && 
 		        search(newText);
 	        }
@@ -320,13 +377,12 @@ public abstract class SearchResults extends ActionBarActivity {
 	    }
 
 	    public void search(String query) {
+	        // reset loader, swap cursor, etc.
 	    	query = query.toLowerCase(Locale.ENGLISH);
-	    	Log.d(getLocalClassName() + " -> search()", query);
 		    String[] columnNames = {"_id","coursesAndProfessors"};
 		    MatrixCursor cursor = new MatrixCursor(columnNames);
 		    String[] temp = new String[2];
 		    int id = 0;
-	        // reset loader, swap cursor, etc.
 		    for(String item : professorsAndCourses){
 		    	String toCheck = item.toLowerCase(Locale.ENGLISH);
 		    	if (toCheck.contains(query)) {
@@ -340,12 +396,12 @@ public abstract class SearchResults extends ActionBarActivity {
 
 	};
 	
+	
 	/**
 	 * This is used whenever we need to populate the courses
 	 * or professors database tables.
 	 */
-	/*
-	private class ClientAsync extends AsyncTask<String, Void, String> {
+	private class ClientAsync extends AsyncTask<String, Void, Course> {
 
 		public ClientAsync() {
 		}
@@ -355,11 +411,17 @@ public abstract class SearchResults extends ActionBarActivity {
 			super.onPreExecute();
 		}
 
+		/**
+		 * This is the method that does the database call.  Comment
+		 * everything in this method to ignore the database.
+		 */
 		@Override
-		protected String doInBackground(String... params) {
+		protected Course doInBackground(String... params) {
+			Course result = null;
+			/* This would populate the courses database:
 			Log.d(getLocalClassName(), String.valueOf(params.length));
 			String result = null;
-			for (int i = 100; i < params.length; i++) {
+			for (int i = 0; i < params.length; i++) {
 				String[] splitted = params[i].split(" - ");
 				String number = splitted[0];
 				String name = splitted[1];
@@ -368,18 +430,24 @@ public abstract class SearchResults extends ActionBarActivity {
 				result = db.insertCourse(c).toString();
 			}
 			return result;
+			*/
+			/* This would get an example course:
+			Course c = new Course(Long.valueOf(3), null, null, null, null, true);
+			result = db.getCourse(c);
+			*/
+			return result;
 		}
 
 		@Override
-		protected void onPostExecute(String res) {
+		protected void onPostExecute(Course res) {
 			if (res == null)
 				Log.d(getLocalClassName(), "unsuccessful");
 			else {
-				Log.d(getLocalClassName(), res);
+				Log.d(getLocalClassName(), res.getName());
 			}
 		}
 	}
-	*/
+	
 }
 
 
