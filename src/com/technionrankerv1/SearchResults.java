@@ -229,23 +229,20 @@ public abstract class SearchResults extends ActionBarActivity {
 				.getSearchableInfo(getComponentName()));
 		 // Do not iconify the widget; expand it by default
 		searchView.setIconifiedByDefault(false);
-	       //these flags together with the search view layout expand the search view in the landscape mode
-        searchItem.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW
-                | MenuItem.SHOW_AS_ACTION_ALWAYS);
+		//This onclicklistener widens the search text:
 		searchView.setOnSearchClickListener(new OnClickListener() {
 		    private boolean extended = false;
-
 		    @Override
 		    public void onClick(View v) {
 		        if (!extended) {
 		            extended = true;
 		            LayoutParams lp = v.getLayoutParams();
-		            lp.width = 600;
+		            LayoutParams lp2 = ((View) v.getParent()).getLayoutParams();
+		            lp2.width = LayoutParams.MATCH_PARENT;
+		            lp.width = LayoutParams.MATCH_PARENT;
 		        }
 		    }
-
 		});
-
 	    String[] columnNames = {"_id","coursesAndProfessors"};
 	    MatrixCursor cursor = new MatrixCursor(columnNames);
 	    String[] from = {"coursesAndProfessors"}; 
