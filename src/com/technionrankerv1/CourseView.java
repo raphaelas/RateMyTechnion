@@ -110,44 +110,6 @@ public class CourseView extends SearchResults {
     	});
     }
     
-    /*
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu items for use in the action bar
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main_activity_actions, menu);
-		// Get the SearchView and set the searchable configuration
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		SearchView searchView = (SearchView) MenuItemCompat
-				.getActionView(searchItem);
-		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		// SearchView searchView = (SearchView)
-		// menu.findItem(R.id.action_search)
-		// .getActionView();
-		// Assumes current activity is the searchable activity
-		searchView.setSearchableInfo(searchManager
-				.getSearchableInfo(getComponentName()));
-		searchView.setIconifiedByDefault(false); // Do not iconify the
-		// widget;
-		// expand it by default
-		// searchView.setSubmitButtonEnabled(true);
-
-		return true;
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle presses on the action bar items
-		switch (item.getItemId()) {
-		case R.id.action_logout:
-			// openLoginPage(item);
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-	*/
-    
     protected void saveRatings(CourseRating cr) {
 		if (!alreadySubmitted) {
 			textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
@@ -178,17 +140,11 @@ public class CourseView extends SearchResults {
 
 		@Override
 		protected void onPreExecute() {
-			// TODO Auto-generated method stub
 			super.onPreExecute();
-			//tvStatus.setText("wait..");
 		}
 
 		@Override
 		protected Course doInBackground(Course... params) {
-			//Course c = new Course(null, "Geology", "01", (long) 5,
-			//		"Spring 2011", true);
-			//return new TechnionRankerAPI().insertCourse(c).toString();
-			//TODO: check that 50 - 100 succeeded.
 	    	Course courseToLookUp = params[0];
 	    	Course theCourse = new TechnionRankerAPI().getCourse(courseToLookUp);
 			return theCourse;
@@ -199,7 +155,6 @@ public class CourseView extends SearchResults {
 			if (res == null)
 				Log.d(getLocalClassName(), "Course clientAsync unsuccessful");
 			else {
-			    //delegate.processFinish(res);
 				Log.d(getLocalClassName(), res.getName());
 		    	courseId = res.getId();
 			}
@@ -213,17 +168,11 @@ public class CourseView extends SearchResults {
 
 		@Override
 		protected void onPreExecute() {
-			// TODO Auto-generated method stub
 			super.onPreExecute();
-			//tvStatus.setText("wait..");
 		}
 
 		@Override
 		protected String doInBackground(CourseComment... params) {
-			//Course c = new Course(null, "Geology", "01", (long) 5,
-			//		"Spring 2011", true);
-			//return new TechnionRankerAPI().insertCourse(c).toString();
-			//TODO: check that 50 - 100 succeeded.
 	    	CourseComment cc = params[0];
 	    	String result = new TechnionRankerAPI().insertCourseComment(cc).toString();
 			return result;
@@ -234,7 +183,6 @@ public class CourseView extends SearchResults {
 			if (res == null)
 				Log.d(getLocalClassName(), "CourseComment clientAsync unsuccessful");
 			else {
-			    //delegate.processFinish(res);
 				Log.d(getLocalClassName(), res);
 			}
 		}
@@ -247,17 +195,11 @@ public class CourseView extends SearchResults {
 
 		@Override
 		protected void onPreExecute() {
-			// TODO Auto-generated method stub
 			super.onPreExecute();
-			//tvStatus.setText("wait..");
 		}
 
 		@Override
 		protected String doInBackground(CourseRating... params) {
-			//Course c = new Course(null, "Geology", "01", (long) 5,
-			//		"Spring 2011", true);
-			//return new TechnionRankerAPI().insertCourse(c).toString();
-			//TODO: check that 50 - 100 succeeded.
 	    	CourseRating cr = params[0];
 	    	String result = new TechnionRankerAPI().insertCourseRating(cr).toString();
 			return result;
@@ -272,7 +214,6 @@ public class CourseView extends SearchResults {
 			}
 			
 			else {
-			    //delegate.processFinish(res);
 				//Log.d(getLocalClassName(), res);
 				textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
 				textViewCourseRatingSubmitted.setText("Thank you.  Your rating was received.");

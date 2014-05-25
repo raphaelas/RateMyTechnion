@@ -7,25 +7,16 @@ import org.jsoup.Connection.Method;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends SearchResults {
 	private TextView errorM;
@@ -159,66 +150,4 @@ public class MainActivity extends SearchResults {
 			}
 		});
 	}
-/*
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu items for use in the action bar
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main_activity_actions, menu);
-		// Get the SearchView and set the searchable configuration
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		SearchView searchView = (SearchView) MenuItemCompat
-				.getActionView(searchItem);
-		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		// SearchView searchView = (SearchView)
-		// menu.findItem(R.id.action_search)
-		// .getActionView();
-		// Assumes current activity is the searchable activity
-		searchView.setSearchableInfo(searchManager
-				.getSearchableInfo(getComponentName()));
-		searchView.setIconifiedByDefault(false); // Do not iconify the
-		// widget;
-		// expand it by default
-		// searchView.setSubmitButtonEnabled(true);
-
-		return true;
-	}*/
-
-	/*
-	 * @Override public boolean onCreateOptionsMenu(Menu menu) {
-	 * getMenuInflater().inflate(R.menu.main_activity_actions, menu); MenuItem
-	 * searchItem = menu.findItem(R.id.action_search); SearchView searchView =
-	 * (SearchView) MenuItemCompat.getActionView(searchItem); // Configure the
-	 * search info and add any event listeners ... return
-	 * super.onCreateOptionsMenu(menu); }
-	 * 
-	 * @Override public boolean onCreateOptionsMenu(Menu menu) { // Inflate the
-	 * options menu from XML MenuInflater inflater = getMenuInflater();
-	 * inflater.inflate(R.menu.options_menu, menu);
-	 * 
-	 * // Get the SearchView and set the searchable configuration SearchManager
-	 * searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-	 * SearchView searchView = (SearchView)
-	 * menu.findItem(R.id.menu_search).getActionView(); // Assumes current
-	 * activity is the searchable activity
-	 * searchView.setSearchableInfo(searchManager
-	 * .getSearchableInfo(getComponentName()));
-	 * searchView.setIconifiedByDefault(false); // Do not iconify the widget;
-	 * expand it by default
-	 * 
-	 * return true; }
-	 */
-	//@Override
-	/*
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle presses on the action bar items
-
-		switch (item.getItemId()) {
-		case R.id.action_logout:
-			// openLoginPage(item);
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}*/
 }

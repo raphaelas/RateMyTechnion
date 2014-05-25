@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
@@ -26,6 +25,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.CursorAdapter;
 
 import com.serverapi.TechnionRankerAPI;
@@ -38,56 +40,11 @@ public abstract class SearchResults extends ActionBarActivity {
 	public void onCreate(Bundle savedInstance){
 
 		super.onCreate(savedInstance);
-		//setContentView(R.layout.search_results);
-		/*Intent intent = getIntent();
-		String query = null;
-		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-			query = intent.getStringExtra(SearchManager.QUERY);
-		}
-		query = "era";*/
-		// Course c1 = new Course(new Long(1), null, null, null, null, false);
-		// Course c = new TechnionRankerAPI().getCourse(c1);
-		// Log.d(getLocalClassName(), c.toString());
 		try {
 			professorsAndCourses = concat(capsFix(parseCourses()), parseProfessors());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		/*final ListView view = (ListView) findViewById(R.id.list);
-		SearchableAdapter adapt = new SearchableAdapter(query,SearchResults.this, professorsAndCourses);
-		view.setAdapter(adapt);
-		
-		view.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View v,
-					int position, long arg3) {
-				//Log.d(getLocalClassName(), v.getItemAtPosition(position).toString());
-				//String value = view.getItemAtPosition(position).toString();
-			    LinearLayout parent = (LinearLayout) v;
-				TextView name = (TextView) parent.findViewById(R.id.lblListItem);
-				String value = name.getText().toString();
-				if (Character.isDigit(value.charAt(0))) {
-					String[] splitted = value.split(" - ");
-					String courseNumber = splitted[0];
-					String courseName = splitted[1];
-					Intent i = new Intent(SearchResults.this, CourseView.class);
-					i.putExtra("courseNumber", courseNumber);
-					i.putExtra("courseName", courseName);
-					startActivity(i);
-				}
-				else if (value.equals("No Results")) {
-					return;
-				}
-				else {
-					Intent i = new Intent(SearchResults.this, ProfessorView.class);
-					i.putExtra("professorName", value);
-					startActivity(i);
-				}
-				// assuming string and if you want to get the value on click of
-				// list item
-				// do what you intend to do on click of listview row
-			}
-		});*/
 	}
 	
 	public String[] parseProfessors() {
@@ -117,11 +74,9 @@ public abstract class SearchResults extends ActionBarActivity {
 						String firstNameLastName;
 						if (splittedOnSpace.length == 2) {
 							firstNameLastName = "" + splittedOnSpace[1] + " " + splittedOnSpace[0];
-							//Log.d(splittedOnSpace[0], splittedOnSpace[1]);
 						}
 						else {
 							firstNameLastName = "" + splittedOnSpace[0];
-							//Log.d(getLocalClassName(), splittedOnSpace[0]);
 						}
 						profList.add(firstNameLastName);
 					}
@@ -175,12 +130,6 @@ public abstract class SearchResults extends ActionBarActivity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Object[] courseNumberObjectArray = map.keySet().toArray();
-		Object[] courseNameObjectArray = map.values().toArray();
-		String[] allCourses = Arrays.copyOf(courseNameObjectArray,
-				courseNameObjectArray.length, String[].class);
-		String[] allNumbers = Arrays.copyOf(courseNumberObjectArray,
-				courseNumberObjectArray.length, String[].class);
 		Object[] allNumbersAndNames = numberAndName.toArray();
 		String[] numbersAndNamesToReturn = Arrays.copyOf(allNumbersAndNames,
 				allNumbersAndNames.length, String[].class);
@@ -188,7 +137,6 @@ public abstract class SearchResults extends ActionBarActivity {
 		//ClientAsync as = new ClientAsync();
 		//as.execute(numbersAndNamesToReturn);
 		return numbersAndNamesToReturn;
-		//return concat(allCourses, allNumbers);
 	} // parse()
 
 	String[] concat(String[] a, String[] b) {
@@ -276,16 +224,28 @@ public abstract class SearchResults extends ActionBarActivity {
 		SearchView searchView = (SearchView) MenuItemCompat
 				.getActionView(searchItem);
 		final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		// SearchView searchView = (SearchView)
-		// menu.findItem(R.id.action_search)
-		// .getActionView();
 		// Assumes current activity is the searchable activity
 		searchView.setSearchableInfo(searchManager
 				.getSearchableInfo(getComponentName()));
-		searchView.setIconifiedByDefault(false); // Do not iconify the
-		// widget;
-		// expand it by default
-		// searchView.setSubmitButtonEnabled(true);
+		 // Do not iconify the widget; expand it by default
+		searchView.setIconifiedByDefault(false);
+	       //these flags together with the search view layout expand the search view in the landscape mode
+        searchItem.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW
+                | MenuItem.SHOW_AS_ACTION_ALWAYS);
+		searchView.setOnSearchClickListener(new OnClickListener() {
+		    private boolean extended = false;
+
+		    @Override
+		    public void onClick(View v) {
+		        if (!extended) {
+		            extended = true;
+		            LayoutParams lp = v.getLayoutParams();
+		            lp.width = 600;
+		        }
+		    }
+
+		});
+
 	    String[] columnNames = {"_id","coursesAndProfessors"};
 	    MatrixCursor cursor = new MatrixCursor(columnNames);
 	    String[] from = {"coursesAndProfessors"}; 
@@ -383,6 +343,11 @@ public abstract class SearchResults extends ActionBarActivity {
 
 	};
 	
+	/**
+	 * This is used whenever we need to populate the courses
+	 * or professors database tables.
+	 */
+	/*
 	private class ClientAsync extends AsyncTask<String, Void, String> {
 
 		public ClientAsync() {
@@ -390,9 +355,7 @@ public abstract class SearchResults extends ActionBarActivity {
 
 		@Override
 		protected void onPreExecute() {
-			// TODO Auto-generated method stub
 			super.onPreExecute();
-			//tvStatus.setText("wait..");
 		}
 
 		@Override
@@ -413,14 +376,13 @@ public abstract class SearchResults extends ActionBarActivity {
 		@Override
 		protected void onPostExecute(String res) {
 			if (res == null)
-				//tvStatus.setText("null");
 				Log.d(getLocalClassName(), "unsuccessful");
 			else {
-				//tvStatus.setText(res);
 				Log.d(getLocalClassName(), res);
 			}
 		}
 	}
+	*/
 }
 
 
