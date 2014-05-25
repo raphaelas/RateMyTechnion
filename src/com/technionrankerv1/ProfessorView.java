@@ -1,11 +1,14 @@
 package com.technionrankerv1;
 
+import java.sql.Time;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.TextView;
@@ -34,9 +37,9 @@ public class ProfessorView extends SearchResults {
     	TextView professorNameText = (TextView) findViewById(R.id.professorNameText);
     	professorNameText.setText(lookupProfessorName);
     	Professor lookupProfessor = new Professor(null, lookupProfessorName, true);
-    	/* Bring this back as soon as our database really works:
     	ProfessorClientAsync as = new ProfessorClientAsync();
     	as.execute(lookupProfessor);
+    	/* Bring this back as soon as our database really works:
     	try {
 			as.get(); //This will block until the professor is gotten.
 		} catch (InterruptedException e) {
@@ -46,14 +49,6 @@ public class ProfessorView extends SearchResults {
 		}
     	 */
     	final Long studentId = Long.valueOf(0); //savedInstanceState.getLong("studentId");
-    	/* Bring back when we implement comments:
-    	Button commentButton = (Button) findViewById(R.id.professorCommentButton);
-    	commentButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				createProfessorComment(professorId, studentId);
-			}
-		}); */
     	RatingBar rOverall = (RatingBar) findViewById(R.id.professorRatingBarOverall);
     	RatingBar rClarity = (RatingBar) findViewById(R.id.professorRatingBarClarity);
     	RatingBar rPreparedness = (RatingBar) findViewById(R.id.professorRatingBarPreparedness);
@@ -67,6 +62,7 @@ public class ProfessorView extends SearchResults {
 			@Override
 			public void onClick(View v) {
 				saveProfessorRating(pr);
+				createProfessorComment(pr.getProfessorID(), pr.getStudentID());
 			}
 		});
     	rOverall.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
@@ -116,14 +112,13 @@ public class ProfessorView extends SearchResults {
 	}
 
 	protected void createProfessorComment(Long professorId, Long studentId) {
-		/*
     	EditText et = (EditText) findViewById(R.id.professorComment);
     	String commentText = et.getText().toString();
     	long currTimeMillis = System.currentTimeMillis();
     	Time currentTime = new Time(currTimeMillis);
     	ProfessorComment pc = new ProfessorComment(professorId, studentId, commentText, currentTime, 0);
-    	new TechnionRankerAPI().insertProfessorComment(pc);
-    	*/
+    	ProfessorCommentClientAsync as2 = new ProfessorCommentClientAsync();
+    	as2.execute(pc);
 	}
 	
 	private class ProfessorClientAsync extends AsyncTask<Professor, Void, Professor> {
@@ -187,7 +182,7 @@ public class ProfessorView extends SearchResults {
 		}
 	}
 	
-	/*
+	
 	private class ProfessorCommentClientAsync extends AsyncTask<ProfessorComment, Void, String> {
 		public ProfessorCommentClientAsync() {
 		}
@@ -213,5 +208,5 @@ public class ProfessorView extends SearchResults {
 			}
 		}
 	}
-	*/
+	
 }

@@ -8,7 +8,6 @@ import java.util.Scanner;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import android.util.Log;
 
 /**
  * Created on 07/11/2013

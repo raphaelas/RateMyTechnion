@@ -1,11 +1,14 @@
 package com.technionrankerv1;
 
+import java.sql.Time;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.TextView;
@@ -35,11 +38,12 @@ public class CourseView extends SearchResults {
 		textViewCourseName.setText(courseName);
 		TextView textViewCourseNumber = (TextView) findViewById(R.id.textViewCourseNumber);
 		textViewCourseNumber.setText(courseNumber);
+		//We will need studentId passed in - not currently the case.
     	//final Long studentId = savedInstanceState.getLong("studentId");
     	Course c = new Course(null, null, courseNumber, null, null, false);
-    	/* Bring this back once our database really works:
 		ClientAsync as = new ClientAsync();
 		as.execute(c);
+		/* Bring this back once our database really works:
 		try {
 			as.get(); //This will block until as.execute completes
 		} catch (InterruptedException e) {
@@ -50,26 +54,11 @@ public class CourseView extends SearchResults {
 			e.printStackTrace();
 		}
 		*/
-		/* Bring this code back once we implement comments:
-    	Button commentButton = (Button) findViewById(R.id.comment_button);
-    	commentButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				createComment(courseId, studentId);
-			}
-		});
-		*/
-    	//Only one of these "given" variables will be used.  Hopefully givenCourse.
-    	//String givenCourseName = savedInstanceState.getString("courseName");
-    	//Course givenCourse = (Course) savedInstanceState.get("course");
     	
     	RatingBar rOverall = (RatingBar) findViewById(R.id.ratingBarOverall);
     	RatingBar rEnjoyability = (RatingBar) findViewById(R.id.ratingBarEnjoyability);
     	RatingBar rUsefulness = (RatingBar) findViewById(R.id.ratingBarUsefulness);
     	RatingBar rDifficulty = (RatingBar) findViewById(R.id.ratingBarDifficulty);
-    	//Long courseId = getCourse(findViewById(R.id.textViewCourseNumber).toString());
-    	//Long courseId = Long.valueOf(0);
-    	//TODO: Button for saving changed rating stars.
     	final CourseRating cr = new CourseRating(studentId, Long.valueOf(courseNumber),
     			Math.round(rOverall.getRating()), Math.round(rEnjoyability.getRating()),
     			Math.round(rUsefulness.getRating()), Math.round(rDifficulty.getRating()));
@@ -78,6 +67,7 @@ public class CourseView extends SearchResults {
 			@Override
 			public void onClick(View v) {
 				saveRatings(cr);
+				createComment(cr.getCourseId(), cr.getStudentID());
 			}
 		});
     	rOverall.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
@@ -124,14 +114,13 @@ public class CourseView extends SearchResults {
     }
     
 	public void createComment(Long courseId, Long studentId) {
-    	/* Bring this code back once we implement comments:
+		EditText et = (EditText) findViewById(R.id.comment);
     	String commentText = et.getText().toString();
     	long currTimeMillis = System.currentTimeMillis();
     	Time currentTime = new Time(currTimeMillis);
     	CourseComment cc = new CourseComment(courseId, studentId, commentText, currentTime, 0);
     	CourseCommentClientAsync as2 = new CourseCommentClientAsync();
     	as2.execute(cc);
-    	*/
     }
 	
 	private class ClientAsync extends AsyncTask<Course, Void, Course> {
@@ -161,7 +150,7 @@ public class CourseView extends SearchResults {
 		}
 	}
 	
-	/*
+	
 	private class CourseCommentClientAsync extends AsyncTask<CourseComment, Void, String> {
 		public CourseCommentClientAsync() {
 		}
@@ -183,11 +172,11 @@ public class CourseView extends SearchResults {
 			if (res == null)
 				Log.d(getLocalClassName(), "CourseComment clientAsync unsuccessful");
 			else {
-				Log.d(getLocalClassName(), res);
+				Log.d(getLocalClassName(), "CourseComment saving: " + res);
 			}
 		}
 	}
-	*/
+	
 	
 	private class CourseRatingClientAsync extends AsyncTask<CourseRating, Void, String> {
 		public CourseRatingClientAsync() {
@@ -208,13 +197,11 @@ public class CourseView extends SearchResults {
 		@Override
 		protected void onPostExecute(String res) {
 			if (res == null) {
-				//Log.d(getLocalClassName(), "CourseRating ClientAsync unsuccessful");
 				textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.red));
 				textViewCourseRatingSubmitted.setText("Sorry, please try submitting your rating again.");
 			}
 			
 			else {
-				//Log.d(getLocalClassName(), res);
 				textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
 				textViewCourseRatingSubmitted.setText("Thank you.  Your rating was received.");
 				alreadySubmitted = true;

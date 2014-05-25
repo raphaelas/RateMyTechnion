@@ -3,8 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/scrollView1"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/black" >
+        android:layout_height="wrap_content" >
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -175,7 +174,40 @@
                 android:layout_height="0.1dp"
                 android:layout_marginBottom="5dp"
                 android:background="@android:color/white" />
-                                <Button
+            
+        <!-- This is the comments section: -->
+                                                                  
+            <LinearLayout
+                android:id="@+id/third_lin_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="0dip"
+                android:layout_marginBottom="2dp"
+                android:layout_weight="0.36"
+                android:background="@android:color/black"
+                android:orientation="horizontal" >
+
+                <EditText
+                    android:id="@+id/professorComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@android:color/black"
+                    android:hint="@string/commentHint"
+                    android:maxLines="2"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white"
+                    android:textCursorDrawable="@null" />
+            </LinearLayout>
+                
+                            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/white" />
+                
+                                                <Button
                     android:id="@+id/professorRatingButton"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
@@ -200,48 +232,5 @@
             android:layout_gravity="center"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/red" />
-            <!--  Comment functionality:
-            <LinearLayout
-                android:id="@+id/third_lin_layout"
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="0dip"
-                android:layout_marginBottom="2dp"
-                android:layout_weight="0.36"
-                android:background="@android:color/white" >
-
-                <EditText
-                    android:id="@+id/professorComment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:hint="@string/professorCommentHint" >
-                </EditText>
-
-                <Button
-                    android:id="@+id/professorCommentButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:background="@color/LoginBorderColor"
-                    android:orientation="horizontal"
-                    android:shadowColor="@android:color/black"
-                    android:shadowDx="1"
-                    android:shadowDy="1"
-                    android:shadowRadius="1"
-                    android:text="@string/professorSubmit"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-<Button
-            android:id="@+id/button1"
-            android:layout_width="215dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="18dp"
-            android:background="@color/LoginBorderColor"
-            android:text="@string/string4"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textColorLink="@color/black" />
-            </LinearLayout>
-            -->
         </LinearLayout>
     </ScrollView>
