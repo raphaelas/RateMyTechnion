@@ -28,7 +28,6 @@ public class MainActivity extends SearchResults {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sign_in);
 		errorM = (TextView) findViewById(R.id.textView1);
-		errorM.setMaxLines(1);
 		final EditText passwordInput = (EditText) findViewById(R.id.editText2);
 		passwordInput.setOnKeyListener(new OnKeyListener() {
 		    public boolean onKey(View v, int keyCode, KeyEvent event) {

@@ -29,7 +29,6 @@ public class CourseView extends SearchResults {
         super.onCreate(savedInstanceState);
     	setContentView(R.layout.course_view);
     	textViewCourseRatingSubmitted = (TextView) findViewById(R.id.textViewCourseRatingSubmitted);
-		textViewCourseRatingSubmitted.setMaxLines(1);
     	final Long studentId = Long.valueOf(0);
     			Bundle bundle = getIntent().getExtras();
     	final String courseNumber = bundle.getString("courseNumber");

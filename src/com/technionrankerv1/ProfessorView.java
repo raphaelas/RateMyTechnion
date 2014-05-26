@@ -31,7 +31,6 @@ public class ProfessorView extends SearchResults {
         super.onCreate(savedInstanceState);
     	setContentView(R.layout.prof_view);
     	textViewProfessorRatingSubmitted = (TextView) findViewById(R.id.textViewProfessorRatingSubmitted);
-		textViewProfessorRatingSubmitted.setMaxLines(1);
 		Bundle bundle = getIntent().getExtras();
     	String lookupProfessorName = bundle.getString("professorName");
     	TextView professorNameText = (TextView) findViewById(R.id.professorNameText);

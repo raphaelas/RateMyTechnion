@@ -364,7 +364,8 @@ public abstract class SearchResults extends ActionBarActivity {
 
 	    @Override
 	    public boolean onQueryTextChange(String newText) {
-	        if (!TextUtils.isEmpty(newText) && newText.length() > 1) { //searchView.isExpanded() && 
+	    	final int CHARACTER_THRESHOLD = 0;
+	        if (!TextUtils.isEmpty(newText) && newText.length() > CHARACTER_THRESHOLD) { //searchView.isExpanded() && 
 		        search(newText);
 	        }
 	        else {

@@ -34,7 +34,6 @@ public class WelcomeView extends SearchResults implements
 
 		final TextView myText = (TextView) findViewById(R.id.textView23);
 		//Log.d(getLocalClassName(), myText.getText().toString());
-		myText.setMaxLines(1);
 		myText.setText(personName);
 		//Log.d(getLocalClassName(), myText.getText().toString());
 		
