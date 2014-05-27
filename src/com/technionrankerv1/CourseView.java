@@ -39,7 +39,7 @@ public class CourseView extends SearchResults {
 		textViewCourseNumber.setText(courseNumber);
 		//We will need studentId passed in - not currently the case.
     	//final Long studentId = savedInstanceState.getLong("studentId");
-    	Course c = new Course(null, null, courseNumber, null, null, false);
+    	Course c = new Course(null, null, courseNumber, null, null, null, false);
 		ClientAsync as = new ClientAsync();
 		as.execute(c);
 		/* Bring this back once our database really works:

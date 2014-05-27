@@ -2,7 +2,6 @@ package com.serverapi;
 
 import java.util.List;
 
-import com.serverapi.utilities.TechnionRankerReturnCodes;
 import com.technionrankerv1.Course;
 import com.technionrankerv1.CourseComment;
 import com.technionrankerv1.CourseRating;
@@ -11,6 +10,7 @@ import com.technionrankerv1.ProfessorComment;
 import com.technionrankerv1.ProfessorRating;
 import com.technionrankerv1.StudentProfessorCourse;
 import com.technionrankerv1.StudentUser;
+import com.serverapi.utilities.TechnionRankerReturnCodes;
 
 public interface ITechnionRankerAPI {
 
@@ -18,9 +18,17 @@ public interface ITechnionRankerAPI {
 
   Course getCourse(Course c);
 
+  List<Course> getCourseByCourseNumber(Course c);
+
+  List<Course> getAllCourses();
+
   TechnionRankerReturnCodes insertProfessor(Professor p);
 
   Professor getProfessor(Professor p);
+
+  List<Professor> getAllProfessors();
+
+  List<Professor> getProfessorByProfessorName(Professor p);
 
   TechnionRankerReturnCodes insertStudentUser(StudentUser s);
 

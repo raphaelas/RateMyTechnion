@@ -35,7 +35,7 @@ public class ProfessorView extends SearchResults {
     	String lookupProfessorName = bundle.getString("professorName");
     	TextView professorNameText = (TextView) findViewById(R.id.professorNameText);
     	professorNameText.setText(lookupProfessorName);
-    	Professor lookupProfessor = new Professor(null, lookupProfessorName, true);
+    	Professor lookupProfessor = new Professor(null, lookupProfessorName, null, null, true);
     	ProfessorClientAsync as = new ProfessorClientAsync();
     	as.execute(lookupProfessor);
     	/* Bring this back as soon as our database really works:

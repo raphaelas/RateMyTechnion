@@ -5,10 +5,10 @@ public class ProfessorRating {
   private Long id;
   private Long studentID;
   private Long professorID;
-  private int overallRating;
-  private int clarity;
-  private int preparedness;
-  private int interactivity;
+  private double overallRating;
+  private double clarity;
+  private double preparedness;
+  private double interactivity;
 
   public ProfessorRating(Long _id, Long studentID1, Long professorID1,
       int overallRating1, int clarity1, int preparedness1, int interactivity1) {
@@ -49,7 +49,7 @@ public class ProfessorRating {
   /**
    * @return the overallRating
    */
-  public int getOverallRating() {
+  public double getOverallRating() {
     return overallRating;
   }
 
@@ -64,7 +64,7 @@ public class ProfessorRating {
   /**
    * @return the clarity
    */
-  public int getClarity() {
+  public double getClarity() {
     return clarity;
   }
 
@@ -79,7 +79,7 @@ public class ProfessorRating {
   /**
    * @return the preparedness
    */
-  public int getPreparedness() {
+  public double getPreparedness() {
     return preparedness;
   }
 
@@ -94,7 +94,7 @@ public class ProfessorRating {
   /**
    * @return the interactivity
    */
-  public int getInteractivity() {
+  public double getInteractivity() {
     return interactivity;
   }
 

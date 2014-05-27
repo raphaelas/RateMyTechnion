@@ -5,10 +5,10 @@ public class CourseRating {
   private Long id;
   private Long studentID;
   private Long courseID;
-  private int overallRating;
-  private int enjoyability;
-  private int difficulty;
-  private int usefulness;
+  private double overallRating;
+  private double enjoyability;
+  private double difficulty;
+  private double usefulness;
 
   public CourseRating(Long studentID1, Long courseID1, int overallRating1,
       int enjoyability1, int difficulty1, int usefulness1) {
@@ -56,7 +56,7 @@ public class CourseRating {
   /**
    * @return the overallRating
    */
-  public int getOverallRating() {
+  public double getOverallRating() {
     return overallRating;
   }
 
@@ -71,7 +71,7 @@ public class CourseRating {
   /**
    * @return the enjoyability
    */
-  public int getEnjoyability() {
+  public double getEnjoyability() {
     return enjoyability;
   }
 
@@ -86,7 +86,7 @@ public class CourseRating {
   /**
    * @return the difficulty
    */
-  public int getDifficulty() {
+  public double getDifficulty() {
     return difficulty;
   }
 
@@ -101,7 +101,7 @@ public class CourseRating {
   /**
    * @return the usefulness
    */
-  public int getUsefulness() {
+  public double getUsefulness() {
     return usefulness;
   }
 

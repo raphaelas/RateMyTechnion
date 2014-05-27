@@ -2,11 +2,7 @@ package com.serverapi;
 
 import java.util.List;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.serverapi.communicator.Communicator;
-import com.serverapi.utilities.TechnionRankerFunctions;
-import com.serverapi.utilities.TechnionRankerReturnCodes;
 import com.technionrankerv1.Course;
 import com.technionrankerv1.CourseComment;
 import com.technionrankerv1.CourseRating;
@@ -15,6 +11,10 @@ import com.technionrankerv1.ProfessorComment;
 import com.technionrankerv1.ProfessorRating;
 import com.technionrankerv1.StudentProfessorCourse;
 import com.technionrankerv1.StudentUser;
+import com.serverapi.utilities.TechnionRankerFunctions;
+import com.serverapi.utilities.TechnionRankerReturnCodes;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class TechnionRankerAPI implements ITechnionRankerAPI {
   Gson gson = new Gson();
@@ -321,6 +321,42 @@ public class TechnionRankerAPI implements ITechnionRankerAPI {
   public TechnionRankerReturnCodes dropAllCourseComments() {
     return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
         function, TechnionRankerFunctions.DROP_ALL_COURSE_COMMENTS.value()));
+  }
+
+  @Override
+  public List<Course> getCourseByCourseNumber(Course c) {
+    return gson.fromJson(Communicator.execute(servlet, function,
+        TechnionRankerFunctions.GET_COURSE_BY_COURSE_NUMBER.value(), course,
+        gson.toJson(c)), new TypeToken<List<Course>>() {
+      // default usage
+    }.getType());
+  }
+
+  @Override
+  public List<Course> getAllCourses() {
+    return gson.fromJson(Communicator.execute(servlet, function,
+        TechnionRankerFunctions.GET_ALL_COURSES.value()),
+        new TypeToken<List<Course>>() {
+          // default usage
+        }.getType());
+  }
+
+  @Override
+  public List<Professor> getAllProfessors() {
+    return gson.fromJson(Communicator.execute(servlet, function,
+        TechnionRankerFunctions.GET_ALL_PROFESSORS.value()),
+        new TypeToken<List<Professor>>() {
+          // default usage
+        }.getType());
+  }
+
+  @Override
+  public List<Professor> getProfessorByProfessorName(Professor p) {
+    return gson.fromJson(Communicator.execute(servlet, function,
+        TechnionRankerFunctions.GET_PROFESSOR_BY_NAME.value(), professor,
+        gson.toJson(p)), new TypeToken<List<Professor>>() {
+      // default usage
+    }.getType());
   }
 
 }

@@ -1,5 +1,6 @@
 package com.technionrankerv1;
 
+
 public class Course {
   private Long id;
   private String name;
@@ -7,14 +8,32 @@ public class Course {
   private Long professorID;
   private String semester;
   private boolean active;
+  private String faculty;
 
-  public Course(Long _id, String na, String nu, Long pID, String se, boolean a) {
+  public Course(Long _id, String na, String nu, Long pID, String se,
+      String _faculty, boolean a) {
     id = _id;
     name = na;
     number = nu;
     professorID = pID;
     semester = se;
+    faculty = _faculty;
     active = a;
+  }
+
+  /**
+   * @return the faculty
+   */
+  public String getFaculty() {
+    return faculty;
+  }
+
+  /**
+   * @param faculty1
+   *          the faculty to set
+   */
+  public void setFaculty(String faculty1) {
+    faculty = faculty1;
   }
 
   Course() {
