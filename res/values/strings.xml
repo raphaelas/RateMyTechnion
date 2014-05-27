@@ -7,15 +7,14 @@
     <string android:id="@+id/string1" name="string1" android:layout_height="">Welcome to the TechnionRanker.</string>
     <string android:id="@+id/string4" name="string4" android:layout_width="wrap_content" android:layout_height="wrap_content">Log in</string>
     <string android:id="@+id/string9" name="string9" android:layout_width="wrap_content" android:layout_height="wrap_content">Hello visitor!</string>
-    <string name="password">UG Password</string>
+    <string name="username">UG Student ID</string>
+    <string name="password">UG Passcode</string>
     <string name="OperatingSystems">Operating Systems</string>
     <string name="OperatingSystemsnum">234123</string>
     <string name="Professor">Tom Smith</string>
     <string name="action_logout">Logout</string>
     <string name="action_search">Search</string>
-    <string name="username">UG Username</string>
     <string android:id="@+id/blank" name="blank" android:layout_width="wrap_content" android:layout_height="wrap_content"></string>
-
     <color name="silver">#C0C0C0</color>
     <color name="red">#FF0000</color>
     <color name="gray">#808080</color>

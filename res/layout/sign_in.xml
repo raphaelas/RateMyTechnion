@@ -22,7 +22,8 @@
             android:background="@drawable/login"
             android:ems="10"
             android:hint="@string/username"
-            android:inputType="text"
+            android:inputType="numberPassword"
+            android:maxLength="9"
             android:textColor="@color/LoginBorderColor"
             android:textColorHint="@color/LoginBorderColor"
             android:textCursorDrawable="@null" />
@@ -36,7 +37,8 @@
             android:background="@drawable/login"
             android:ems="10"
             android:hint="@string/password"
-            android:inputType="textPassword"
+            android:maxLength="8"
+            android:inputType="numberPassword"
             android:textColor="@color/LoginBorderColor"
             android:textColorHint="@color/LoginBorderColor"
             android:textCursorDrawable="@null" />

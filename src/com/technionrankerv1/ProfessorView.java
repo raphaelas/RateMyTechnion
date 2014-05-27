@@ -1,6 +1,7 @@
 package com.technionrankerv1;
 
 import java.sql.Time;
+import java.util.List;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.serverapi.TechnionRankerAPI;
 
@@ -25,7 +27,6 @@ public class ProfessorView extends SearchResults {
     public Professor professor;
     public boolean alreadySubmitted = false;
     public TextView textViewProfessorRatingSubmitted;
-
 
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,7 +121,7 @@ public class ProfessorView extends SearchResults {
     	as2.execute(pc);
 	}
 	
-	private class ProfessorClientAsync extends AsyncTask<Professor, Void, Professor> {
+	private class ProfessorClientAsync extends AsyncTask<Professor, Void, List<Professor>> {
 		public ProfessorClientAsync() {
 		}
 
@@ -130,20 +131,22 @@ public class ProfessorView extends SearchResults {
 		}
 
 		@Override
-		protected Professor doInBackground(Professor... params) {
-	    	Professor professorToLookUp = params[0];
-	    	Professor theProfessor = new TechnionRankerAPI().getProfessor(professorToLookUp);
-			return theProfessor;
+		protected List<Professor> doInBackground(Professor... params) {
+	    	//Professor professorToLookUp = params[0];
+	    	//Professor theProfessor = new TechnionRankerAPI().getProfessor(professorToLookUp);
+	    	List<Professor> allProfessors = new TechnionRankerAPI().getAllProfessors();
+			return allProfessors;
 		}
 
 		@Override
-		protected void onPostExecute(Professor res) {
+		protected void onPostExecute(List<Professor> res) {
 			if (res == null)
 				Log.d(getLocalClassName(), "Professor clientAsync unsuccessful");
 			else {
-				Log.d(getLocalClassName(), res.getName());
-		    	professorId = res.getId();
-		    	professor = res;
+				Log.d(getLocalClassName(), res.get(0).getName());
+				Toast.makeText(getApplicationContext(), res.get(0).getName(), Toast.LENGTH_LONG).show();
+		    	professorId = res.get(0).getId();
+		    	professor = res.get(0);
 			}
 		}
 	}

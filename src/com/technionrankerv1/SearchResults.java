@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -37,13 +39,14 @@ public abstract class SearchResults extends ActionBarActivity {
 	TechnionRankerAPI db = new TechnionRankerAPI();
 	String[] professorsAndCourses = null;
 	android.support.v4.widget.CursorAdapter cursorAdapter;
+	HashMap<String, String> hebrewTranslations;
 	//@override
 	public void onCreate(Bundle savedInstance){
 
 		super.onCreate(savedInstance);
+		hebrewTranslations = parseHebrewProfessors();
 		professorsAndCourses = concat(capsFix(parseCourses()), parseProfessors());
 		//Uncomment this if you want a hashmap translating professor names hebrew/english:
-		//HashMap<String, String> hebrewTranslations = parseHebrewProfessors();
 	}
 	
 	public HashMap<String, String> parseHebrewProfessors() {
@@ -72,8 +75,19 @@ public abstract class SearchResults extends ActionBarActivity {
 						if (splittedOnSpace.length == 2) {
 							englishName = "" + splittedOnSpace[1] + " " + splittedOnSpace[0];
 						}
-						else {
+						else if (splittedOnSpace.length == 1){
 							englishName = "" + splittedOnSpace[0];
+						}
+						else if (splittedOnSpace.length == 3) {
+							if (splittedOnSpace[0].indexOf("-") == splittedOnSpace[0].length() - 1) {
+								englishName = splittedOnSpace[2] + " " + splittedOnSpace[0] + splittedOnSpace[1];  
+							}
+							else {
+								englishName = splittedOnSpace[1] + " " + splittedOnSpace[2] + " " + splittedOnSpace[0];
+							}						}
+						else {
+							Log.d(getLocalClassName(), "Unfortunately there is a quadruple name:" + Arrays.toString(splittedOnSpace));
+							throw new IOException();
 						}
 					}
 					else if (inputLine.contains("GetEmployeeDetails") && arrivedAtProfessors == true) {
@@ -132,14 +146,33 @@ public abstract class SearchResults extends ActionBarActivity {
 						inputLine = inputLine.substring(1, inputLine.length() - 9);
 						temp = inputLine.split(">");
 						String[] splittedOnSpace = temp[2].split(" ");
-						String firstNameLastName;
+						String firstNameLastName = null;
 						if (splittedOnSpace.length == 2) {
 							firstNameLastName = "" + splittedOnSpace[1] + " " + splittedOnSpace[0];
 						}
-						else {
+						else if (splittedOnSpace.length == 1){
 							firstNameLastName = "" + splittedOnSpace[0];
 						}
-						profList.add(firstNameLastName);
+						else if (splittedOnSpace.length == 3) {
+							if (splittedOnSpace[0].indexOf("-") == splittedOnSpace[0].length() - 1) {
+								firstNameLastName = splittedOnSpace[2] + " " + splittedOnSpace[0] + splittedOnSpace[1];  
+							}
+							else {
+								firstNameLastName = splittedOnSpace[1] + " " + splittedOnSpace[2] + " " + splittedOnSpace[0];
+							}
+						}
+						else {
+							Log.d(getLocalClassName(), "Unfortunately there is a quadruple name:" + Arrays.toString(splittedOnSpace));
+							throw new IOException();
+						}
+						String hebrewName = hebrewTranslations.get(firstNameLastName);
+						Professor p = new Professor(null, firstNameLastName, professorFiles[i], hebrewName, true);
+						if (hebrewName != null) {
+							String hebrewNameToUse = StringEscapeUtils.unescapeHtml4(hebrewName);
+							Log.d(getLocalClassName(), hebrewNameToUse);
+							profList.add(hebrewNameToUse);
+						}
+						//profList.add(firstNameLastName);
 					}
 				}
 				profListArray = profList.toArray(new String[profList.size()]);
@@ -176,6 +209,7 @@ public abstract class SearchResults extends ActionBarActivity {
 						for (int t = 0; t < temp.length; t++) {
 							String number = temp[0].trim();// number;
 							String name = temp[1].replaceAll("</A>", "").trim();// name
+							Course c = new Course(null, name, number, null, null, courseFiles[i], true);
 							map.put(number, name); // trim and place only the number
 													// and name in
 							numberAndName.add("" + number + " - " + capsFix2(name));
