@@ -413,7 +413,14 @@ public abstract class SearchResults extends ActionBarActivity {
 	        	//Swap cursor with blank cursor to remove all suggestions.
 			    String[] columnNames = {"_id","coursesAndProfessors"};
 			    MatrixCursor cursor = new MatrixCursor(columnNames);
-	        	cursorAdapter.swapCursor(cursor);
+			    try {
+		        	cursorAdapter.swapCursor(cursor);
+			    }
+			    catch (IllegalStateException e) {
+			    	//This exception is happening when a user types
+			    	//too quickly in the action bar search.
+			    	e.printStackTrace();
+			    }
 	        }
 	        return true;
 	    }
