@@ -110,7 +110,6 @@ public abstract class SearchResults extends ActionBarActivity {
 							}
 						}
 						else {
-							Log.d(getLocalClassName(), Arrays.toString(splittedOnSpace));
 							throw new IOException("Unfortunately, there is a quadruple hebrew name.");
 						}
 						if (englishName == null || hebrewName == null) {
@@ -180,9 +179,7 @@ public abstract class SearchResults extends ActionBarActivity {
 							profList.add(hebrewNameToUse);
 						}
 						else {
-							//There's no matching hebrew entry.
-							countOfNoMatches++;
-							Log.d(getLocalClassName(), "No matcher: " + professorFiles[i] + " :" + firstNameLastName);
+							throw new IOException("No matching Hebrew entry.");
 						}
 					}
 				}
@@ -191,9 +188,7 @@ public abstract class SearchResults extends ActionBarActivity {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Log.d(getLocalClassName(), countOfNoMatches + "");
 		profListArray = profList.toArray(new String[profList.size()]);
-		Log.d(profListArray.length + "", hebrewTranslations.size() + "");
 		return profListArray;
 	}
 
