@@ -84,10 +84,10 @@ public abstract class SearchResults extends ActionBarActivity {
 							}
 							else {
 								englishName = splittedOnSpace[1] + " " + splittedOnSpace[2] + " " + splittedOnSpace[0];
-							}						}
+							}						
+						}
 						else {
-							Log.d(getLocalClassName(), "Unfortunately there is a quadruple name:" + Arrays.toString(splittedOnSpace));
-							throw new IOException();
+							throw new IOException("Unfortunately, there is a quadruple name.");
 						}
 					}
 					else if (inputLine.contains("GetEmployeeDetails") && arrivedAtProfessors == true) {
@@ -98,17 +98,30 @@ public abstract class SearchResults extends ActionBarActivity {
 						if (splittedOnSpace.length == 2) {
 							hebrewName = "" + splittedOnSpace[1] + " " + splittedOnSpace[0];
 						}
-						else {
+						else if (splittedOnSpace.length == 1){
 							hebrewName = "" + splittedOnSpace[0];
+						}
+						else if (splittedOnSpace.length == 3) {
+							if (splittedOnSpace[0].indexOf("-") == splittedOnSpace[0].length() - 1) {
+								hebrewName = splittedOnSpace[2] + " " + splittedOnSpace[0] + splittedOnSpace[1];  
+							}
+							else {
+								hebrewName = splittedOnSpace[1] + " " + splittedOnSpace[2] + " " + splittedOnSpace[0];
+							}
+						}
+						else {
+							Log.d(getLocalClassName(), Arrays.toString(splittedOnSpace));
+							throw new IOException("Unfortunately, there is a quadruple hebrew name.");
 						}
 						if (englishName == null || hebrewName == null) {
 							//There's a null name, so throw an exception 
 							//(albeit IOException is not proper type but it works)
-							throw new IOException(); 
+							throw new IOException("There's a null name."); 
 						}
 						hebrewTranslations.put(englishName, hebrewName);
 					}
 					else if (inputLine.contains("searchtable")) {
+						//We've arrived at the professor listing section.
 						arrivedAtProfessors = true;
 					}
 				}
@@ -128,6 +141,7 @@ public abstract class SearchResults extends ActionBarActivity {
 		String[] temp;
 		String[] profListArray = null;
 		String[] professorFiles;
+		int countOfNoMatches = 0;
 		try {
 			professorFiles = getAssets().list("ProfessorListings");
 			for (int i = 0; i < professorFiles.length; i++) {
@@ -136,13 +150,6 @@ public abstract class SearchResults extends ActionBarActivity {
 				while (infile.ready()) {// while more info exists
 					inputLine = infile.readLine();
 					if (inputLine.startsWith("<td><a href=")) {
-						/*
-						 * This would parse the professor's ID #. int start =
-						 * inputLine.indexOf("code=") + 5; int end =
-						 * inputLine.indexOf(" rel") - 1; String id =
-						 * inputLine.substring(start, end); Log.d(professorFiles[i],
-						 * id);
-						 */
 						inputLine = inputLine.substring(1, inputLine.length() - 9);
 						temp = inputLine.split(">");
 						String[] splittedOnSpace = temp[2].split(" ");
@@ -154,6 +161,7 @@ public abstract class SearchResults extends ActionBarActivity {
 							firstNameLastName = "" + splittedOnSpace[0];
 						}
 						else if (splittedOnSpace.length == 3) {
+							//If there is a hyphenated last name:
 							if (splittedOnSpace[0].indexOf("-") == splittedOnSpace[0].length() - 1) {
 								firstNameLastName = splittedOnSpace[2] + " " + splittedOnSpace[0] + splittedOnSpace[1];  
 							}
@@ -162,25 +170,30 @@ public abstract class SearchResults extends ActionBarActivity {
 							}
 						}
 						else {
-							Log.d(getLocalClassName(), "Unfortunately there is a quadruple name:" + Arrays.toString(splittedOnSpace));
-							throw new IOException();
+							throw new IOException("Unfortunately, there is a quadruple name.");
 						}
 						String hebrewName = hebrewTranslations.get(firstNameLastName);
 						Professor p = new Professor(null, firstNameLastName, professorFiles[i], hebrewName, true);
+						profList.add(firstNameLastName);
 						if (hebrewName != null) {
 							String hebrewNameToUse = StringEscapeUtils.unescapeHtml4(hebrewName);
-							Log.d(getLocalClassName(), hebrewNameToUse);
 							profList.add(hebrewNameToUse);
 						}
-						//profList.add(firstNameLastName);
+						else {
+							//There's no matching hebrew entry.
+							countOfNoMatches++;
+							Log.d(getLocalClassName(), "No matcher: " + professorFiles[i] + " :" + firstNameLastName);
+						}
 					}
 				}
-				profListArray = profList.toArray(new String[profList.size()]);
 				infile.close();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		Log.d(getLocalClassName(), countOfNoMatches + "");
+		profListArray = profList.toArray(new String[profList.size()]);
+		Log.d(profListArray.length + "", hebrewTranslations.size() + "");
 		return profListArray;
 	}
 
@@ -351,7 +364,6 @@ public abstract class SearchResults extends ActionBarActivity {
            public boolean onSuggestionClick(int position) {
         	   Cursor c = (MatrixCursor) cursorAdapter.getItem(position);
         	   String value =  c.getString(c.getColumnIndexOrThrow("coursesAndProfessors"));
-               Log.d(getLocalClassName(), value);
         	   if (Character.isDigit(value.charAt(0))) {
 					String[] splitted = value.split(" - ");
 					String courseNumber = splitted[0];
@@ -454,7 +466,6 @@ public abstract class SearchResults extends ActionBarActivity {
 		protected Course doInBackground(String... params) {
 			Course result = null;
 			/* This would populate the courses database:
-			Log.d(getLocalClassName(), String.valueOf(params.length));
 			String result = null;
 			for (int i = 0; i < params.length; i++) {
 				String[] splitted = params[i].split(" - ");
