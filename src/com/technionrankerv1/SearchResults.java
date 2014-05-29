@@ -121,9 +121,10 @@ public abstract class SearchResults extends ActionBarActivity {
 						}
 						hebrewTranslations.put(englishName, hebrewName);
 						//Professor p = new Professor(null, englishName, hebrewProfessorFiles[i], hebrewName, true);
-						String hebrewNameToUse = StringEscapeUtils.unescapeHtml4(hebrewName);
-						professorSet.add(englishName);
-						professorSet.add(hebrewNameToUse);
+						String hebrewNameToUse = StringEscapeUtils.unescapeHtml4(hebrewName);		
+						//This will make the hebrew professor name in a new line after the english name.
+						//TODO: make the english and hebrew names appear in the same line together.
+						professorSet.add(englishName + "\n" + hebrewNameToUse);
 					}
 					else if (inputLine.contains("searchtable")) {
 						//We've arrived at the professor listing section.
