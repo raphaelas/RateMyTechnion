@@ -3,7 +3,6 @@ package com.technionrankerv1;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,18 +38,21 @@ public abstract class SearchResults extends ActionBarActivity {
 	TechnionRankerAPI db = new TechnionRankerAPI();
 	String[] professorsAndCourses = null;
 	android.support.v4.widget.CursorAdapter cursorAdapter;
-	HashMap<String, String> hebrewTranslations;
+	HashMap<String, String> hebrewTranslations = new HashMap<String, String>();
 	//@override
 	public void onCreate(Bundle savedInstance){
 
 		super.onCreate(savedInstance);
-		hebrewTranslations = parseHebrewProfessors();
-		professorsAndCourses = concat(capsFix(parseCourses()), parseProfessors());
-		//Uncomment this if you want a hashmap translating professor names hebrew/english:
+		professorsAndCourses = concat(capsFix(parseCourses()), parseHebrewProfessors());
 	}
 	
-	public HashMap<String, String> parseHebrewProfessors() {
-		HashMap<String, String> hebrewTranslations = new HashMap<String, String>();
+	/**
+	 * This populates the professorSet (returned) and hebrewTranslations
+	 * HashMap (class variable).
+	 * @return
+	 */
+	public String[] parseHebrewProfessors() {
+		HashSet<String> professorSet = new HashSet<String>();
 		String inputLine;
 		BufferedReader infile;
 		int start;
@@ -118,6 +120,10 @@ public abstract class SearchResults extends ActionBarActivity {
 							throw new IOException("There's a null name."); 
 						}
 						hebrewTranslations.put(englishName, hebrewName);
+						//Professor p = new Professor(null, englishName, hebrewProfessorFiles[i], hebrewName, true);
+						String hebrewNameToUse = StringEscapeUtils.unescapeHtml4(hebrewName);
+						professorSet.add(englishName);
+						professorSet.add(hebrewNameToUse);
 					}
 					else if (inputLine.contains("searchtable")) {
 						//We've arrived at the professor listing section.
@@ -130,10 +136,12 @@ public abstract class SearchResults extends ActionBarActivity {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		return hebrewTranslations;
+		Object[] professorArrayObjects = professorSet.toArray();
+		String[] professorArrayStrings = Arrays.copyOf(professorArrayObjects, professorArrayObjects.length, String[].class);
+		return professorArrayStrings;
 	}
 	
-	
+	/*
 	public String[] parseProfessors() {
 		ArrayList<String> profList = new ArrayList<String>();
 		String inputLine = "";
@@ -191,6 +199,7 @@ public abstract class SearchResults extends ActionBarActivity {
 		profListArray = profList.toArray(new String[profList.size()]);
 		return profListArray;
 	}
+	*/
 
 	public String[] parseCourses() {
 		// create Hashmap, where the numbers are the keys and the Titles are the
@@ -217,7 +226,7 @@ public abstract class SearchResults extends ActionBarActivity {
 						for (int t = 0; t < temp.length; t++) {
 							String number = temp[0].trim();// number;
 							String name = temp[1].replaceAll("</A>", "").trim();// name
-							Course c = new Course(null, name, number, null, null, courseFiles[i], true);
+							//Course c = new Course(null, name, number, null, null, courseFiles[i], true);
 							map.put(number, name); // trim and place only the number
 													// and name in
 							numberAndName.add("" + number + " - " + capsFix2(name));
