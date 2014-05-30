@@ -123,7 +123,6 @@ public abstract class SearchResults extends ActionBarActivity {
 						//Professor p = new Professor(null, englishName, hebrewProfessorFiles[i], hebrewName, true);
 						String hebrewNameToUse = StringEscapeUtils.unescapeHtml4(hebrewName);		
 						//This will make the hebrew professor name in a new line after the english name.
-						//TODO: make the english and hebrew names appear in the same line together.
 						professorSet.add(englishName + "\n" + hebrewNameToUse);
 					}
 					else if (inputLine.contains("searchtable")) {
@@ -141,66 +140,6 @@ public abstract class SearchResults extends ActionBarActivity {
 		String[] professorArrayStrings = Arrays.copyOf(professorArrayObjects, professorArrayObjects.length, String[].class);
 		return professorArrayStrings;
 	}
-	
-	/*
-	public String[] parseProfessors() {
-		ArrayList<String> profList = new ArrayList<String>();
-		String inputLine = "";
-		String[] temp;
-		String[] profListArray = null;
-		String[] professorFiles;
-		int countOfNoMatches = 0;
-		try {
-			professorFiles = getAssets().list("ProfessorListings");
-			for (int i = 0; i < professorFiles.length; i++) {
-				BufferedReader infile = new BufferedReader(new InputStreamReader(
-						getAssets().open("ProfessorListings/" + professorFiles[i])));
-				while (infile.ready()) {// while more info exists
-					inputLine = infile.readLine();
-					if (inputLine.startsWith("<td><a href=")) {
-						inputLine = inputLine.substring(1, inputLine.length() - 9);
-						temp = inputLine.split(">");
-						String[] splittedOnSpace = temp[2].split(" ");
-						String firstNameLastName = null;
-						if (splittedOnSpace.length == 2) {
-							firstNameLastName = "" + splittedOnSpace[1] + " " + splittedOnSpace[0];
-						}
-						else if (splittedOnSpace.length == 1){
-							firstNameLastName = "" + splittedOnSpace[0];
-						}
-						else if (splittedOnSpace.length == 3) {
-							//If there is a hyphenated last name:
-							if (splittedOnSpace[0].indexOf("-") == splittedOnSpace[0].length() - 1) {
-								firstNameLastName = splittedOnSpace[2] + " " + splittedOnSpace[0] + splittedOnSpace[1];  
-							}
-							else {
-								firstNameLastName = splittedOnSpace[1] + " " + splittedOnSpace[2] + " " + splittedOnSpace[0];
-							}
-						}
-						else {
-							throw new IOException("Unfortunately, there is a quadruple name.");
-						}
-						String hebrewName = hebrewTranslations.get(firstNameLastName);
-						Professor p = new Professor(null, firstNameLastName, professorFiles[i], hebrewName, true);
-						profList.add(firstNameLastName);
-						if (hebrewName != null) {
-							String hebrewNameToUse = StringEscapeUtils.unescapeHtml4(hebrewName);
-							profList.add(hebrewNameToUse);
-						}
-						else {
-							throw new IOException("No matching Hebrew entry.");
-						}
-					}
-				}
-				infile.close();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		profListArray = profList.toArray(new String[profList.size()]);
-		return profListArray;
-	}
-	*/
 
 	public String[] parseCourses() {
 		// create Hashmap, where the numbers are the keys and the Titles are the
@@ -348,17 +287,15 @@ public abstract class SearchResults extends ActionBarActivity {
 		    public void onClick(View v) {
 		        if (!extended) {
 		            extended = true;
-		            LayoutParams lp = v.getLayoutParams();
 		            LayoutParams lp2 = ((View) v.getParent()).getLayoutParams();
 		            lp2.width = LayoutParams.MATCH_PARENT;
-		            lp.width = LayoutParams.MATCH_PARENT;
 		        }
 		    }
 		});
-	    String[] columnNames = {"_id","coursesAndProfessors"};
+	    String[] columnNames = {"_id","coursesAndProfessors", "hebrewProfessorName"};
 	    MatrixCursor cursor = new MatrixCursor(columnNames);
-	    String[] from = {"coursesAndProfessors"}; 
-	    int[] to = {R.id.lblListItem};
+	    String[] from = {"coursesAndProfessors", "hebrewProfessorName"}; 
+	    int[] to = {R.id.lblListItem, R.id.hebrewListItem};
 	    cursorAdapter = 
 	    		new android.support.v4.widget.SimpleCursorAdapter(getApplicationContext(), R.layout.list_item, cursor, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER );
         searchView.setOnQueryTextListener(searchQueryListener);
@@ -421,16 +358,10 @@ public abstract class SearchResults extends ActionBarActivity {
 	        }
 	        else {
 	        	//Swap cursor with blank cursor to remove all suggestions.
-			    String[] columnNames = {"_id","coursesAndProfessors"};
+			    String[] columnNames = {"_id","coursesAndProfessors", "hebrewProfessorName"};
 			    MatrixCursor cursor = new MatrixCursor(columnNames);
-			    try {
-		        	cursorAdapter.swapCursor(cursor);
-			    }
-			    catch (IllegalStateException e) {
-			    	//This exception is happening when a user types
-			    	//too quickly in the action bar search.
-			    	e.printStackTrace();
-			    }
+		        //TODO: deal with the internal IllegalStateException problem.
+			    cursorAdapter.swapCursor(cursor);
 	        }
 	        return true;
 	    }
@@ -438,15 +369,24 @@ public abstract class SearchResults extends ActionBarActivity {
 	    public void search(String query) {
 	        // reset loader, swap cursor, etc.
 	    	query = query.toLowerCase(Locale.ENGLISH);
-		    String[] columnNames = {"_id","coursesAndProfessors"};
+		    String[] columnNames = {"_id","coursesAndProfessors", "hebrewProfessorName"};
 		    MatrixCursor cursor = new MatrixCursor(columnNames);
-		    String[] temp = new String[2];
+		    String[] temp = new String[3];
 		    int id = 0;
 		    for(String item : professorsAndCourses){
 		    	String toCheck = item.toLowerCase(Locale.ENGLISH);
+				//TODO: make the english and hebrew names appear in the same line together.
 		    	if (toCheck.contains(query)) {
 			        temp[0] = Integer.toString(id++);
-			        temp[1] = item;
+			        if (!item.contains("\n")) {
+				        temp[1] = item;
+				        temp[2] = null;
+			        }
+			        else { //It's a professor.
+			        	String[] splitted = item.split("\n");
+			        	temp[1] = splitted[0]; //english name
+			        	temp[2] = splitted[1]; //hebrew name
+			        }
 			        cursor.addRow(temp);
 		    	}
 		    }
