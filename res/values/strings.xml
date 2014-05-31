@@ -13,6 +13,7 @@
     <string name="OperatingSystemsnum">234123</string>
     <string name="Professor">Tom Smith</string>
     <string name="action_logout">Logout</string>
+    <string name="exampleFaculty">Computer Science</string>
     <string name="action_search">Search</string>
     <string android:id="@+id/blank" name="blank" android:layout_width="wrap_content" android:layout_height="wrap_content"></string>
     <color name="silver">#C0C0C0</color>

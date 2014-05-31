@@ -30,7 +30,7 @@ public class CourseView extends SearchResults {
     	setContentView(R.layout.course_view);
     	textViewCourseRatingSubmitted = (TextView) findViewById(R.id.textViewCourseRatingSubmitted);
     	final Long studentId = Long.valueOf(0);
-    			Bundle bundle = getIntent().getExtras();
+    	Bundle bundle = getIntent().getExtras();
     	final String courseNumber = bundle.getString("courseNumber");
     	final String courseName = bundle.getString("courseName");
 		TextView textViewCourseName = (TextView) findViewById(R.id.textViewCourseName);
@@ -144,6 +144,9 @@ public class CourseView extends SearchResults {
 				Log.d(getLocalClassName(), "Course clientAsync unsuccessful");
 			else {
 				Log.d(getLocalClassName(), res.getName());
+				String faculty = res.getFaculty();
+				TextView facultyText = (TextView) findViewById(R.id.courseFacultyText);
+				facultyText.setText(faculty);
 		    	courseId = res.getId();
 			}
 		}
