@@ -1,9 +1,8 @@
 package com.technionrankerv1;
 
-
-
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -26,6 +25,8 @@ public class FragmentMainActivity extends FragmentActivity implements
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		actionBar = getActionBar();
+		actionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources()
+				.getColor(R.color.blueish)));
 		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
 		viewPager.setAdapter(mAdapter);
