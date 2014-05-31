@@ -1,8 +1,24 @@
 TODO:
-1)Change the padding of the ratings so theyll be in the same column.
+1. Add "Your Account" to the overflow.
+2. Add a back button.
+3. # of ratings - a global variable.
+
 
 Raphi's questions:
 Rename app - maybe TechnionRater?  Our app currently does not rank teachers - it rates them.
 Maybe add loading page?
-Maybe add privacy policy page?
-More welcoming sign in screen?  Maybe instructions or menu bar?
+Add instructions and privacy policy to sign in page?
+
+Leo - Raphi discussed:
+
+Welcome page consists of welcoming message and menu bar.
+Menu bar consists of your courses, your head professors.
+Every professor in the UG system you can search for.
+You can rate anyone - but limit 10 ratings per semester.
+
+Big tasks:
+1. Menu bar
+2. Comments
+3. Rating logic
+4. Database
+5. Previous ratings

@@ -343,7 +343,7 @@ public abstract class SearchResults extends ActionBarActivity {
 		// Handle presses on the action bar items
 		switch (item.getItemId()) {
 		case R.id.action_logout:
-			// openLoginPage(item);
+			//TODO: openLoginPage(item);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
