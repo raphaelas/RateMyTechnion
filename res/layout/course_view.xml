@@ -263,5 +263,16 @@
   		    android:text="@string/blank"
   		    android:textAppearance="?android:attr/textAppearanceMedium"
   		    android:textColor="@color/red" />
+  		
+  		<!-- This is the existing comments section 
+  		
+  		<LinearLayout
+            android:id="@+id/courseCommentsListLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_marginBottom="2dp"
+            android:background="@android:color/black"
+            android:orientation="horizontal" >
+        </LinearLayout> -->
         </LinearLayout>
     </ScrollView>

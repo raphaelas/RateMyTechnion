@@ -39,6 +39,7 @@ public abstract class SearchResults extends ActionBarActivity {
 	String[] professorsAndCourses = null;
 	android.support.v4.widget.CursorAdapter cursorAdapter;
 	HashMap<String, String> hebrewTranslations = new HashMap<String, String>();
+	HashMap<String, String> facultyMap = new HashMap<String, String>();
 	//@override
 	public void onCreate(Bundle savedInstance){
 
@@ -120,7 +121,9 @@ public abstract class SearchResults extends ActionBarActivity {
 							throw new IOException("There's a null name."); 
 						}
 						hebrewTranslations.put(englishName, hebrewName);
-						//Professor p = new Professor(null, englishName, hebrewProfessorFiles[i], hebrewName, true);
+						String faculty = hebrewProfessorFiles[i].substring(0, hebrewProfessorFiles[i].indexOf(".html"));
+						facultyMap.put(englishName, faculty);
+						//Professor p = new Professor(null, englishName, faculty, hebrewName, true);
 						String hebrewNameToUse = StringEscapeUtils.unescapeHtml4(hebrewName);		
 						//This will make the hebrew professor name in a new line after the english name.
 						professorSet.add(englishName + "\n" + hebrewNameToUse);
@@ -165,10 +168,12 @@ public abstract class SearchResults extends ActionBarActivity {
 						temp = inputLine.split(" - ");
 						for (int t = 0; t < temp.length; t++) {
 							String number = temp[0].trim();// number;
-							String name = temp[1].replaceAll("</A>", "").trim();// name
-							//Course c = new Course(null, name, number, null, null, courseFiles[i], true);
+							String name = temp[1].replaceAll("</A>", "").trim();
+							String faculty = courseFiles[i].substring(0, courseFiles[i].indexOf(".html"));
+							//Course c = new Course(null, name, number, null, null, faculty, true);
 							map.put(number, name); // trim and place only the number
 													// and name in
+							facultyMap.put(number, faculty);
 							numberAndName.add("" + number + " - " + capsFix2(name));
 						} // for temp
 					} // if
@@ -313,11 +318,13 @@ public abstract class SearchResults extends ActionBarActivity {
 					Intent i = new Intent(SearchResults.this, CourseView.class);
 					i.putExtra("courseNumber", courseNumber);
 					i.putExtra("courseName", courseName);
+					i.putExtra("faculty", facultyMap.get(courseNumber));
 					startActivity(i);
 				}
 				else {
 					Intent i = new Intent(SearchResults.this, ProfessorView.class);
 					i.putExtra("professorName", value);
+					i.putExtra("faculty", facultyMap.get(value));
 					startActivity(i);
 				}
                return true;

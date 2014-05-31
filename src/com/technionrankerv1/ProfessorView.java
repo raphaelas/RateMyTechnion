@@ -35,6 +35,9 @@ public class ProfessorView extends SearchResults {
     	String lookupProfessorName = bundle.getString("professorName");
     	TextView professorNameText = (TextView) findViewById(R.id.professorNameText);
     	professorNameText.setText(lookupProfessorName);
+		String faculty = bundle.getString("faculty");
+		TextView facultyText = (TextView) findViewById(R.id.professorFacultyText);
+		facultyText.setText(faculty);
     	Professor lookupProfessor = new Professor(null, lookupProfessorName, null, null, true);
     	ProfessorClientAsync as = new ProfessorClientAsync();
     	as.execute(lookupProfessor);
@@ -143,9 +146,6 @@ public class ProfessorView extends SearchResults {
 				Log.d(getLocalClassName(), "Professor clientAsync unsuccessful");
 			else {
 				Log.d(getLocalClassName(), res.get(0).getName());
-				String faculty = res.get(0).getFaculty();
-				TextView facultyText = (TextView) findViewById(R.id.professorFacultyText);
-				facultyText.setText(faculty);
 		    	professorId = res.get(0).getId();
 		    	professor = res.get(0);
 			}
