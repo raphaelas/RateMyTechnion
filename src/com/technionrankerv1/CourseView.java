@@ -37,9 +37,7 @@ public class CourseView extends SearchResults {
 		TextView facultyText = (TextView) findViewById(R.id.courseFacultyText);
 		facultyText.setText(faculty);
 		TextView textViewCourseName = (TextView) findViewById(R.id.textViewCourseName);
-		textViewCourseName.setText(courseName);
-		TextView textViewCourseNumber = (TextView) findViewById(R.id.textViewCourseNumber);
-		textViewCourseNumber.setText(courseNumber);
+		textViewCourseName.setText(courseNumber + " - " + courseName);
 		//We will need studentId passed in - not currently the case.
     	//final Long studentId = savedInstanceState.getLong("studentId");
     	Course c = new Course(null, null, courseNumber, null, null, null, false);

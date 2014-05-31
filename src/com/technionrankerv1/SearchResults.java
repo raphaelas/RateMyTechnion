@@ -407,7 +407,7 @@ public abstract class SearchResults extends ActionBarActivity {
 	 * This is used whenever we need to populate the courses
 	 * or professors database tables.
 	 */
-	private class ClientAsync extends AsyncTask<String, Void, Course> {
+	private class ClientAsync extends AsyncTask<String, Void, String> {
 
 		public ClientAsync() {
 		}
@@ -422,8 +422,9 @@ public abstract class SearchResults extends ActionBarActivity {
 		 * everything in this method to ignore the database.
 		 */
 		@Override
-		protected Course doInBackground(String... params) {
-			Course result = null;
+		protected String doInBackground(String... params) {
+			String result = null;
+			//result = new TechnionRankerAPI().dropAllCourses().toString();
 			/* This would populate the courses database:
 			String result = null;
 			for (int i = 0; i < params.length; i++) {
@@ -435,20 +436,21 @@ public abstract class SearchResults extends ActionBarActivity {
 				result = db.insertCourse(c).toString();
 			}
 			return result;
-			*/
-			/* This would get an example course:
-			Course c = new Course(Long.valueOf(3), null, null, null, null, true);
-			result = db.getCourse(c);
-			*/
+			*/ 
+			//This would get an example course:
+			Course c = new Course(null, null, "236504", null, null, null, true);
+			//result = db.getCourse(c);
+			//
+			result = new TechnionRankerAPI().insertCourse(c).toString();
 			return result;
 		}
 
 		@Override
-		protected void onPostExecute(Course res) {
+		protected void onPostExecute(String res) {
 			if (res == null)
-				Log.d(getLocalClassName(), "unsuccessful");
+				Log.d(getLocalClassName(), "SearchResults async unsuccessful");
 			else {
-				Log.d(getLocalClassName(), res.getName());
+				Log.d(getLocalClassName(), res);
 			}
 		}
 	}

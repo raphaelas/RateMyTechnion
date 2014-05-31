@@ -34,6 +34,7 @@ public class Communicator {
       PrintWriter out = new PrintWriter(con.getOutputStream());
       out.print(param);
       out.close();
+      //Log.d("Communicator", "Response code: " + con.getResponseCode());
       Scanner inStream = new Scanner(con.getInputStream());
       while (inStream.hasNextLine())
         $ += inStream.nextLine();
