@@ -438,10 +438,10 @@ public abstract class SearchResults extends ActionBarActivity {
 			return result;
 			*/ 
 			//This would get an example course:
-			Course c = new Course(null, null, "236504", null, null, null, true);
+			//Course c = new Course(null, null, "236504", null, null, null, true);
 			//result = db.getCourse(c);
 			//
-			result = new TechnionRankerAPI().insertCourse(c).toString();
+			//result = new TechnionRankerAPI().insertCourse(c).toString();
 			return result;
 		}
 
