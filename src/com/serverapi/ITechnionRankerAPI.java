@@ -103,4 +103,8 @@ public interface ITechnionRankerAPI {
   Professor getProfessorForCourse(Course c);
   
   List<Professor> getProfessorByProfessorHebrewName(Professor p);
+  
+  TechnionRankerReturnCodes insertProfessorsArray(Professor[] pArray);
+  
+  TechnionRankerReturnCodes insertCourseArray(Course[] cArray);
 }

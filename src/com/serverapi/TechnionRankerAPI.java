@@ -378,4 +378,18 @@ public List<Professor> getProfessorByProfessorHebrewName(Professor p) {
         }.getType());
 }
 
+@Override
+public TechnionRankerReturnCodes insertProfessorsArray(Professor[] pArray) {
+    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
+            function, TechnionRankerFunctions.INSERT_PROFESSOR_ARRAY.value(), professor,
+            gson.toJson(pArray)));
+}
+
+@Override
+public TechnionRankerReturnCodes insertCourseArray(Course[] cArray) {
+    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
+            function, TechnionRankerFunctions.INSERT_COURSE_ARRAY.value(), course,
+            gson.toJson(cArray)));
+}
+
 }
