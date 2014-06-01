@@ -157,31 +157,6 @@ public class CourseView extends SearchResults {
 	    		"This course was really something", "This course reminded me of the good old days."};
 	    CommentsListAdapter adapter = new CommentsListAdapter(this, values);
 	    courseCommentsList.setAdapter(adapter);
-			
-			/*
-		    // create a new textview
-		    TextView commentTextView = new TextView(this);
-		    // set some properties of rowTextView or something
-		    commentTextView.setTextColor(getResources().getColor(R.color.white));
-		    LayoutParams commentTextParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		    commentTextParams.weight = 1;
-		    //params.bottomMargin = 5; //R.attr.listPreferredItemPaddingLeft;
-		    //params.topMargin = 5;
-		    //params.leftMargin = 5;
-		    //params.rightMargin = 5;
-		    commentTextView.setPadding(30, 10, 0, 10);
-		    commentTextView.setLayoutParams(commentTextParams);
-		    commentTextView.setTextSize(18);
-		    commentTextView.setText("This is comment #" + i);
-		    // add the textview to the linearlayout
-		    commentsLayout.addView(commentTextView);
-		    ImageView thumb = new ImageView(this);
-		    LayoutParams thumbImageParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		    thumbImageParams.gravity = Gravity.RIGHT;
-		    thumb.setLayoutParams(thumbImageParams);
-		    thumb.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_good));
-		    commentsLayout.addView(thumb);
-		    */
 	}
 	
 	private class ClientAsync extends AsyncTask<Course, Void, Course> {

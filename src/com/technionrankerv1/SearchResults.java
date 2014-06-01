@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -407,7 +408,7 @@ public abstract class SearchResults extends ActionBarActivity {
 	 * This is used whenever we need to populate the courses
 	 * or professors database tables.
 	 */
-	private class ClientAsync extends AsyncTask<String, Void, String> {
+	private class ClientAsync extends AsyncTask<String, Void, List<Professor>> {
 
 		public ClientAsync() {
 		}
@@ -422,9 +423,11 @@ public abstract class SearchResults extends ActionBarActivity {
 		 * everything in this method to ignore the database.
 		 */
 		@Override
-		protected String doInBackground(String... params) {
-			String result = null;
-			//result = new TechnionRankerAPI().dropAllCourses().toString();
+		protected List<Professor> doInBackground(String... params) {
+			List<Professor> result = null;
+			Professor p = new Professor(null, "Cool Professor", null, null, false);
+			//result = db.insertProfessor(p).toString();
+			result = new TechnionRankerAPI().getProfessorByProfessorName(p);
 			/* This would populate the courses database:
 			String result = null;
 			for (int i = 0; i < params.length; i++) {
@@ -438,7 +441,7 @@ public abstract class SearchResults extends ActionBarActivity {
 			return result;
 			*/ 
 			//This would get an example course:
-			//Course c = new Course(null, null, "236504", null, null, null, true);
+			//Course c = new Course(null, "Project in Software", "236504", null, null, "Computer Science", true);
 			//result = db.getCourse(c);
 			//
 			//result = new TechnionRankerAPI().insertCourse(c).toString();
@@ -446,11 +449,11 @@ public abstract class SearchResults extends ActionBarActivity {
 		}
 
 		@Override
-		protected void onPostExecute(String res) {
+		protected void onPostExecute(List<Professor> res) {
 			if (res == null)
 				Log.d(getLocalClassName(), "SearchResults async unsuccessful");
 			else {
-				Log.d(getLocalClassName(), res);
+				Log.d(getLocalClassName(), res.get(0).getId() + res.get(0).getName());
 			}
 		}
 	}

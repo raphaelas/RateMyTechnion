@@ -359,4 +359,23 @@ public class TechnionRankerAPI implements ITechnionRankerAPI {
     }.getType());
   }
 
+  //Raphi added the following two methods on June 1st, 2014.
+  
+//Each Course has a professor_id that this method should use to retrieve the course's professor.
+@Override
+public Professor getProfessorForCourse(Course c) {
+    return gson.fromJson(Communicator.execute(servlet, function,
+            TechnionRankerFunctions.GET_PROFESSOR_FOR_COURSE.value(), course,
+            gson.toJson(c)), Professor.class);
+}
+
+@Override
+public List<Professor> getProfessorByProfessorHebrewName(Professor p) {
+    return gson.fromJson(Communicator.execute(servlet, function,
+            TechnionRankerFunctions.GET_PROFESSOR_BY_HEBREW_NAME.value(), professor,
+            gson.toJson(p)), new TypeToken<List<Professor>>() {
+          // default usage
+        }.getType());
+}
+
 }

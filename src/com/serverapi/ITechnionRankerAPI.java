@@ -99,4 +99,8 @@ public interface ITechnionRankerAPI {
   TechnionRankerReturnCodes dropAllProfessorComments();
 
   TechnionRankerReturnCodes removeCourseComment(CourseComment cc);
+  
+  Professor getProfessorForCourse(Course c);
+  
+  List<Professor> getProfessorByProfessorHebrewName(Professor p);
 }

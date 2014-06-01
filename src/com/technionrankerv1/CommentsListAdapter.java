@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class CommentsListAdapter extends ArrayAdapter<String>{
+public class CommentsListAdapter extends ArrayAdapter<String> {
 	  private final Context context;
 	  private final String[] values;
 
@@ -33,4 +33,9 @@ public class CommentsListAdapter extends ArrayAdapter<String>{
 
 	    return rowView;
 	  }
+	  
+	  /*protected void onListItemClick(ListView l, View v, int position, long id) {
+	    String item = (String) getListAdapter().getItem(position);
+	    Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
+	  }*/
 }

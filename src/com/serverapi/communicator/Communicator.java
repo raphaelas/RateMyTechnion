@@ -8,6 +8,8 @@ import java.util.Scanner;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import android.util.Log;
+
 
 /**
  * Created on 07/11/2013
@@ -34,7 +36,7 @@ public class Communicator {
       PrintWriter out = new PrintWriter(con.getOutputStream());
       out.print(param);
       out.close();
-      //Log.d("Communicator", "Response code: " + con.getResponseCode());
+      Log.d("Communicator", "Response code: " + con.getResponseCode());
       Scanner inStream = new Scanner(con.getInputStream());
       while (inStream.hasNextLine())
         $ += inStream.nextLine();
