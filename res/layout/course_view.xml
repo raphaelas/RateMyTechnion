@@ -222,41 +222,48 @@
                 android:layout_marginTop="5dp"
                 android:background="@android:color/white" />
 
-                                                   <Button
-                    android:id="@+id/rating_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:background="@color/LoginBorderColor"
-                    android:orientation="horizontal"
-                    android:shadowColor="@android:color/black"
-                    android:shadowDx="1"
-                    android:shadowDy="1"
-                    android:shadowRadius="1"
-                    android:text="@string/submit"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-                                       
-  		<TextView
-  		    android:id="@+id/textViewCourseRatingSubmitted"
-  		    android:layout_width="wrap_content"
-  		    android:layout_height="wrap_content"
-  		    android:layout_marginTop="25dp"
-  		    android:ellipsize="none"
-  		    android:layout_gravity="center"
-  		    android:singleLine="true"
-  		    android:text="@string/blank"
-  		    android:textAppearance="?android:attr/textAppearanceMedium"
-  		    android:textColor="@color/red" />
+  			<TextView
+  			    android:id="@+id/textViewCourseRatingSubmitted"
+  			    android:layout_width="wrap_content"
+  			    android:layout_height="wrap_content"
+  			    android:layout_gravity="center"
+  			    android:ellipsize="none"
+  			    android:text="@string/blank"
+  			    android:textAppearance="?android:attr/textAppearanceMedium"
+  			    android:textColor="@color/red" />
+            
+            <Button
+                android:id="@+id/rating_button"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/LoginBorderColor"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1"
+                android:text="@string/submit"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
   		
-  		<!-- This is the existing comments section 
-  		
-  		<LinearLayout
-            android:id="@+id/courseCommentsListLayout"
-            android:layout_width="fill_parent"
-            android:layout_height="0dip"
-            android:layout_marginBottom="2dp"
-            android:background="@android:color/black"
-            android:orientation="horizontal" >
-        </LinearLayout> -->
+  		<!-- This is the existing comments section -->
+                
+  		    <TextView
+  		        android:id="@+id/commentText1"
+  		        android:layout_width="wrap_content"
+  		        android:layout_height="wrap_content"
+  		        android:layout_gravity="center"
+  		        android:text="@string/commentsHeader"
+  		        android:textAppearance="?android:attr/textAppearanceMedium"
+  		        android:textColor="@color/white"
+  		        />
+
+  		    <ListView
+  		        android:id="@+id/courseCommentsList"
+  		        android:layout_width="match_parent"
+  		        android:layout_height="300dp" 
+  		        />
+  		        
         </LinearLayout>
     </ScrollView>

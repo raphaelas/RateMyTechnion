@@ -15,6 +15,15 @@
     <string name="action_logout">Logout</string>
     <string name="exampleFaculty">Computer Science</string>
     <string name="action_search">Search</string>
+    <string name="commentsHeader">Comments</string>
+    <string name="privacyStatement">Privacy: statement goes here.</string>
+    <string name="instructions">Instructions go here.</string>
+    <string name="thumbImageDescription">Thumbs up image</string>
+    
+    
+    
+    
+    
     <string android:id="@+id/blank" name="blank" android:layout_width="wrap_content" android:layout_height="wrap_content"></string>
     <color name="silver">#C0C0C0</color>
     <color name="red">#FF0000</color>

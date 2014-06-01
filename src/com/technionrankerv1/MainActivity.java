@@ -79,21 +79,7 @@ public class MainActivity extends SearchResults {
 									"Login.x", "%D7%94%D7%AA%D7%97%D7%91%D7%A8")
 							.method(Method.POST).execute();
 					doc = res.parse();
-					String rishum = res.cookie("rishum");
-					String _ga = "GA1.3.1829128590.1396009585";
-					Log.d(getLocalClassName(),res.cookies().toString());
-					Log.d(getLocalClassName(), rishum);
-					Log.d(getLocalClassName(), _ga);
-					Connection.Response res1 = Jsoup
-							.connect(
-									"http://techmvs.technion.ac.il:100/cics/wmn/wmnnut03?OP=WK&SEM=201302")
-							.cookie("rishum", rishum).method(Method.POST)
-							.cookie("_ga", _ga)
-							.execute();
-					doc1 = res1.parse();
-					Log.d(getLocalClassName(), doc1.toString().length() +"");
-					URL url=res1.url();
-					Log.d(getLocalClassName(), url.toString());
+					//Note to Leo: I moved the code further down in the file so it doesn't crash on failed logins.
 					int x = 1;
 					Log.d(getLocalClassName(), doc.toString().length() + "");
 					if (doc.toString().length() < 4920) {
@@ -129,6 +115,24 @@ public class MainActivity extends SearchResults {
 						// .findViewById(R.id.textView23);
 						// myText.setText("Welcome " + name + "!");
 						// Log.d(getLocalClassName(), "in1");
+						
+						String rishum = res.cookie("rishum");
+						String _ga = "GA1.3.1829128590.1396009585";
+						Log.d(getLocalClassName(),res.cookies().toString());
+						Log.d(getLocalClassName(), rishum);
+						Log.d(getLocalClassName(), _ga);
+						Connection.Response res1 = Jsoup
+								.connect(
+										"http://techmvs.technion.ac.il:100/cics/wmn/wmnnut03?OP=WK&SEM=201302")
+								.cookie("rishum", rishum).method(Method.POST)
+								.cookie("_ga", _ga)
+								.execute();
+						doc1 = res1.parse();
+						Log.d(getLocalClassName(), doc1.toString().length() +"");
+						URL url=res1.url();
+						Log.d(getLocalClassName(), url.toString());
+						
+						
 						Intent i = new Intent(MainActivity.this,
 								WelcomeView.class);
 						i.putExtra("the username", "שלום " + name + "!");
