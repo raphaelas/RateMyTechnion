@@ -1,6 +1,8 @@
 package com.technionrankerv1;
 
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,10 +28,13 @@ public class CourseView extends SearchResults {
 	Long courseId = Long.valueOf(0);
 	boolean alreadySubmitted = false;
 	TextView textViewCourseRatingSubmitted;
+	ArrayList<String> comments =  new ArrayList<String>();
+	boolean canSubmit;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     	setContentView(R.layout.course_view);
+    	canSubmit = ((ApplicationWithGlobalVariables) this.getApplication()).canSubmitRatings();
     	textViewCourseRatingSubmitted = (TextView) findViewById(R.id.textViewCourseRatingSubmitted);
     	final Long studentId = Long.valueOf(0);
     	Bundle bundle = getIntent().getExtras();
@@ -40,7 +45,11 @@ public class CourseView extends SearchResults {
 		facultyText.setText(faculty);
 		TextView textViewCourseName = (TextView) findViewById(R.id.textViewCourseName);
 		textViewCourseName.setText(courseNumber + " - " + courseName);
-		displayAllComments(new String[10]);
+	    comments.addAll(Arrays.asList(new String[] {"This is a really, really, really, really, really, really, really, really,"
+	    		+ " really, really, really, really, really, really, really, really, really, really, really good course.",
+	    		"This course was okay.", "This course was not quite as good as you would otherwise expect.",
+	    		"This course was really something", "This course reminded me of the good old days."}));
+		displayAllComments(comments);
 		//We will need studentId passed in - not currently the case.
     	//final Long studentId = savedInstanceState.getLong("studentId");
     	Course c = new Course(null, null, courseNumber, null, null, null, false);
@@ -102,6 +111,12 @@ public class CourseView extends SearchResults {
 			}
     	});
     	
+
+    	/**
+    	 * This was copied from StackOverflow to allow for the comments
+    	 * ListView to be inside a ScrollView (without this code, only
+    	 * the first comment would be displayed)
+    	 */
     	ListView lv = (ListView)findViewById(R.id.courseCommentsList);  // your listview inside scrollview
     	lv.setOnTouchListener(new ListView.OnTouchListener() {
     	        @Override
@@ -127,11 +142,15 @@ public class CourseView extends SearchResults {
     }
     
     protected void saveRatings(CourseRating cr) {
-		if (!alreadySubmitted) {
+    	if (!canSubmit) {
+			textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
+			textViewCourseRatingSubmitted.setText("Whoops, you've reached the limit for posting ratings this semester.");
+    	}
+    	else if (!alreadySubmitted) {
 			textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
 			textViewCourseRatingSubmitted.setText("Please wait while we record your response.");
-    	CourseRatingClientAsync as3 = new CourseRatingClientAsync();
-    	as3.execute(cr);
+			CourseRatingClientAsync as3 = new CourseRatingClientAsync();
+			as3.execute(cr);
 		}
 		else {
 			textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
@@ -140,22 +159,26 @@ public class CourseView extends SearchResults {
     }
     
 	public void createComment(Long courseId, Long studentId) {
-		EditText et = (EditText) findViewById(R.id.comment);
-    	String commentText = et.getText().toString();
-    	long currTimeMillis = System.currentTimeMillis();
-    	Time currentTime = new Time(currTimeMillis);
-    	CourseComment cc = new CourseComment(courseId, studentId, commentText, currentTime, 0);
-    	CourseCommentClientAsync as2 = new CourseCommentClientAsync();
-    	as2.execute(cc);
+		if (!alreadySubmitted && canSubmit) {
+			((ApplicationWithGlobalVariables) this.getApplication()).incrementRatingsSubmitted();
+	    	canSubmit = ((ApplicationWithGlobalVariables) this.getApplication()).canSubmitRatings();
+			EditText et = (EditText) findViewById(R.id.comment);
+	    	String commentText = et.getText().toString();
+	    	if (commentText != null && commentText.length() > 0) {
+		    	comments.add(commentText);
+		    	displayAllComments(comments);
+		    	long currTimeMillis = System.currentTimeMillis();
+		    	Time currentTime = new Time(currTimeMillis);
+		    	CourseComment cc = new CourseComment(courseId, studentId, commentText, currentTime, 0);
+		    	CourseCommentClientAsync as2 = new CourseCommentClientAsync();
+		    	//as2.execute(cc);
+	    	}
+		}
     }
 	
-	public void displayAllComments(String[] allComments) {
+	public void displayAllComments(ArrayList<String> allComments) {
 		ListView courseCommentsList = (ListView) findViewById(R.id.courseCommentsList);
-	    String[] values = new String[] { "This is a really, really, really, really, really, really, really, really,"
-	    		+ " really, really, really, really, really, really, really, really, really, really, really good course.",
-	    		"This course was okay.", "This course was not quite as good as you would otherwise expect.",
-	    		"This course was really something", "This course reminded me of the good old days."};
-	    CommentsListAdapter adapter = new CommentsListAdapter(this, values);
+	    CommentsListAdapter adapter = new CommentsListAdapter(this, allComments.toArray(new String[(allComments.size())]));
 	    courseCommentsList.setAdapter(adapter);
 	}
 	

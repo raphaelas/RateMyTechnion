@@ -31,7 +31,7 @@
     
     <TextView
         android:id="@+id/likesCountText"
-        android:layout_width="50dp"
+        android:layout_width="70dp"
         android:layout_height="match_parent"
         android:layout_gravity="right"
         android:gravity="center_vertical"
@@ -39,7 +39,7 @@
         android:paddingRight="?android:attr/expandableListPreferredChildPaddingLeft"
         android:paddingTop="5dp"
         android:textColor="@color/white"
-        android:text="1"
+        android:text="100"
         android:textSize="17sp" />
 
 

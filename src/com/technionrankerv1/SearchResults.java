@@ -425,9 +425,9 @@ public abstract class SearchResults extends ActionBarActivity {
 		@Override
 		protected List<Professor> doInBackground(String... params) {
 			List<Professor> result = null;
-			Professor p = new Professor(null, "Cool Professor", null, null, false);
+			//Professor p = new Professor(null, "Cool Professor", null, null, false);
 			//result = db.insertProfessor(p).toString();
-			result = new TechnionRankerAPI().getProfessorByProfessorName(p);
+			//result = new TechnionRankerAPI().getProfessorByProfessorName(p);
 			/* This would populate the courses database:
 			String result = null;
 			for (int i = 0; i < params.length; i++) {
