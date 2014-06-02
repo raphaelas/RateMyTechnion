@@ -15,6 +15,8 @@ public class FragmentWelcomeView extends Fragment {
 
 		View rootView = inflater.inflate(R.layout.fragment_welcome_view,
 				container, false);
+        setHasOptionsMenu(true);
+
 
 		return rootView;
 	}

@@ -15,6 +15,7 @@ public class FragmentProfessors extends Fragment {
             Bundle savedInstanceState) {
  
         View rootView = inflater.inflate(R.layout.fragment_professors, container, false);
+        setHasOptionsMenu(true);
          
         return rootView;
     }

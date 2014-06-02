@@ -15,6 +15,7 @@ public class FragmentCourses extends Fragment {
             Bundle savedInstanceState) {
  
         View rootView = inflater.inflate(R.layout.fragment_courses, container, false);
+        setHasOptionsMenu(true);
          
         return rootView;
     }

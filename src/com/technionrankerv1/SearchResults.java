@@ -11,14 +11,21 @@ import java.util.Locale;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import android.app.ActionBar;
+import android.app.FragmentTransaction;
+import android.app.ActionBar.TabListener;
 import android.app.SearchManager;
+import android.app.ActionBar.Tab;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
@@ -33,20 +40,78 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.CursorAdapter;
 
+import com.fragment_adapter.TabsPagerAdapter;
 import com.serverapi.TechnionRankerAPI;
 
-public abstract class SearchResults extends ActionBarActivity {
+public abstract class SearchResults extends ActionBarActivity implements TabListener {
 	TechnionRankerAPI db = new TechnionRankerAPI();
 	String[] professorsAndCourses = null;
 	android.support.v4.widget.CursorAdapter cursorAdapter;
 	HashMap<String, String> hebrewTranslations = new HashMap<String, String>();
 	HashMap<String, String> facultyMap = new HashMap<String, String>();
+	private String[] tabs = { "Welcome View", "Courses", "Professors" };
+	private ViewPager viewPager;
+	private TabsPagerAdapter mAdapter;
+	private ActionBar actionBar;
+	
+	
 	//@override
 	public void onCreate(Bundle savedInstance){
 
 		super.onCreate(savedInstance);
+	    setContentView(R.layout.fragment_main_activity);
 		professorsAndCourses = concat(capsFix(parseCourses()), parseHebrewProfessors());
+		
+		// Initilization
+		viewPager = (ViewPager) findViewById(R.id.pager);
+		actionBar = getActionBar();
+		actionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources()
+				.getColor(R.color.blueish)));
+		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
+
+		viewPager.setAdapter(mAdapter);
+		actionBar.setHomeButtonEnabled(false);
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+		// Adding Tabs
+		for (String tab_name : tabs) {
+			actionBar.addTab(actionBar.newTab().setText(tab_name)
+					.setTabListener(this));
+		}
+		viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+			@Override
+			public void onPageSelected(int position) {
+				// on changing the page
+				// make respected tab selected
+				actionBar.setSelectedNavigationItem(position);
+			}
+
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+			}
+		});
 	}
+	
+	@Override
+	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+	}
+
+	@Override
+	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+		// on tab selected
+		// show respected fragment view
+		viewPager.setCurrentItem(tab.getPosition());
+	}
+
+	@Override
+	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+	}
+	
 	
 	/**
 	 * This populates the professorSet (returned) and hebrewTranslations
@@ -457,7 +522,6 @@ public abstract class SearchResults extends ActionBarActivity {
 			}
 		}
 	}
-	
 }
 
 
