@@ -16,7 +16,7 @@
         android:textColor="@color/white"
         android:textSize="17sp" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/thumbImage"
         android:src="@drawable/ic_action_good"
         android:contentDescription="@string/thumbImageDescription"

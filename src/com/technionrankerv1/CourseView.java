@@ -75,6 +75,7 @@ public class CourseView extends SearchResults {
 			public void onClick(View v) {
 				saveRatings(cr);
 				createComment(cr.getCourseId(), cr.getStudentID());
+				alreadySubmitted = true;
 			}
 		});
     	rOverall.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
@@ -258,7 +259,6 @@ public class CourseView extends SearchResults {
 			else {
 				textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
 				textViewCourseRatingSubmitted.setText("Thank you.  Your rating was received.");
-				alreadySubmitted = true;
 
 			}
 		}

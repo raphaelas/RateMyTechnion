@@ -65,6 +65,7 @@ public class ProfessorView extends SearchResults {
 			public void onClick(View v) {
 				saveProfessorRating(pr);
 				createProfessorComment(pr.getProfessorID(), pr.getStudentID());
+				alreadySubmitted = true;
 			}
 		});
     	rOverall.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
@@ -180,7 +181,6 @@ public class ProfessorView extends SearchResults {
 				//Log.d(getLocalClassName(), res);
 				textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
 				textViewProfessorRatingSubmitted.setText("Thank you.  Your rating was received.");
-				alreadySubmitted = true;
 			}
 		}
 	}

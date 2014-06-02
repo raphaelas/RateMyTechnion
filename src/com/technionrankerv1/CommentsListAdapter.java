@@ -4,13 +4,12 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class CommentsListAdapter extends ArrayAdapter<CourseComment> {
@@ -31,14 +30,17 @@ public class CommentsListAdapter extends ArrayAdapter<CourseComment> {
 	    View rowView = inflater.inflate(R.layout.comments_list_item, parent, false);
 	    TextView commentTextView = (TextView) rowView.findViewById(R.id.singleCommentText);
 	    final TextView likesTextView = (TextView) rowView.findViewById(R.id.likesCountText);
-	    ImageView thumbImage = (ImageView) rowView.findViewById(R.id.thumbImage);
+	    final ImageButton thumbImage = (ImageButton) rowView.findViewById(R.id.thumbImage);
 	    thumbImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				int oldCount = Integer.parseInt(likesTextView.getText().toString());
-				values[position].incrementLikes();
-				likesTextView.setText("" + (oldCount + 1));
-				notifyDataSetChanged();
+				if (thumbImage.isEnabled()) {
+					thumbImage.setEnabled(false);
+					int oldCount = Integer.parseInt(likesTextView.getText().toString());
+					values[position].incrementLikes();
+					likesTextView.setText("" + (oldCount + 1));
+					notifyDataSetChanged();
+				}
 			}
 	    });
 	    commentTextView.setText(values[position].getComment());
@@ -50,7 +52,6 @@ public class CommentsListAdapter extends ArrayAdapter<CourseComment> {
 	  
 	  @Override
 	  public void notifyDataSetChanged() {
-		  Log.d("CommentsListAdapter", "A change was made.");
 		  Arrays.sort(values, new Comparator<CourseComment>() {
 			    @Override
 			    public int compare(CourseComment o1, CourseComment o2) {
