@@ -7,7 +7,6 @@ TODO:
 Raphi's questions:
 Rename app - maybe TechnionRater?  Our app currently does not rank teachers - it rates them.
 Maybe add loading page?
-Add instructions and privacy policy to sign in page?
 
 Leo - Raphi discussed:
 
@@ -18,7 +17,5 @@ You can rate anyone - but limit 10 ratings per semester.
 
 Big tasks:
 1. Menu bar
-2. Comments
-3. Rating logic
-4. Database
-5. Previous ratings
+2. Database
+3. Previous ratings

@@ -69,4 +69,8 @@ public class CourseComment {
   public void setLikes(int likes1) {
     likes = likes1;
   }
+  
+  public void incrementLikes() {
+	  likes++;
+  }
 }

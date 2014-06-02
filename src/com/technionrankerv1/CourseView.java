@@ -2,7 +2,7 @@ package com.technionrankerv1;
 
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Comparator;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,7 +28,7 @@ public class CourseView extends SearchResults {
 	Long courseId = Long.valueOf(0);
 	boolean alreadySubmitted = false;
 	TextView textViewCourseRatingSubmitted;
-	ArrayList<String> comments =  new ArrayList<String>();
+	ArrayList<CourseComment> comments =  new ArrayList<CourseComment>();
 	boolean canSubmit;
 	
     public void onCreate(Bundle savedInstanceState) {
@@ -45,11 +45,6 @@ public class CourseView extends SearchResults {
 		facultyText.setText(faculty);
 		TextView textViewCourseName = (TextView) findViewById(R.id.textViewCourseName);
 		textViewCourseName.setText(courseNumber + " - " + courseName);
-	    comments.addAll(Arrays.asList(new String[] {"This is a really, really, really, really, really, really, really, really,"
-	    		+ " really, really, really, really, really, really, really, really, really, really, really good course.",
-	    		"This course was okay.", "This course was not quite as good as you would otherwise expect.",
-	    		"This course was really something", "This course reminded me of the good old days."}));
-		displayAllComments(comments);
 		//We will need studentId passed in - not currently the case.
     	//final Long studentId = savedInstanceState.getLong("studentId");
     	Course c = new Course(null, null, courseNumber, null, null, null, false);
@@ -165,20 +160,20 @@ public class CourseView extends SearchResults {
 			EditText et = (EditText) findViewById(R.id.comment);
 	    	String commentText = et.getText().toString();
 	    	if (commentText != null && commentText.length() > 0) {
-		    	comments.add(commentText);
-		    	displayAllComments(comments);
 		    	long currTimeMillis = System.currentTimeMillis();
 		    	Time currentTime = new Time(currTimeMillis);
 		    	CourseComment cc = new CourseComment(courseId, studentId, commentText, currentTime, 0);
+		    	comments.add(cc);
+		    	displayAllComments(comments);
 		    	CourseCommentClientAsync as2 = new CourseCommentClientAsync();
 		    	//as2.execute(cc);
 	    	}
 		}
     }
-	
-	public void displayAllComments(ArrayList<String> allComments) {
+	 
+	public void displayAllComments(ArrayList<CourseComment> allComments) {
 		ListView courseCommentsList = (ListView) findViewById(R.id.courseCommentsList);
-	    CommentsListAdapter adapter = new CommentsListAdapter(this, allComments.toArray(new String[(allComments.size())]));
+	    CommentsListAdapter adapter = new CommentsListAdapter(this, allComments.toArray(new CourseComment[(allComments.size())]));
 	    courseCommentsList.setAdapter(adapter);
 	}
 	
