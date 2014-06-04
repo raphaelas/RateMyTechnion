@@ -37,7 +37,7 @@ public class ApplicationWithGlobalVariables extends Application {
 	 * @return Whether the user submitted fewer than the ratings threshold.
 	 */
 	public boolean canSubmitRatings() {
-		int RATINGS_THRESHOLD = 3;
+		int RATINGS_THRESHOLD = 10;
 		return ratingsSubmitted < RATINGS_THRESHOLD;
 	}
 

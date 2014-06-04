@@ -19,12 +19,13 @@ import android.widget.TextView;
 import com.serverapi.TechnionRankerAPI;
 
 /**
- * This class requires two variables to be passed in: "studentId" and "courseNumber"
+ * This class requires one variable to be passed in: "courseNumber"
  * @author raphaelas
  *
  */
 public class CourseView extends SearchResults {
 	Long courseId = Long.valueOf(0);
+	Long studentId = Long.valueOf(0);
 	boolean alreadySubmitted = false;
 	TextView textViewCourseRatingSubmitted;
 	ArrayList<CourseComment> comments =  new ArrayList<CourseComment>();
@@ -33,10 +34,11 @@ public class CourseView extends SearchResults {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     	setContentView(R.layout.course_view);
+    	studentId = ((ApplicationWithGlobalVariables) this.getApplication()).getStudentID();
     	canSubmit = ((ApplicationWithGlobalVariables) this.getApplication()).canSubmitRatings();
     	displayAllComments(comments);
     	textViewCourseRatingSubmitted = (TextView) findViewById(R.id.textViewCourseRatingSubmitted);
-    	final Long studentId = Long.valueOf(0);
+    	final 
     	Bundle bundle = getIntent().getExtras();
     	final String courseNumber = bundle.getString("courseNumber");
     	final String courseName = bundle.getString("courseName");
@@ -45,8 +47,6 @@ public class CourseView extends SearchResults {
 		facultyText.setText(faculty);
 		TextView textViewCourseName = (TextView) findViewById(R.id.textViewCourseName);
 		textViewCourseName.setText(courseNumber + " - " + courseName);
-		//We will need studentId passed in - not currently the case.
-    	//final Long studentId = savedInstanceState.getLong("studentId");
     	Course c = new Course(null, null, courseNumber, null, null, null, false);
 		ClientAsync as = new ClientAsync();
 		as.execute(c);

@@ -26,15 +26,21 @@ import com.serverapi.TechnionRankerAPI;
  */
 public class ProfessorView extends SearchResults {
     public Long professorId = Long.valueOf(0);
+    public Long studentId = Long.valueOf(0);
     public Professor professor;
     public boolean alreadySubmitted = false;
     public TextView textViewProfessorRatingSubmitted;
 	ArrayList<ProfessorComment> comments =  new ArrayList<ProfessorComment>();
+	boolean canSubmit;
+
+
 
 
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     	setContentView(R.layout.prof_view);
+    	studentId = ((ApplicationWithGlobalVariables) this.getApplication()).getStudentID();
+    	canSubmit = ((ApplicationWithGlobalVariables) this.getApplication()).canSubmitRatings();
     	textViewProfessorRatingSubmitted = (TextView) findViewById(R.id.textViewProfessorRatingSubmitted);
     	displayAllComments(comments);
 		Bundle bundle = getIntent().getExtras();
@@ -56,7 +62,6 @@ public class ProfessorView extends SearchResults {
 			e.printStackTrace();
 		}
     	 */
-    	final Long studentId = Long.valueOf(0); //savedInstanceState.getLong("studentId");
     	RatingBar rOverall = (RatingBar) findViewById(R.id.professorRatingBarOverall);
     	RatingBar rClarity = (RatingBar) findViewById(R.id.professorRatingBarClarity);
     	RatingBar rPreparedness = (RatingBar) findViewById(R.id.professorRatingBarPreparedness);
@@ -131,7 +136,11 @@ public class ProfessorView extends SearchResults {
     }
 	
 	protected void saveProfessorRating(ProfessorRating pr) {
-		if (!alreadySubmitted) {
+    	if (!canSubmit) {
+			textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
+			textViewProfessorRatingSubmitted.setText("Whoops, you've reached the limit for posting ratings this semester.");
+    	}
+    	else if (!alreadySubmitted) {
 			textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
 			textViewProfessorRatingSubmitted.setText("Please wait while we record your response.");
 			ProfessorRatingClientAsync as3 = new ProfessorRatingClientAsync();
@@ -144,15 +153,17 @@ public class ProfessorView extends SearchResults {
 	}
 
 	protected void createProfessorComment(Long professorId, Long studentId) {
-    	EditText et = (EditText) findViewById(R.id.professorComment);
-    	String commentText = et.getText().toString();
-    	long currTimeMillis = System.currentTimeMillis();
-    	Time currentTime = new Time(currTimeMillis);
-    	ProfessorComment pc = new ProfessorComment(professorId, studentId, commentText, currentTime, 0);
-    	comments.add(pc);
-    	displayAllComments(comments);
-    	ProfessorCommentClientAsync as2 = new ProfessorCommentClientAsync();
-    	as2.execute(pc);
+		if (!alreadySubmitted && canSubmit) {
+			EditText et = (EditText) findViewById(R.id.professorComment);
+			String commentText = et.getText().toString();
+			long currTimeMillis = System.currentTimeMillis();
+			Time currentTime = new Time(currTimeMillis);
+			ProfessorComment pc = new ProfessorComment(professorId, studentId, commentText, currentTime, 0);
+			comments.add(pc);
+			displayAllComments(comments);
+			ProfessorCommentClientAsync as2 = new ProfessorCommentClientAsync();
+			//as2.execute(pc);
+		}
 	}
 	
 	public void displayAllComments(ArrayList<ProfessorComment> allComments) {
