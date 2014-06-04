@@ -10,8 +10,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
@@ -35,6 +38,7 @@ public class CourseView extends SearchResults {
         super.onCreate(savedInstanceState);
     	setContentView(R.layout.course_view);
     	canSubmit = ((ApplicationWithGlobalVariables) this.getApplication()).canSubmitRatings();
+    	displayAllComments(comments);
     	textViewCourseRatingSubmitted = (TextView) findViewById(R.id.textViewCourseRatingSubmitted);
     	final Long studentId = Long.valueOf(0);
     	Bundle bundle = getIntent().getExtras();
@@ -245,7 +249,7 @@ public class CourseView extends SearchResults {
 		@Override
 		protected String doInBackground(CourseRating... params) {
 	    	CourseRating cr = params[0];
-	    	String result = new TechnionRankerAPI().insertCourseRating(cr).toString();
+	    	String result = "Did nothing"; //new TechnionRankerAPI().insertCourseRating(cr).toString();
 			return result;
 		}
 

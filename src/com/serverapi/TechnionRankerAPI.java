@@ -2,7 +2,11 @@ package com.serverapi;
 
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.serverapi.communicator.Communicator;
+import com.serverapi.utilities.TechnionRankerFunctions;
+import com.serverapi.utilities.TechnionRankerReturnCodes;
 import com.technionrankerv1.Course;
 import com.technionrankerv1.CourseComment;
 import com.technionrankerv1.CourseRating;
@@ -11,10 +15,6 @@ import com.technionrankerv1.ProfessorComment;
 import com.technionrankerv1.ProfessorRating;
 import com.technionrankerv1.StudentProfessorCourse;
 import com.technionrankerv1.StudentUser;
-import com.serverapi.utilities.TechnionRankerFunctions;
-import com.serverapi.utilities.TechnionRankerReturnCodes;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 public class TechnionRankerAPI implements ITechnionRankerAPI {
   Gson gson = new Gson();
@@ -31,10 +31,10 @@ public class TechnionRankerAPI implements ITechnionRankerAPI {
   String courseComment = TechnionRankerFunctions.COURSE_COMMENT.value();
 
   @Override
-  public TechnionRankerReturnCodes insertCourse(Course c) {
+  public TechnionRankerReturnCodes insertCourse(List<Course> cList) {
     return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
         function, TechnionRankerFunctions.INSERT_COURSE.value(), course,
-        gson.toJson(c)));
+        gson.toJson(cList)));
   }
 
   @Override
@@ -58,10 +58,10 @@ public class TechnionRankerAPI implements ITechnionRankerAPI {
   }
 
   @Override
-  public TechnionRankerReturnCodes insertProfessor(Professor p) {
+  public TechnionRankerReturnCodes insertProfessor(List<Professor> pList) {
     return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
         function, TechnionRankerFunctions.INSERT_PROFESSOR.value(), professor,
-        gson.toJson(p)));
+        gson.toJson(pList)));
   }
 
   @Override
@@ -359,37 +359,20 @@ public class TechnionRankerAPI implements ITechnionRankerAPI {
     }.getType());
   }
 
-  //Raphi added the following two methods on June 1st, 2014.
-  
-//Each Course has a professor_id that this method should use to retrieve the course's professor.
-@Override
-public Professor getProfessorForCourse(Course c) {
+  @Override
+  public List<Professor> getProfessorByProfessorHebrewName(Professor p) {
     return gson.fromJson(Communicator.execute(servlet, function,
-            TechnionRankerFunctions.GET_PROFESSOR_FOR_COURSE.value(), course,
-            gson.toJson(c)), Professor.class);
-}
+        TechnionRankerFunctions.GET_PROFESSOR_BY_HEBREW_NAME.value(),
+        professor, gson.toJson(p)), new TypeToken<List<Professor>>() {
+      // default usage
+    }.getType());
+  }
 
-@Override
-public List<Professor> getProfessorByProfessorHebrewName(Professor p) {
+  @Override
+  public Professor getProfessorForCourse(Course c) {
     return gson.fromJson(Communicator.execute(servlet, function,
-            TechnionRankerFunctions.GET_PROFESSOR_BY_HEBREW_NAME.value(), professor,
-            gson.toJson(p)), new TypeToken<List<Professor>>() {
-          // default usage
-        }.getType());
-}
-
-@Override
-public TechnionRankerReturnCodes insertProfessorsArray(Professor[] pArray) {
-    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
-            function, TechnionRankerFunctions.INSERT_PROFESSOR_ARRAY.value(), professor,
-            gson.toJson(pArray)));
-}
-
-@Override
-public TechnionRankerReturnCodes insertCourseArray(Course[] cArray) {
-    return TechnionRankerReturnCodes.valueOf(Communicator.execute(servlet,
-            function, TechnionRankerFunctions.INSERT_COURSE_ARRAY.value(), course,
-            gson.toJson(cArray)));
-}
+        TechnionRankerFunctions.GET_PROFESSOR_FOR_COURSE.value(), course,
+        gson.toJson(c)), Professor.class);
+  }
 
 }

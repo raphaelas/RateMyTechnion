@@ -9,13 +9,13 @@ import android.view.ViewGroup;
 import com.technionrankerv1.R;
 
 public class FragmentWelcomeView extends Fragment {
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View rootView = inflater.inflate(R.layout.fragment_welcome_view,
 				container, false);
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
 
 
 		return rootView;

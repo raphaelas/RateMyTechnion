@@ -2,6 +2,7 @@ package com.serverapi;
 
 import java.util.List;
 
+import com.serverapi.utilities.TechnionRankerReturnCodes;
 import com.technionrankerv1.Course;
 import com.technionrankerv1.CourseComment;
 import com.technionrankerv1.CourseRating;
@@ -10,11 +11,10 @@ import com.technionrankerv1.ProfessorComment;
 import com.technionrankerv1.ProfessorRating;
 import com.technionrankerv1.StudentProfessorCourse;
 import com.technionrankerv1.StudentUser;
-import com.serverapi.utilities.TechnionRankerReturnCodes;
 
 public interface ITechnionRankerAPI {
 
-  TechnionRankerReturnCodes insertCourse(Course c);
+  TechnionRankerReturnCodes insertCourse(List<Course> cList);
 
   Course getCourse(Course c);
 
@@ -22,13 +22,17 @@ public interface ITechnionRankerAPI {
 
   List<Course> getAllCourses();
 
-  TechnionRankerReturnCodes insertProfessor(Professor p);
+  TechnionRankerReturnCodes insertProfessor(List<Professor> pList);
 
   Professor getProfessor(Professor p);
 
   List<Professor> getAllProfessors();
 
   List<Professor> getProfessorByProfessorName(Professor p);
+
+  Professor getProfessorForCourse(Course c);
+
+  List<Professor> getProfessorByProfessorHebrewName(Professor p);
 
   TechnionRankerReturnCodes insertStudentUser(StudentUser s);
 
@@ -99,12 +103,4 @@ public interface ITechnionRankerAPI {
   TechnionRankerReturnCodes dropAllProfessorComments();
 
   TechnionRankerReturnCodes removeCourseComment(CourseComment cc);
-  
-  Professor getProfessorForCourse(Course c);
-  
-  List<Professor> getProfessorByProfessorHebrewName(Professor p);
-  
-  TechnionRankerReturnCodes insertProfessorsArray(Professor[] pArray);
-  
-  TechnionRankerReturnCodes insertCourseArray(Course[] cArray);
 }

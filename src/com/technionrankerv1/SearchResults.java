@@ -12,10 +12,10 @@ import java.util.Locale;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.app.ActionBar.TabListener;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.SearchManager;
-import android.app.ActionBar.Tab;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -23,7 +23,6 @@ import android.database.MatrixCursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
@@ -106,6 +105,15 @@ public abstract class SearchResults extends ActionBarActivity implements TabList
 		// on tab selected
 		// show respected fragment view
 		viewPager.setCurrentItem(tab.getPosition());
+		mAdapter.notifyDataSetChanged();
+		//android.support.v4.app.Fragment fragment = mAdapter.getItem(tab.getPosition());
+	    //Bundle args = new Bundle();
+	    /*
+	    args.putInt(fragment.ARG_SECTION_NUMBER,
+	        tab.getPosition() + 1);
+	    fragment.setArguments(args);*/
+	    //getSupportFragmentManager().beginTransaction()
+	    //    .replace(viewPager.getCurrentItem(), fragment).commit();
 	}
 
 	@Override
@@ -407,6 +415,7 @@ public abstract class SearchResults extends ActionBarActivity implements TabList
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
+		Log.d(getLocalClassName(), "In OptionsItemSelected");
 		switch (item.getItemId()) {
 		case R.id.action_logout:
 			//TODO: openLoginPage(item);
