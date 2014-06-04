@@ -264,6 +264,16 @@
   		        android:layout_width="match_parent"
   		        android:layout_height="300dp" 
   		        />
+  		    
+  		    <TextView
+  		        android:id="@+id/emptyCourseComments"
+  		        android:layout_width="wrap_content"
+  		        android:layout_height="wrap_content"
+  		        android:layout_gravity="center"
+  		        android:text="@string/emptyCommentsList"
+  		        android:textAppearance="?android:attr/textAppearanceMedium"
+  		        android:textColor="@color/gray"
+  		        />
   		        
         </LinearLayout>
     </ScrollView>

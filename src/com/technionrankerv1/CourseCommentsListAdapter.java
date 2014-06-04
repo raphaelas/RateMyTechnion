@@ -17,7 +17,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class CourseCommentsListAdapter extends ArrayAdapter<CourseComment> {
-	//TODO: ensure that page reload does not allow for re-liking comment.
 	private final Context context;
 	public CourseComment[] values;
 

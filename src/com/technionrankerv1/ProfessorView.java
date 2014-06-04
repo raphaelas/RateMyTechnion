@@ -1,15 +1,18 @@
 package com.technionrankerv1;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.TextView;
@@ -26,11 +29,14 @@ public class ProfessorView extends SearchResults {
     public Professor professor;
     public boolean alreadySubmitted = false;
     public TextView textViewProfessorRatingSubmitted;
+	ArrayList<ProfessorComment> comments =  new ArrayList<ProfessorComment>();
+
 
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     	setContentView(R.layout.prof_view);
     	textViewProfessorRatingSubmitted = (TextView) findViewById(R.id.textViewProfessorRatingSubmitted);
+    	displayAllComments(comments);
 		Bundle bundle = getIntent().getExtras();
     	String lookupProfessorName = bundle.getString("professorName");
     	TextView professorNameText = (TextView) findViewById(R.id.professorNameText);
@@ -99,6 +105,29 @@ public class ProfessorView extends SearchResults {
 				pr.setInteractivity(Math.round(rating));
 			}
     	});
+    	
+    	ListView lv = (ListView)findViewById(R.id.professorCommentsList);  // your listview inside scrollview
+    	lv.setOnTouchListener(new ListView.OnTouchListener() {
+    	        @Override
+    	        public boolean onTouch(View v, MotionEvent event) {
+    	            int action = event.getAction();
+    	            switch (action) {
+    	            case MotionEvent.ACTION_DOWN:
+    	                // Disallow ScrollView to intercept touch events.
+    	                v.getParent().requestDisallowInterceptTouchEvent(true);
+    	                break;
+
+    	            case MotionEvent.ACTION_UP:
+    	                // Allow ScrollView to intercept touch events.
+    	                v.getParent().requestDisallowInterceptTouchEvent(false);
+    	                break;
+    	            }
+
+    	            // Handle ListView touch events.
+    	            v.onTouchEvent(event);
+    	            return true;
+    	        }
+    	    });
     }
 	
 	protected void saveProfessorRating(ProfessorRating pr) {
@@ -120,8 +149,19 @@ public class ProfessorView extends SearchResults {
     	long currTimeMillis = System.currentTimeMillis();
     	Time currentTime = new Time(currTimeMillis);
     	ProfessorComment pc = new ProfessorComment(professorId, studentId, commentText, currentTime, 0);
+    	comments.add(pc);
+    	displayAllComments(comments);
     	ProfessorCommentClientAsync as2 = new ProfessorCommentClientAsync();
     	as2.execute(pc);
+	}
+	
+	public void displayAllComments(ArrayList<ProfessorComment> allComments) {
+		ListView professorCommentsList = (ListView) findViewById(R.id.professorCommentsList);
+	    ProfessorCommentsListAdapter adapter = new ProfessorCommentsListAdapter(
+	    		this, allComments.toArray(new ProfessorComment[(allComments.size())]));
+	    TextView emptyComments = (TextView) findViewById(R.id.emptyProfessorComments);
+	    professorCommentsList.setEmptyView(emptyComments);
+	    professorCommentsList.setAdapter(adapter);
 	}
 	
 	private class ProfessorClientAsync extends AsyncTask<Professor, Void, List<Professor>> {

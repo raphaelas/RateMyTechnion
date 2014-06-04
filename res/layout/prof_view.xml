@@ -225,10 +225,21 @@
                 android:layout_marginTop="5dp"
                 android:background="@android:color/white" />
                 
+                    <TextView
+            android:id="@+id/textViewProfessorRatingSubmitted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="none"
+            android:text="@string/blank"
+            android:layout_gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/red" />
+            
                 <Button
                     android:id="@+id/professorRatingButton"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
+                    android:layout_marginBottom="10dp"
                     android:background="@color/LoginBorderColor"
                     android:orientation="horizontal"
                     android:shadowColor="@android:color/black"
@@ -238,28 +249,34 @@
                     android:text="@string/professorSubmit"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
-                                
-        <TextView
-            android:id="@+id/textViewProfessorRatingSubmitted"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:ellipsize="none"
-            android:text="@string/blank"
-            android:layout_gravity="center"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/red" />
         
-        <!-- This is the existing comments section 
+        <!-- This is the existing comments section -->
   
-        <LinearLayout
-            android:id="@+id/professorCommentsListLayout"
-            android:layout_width="fill_parent"
-            android:layout_height="0dip"
-            android:layout_marginBottom="2dp"
-            android:background="@android:color/black"
-            android:orientation="horizontal" >
-        </LinearLayout> -->
+  		    <TextView
+  		        android:id="@+id/commentText1"
+  		        android:layout_width="wrap_content"
+  		        android:layout_height="wrap_content"
+  		        android:layout_gravity="center"
+  		        android:text="@string/commentsHeader"
+  		        android:textAppearance="?android:attr/textAppearanceMedium"
+  		        android:textColor="@color/white"
+  		        />
+
+  		    <ListView
+  		        android:id="@+id/professorCommentsList"
+  		        android:layout_width="match_parent"
+  		        android:layout_height="300dp" 
+  		        />
+  		    
+  		    <TextView
+  		        android:id="@+id/emptyProfessorComments"
+  		        android:layout_width="wrap_content"
+  		        android:layout_height="wrap_content"
+  		        android:layout_gravity="center"
+  		        android:text="@string/emptyCommentsList"
+  		        android:textAppearance="?android:attr/textAppearanceMedium"
+  		        android:textColor="@color/gray"
+  		        />
         </LinearLayout>
 
     </ScrollView>

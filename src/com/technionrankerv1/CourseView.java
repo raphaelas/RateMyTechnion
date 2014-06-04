@@ -169,14 +169,17 @@ public class CourseView extends SearchResults {
 		    	comments.add(cc);
 		    	displayAllComments(comments);
 		    	CourseCommentClientAsync as2 = new CourseCommentClientAsync();
-		    	as2.execute(cc);
+		    	//as2.execute(cc);
 	    	}
 		}
     }
 	 
 	public void displayAllComments(ArrayList<CourseComment> allComments) {
 		ListView courseCommentsList = (ListView) findViewById(R.id.courseCommentsList);
-	    CourseCommentsListAdapter adapter = new CourseCommentsListAdapter(this, allComments.toArray(new CourseComment[(allComments.size())]));
+	    CourseCommentsListAdapter adapter = new CourseCommentsListAdapter(
+	    		this, allComments.toArray(new CourseComment[(allComments.size())]));
+	    TextView emptyComments = (TextView) findViewById(R.id.emptyCourseComments);
+	    courseCommentsList.setEmptyView(emptyComments);
 	    courseCommentsList.setAdapter(adapter);
 	}
 	
@@ -261,7 +264,6 @@ public class CourseView extends SearchResults {
 			else {
 				textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
 				textViewCourseRatingSubmitted.setText("Thank you.  Your rating was received.");
-
 			}
 		}
 	}
