@@ -2,7 +2,6 @@ package com.technionrankerv1;
 
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,11 +9,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
@@ -166,19 +162,21 @@ public class CourseView extends SearchResults {
 	    	String commentText = et.getText().toString();
 	    	if (commentText != null && commentText.length() > 0) {
 		    	long currTimeMillis = System.currentTimeMillis();
+		    	//Time currentTime = new Time();
+		    	//currentTime.set(currTimeMillis);
 		    	Time currentTime = new Time(currTimeMillis);
 		    	CourseComment cc = new CourseComment(courseId, studentId, commentText, currentTime, 0);
 		    	comments.add(cc);
 		    	displayAllComments(comments);
 		    	CourseCommentClientAsync as2 = new CourseCommentClientAsync();
-		    	//as2.execute(cc);
+		    	as2.execute(cc);
 	    	}
 		}
     }
 	 
 	public void displayAllComments(ArrayList<CourseComment> allComments) {
 		ListView courseCommentsList = (ListView) findViewById(R.id.courseCommentsList);
-	    CommentsListAdapter adapter = new CommentsListAdapter(this, allComments.toArray(new CourseComment[(allComments.size())]));
+	    CourseCommentsListAdapter adapter = new CourseCommentsListAdapter(this, allComments.toArray(new CourseComment[(allComments.size())]));
 	    courseCommentsList.setAdapter(adapter);
 	}
 	
@@ -249,7 +247,7 @@ public class CourseView extends SearchResults {
 		@Override
 		protected String doInBackground(CourseRating... params) {
 	    	CourseRating cr = params[0];
-	    	String result = "Did nothing"; //new TechnionRankerAPI().insertCourseRating(cr).toString();
+	    	String result = new TechnionRankerAPI().insertCourseRating(cr).toString();
 			return result;
 		}
 

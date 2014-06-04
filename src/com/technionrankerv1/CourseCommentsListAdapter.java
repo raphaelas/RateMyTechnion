@@ -3,7 +3,11 @@ package com.technionrankerv1;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import com.serverapi.TechnionRankerAPI;
+
 import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,18 +16,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class CommentsListAdapter extends ArrayAdapter<CourseComment> {
+public class CourseCommentsListAdapter extends ArrayAdapter<CourseComment> {
 	//TODO: ensure that page reload does not allow for re-liking comment.
 	private final Context context;
 	public CourseComment[] values;
-	private boolean[] enabledListeners;
 
-	public CommentsListAdapter(Context context, CourseComment[] values) {
+	public CourseCommentsListAdapter(Context context, CourseComment[] values) {
 		super(context, R.layout.comments_list_item, values);
 		this.context = context;
 		this.values = values;
-		this.enabledListeners = new boolean[values.length];
-		Arrays.fill(enabledListeners, Boolean.TRUE);
 	}
 
 	@Override
@@ -37,10 +38,15 @@ public class CommentsListAdapter extends ArrayAdapter<CourseComment> {
 		thumbImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (enabledListeners[position] == true) {
-					enabledListeners[position] = false;
+				CourseComment thisCourseComment = values[position];
+				//If the comment is not liked according to the global variables:
+				if (!((ApplicationWithGlobalVariables) context.getApplicationContext()).
+						isCourseCommentLiked(thisCourseComment)) {
+					((ApplicationWithGlobalVariables) context.getApplicationContext()).likeCourseComment(thisCourseComment);
 					int oldCount = Integer.parseInt(likesTextView.getText().toString());
-					values[position].incrementLikes();
+					thisCourseComment.incrementLikes();
+					CourseCommentClientAsync as = new CourseCommentClientAsync();
+					//as.execute(thisCourseComment);
 					likesTextView.setText("" + (oldCount + 1));
 					notifyDataSetChanged(); //This line is necessary for sorting.
 				}
@@ -57,27 +63,36 @@ public class CommentsListAdapter extends ArrayAdapter<CourseComment> {
 		Arrays.sort(values, new Comparator<CourseComment>() {
 			@Override
 			public int compare(CourseComment o1, CourseComment o2) {
-				int currI = 0;
-				int currJ = 0;
 				int toReturn = o2.getLikes() - o1.getLikes();
-				if (toReturn < 0) {
-					for (int i = 0; i < values.length; i++) {
-						if (values[i].equals(o1)) {
-							currI = i;
-						}
-					}
-					for (int j = 0; j < values.length; j++) {
-						if (values[j].equals(o2)) {
-							currJ = j;
-						}
-					}
-					boolean temp = enabledListeners[currI];
-					enabledListeners[currI] = enabledListeners[currJ];
-					enabledListeners[currJ] = temp;
-				}
 				return toReturn;
 			}
 		});
 		super.notifyDataSetChanged();
+	}
+	
+	private class CourseCommentClientAsync extends AsyncTask<CourseComment, Void, String> {
+		public CourseCommentClientAsync() {
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected String doInBackground(CourseComment... params) {
+	    	CourseComment cc = params[0];
+	    	String result = new TechnionRankerAPI().insertCourseComment(cc).toString();
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(String res) {
+			if (res == null)
+				Log.d("CommentsListAdapter", "CourseComment clientAsync unsuccessful");
+			else {
+				Log.d("CommentsListAdapter", "CourseComment saving: " + res);
+			}
+		}
 	}
 }
