@@ -141,7 +141,7 @@ public class MainActivity extends SearchResults {
 						
 						
 						Intent i = new Intent(MainActivity.this,
-								WelcomeView.class);
+								FragmentMainActivity.class);
 						i.putExtra("the username", "שלום " + name + "!");
 						startActivity(i);
 						// startActivity(new Intent(Login.this,
