@@ -10,11 +10,6 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-
-import android.app.ActionBar;
-import android.app.ActionBar.TabListener;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +20,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBar.TabListener;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
@@ -49,12 +46,10 @@ public abstract class SearchResults extends ActionBarActivity implements TabList
 	HashMap<String, String> hebrewTranslations = new HashMap<String, String>();
 	HashMap<String, String> facultyMap = new HashMap<String, String>();
 	private String[] tabs = { "Welcome View", "Courses", "Professors" };
-	private ViewPager viewPager;
+	public ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
-	
-	
-	//@override
+		
 	public void onCreate(Bundle savedInstance){
 
 		super.onCreate(savedInstance);
@@ -63,7 +58,7 @@ public abstract class SearchResults extends ActionBarActivity implements TabList
 		
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);
-		actionBar = getActionBar();
+		actionBar = getSupportActionBar();
 		actionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources()
 				.getColor(R.color.blueish)));
 		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
@@ -83,6 +78,7 @@ public abstract class SearchResults extends ActionBarActivity implements TabList
 			public void onPageSelected(int position) {
 				// on changing the page
 				// make respected tab selected
+				Log.d(getLocalClassName(), "Trying to swipe");
 				actionBar.setSelectedNavigationItem(position);
 			}
 
@@ -94,30 +90,6 @@ public abstract class SearchResults extends ActionBarActivity implements TabList
 			public void onPageScrollStateChanged(int arg0) {
 			}
 		});
-	}
-	
-	@Override
-	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-	}
-
-	@Override
-	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-		// on tab selected
-		// show respected fragment view
-		viewPager.setCurrentItem(tab.getPosition());
-		mAdapter.notifyDataSetChanged();
-		//android.support.v4.app.Fragment fragment = mAdapter.getItem(tab.getPosition());
-	    //Bundle args = new Bundle();
-	    /*
-	    args.putInt(fragment.ARG_SECTION_NUMBER,
-	        tab.getPosition() + 1);
-	    fragment.setArguments(args);*/
-	    //getSupportFragmentManager().beginTransaction()
-	    //    .replace(viewPager.getCurrentItem(), fragment).commit();
-	}
-
-	@Override
-	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
 	}
 	
 	

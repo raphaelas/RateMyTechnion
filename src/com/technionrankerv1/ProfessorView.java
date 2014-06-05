@@ -6,6 +6,8 @@ import java.util.List;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar.Tab;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -261,6 +263,24 @@ public class ProfessorView extends SearchResults {
 				Log.d(getLocalClassName(), res);
 			}
 		}
+	}
+
+
+	@Override
+	public void onTabReselected(Tab arg0, FragmentTransaction arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onTabSelected(Tab arg0, FragmentTransaction arg1) {
+		viewPager.setCurrentItem(arg0.getPosition());			
+	}
+
+	@Override
+	public void onTabUnselected(Tab arg0, FragmentTransaction arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

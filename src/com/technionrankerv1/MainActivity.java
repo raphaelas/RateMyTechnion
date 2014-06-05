@@ -8,14 +8,9 @@ import org.jsoup.Connection.Method;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -25,8 +20,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.fragment_adapter.TabsPagerAdapter;
-
 public class MainActivity extends SearchResults {
 	private TextView errorM;
 	private String username;
@@ -35,7 +28,7 @@ public class MainActivity extends SearchResults {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.sign_in);
+		setContentView(R.layout.fragment_main_activity);
 		
 		errorM = (TextView) findViewById(R.id.textView1);
 		final EditText passwordInput = (EditText) findViewById(R.id.editText2);
@@ -179,73 +172,26 @@ public class MainActivity extends SearchResults {
 			}
 		});
 	}
-	public class FragmentMainActivity extends FragmentActivity implements
-			ActionBar.TabListener {
-		private ViewPager viewPager;
-		private TabsPagerAdapter mAdapter;
-		private ActionBar actionBar;
-		// Tab titles
-		private String[] tabs = { "Welcome View", "Courses", "Professors" };
 
-		@Override
-		protected void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState);
-			setContentView(R.layout.fragment_main_activity);
-
-			// Initilization
-			viewPager = (ViewPager) findViewById(R.id.pager);
-			actionBar = getActionBar();
-			actionBar.setStackedBackgroundDrawable(new ColorDrawable(getResources()
-					.getColor(R.color.blueish)));
-			mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
-
-			viewPager.setAdapter(mAdapter);
-			actionBar.setHomeButtonEnabled(false);
-			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-			// Adding Tabs
-			for (String tab_name : tabs) {
-				actionBar.addTab(actionBar.newTab().setText(tab_name)
-						.setTabListener(this));
-			}
-			viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-				@Override
-				public void onPageSelected(int position) {
-					// on changing the page
-					// make respected tab selected
-					actionBar.setSelectedNavigationItem(position);
-				}
-
-				@Override
-				public void onPageScrolled(int arg0, float arg1, int arg2) {
-				}
-
-				@Override
-				public void onPageScrollStateChanged(int arg0) {
-				}
-			});
-		}
-
-		@Override
-		public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
-			// TODO Auto-generated method stub
-			viewPager.setCurrentItem(tab.getPosition());
-
-			
-		}
-
-		@Override
-		public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
-			// TODO Auto-generated method stub
-			
-		}
+	@Override
+	public void onTabReselected(android.support.v7.app.ActionBar.Tab arg0,
+			FragmentTransaction arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 
+	@Override
+	public void onTabSelected(android.support.v7.app.ActionBar.Tab arg0,
+			FragmentTransaction arg1) {
+		Log.d(getLocalClassName(), "Trying to select a tab: " + viewPager.getCurrentItem() + "");
+		viewPager.setCurrentItem(arg0.getPosition());
+		Log.d(getLocalClassName(), viewPager.getCurrentItem() + "");
+	}
+
+	@Override
+	public void onTabUnselected(android.support.v7.app.ActionBar.Tab arg0,
+			FragmentTransaction arg1) {
+		// TODO Auto-generated method stub
+		
+	}			
 }

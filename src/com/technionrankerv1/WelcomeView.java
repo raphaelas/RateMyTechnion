@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar.Tab;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -102,5 +104,19 @@ public class WelcomeView extends SearchResults implements
 	    }
 	public void openLoginPage(){
 		setContentView(R.layout.sign_in);
+	}
+	@Override
+	public void onTabReselected(Tab arg0, FragmentTransaction arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onTabSelected(Tab arg0, FragmentTransaction arg1) {
+		viewPager.setCurrentItem(arg0.getPosition());			
+	}
+	@Override
+	public void onTabUnselected(Tab arg0, FragmentTransaction arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 }
