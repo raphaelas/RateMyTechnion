@@ -270,23 +270,4 @@ public class CourseView extends SearchResults {
 			}
 		}
 	}
-
-
-	@Override
-	public void onTabReselected(Tab arg0, FragmentTransaction arg1) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onTabSelected(Tab arg0, FragmentTransaction arg1) {
-		viewPager.setCurrentItem(arg0.getPosition());			
-	}
-
-	@Override
-	public void onTabUnselected(Tab arg0, FragmentTransaction arg1) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

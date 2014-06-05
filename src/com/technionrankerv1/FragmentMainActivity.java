@@ -4,12 +4,11 @@ import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 
 import com.fragment_adapter.TabsPagerAdapter;
 
-public class FragmentMainActivity extends FragmentActivity implements
+public class FragmentMainActivity extends SearchResults implements
 		ActionBar.TabListener {
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
@@ -18,7 +17,7 @@ public class FragmentMainActivity extends FragmentActivity implements
 	private String[] tabs = { "Welcome View", "Courses", "Professors" };
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_main_activity);
 
