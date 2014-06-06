@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 
 public class FragmentMainActivity extends SearchResults implements
 		ActionBar.TabListener {
@@ -53,7 +54,7 @@ public class FragmentMainActivity extends SearchResults implements
 			}
 		});
 	}
-
+	
 	@Override
 	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
 	}

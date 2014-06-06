@@ -48,6 +48,7 @@ public abstract class SearchResults extends ActionBarActivity {
 
 		super.onCreate(savedInstance);
 		professorsAndCourses = concat(capsFix(parseCourses()), parseHebrewProfessors());
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 	
 	
@@ -347,6 +348,9 @@ public abstract class SearchResults extends ActionBarActivity {
 		// Handle presses on the action bar items
 		Log.d(getLocalClassName(), "In OptionsItemSelected");
 		switch (item.getItemId()) {
+        case android.R.id.home: 
+            onBackPressed();
+            return true;
 		case R.id.action_logout:
 	    	((ApplicationWithGlobalVariables) this.getApplication()).setLoggedIn(false);
 			Intent i = new Intent(SearchResults.this, MainActivity.class);
