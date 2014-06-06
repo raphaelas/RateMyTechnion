@@ -11,7 +11,7 @@ public class ProfessorRating {
   private double interactivity;
 
   public ProfessorRating(Long _id, Long studentID1, Long professorID1,
-      int overallRating1, int clarity1, int preparedness1, int interactivity1) {
+      double overallRating1, double clarity1, double preparedness1, double interactivity1) {
     id = _id;
     studentID = studentID1;
     professorID = professorID1;
@@ -57,7 +57,7 @@ public class ProfessorRating {
    * @param overallRating1
    *          the overallRating to set
    */
-  public void setOverallRating(int overallRating1) {
+  public void setOverallRating(double overallRating1) {
     overallRating = overallRating1;
   }
 
@@ -72,7 +72,7 @@ public class ProfessorRating {
    * @param clarity1
    *          the clarity to set
    */
-  public void setClarity(int clarity1) {
+  public void setClarity(double clarity1) {
     clarity = clarity1;
   }
 
@@ -87,7 +87,7 @@ public class ProfessorRating {
    * @param preparedness1
    *          the preparedness to set
    */
-  public void setPreparedness(int preparedness1) {
+  public void setPreparedness(double preparedness1) {
     preparedness = preparedness1;
   }
 
@@ -102,7 +102,7 @@ public class ProfessorRating {
    * @param interactivity1
    *          the interactivity to set
    */
-  public void setInteractivity(int interactivity1) {
+  public void setInteractivity(double interactivity1) {
     interactivity = interactivity1;
   }
 

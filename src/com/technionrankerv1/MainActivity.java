@@ -139,7 +139,6 @@ public class MainActivity extends SearchResults {
 						URL url=res1.url();
 						Log.d(getLocalClassName(), url.toString());
 						
-						
 						Intent i = new Intent(MainActivity.this,
 								FragmentMainActivity.class);
 						i.putExtra("the username", "שלום " + name + "!");

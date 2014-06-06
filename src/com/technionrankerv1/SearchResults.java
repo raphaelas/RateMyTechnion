@@ -348,7 +348,9 @@ public abstract class SearchResults extends ActionBarActivity {
 		Log.d(getLocalClassName(), "In OptionsItemSelected");
 		switch (item.getItemId()) {
 		case R.id.action_logout:
-			//TODO: openLoginPage(item);
+	    	((ApplicationWithGlobalVariables) this.getApplication()).setLoggedIn(false);
+			Intent i = new Intent(SearchResults.this, MainActivity.class);
+			startActivity(i);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

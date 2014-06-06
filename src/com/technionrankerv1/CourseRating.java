@@ -10,8 +10,8 @@ public class CourseRating {
   private double difficulty;
   private double usefulness;
 
-  public CourseRating(Long studentID1, Long courseID1, int overallRating1,
-      int enjoyability1, int difficulty1, int usefulness1) {
+  public CourseRating(Long studentID1, Long courseID1, double overallRating1,
+      double enjoyability1, double difficulty1, double usefulness1) {
     studentID = studentID1;
     courseID = courseID1;
     overallRating = overallRating1;
@@ -64,7 +64,7 @@ public class CourseRating {
    * @param overallRating1
    *          the overallRating to set
    */
-  public void setOverallRating(int overallRating1) {
+  public void setOverallRating(double overallRating1) {
     overallRating = overallRating1;
   }
 
@@ -79,7 +79,7 @@ public class CourseRating {
    * @param enjoyability1
    *          the enjoyability to set
    */
-  public void setEnjoyability(int enjoyability1) {
+  public void setEnjoyability(double enjoyability1) {
     enjoyability = enjoyability1;
   }
 
@@ -94,7 +94,7 @@ public class CourseRating {
    * @param difficulty1
    *          the difficulty to set
    */
-  public void setDifficulty(int difficulty1) {
+  public void setDifficulty(double difficulty1) {
     difficulty = difficulty1;
   }
 
@@ -109,7 +109,7 @@ public class CourseRating {
    * @param usefulness1
    *          the usefulness to set
    */
-  public void setUsefulness(int usefulness1) {
+  public void setUsefulness(double usefulness1) {
     usefulness = usefulness1;
   }
 

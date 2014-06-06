@@ -1,4 +1,4 @@
-package com.fragment_adapter;
+package com.technionrankerv1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +17,6 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.technionrankerv1.ExpandableListAdapter;
 import com.technionrankerv1.R;
 
 public class FragmentWelcomeView extends Fragment implements OnItemClickListener {
@@ -32,6 +31,7 @@ public class FragmentWelcomeView extends Fragment implements OnItemClickListener
 
 		View rootView = inflater.inflate(R.layout.fragment_welcome_view,
 				container, false);
+    	((ApplicationWithGlobalVariables) getActivity().getApplication()).setLoggedIn(true);
         //setHasOptionsMenu(true);
 		Bundle bundle = getActivity().getIntent().getExtras();
 		String personName = bundle.getString("the username");

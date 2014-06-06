@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar.Tab;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,15 +33,16 @@ public class CourseView extends SearchResults {
 	TextView textViewCourseRatingSubmitted;
 	ArrayList<CourseComment> comments =  new ArrayList<CourseComment>();
 	boolean canSubmit;
+	boolean loggedIn;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     	setContentView(R.layout.course_view);
     	studentId = ((ApplicationWithGlobalVariables) this.getApplication()).getStudentID();
     	canSubmit = ((ApplicationWithGlobalVariables) this.getApplication()).canSubmitRatings();
+    	loggedIn = ((ApplicationWithGlobalVariables) this.getApplication()).isLoggedIn();
     	displayAllComments(comments);
     	textViewCourseRatingSubmitted = (TextView) findViewById(R.id.textViewCourseRatingSubmitted);
-    	final 
     	Bundle bundle = getIntent().getExtras();
     	final String courseNumber = bundle.getString("courseNumber");
     	final String courseName = bundle.getString("courseName");
@@ -81,6 +83,18 @@ public class CourseView extends SearchResults {
 				alreadySubmitted = true;
 			}
 		});
+    	if (!loggedIn) {
+        	rOverall.setIsIndicator(true);
+        	rEnjoyability.setIsIndicator(true);
+        	rUsefulness.setIsIndicator(true);
+        	rDifficulty.setIsIndicator(true);
+        	ratingButton.setVisibility(View.GONE);
+			EditText et = (EditText) findViewById(R.id.comment);
+			et.setHint("Please sign in to submit a rating.");
+			et.setHintTextColor(getResources().getColor(R.color.gray));
+			et.setGravity(Gravity.CENTER);
+			et.setFocusable(false);
+    	}
     	rOverall.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
 			@Override
 			public void onRatingChanged(RatingBar ratingBar, float rating,

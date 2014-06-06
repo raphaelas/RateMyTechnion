@@ -6,8 +6,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
-import com.fragment_adapter.TabsPagerAdapter;
-
 public class FragmentMainActivity extends SearchResults implements
 		ActionBar.TabListener {
 	private ViewPager viewPager;

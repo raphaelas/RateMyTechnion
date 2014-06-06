@@ -1,4 +1,4 @@
-package com.fragment_adapter;
+package com.technionrankerv1;
  
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

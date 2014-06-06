@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar.Tab;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,15 +35,14 @@ public class ProfessorView extends SearchResults {
     public TextView textViewProfessorRatingSubmitted;
 	ArrayList<ProfessorComment> comments =  new ArrayList<ProfessorComment>();
 	boolean canSubmit;
-
-
-
+	boolean loggedIn;
 
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     	setContentView(R.layout.prof_view);
     	studentId = ((ApplicationWithGlobalVariables) this.getApplication()).getStudentID();
     	canSubmit = ((ApplicationWithGlobalVariables) this.getApplication()).canSubmitRatings();
+    	loggedIn = ((ApplicationWithGlobalVariables) this.getApplication()).isLoggedIn();
     	textViewProfessorRatingSubmitted = (TextView) findViewById(R.id.textViewProfessorRatingSubmitted);
     	displayAllComments(comments);
 		Bundle bundle = getIntent().getExtras();
@@ -81,11 +81,23 @@ public class ProfessorView extends SearchResults {
 				alreadySubmitted = true;
 			}
 		});
+    	if (!loggedIn) {
+        	rOverall.setIsIndicator(true);
+        	rClarity.setIsIndicator(true);
+        	rPreparedness.setIsIndicator(true);
+        	rInteractivity.setIsIndicator(true);
+        	ratingButton.setVisibility(View.GONE);
+			EditText et = (EditText) findViewById(R.id.professorComment);
+			et.setHint("Please sign in to submit a rating.");
+			et.setHintTextColor(getResources().getColor(R.color.gray));
+			et.setGravity(Gravity.CENTER);
+			et.setFocusable(false);
+    	}
     	rOverall.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
 			@Override
 			public void onRatingChanged(RatingBar ratingBar, float rating,
 					boolean fromUser) {
-				pr.setOverallRating(Math.round(rating));
+				pr.setOverallRating(rating);
 			}
     	});
     	
@@ -93,15 +105,15 @@ public class ProfessorView extends SearchResults {
 			@Override
 			public void onRatingChanged(RatingBar ratingBar, float rating,
 					boolean fromUser) {
-				pr.setPreparedness(Math.round(rating));
+				pr.setPreparedness(rating);
 			}
     	});
     	
-    	rOverall.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
+    	rClarity.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
 			@Override
 			public void onRatingChanged(RatingBar ratingBar, float rating,
 					boolean fromUser) {
-				pr.setOverallRating(Math.round(rating));
+				pr.setClarity(rating);
 			}
     	});
     	
