@@ -40,7 +40,7 @@ public abstract class SearchResults extends ActionBarActivity {
 	TechnionRankerAPI db = new TechnionRankerAPI();
 	public String[] professorsAndCourses = null;
 	android.support.v4.widget.CursorAdapter cursorAdapter;
-	HashMap<String, String> hebrewTranslations = new HashMap<String, String>();
+	public HashMap<String, String> hebrewTranslations = new HashMap<String, String>();
 	HashMap<String, String> facultyMap = new HashMap<String, String>();
 	public ViewPager viewPager;
 		
@@ -127,7 +127,7 @@ public abstract class SearchResults extends ActionBarActivity {
 							//(albeit IOException is not proper type but it works)
 							throw new IOException("There's a null name."); 
 						}
-						hebrewTranslations.put(englishName, hebrewName);
+						hebrewTranslations.put(StringEscapeUtils.unescapeHtml4(hebrewName), englishName);
 						String faculty = hebrewProfessorFiles[i].substring(0, hebrewProfessorFiles[i].indexOf(".html"));
 						facultyMap.put(englishName, faculty);
 						//Professor p = new Professor(null, englishName, faculty, hebrewName, true);
@@ -358,7 +358,6 @@ public abstract class SearchResults extends ActionBarActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle presses on the action bar items
-		Log.d(getLocalClassName(), "In OptionsItemSelected");
 		switch (item.getItemId()) {
         case android.R.id.home: 
             onBackPressed();
