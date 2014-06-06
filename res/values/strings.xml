@@ -12,7 +12,7 @@
     <string name="OperatingSystems">Operating Systems</string>
     <string name="OperatingSystemsnum">234123</string>
     <string name="Professor">Tom Smith</string>
-    <string name="action_logout">Logout</string>
+    <string name="action_logout">Sign Out</string>
     <string name="exampleFaculty">Computer Science</string>
     <string name="action_search">Search</string>
     <string name="commentsHeader">Comments</string>
@@ -20,6 +20,9 @@
     <string name="instructions">Instructions go here.</string>
     <string name="thumbImageDescription">Thumbs up image</string>
     <string name="emptyCommentsList">There are no comments to show yet.</string>
+    <string name="action_my_account">My Account</string>
+    
+   
     
     
     

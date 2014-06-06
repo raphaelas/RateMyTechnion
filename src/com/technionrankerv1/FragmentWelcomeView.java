@@ -32,9 +32,16 @@ public class FragmentWelcomeView extends Fragment implements OnItemClickListener
 		View rootView = inflater.inflate(R.layout.fragment_welcome_view,
 				container, false);
     	((ApplicationWithGlobalVariables) getActivity().getApplication()).setLoggedIn(true);
-        //setHasOptionsMenu(true);
 		Bundle bundle = getActivity().getIntent().getExtras();
-		String personName = bundle.getString("the username");
+    	//TODO: person name on pressing "My Account"
+		String personName = "";
+		try {
+			personName = bundle.getString("the username");
+		}
+		catch (NullPointerException e) {
+			Log.d("FragmentWelcomeView", "You still need to implement this.");
+			e.printStackTrace();
+		}
 		//Log.d(getLocalClassName(), personName);
 
 		final TextView myText = (TextView) rootView.findViewById(R.id.textView23);

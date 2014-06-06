@@ -283,9 +283,14 @@ public abstract class SearchResults extends ActionBarActivity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_activity_actions, menu);
 		MenuItem logoutItem = menu.findItem(R.id.action_logout);
+		MenuItem myAccountItem = menu.findItem(R.id.action_my_account);
     	boolean loggedIn = ((ApplicationWithGlobalVariables) this.getApplication()).isLoggedIn();
 		if (!loggedIn) {
 			logoutItem.setVisible(false);
+			myAccountItem.setVisible(false);
+		}
+		if (getLocalClassName().equals("FragmentMainActivity")) {
+			myAccountItem.setVisible(false);
 		}
 		// Get the SearchView and set the searchable configuration
 		MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -358,6 +363,10 @@ public abstract class SearchResults extends ActionBarActivity {
         case android.R.id.home: 
             onBackPressed();
             return true;
+        case R.id.action_my_account:
+			Intent i1 = new Intent(SearchResults.this, FragmentMainActivity.class);
+			startActivity(i1);
+			return true;
 		case R.id.action_logout:
 	    	((ApplicationWithGlobalVariables) this.getApplication()).setLoggedIn(false);
 			Intent i = new Intent(SearchResults.this, MainActivity.class);
