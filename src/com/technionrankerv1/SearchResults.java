@@ -48,7 +48,9 @@ public abstract class SearchResults extends ActionBarActivity {
 
 		super.onCreate(savedInstance);
 		professorsAndCourses = concat(capsFix(parseCourses()), parseHebrewProfessors());
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+		if (getLocalClassName().equals("CourseView") || getLocalClassName().equals("ProfessorView")) {
+	        getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
 	}
 	
 	
@@ -280,6 +282,11 @@ public abstract class SearchResults extends ActionBarActivity {
 		// Inflate the menu items for use in the action bar
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_activity_actions, menu);
+		MenuItem logoutItem = menu.findItem(R.id.action_logout);
+    	boolean loggedIn = ((ApplicationWithGlobalVariables) this.getApplication()).isLoggedIn();
+		if (!loggedIn) {
+			logoutItem.setVisible(false);
+		}
 		// Get the SearchView and set the searchable configuration
 		MenuItem searchItem = menu.findItem(R.id.action_search);
 		SearchView searchView = (SearchView) MenuItemCompat
