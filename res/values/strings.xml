@@ -17,7 +17,7 @@
     <string name="action_search">Search</string>
     <string name="commentsHeader">Comments</string>
     <string name="privacyStatement">Privacy: statement goes here.</string>
-    <string name="instructions">Instructions go here.</string>
+    <string name="instructions">Current students: please log in below. \n\nOther users: use the search bar above.</string>
     <string name="thumbImageDescription">Thumbs up image</string>
     <string name="emptyCommentsList">There are no comments to show yet.</string>
     <string name="action_my_account">My Account</string>

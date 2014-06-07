@@ -73,13 +73,19 @@ public class MainActivity extends SearchResults {
 	public void setText() {
 		errorM.setTextColor(getResources().getColor(R.color.gray));
 		errorM.setText("Please wait.  Connecting to UG System.");
-		final EditText Input1 = (EditText) findViewById(R.id.editText1);
-		final EditText Input2 = (EditText) findViewById(R.id.editText2);
-		username = Input1.getText().toString();
-		password = Input2.getText().toString();
+		final EditText input1 = (EditText) findViewById(R.id.editText1);
+		final EditText input2 = (EditText) findViewById(R.id.editText2);
+		username = input1.getText().toString();
+		password = input2.getText().toString();
 		if (username != null && password != null) {
 			// Log.d(getLocalClassName(), username);
 			// Log.d(getLocalClassName(), password);
+			if (username.length() < 9) {
+				input1.setError("Student IDs should be 9 digits long.");
+			}
+			if (password.length() < 8) {
+				input2.setError("Passcodes should be 8 digits long.");
+			}
 			doLogin();
 		}
 	}

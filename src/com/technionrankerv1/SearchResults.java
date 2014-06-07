@@ -3,6 +3,7 @@ package com.technionrankerv1;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,6 +45,7 @@ public abstract class SearchResults extends ActionBarActivity {
 	HashMap<String, String> facultyMap = new HashMap<String, String>();
 	public ViewPager viewPager;
 	public HashSet<String> courseNumbers = new HashSet<String>();
+	private List<Professor> professorsToInsert = new ArrayList<Professor>();
 		
 	public void onCreate(Bundle savedInstance){
 
@@ -136,7 +138,8 @@ public abstract class SearchResults extends ActionBarActivity {
 						hebrewTranslations.put(StringEscapeUtils.unescapeHtml4(hebrewName), englishName);
 						String faculty = hebrewProfessorFiles[i].substring(0, hebrewProfessorFiles[i].indexOf(".html"));
 						facultyMap.put(englishName, faculty);
-						//Professor p = new Professor(null, englishName, faculty, hebrewName, true);
+						Professor p = new Professor(null, englishName, faculty, hebrewName, true);
+						professorsToInsert.add(p);
 						String hebrewNameToUse = StringEscapeUtils.unescapeHtml4(hebrewName);		
 						//This will make the hebrew professor name in a new line after the english name.
 						professorSet.add(englishName + "\n" + hebrewNameToUse);
@@ -147,11 +150,13 @@ public abstract class SearchResults extends ActionBarActivity {
 					}
 				}
 				infile.close();
-			}
+			} //for loop
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+		ClientAsync as = new ClientAsync();
+		as.execute(professorsToInsert);
 		Object[] professorArrayObjects = professorSet.toArray();
 		String[] professorArrayStrings = Arrays.copyOf(professorArrayObjects, professorArrayObjects.length, String[].class);
 		return professorArrayStrings;
@@ -206,7 +211,7 @@ public abstract class SearchResults extends ActionBarActivity {
 				allNumbersAndNames.length, String[].class);
 		//Code to populate database:
 		ClientAsync as = new ClientAsync();
-		as.execute(numbersAndNamesToReturn);
+		as.execute(professorsToInsert);
 		return numbersAndNamesToReturn;
 	} // parse()
 
@@ -443,7 +448,7 @@ public abstract class SearchResults extends ActionBarActivity {
 	 * This is used whenever we need to populate the courses
 	 * or professors database tables.
 	 */
-	private class ClientAsync extends AsyncTask<String, Void, String> {
+	private class ClientAsync extends AsyncTask<List<Professor>, Void, String> {
 
 		public ClientAsync() {
 		}
@@ -458,7 +463,8 @@ public abstract class SearchResults extends ActionBarActivity {
 		 * everything in this method to ignore the database.
 		 */
 		@Override
-		protected String doInBackground(String... params) {
+		protected String doInBackground(List<Professor>... params) {
+			List<Professor> listToInsert = params[0];
 			String result = null;
 			//Professor p = new Professor(null, "Cool Professor", null, null, false);
 			//result = db.insertProfessor(p).toString();
@@ -480,7 +486,7 @@ public abstract class SearchResults extends ActionBarActivity {
 			//result = db.getCourse(c);
 			//
 			//result = new TechnionRankerAPI().insertCourse(c).toString();
-			result = db.dropAllProfessors().toString();
+			//result = db.insertProfessor(listToInsert).toString();
 			return result;
 		}
 
@@ -489,7 +495,7 @@ public abstract class SearchResults extends ActionBarActivity {
 			if (res == null)
 				Log.d(getLocalClassName(), "SearchResults async unsuccessful");
 			else {
-				Log.d(getLocalClassName(), "Dropping professors: " + res);
+				Log.d(getLocalClassName(), "Populating professors: " + res);
 			}
 		}
 	}
