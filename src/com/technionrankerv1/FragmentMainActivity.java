@@ -43,7 +43,8 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 			public void onPageSelected(int position) {
 				// on changing the page
 				// make respected tab selected
-				actionBar.setSelectedNavigationItem(position);
+				viewPager.setCurrentItem(position, true);
+				//Before implementing smoothscroll it was: actionBar.setSelectedNavigationItem(position);
 			}
 
 			@Override
@@ -64,7 +65,7 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
 		// on tab selected
 		// show respected fragment view
-		viewPager.setCurrentItem(tab.getPosition());
+		viewPager.setCurrentItem(tab.getPosition(), true);
 	}
 
 	@Override
