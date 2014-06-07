@@ -1,14 +1,14 @@
 package com.technionrankerv1;
 
 import android.app.ActionBar;
+import android.app.ActionBar.TabListener;
 import android.app.FragmentTransaction;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.KeyEvent;
+import android.util.Log;
 
-public class FragmentMainActivity extends SearchResults implements
-		ActionBar.TabListener {
+public class FragmentMainActivity extends SearchResults implements TabListener {
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
@@ -20,6 +20,8 @@ public class FragmentMainActivity extends SearchResults implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_main_activity);
 
+		Log.d(getLocalClassName(), getSupportFragmentManager().getBackStackEntryCount() + "");
+		
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		actionBar = getActionBar();
@@ -28,7 +30,6 @@ public class FragmentMainActivity extends SearchResults implements
 		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
 		viewPager.setAdapter(mAdapter);
-		actionBar.setHomeButtonEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		// Adding Tabs

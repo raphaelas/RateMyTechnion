@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="18dp"
-            android:background="@color/LoginBorderColor"
+            android:background="@drawable/button_selector"
             android:text="@string/string4"
             android:textColor="@color/black"
             android:textColorHint="@color/black"

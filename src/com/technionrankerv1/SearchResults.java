@@ -51,7 +51,7 @@ public abstract class SearchResults extends ActionBarActivity {
 
 		super.onCreate(savedInstance);
 		professorsAndCourses = concat(capsFix(parseCourses()), parseHebrewProfessors());
-		if (getLocalClassName().equals("CourseView") || getLocalClassName().equals("ProfessorView")) {
+		if (!getLocalClassName().equals("MainActivity")) {
 	        getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 	}
@@ -352,11 +352,12 @@ public abstract class SearchResults extends ActionBarActivity {
 					Intent i = new Intent(SearchResults.this, ProfessorView.class);
 					if (englishName.equals(" ")) {
 						i.putExtra("professorName", hebrewName);
+						i.putExtra("faculty", "");
 					}
 					else {
 						i.putExtra("professorName", englishName);
+						i.putExtra("faculty", facultyMap.get(hebrewName));
 					}
-					i.putExtra("faculty", facultyMap.get(hebrewName));
 					startActivity(i);
 				}
                return true;

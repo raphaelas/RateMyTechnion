@@ -60,33 +60,43 @@ public class MainActivity extends SearchResults {
 		loginButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				setText();
-				/*Temporary code to test fragments:
+				//Temporary code to test FragmentMainActivity:
 				Intent i = new Intent(MainActivity.this,
 						FragmentMainActivity.class);
-				i.putExtra("the username", "שלום!");
-				startActivity(i);*/
+				i.putExtra("the username", "שלום");
+				startActivity(i);
+				//setText();
 			}
 		});
 	}
 
 	public void setText() {
-		errorM.setTextColor(getResources().getColor(R.color.gray));
-		errorM.setText("Please wait.  Connecting to UG System.");
 		final EditText input1 = (EditText) findViewById(R.id.editText1);
 		final EditText input2 = (EditText) findViewById(R.id.editText2);
 		username = input1.getText().toString();
 		password = input2.getText().toString();
+		boolean shouldReturn = false;
 		if (username != null && password != null) {
 			// Log.d(getLocalClassName(), username);
 			// Log.d(getLocalClassName(), password);
 			if (username.length() < 9) {
 				input1.setError("Student IDs should be 9 digits long.");
+				shouldReturn = true;
 			}
 			if (password.length() < 8) {
 				input2.setError("Passcodes should be 8 digits long.");
+				shouldReturn = true;
 			}
-			doLogin();
+			if (shouldReturn) {
+				errorM.setTextColor(getResources().getColor(R.color.red));
+				errorM.setText("Please fix the errors and try again.");
+				return;
+			}
+			else {
+				errorM.setTextColor(getResources().getColor(R.color.gray));
+				errorM.setText("Please wait.  Connecting to UG System.");
+				doLogin();
+			}
 		}
 	}
 
@@ -99,7 +109,7 @@ public class MainActivity extends SearchResults {
 				try {
 					Connection.Response res = Jsoup
 							.connect("https://ug3.technion.ac.il/rishum/login")
-							.data("OP", "LI", "UID", "922130174", "PWD", "43150202",
+							.data("OP", "LI", "UID", username, "PWD", password,
 									"Login.x", "%D7%94%D7%AA%D7%97%D7%91%D7%A8")
 							.method(Method.POST).execute();
 					doc = res.parse();
