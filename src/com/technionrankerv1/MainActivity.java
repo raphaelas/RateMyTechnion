@@ -167,7 +167,8 @@ public class MainActivity extends SearchResults {
 	                		Log.d(courseNum, "No head professor exists");
 	                		coursesThatDidNotMeetInSpring2014.add(courseNum);
 	                	}
-	                }
+	                } //end of for loop
+	                
 					int x = 1;
 					//Log.d(getLocalClassName(), doc.toString().length() + "");
 					if (doc.toString().length() < 4920) {

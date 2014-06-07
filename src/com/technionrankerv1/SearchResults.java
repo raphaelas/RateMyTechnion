@@ -443,7 +443,7 @@ public abstract class SearchResults extends ActionBarActivity {
 	 * This is used whenever we need to populate the courses
 	 * or professors database tables.
 	 */
-	private class ClientAsync extends AsyncTask<String, Void, List<Professor>> {
+	private class ClientAsync extends AsyncTask<String, Void, String> {
 
 		public ClientAsync() {
 		}
@@ -458,8 +458,8 @@ public abstract class SearchResults extends ActionBarActivity {
 		 * everything in this method to ignore the database.
 		 */
 		@Override
-		protected List<Professor> doInBackground(String... params) {
-			List<Professor> result = null;
+		protected String doInBackground(String... params) {
+			String result = null;
 			//Professor p = new Professor(null, "Cool Professor", null, null, false);
 			//result = db.insertProfessor(p).toString();
 			//result = new TechnionRankerAPI().getProfessorByProfessorName(p);
@@ -480,15 +480,16 @@ public abstract class SearchResults extends ActionBarActivity {
 			//result = db.getCourse(c);
 			//
 			//result = new TechnionRankerAPI().insertCourse(c).toString();
+			result = db.dropAllProfessors().toString();
 			return result;
 		}
 
 		@Override
-		protected void onPostExecute(List<Professor> res) {
+		protected void onPostExecute(String res) {
 			if (res == null)
 				Log.d(getLocalClassName(), "SearchResults async unsuccessful");
 			else {
-				Log.d(getLocalClassName(), res.get(0).getId() + res.get(0).getName());
+				Log.d(getLocalClassName(), "Dropping professors: " + res);
 			}
 		}
 	}
