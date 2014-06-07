@@ -43,6 +43,7 @@ public abstract class SearchResults extends ActionBarActivity {
 	public HashMap<String, String> hebrewTranslations = new HashMap<String, String>();
 	HashMap<String, String> facultyMap = new HashMap<String, String>();
 	public ViewPager viewPager;
+	public HashSet<String> courseNumbers = new HashSet<String>();
 		
 	public void onCreate(Bundle savedInstance){
 
@@ -86,7 +87,12 @@ public abstract class SearchResults extends ActionBarActivity {
 							englishName = "" + splittedOnSpace[1] + " " + splittedOnSpace[0];
 						}
 						else if (splittedOnSpace.length == 1){
-							englishName = "" + splittedOnSpace[0];
+							if (!splittedOnSpace[0].equals("null")) {
+								englishName = "" + splittedOnSpace[0];
+							}
+							else {
+								englishName = " ";
+							}
 						}
 						else if (splittedOnSpace.length == 3) {
 							if (splittedOnSpace[0].indexOf("-") == splittedOnSpace[0].length() - 1) {
@@ -181,6 +187,8 @@ public abstract class SearchResults extends ActionBarActivity {
 							map.put(number, name); // trim and place only the number
 													// and name in
 							facultyMap.put(number, faculty);
+							courseNumbers.add(number);
+							
 							numberAndName.add("" + number + " - " + capsFix2(name));
 						} // for temp
 					} // if

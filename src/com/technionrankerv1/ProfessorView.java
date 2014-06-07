@@ -209,7 +209,7 @@ public class ProfessorView extends SearchResults {
 			if (res == null)
 				Log.d(getLocalClassName(), "Professor clientAsync unsuccessful");
 			else {
-				Log.d(getLocalClassName(), res.get(0).getName());
+				//Log.d(getLocalClassName(), res.get(0).getName());
 		    	professorId = res.get(0).getId();
 		    	professor = res.get(0);
 			}

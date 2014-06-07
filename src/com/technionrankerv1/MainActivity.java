@@ -2,10 +2,10 @@ package com.technionrankerv1;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Set;
+import java.util.HashSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
 import org.jsoup.Jsoup;
@@ -13,7 +13,6 @@ import org.jsoup.nodes.Document;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -91,17 +90,41 @@ public class MainActivity extends SearchResults {
 							.method(Method.POST).execute();
 					doc = res.parse();
 					//Note to Leo: I moved the code further down in the file so it doesn't crash on failed logins.
-					Set<String> course_nums = facultyMap.keySet();
-	                for (String course_num : course_nums){
-	                String URL = "https://ug3.technion.ac.il/rishum/course/";
-	                Connection.Response catalogRes = Jsoup.connect(URL + course_num).execute();
-	                
-	                catalogDoc = catalogRes.parse();
-	                
-	                int theIndex = catalogDoc.toString().indexOf("אחראים");
-	                String[] str1 = catalogDoc.toString().substring(theIndex+35, theIndex + 100).split(" ");
-	                // get the head prof english namw
-	                Log.d(getLocalClassName() + "we did it:", hebrewTranslations.get(getHeadProf(str1)));
+					HashSet<String> course_nums = courseNumbers;
+					int curr = 0;
+					final int STOP = 30;
+	                for (String courseNum : course_nums){
+	                	if (curr > STOP) break;
+	                	curr++;
+	                	String URL = "https://ug3.technion.ac.il/rishum/course?MK=" + courseNum + "&CATINFO=&SEM=201302";
+	                	Connection.Response catalogRes = Jsoup.connect(URL)
+	                			.userAgent("User-Agent: Mozilla/5.0 (Macintosh; Intel"
+            					+ " Mac OS X 10.7; rv:29.0) Gecko/20100101 Firefox/29.0").maxBodySize(0)
+	                			.timeout(600000).execute();
+	                	catalogDoc = catalogRes.parse();
+	                	String catalogString = catalogDoc.toString();
+	                	int theIndex = catalogString.indexOf("אחראים");
+	                	if (theIndex != -1) {
+		                	String[] str1 = catalogString.substring(theIndex+35, theIndex + 100).split(" ");
+		                	// get the head prof english name
+		                	String parsedHeadProfessor = getHeadProf(str1);
+		                	if (parsedHeadProfessor == null) {
+		                		Log.d(courseNum, "The head professor is empty");
+		                	}
+		                	else {
+		                		Log.d(courseNum, parsedHeadProfessor);
+		                		String translatedProfessor = hebrewTranslations.get(parsedHeadProfessor);
+		                		if (translatedProfessor != null) {
+					                Log.d(getLocalClassName() + "we did it:", translatedProfessor);
+		                		}
+		                		else {
+		                			Log.d(courseNum, "No english name matches the hebrew name: " + parsedHeadProfessor);
+		                		}
+		                	}
+	                	}
+	                	else {
+	                		Log.d(courseNum, "No head professor exists");
+	                	}
 	                }
 	                
 					int x = 1;
@@ -153,7 +176,7 @@ public class MainActivity extends SearchResults {
 								.execute();
 						doc1 = res1.parse();
 //						Log.d(getLocalClassName(), doc1.toString().length() +"");
-						URL url=res1.url();
+//						URL url=res1.url();
 //						Log.d(getLocalClassName(), url.toString());
 						
 						Intent i = new Intent(MainActivity.this,
@@ -199,10 +222,20 @@ public class MainActivity extends SearchResults {
 		
 		for (int t = 1; t < s.length; t++){
 			// edit to add the different prefixes
-			if (!s[t].contains(" ") && !s[t].contains("פרופ") && !s[t].contains("חבר") && !s[t].contains("<br") && !s[t].contains("/>")){
+			if (!s[t].contains(" ") && !s[t].contains("פרופ") &&
+					!s[t].contains("חבר") && !s[t].contains("<") &&
+					!s[t].contains("/>") && !s[t].contains("משנה") && 
+					!(s[t].length() == 3 && s[t].substring(0, 2).contains("דר"))){
 				name = name+ " " + s[t];
 			}		
 		}
-		return name.trim();		
+		name = name.trim();
+		if (name.length() == 0) return null;
+		Pattern p = Pattern.compile("\\p{InHebrew}");
+		Matcher m = p.matcher(name.substring(0, 1));
+		if (m.matches()) {
+			return name;		
+		}
+		return null;
 	}
 }
