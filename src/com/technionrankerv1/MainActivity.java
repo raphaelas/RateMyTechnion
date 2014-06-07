@@ -26,6 +26,7 @@ public class MainActivity extends SearchResults {
 	private TextView errorM;
 	private String username;
 	private String password;
+	public HashSet<String> coursesThatDidNotMeetInSpring2014 = new HashSet<String>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -92,7 +93,7 @@ public class MainActivity extends SearchResults {
 					//Note to Leo: I moved the code further down in the file so it doesn't crash on failed logins.
 					HashSet<String> course_nums = courseNumbers;
 					int curr = 0;
-					final int STOP = 30;
+					final int STOP = 100;
 	                for (String courseNum : course_nums){
 	                	if (curr > STOP) break;
 	                	curr++;
@@ -103,13 +104,33 @@ public class MainActivity extends SearchResults {
 	                			.timeout(600000).execute();
 	                	catalogDoc = catalogRes.parse();
 	                	String catalogString = catalogDoc.toString();
-	                	int theIndex = catalogString.indexOf("אחראים");
-	                	if (theIndex != -1) {
-		                	String[] str1 = catalogString.substring(theIndex+35, theIndex + 100).split(" ");
+	                	int headProfessorIndex = catalogString.indexOf("אחראים");
+	                	int plastIndex = catalogString.indexOf("PLAST");
+	                	int regularProfessorIndex = catalogString.indexOf(">", plastIndex);
+	                	int endRegularProfessorIndex = catalogString.indexOf("<", regularProfessorIndex);
+	                	if (headProfessorIndex != -1) {
+		                	String[] str1 = catalogString.substring(headProfessorIndex+35, headProfessorIndex + 100).split(" ");
 		                	// get the head prof english name
 		                	String parsedHeadProfessor = getHeadProf(str1);
 		                	if (parsedHeadProfessor == null) {
 		                		Log.d(courseNum, "The head professor is empty");
+		                		String regularProfessorSubstring = catalogString.substring(regularProfessorIndex, endRegularProfessorIndex);
+		                		final int PROFESSORS_WOULD_BE_MUCH_FURTHER_DOWN_THAN_THIS = 100;
+		                		if (regularProfessorIndex < PROFESSORS_WOULD_BE_MUCH_FURTHER_DOWN_THAN_THIS ||
+		                				endRegularProfessorIndex < PROFESSORS_WOULD_BE_MUCH_FURTHER_DOWN_THAN_THIS) {
+		                			Log.d(courseNum, "The regular professor is empty");
+		                		}
+		                		else {
+			                		String[] regularProfessorSplitted = regularProfessorSubstring.split(" ");
+			                		String professorResult = getHeadProf(regularProfessorSplitted);
+			                		if (professorResult == null || regularProfessorSubstring.contains("0")) {
+			                			Log.d("Regular professor substring: ", regularProfessorSubstring);
+			                			Log.d(regularProfessorSubstring, "No matcher for regular professor.");
+			                		}
+			                		else {
+				                		Log.d(courseNum, professorResult);
+			                		}
+		                		}
 		                	}
 		                	else {
 		                		Log.d(courseNum, parsedHeadProfessor);
@@ -124,9 +145,9 @@ public class MainActivity extends SearchResults {
 	                	}
 	                	else {
 	                		Log.d(courseNum, "No head professor exists");
+	                		coursesThatDidNotMeetInSpring2014.add(courseNum);
 	                	}
 	                }
-	                
 					int x = 1;
 					//Log.d(getLocalClassName(), doc.toString().length() + "");
 					if (doc.toString().length() < 4920) {
@@ -224,7 +245,7 @@ public class MainActivity extends SearchResults {
 			// edit to add the different prefixes
 			if (!s[t].contains(" ") && !s[t].contains("פרופ") &&
 					!s[t].contains("חבר") && !s[t].contains("<") &&
-					!s[t].contains("/>") && !s[t].contains("משנה") && 
+					!s[t].contains(">") && !s[t].contains("משנה") && 
 					!(s[t].length() == 3 && s[t].substring(0, 2).contains("דר"))){
 				name = name+ " " + s[t];
 			}		
