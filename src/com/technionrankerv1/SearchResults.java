@@ -89,12 +89,7 @@ public abstract class SearchResults extends ActionBarActivity {
 							englishName = "" + splittedOnSpace[1] + " " + splittedOnSpace[0];
 						}
 						else if (splittedOnSpace.length == 1){
-							if (!splittedOnSpace[0].equals("null")) {
-								englishName = "" + splittedOnSpace[0];
-							}
-							else {
-								englishName = " ";
-							}
+							englishName = "" + splittedOnSpace[0];
 						}
 						else if (splittedOnSpace.length == 3) {
 							if (splittedOnSpace[0].indexOf("-") == splittedOnSpace[0].length() - 1) {
@@ -137,10 +132,10 @@ public abstract class SearchResults extends ActionBarActivity {
 						}
 						hebrewTranslations.put(StringEscapeUtils.unescapeHtml4(hebrewName), englishName);
 						String faculty = hebrewProfessorFiles[i].substring(0, hebrewProfessorFiles[i].indexOf(".html"));
-						facultyMap.put(englishName, faculty);
 						Professor p = new Professor(null, englishName, faculty, hebrewName, true);
 						professorsToInsert.add(p);
 						String hebrewNameToUse = StringEscapeUtils.unescapeHtml4(hebrewName);		
+						facultyMap.put(hebrewNameToUse, faculty);
 						//This will make the hebrew professor name in a new line after the english name.
 						professorSet.add(englishName + "\n" + hebrewNameToUse);
 					}
@@ -352,9 +347,16 @@ public abstract class SearchResults extends ActionBarActivity {
 					startActivity(i);
 				}
 				else {
+					String englishName = value;
+					String hebrewName = c.getString(c.getColumnIndexOrThrow("hebrewProfessorName"));
 					Intent i = new Intent(SearchResults.this, ProfessorView.class);
-					i.putExtra("professorName", value);
-					i.putExtra("faculty", facultyMap.get(value));
+					if (englishName.equals(" ")) {
+						i.putExtra("professorName", hebrewName);
+					}
+					else {
+						i.putExtra("professorName", englishName);
+					}
+					i.putExtra("faculty", facultyMap.get(hebrewName));
 					startActivity(i);
 				}
                return true;
