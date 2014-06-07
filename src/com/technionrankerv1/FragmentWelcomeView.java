@@ -33,15 +33,7 @@ public class FragmentWelcomeView extends Fragment implements OnItemClickListener
 				container, false);
     	((ApplicationWithGlobalVariables) getActivity().getApplication()).setLoggedIn(true);
 		Bundle bundle = getActivity().getIntent().getExtras();
-    	//TODO: person name on pressing "My Account"
-		String personName = "";
-		try {
-			personName = bundle.getString("the username");
-		}
-		catch (NullPointerException e) {
-			Log.d("FragmentWelcomeView", "You still need to implement this.");
-			e.printStackTrace();
-		}
+		String personName = bundle.getString("the username");
 		//Log.d(getLocalClassName(), personName);
 
 		final TextView myText = (TextView) rootView.findViewById(R.id.textView23);

@@ -1,8 +1,9 @@
 package com.technionrankerv1;
 
 import java.io.IOException;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,6 +13,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,11 +24,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.serverapi.TechnionRankerAPI;
+
 public class MainActivity extends SearchResults {
 	private TextView errorM;
 	private String username;
 	private String password;
 	public HashSet<String> coursesThatDidNotMeetInSpring2014 = new HashSet<String>();
+	private ArrayList<Professor> professorsToInsert = new ArrayList<Professor>();
+	private Long currentProfessorId = null;
+	private Course currentCourse = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -93,7 +100,7 @@ public class MainActivity extends SearchResults {
 					//Note to Leo: I moved the code further down in the file so it doesn't crash on failed logins.
 					HashSet<String> course_nums = courseNumbers;
 					int curr = 0;
-					final int STOP = 100;
+					final int STOP = 50;
 	                for (String courseNum : course_nums){
 	                	if (curr > STOP) break;
 	                	curr++;
@@ -119,16 +126,27 @@ public class MainActivity extends SearchResults {
 		                		if (regularProfessorIndex < PROFESSORS_WOULD_BE_MUCH_FURTHER_DOWN_THAN_THIS ||
 		                				endRegularProfessorIndex < PROFESSORS_WOULD_BE_MUCH_FURTHER_DOWN_THAN_THIS) {
 		                			Log.d(courseNum, "The regular professor is empty");
+		                			coursesThatDidNotMeetInSpring2014.add(courseNum);
 		                		}
 		                		else {
 			                		String[] regularProfessorSplitted = regularProfessorSubstring.split(" ");
 			                		String professorResult = getHeadProf(regularProfessorSplitted);
-			                		if (professorResult == null || regularProfessorSubstring.contains("0")) {
-			                			Log.d("Regular professor substring: ", regularProfessorSubstring);
-			                			Log.d(regularProfessorSubstring, "No matcher for regular professor.");
+			                		if (professorResult == null) {
+			                			//TODO make sure that this condition is ever met - it may not be.
+			                			Log.d(courseNum, "Check 2: the regular professor is empty.");
+			                			coursesThatDidNotMeetInSpring2014.add(courseNum);
 			                		}
 			                		else {
-				                		Log.d(courseNum, professorResult);
+			                			String translatedRegularProfessor = hebrewTranslations.get(professorResult);
+			                			if (translatedRegularProfessor == null) {
+			                				Professor p = new Professor(null, null, null, professorResult, true);
+			                				professorsToInsert.add(p);
+			                				Log.d(courseNum, "Regular professor: no english name matches the hebrew name: " + professorResult);
+			                			}
+			                			else {
+					                		Log.d("Regular professor " + courseNum, translatedRegularProfessor);
+					                		//Course cToUpdate = new Course(null, null, courseNum, null, courseNum, courseNum, mCheckedForLoaderManager);
+			                			}
 			                		}
 		                		}
 		                	}
@@ -136,9 +154,11 @@ public class MainActivity extends SearchResults {
 		                		Log.d(courseNum, parsedHeadProfessor);
 		                		String translatedProfessor = hebrewTranslations.get(parsedHeadProfessor);
 		                		if (translatedProfessor != null) {
-					                Log.d(getLocalClassName() + "we did it:", translatedProfessor);
+					                Log.d("Head professor translation:", translatedProfessor);
 		                		}
 		                		else {
+	                				Professor p = new Professor(null, null, null, parsedHeadProfessor, true);
+	                				professorsToInsert.add(p);
 		                			Log.d(courseNum, "No english name matches the hebrew name: " + parsedHeadProfessor);
 		                		}
 		                	}
@@ -199,9 +219,11 @@ public class MainActivity extends SearchResults {
 //						Log.d(getLocalClassName(), doc1.toString().length() +"");
 //						URL url=res1.url();
 //						Log.d(getLocalClassName(), url.toString());
-						
+						((ApplicationWithGlobalVariables) getApplication()).setStudentName(name);
 						Intent i = new Intent(MainActivity.this,
 								FragmentMainActivity.class);
+						//NOTE: if you change this message, also change it
+//						in SearchResults - onOptionsItemSelected().
 						i.putExtra("the username", "שלום " + name + "!");
 						startActivity(i);
 						// startActivity(new Intent(Login.this,
@@ -258,5 +280,125 @@ public class MainActivity extends SearchResults {
 			return name;		
 		}
 		return null;
+	}
+	
+	private class GetProfessorClientAsync extends AsyncTask<String, Void, List<Professor>> {
+		public GetProfessorClientAsync() {
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected List<Professor> doInBackground(String... params) {
+			String hebrewName = params[0];
+	    	Professor lookup = new Professor(null, null, null, hebrewName, true);
+	    	List<Professor> result = new TechnionRankerAPI().getProfessorByProfessorHebrewName(lookup);
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(List<Professor> res) {
+			if (res == null) {
+				Log.d(getLocalClassName(), "Get of professor failed.");
+			}
+			else if (res.size() == 0) {
+				Log.d(getLocalClassName(), "Get of professor returned empty.");
+			}
+			else {
+				currentProfessorId = res.get(0).getId();
+				Log.d(getLocalClassName(), "The professor id: " + currentProfessorId);
+			}
+		}
+	}
+	
+	private class GetCourseClientAsync extends AsyncTask<String, Void, List<Course>> {
+		public GetCourseClientAsync() {
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected List<Course> doInBackground(String... params) {
+			String courseNumber = params[0];
+	    	Course lookup = new Course(null, null, courseNumber, null, null, null, true);
+	    	List<Course> result = new TechnionRankerAPI().getCourseByCourseNumber(lookup);
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(List<Course> res) {
+			if (res == null) {
+				Log.d(getLocalClassName(), "Get of course failed.");
+			}
+			else if (res.size() == 0) {
+				Log.d(getLocalClassName(), "Get of course returned empty.");
+			}
+			else {
+				currentCourse = res.get(0);
+				Log.d(getLocalClassName(), "The course id: " + currentCourse.getId());
+			}
+		}
+	}
+	
+	private class InsertCourseClientAsync extends AsyncTask<Course, Void, String> {
+		public InsertCourseClientAsync() {
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected String doInBackground(Course... params) {
+			Course courseToAdd = params[0];
+			List<Course> listToAdd = new ArrayList<Course>();
+			listToAdd.add(courseToAdd);
+	    	String result = new TechnionRankerAPI().insertCourse(listToAdd).toString();
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(String res) {
+			if (res == null) {
+				Log.d(getLocalClassName(), "Insert course failed.");
+			}
+			else {
+				Log.d(getLocalClassName(), "Insert course: " + res);
+			}
+		}
+	}
+	
+	private class InsertProfessorClientAsync extends AsyncTask<List<Professor>, Void, String> {
+		public InsertProfessorClientAsync() {
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected String doInBackground(List<Professor>... params) {
+			List<Professor> professorsToAdd = params[0];
+	    	String result = new TechnionRankerAPI().insertProfessor(professorsToAdd).toString();
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(String res) {
+			if (res == null) {
+				Log.d(getLocalClassName(), "Insert professor failed.");
+			}
+			else {
+				Log.d(getLocalClassName(), "Insert professor: " + res);
+			}
+		}
 	}
 }

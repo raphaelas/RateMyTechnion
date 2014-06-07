@@ -11,6 +11,7 @@ public class ApplicationWithGlobalVariables extends Application {
     private Long studentID = Long.valueOf((long) (Math.random() * 100000000));
     private HashSet<CourseComment> courseCommentsLiked = new HashSet<CourseComment>();
     private HashSet<ProfessorComment> professorCommentsLiked = new HashSet<ProfessorComment>();
+    private String studentName = null;
 
     
 
@@ -111,6 +112,20 @@ public class ApplicationWithGlobalVariables extends Application {
 	
 	public void likeProfessorComment(ProfessorComment pc) {
 		professorCommentsLiked.add(pc);
+	}
+
+	/**
+	 * @return the studentName
+	 */
+	public String getStudentName() {
+		return studentName;
+	}
+
+	/**
+	 * @param studentName the studentName to set
+	 */
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
 	}
 
 }

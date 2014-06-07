@@ -372,6 +372,8 @@ public abstract class SearchResults extends ActionBarActivity {
             return true;
         case R.id.action_my_account:
 			Intent i1 = new Intent(SearchResults.this, FragmentMainActivity.class);
+			String globalStudentName = ((ApplicationWithGlobalVariables) getApplication()).getStudentName();
+			i1.putExtra("the username", "שלום " + globalStudentName + "!");
 			startActivity(i1);
 			return true;
 		case R.id.action_logout:
