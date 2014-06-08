@@ -46,6 +46,7 @@ public abstract class SearchResults extends ActionBarActivity {
 	public ViewPager viewPager;
 	public HashSet<String> courseNumbers = new HashSet<String>();
 	private List<Professor> professorsToInsert = new ArrayList<Professor>();
+	private List<Course> coursesToInsert = new ArrayList<Course>();
 		
 	public void onCreate(Bundle savedInstance){
 
@@ -157,8 +158,8 @@ public abstract class SearchResults extends ActionBarActivity {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		ClientAsync as = new ClientAsync();
-		as.execute(professorsToInsert);
+//		ClientAsync as = new ClientAsync();
+//		as.execute();
 		Object[] professorArrayObjects = professorSet.toArray();
 		String[] professorArrayStrings = Arrays.copyOf(professorArrayObjects, professorArrayObjects.length, String[].class);
 		return professorArrayStrings;
@@ -196,6 +197,9 @@ public abstract class SearchResults extends ActionBarActivity {
 							facultyMap.put(number, faculty);
 							courseNumbers.add(number);
 							
+							Course c = new Course(null, name, number, null, null, faculty, true);
+							coursesToInsert.add(c);
+							
 							numberAndName.add("" + number + " - " + capsFix2(name));
 						} // for temp
 					} // if
@@ -212,8 +216,8 @@ public abstract class SearchResults extends ActionBarActivity {
 		String[] numbersAndNamesToReturn = Arrays.copyOf(allNumbersAndNames,
 				allNumbersAndNames.length, String[].class);
 		//Code to populate database:
-		ClientAsync as = new ClientAsync();
-		as.execute(professorsToInsert);
+//		ClientAsync as = new ClientAsync();
+//		as.execute(coursesToInsert);
 		return numbersAndNamesToReturn;
 	} // parse()
 
@@ -458,7 +462,7 @@ public abstract class SearchResults extends ActionBarActivity {
 	 * This is used whenever we need to populate the courses
 	 * or professors database tables.
 	 */
-	private class ClientAsync extends AsyncTask<List<Professor>, Void, String> {
+	private class ClientAsync extends AsyncTask<List<Course>, Void, String> {
 
 		public ClientAsync() {
 		}
@@ -473,30 +477,12 @@ public abstract class SearchResults extends ActionBarActivity {
 		 * everything in this method to ignore the database.
 		 */
 		@Override
-		protected String doInBackground(List<Professor>... params) {
-			List<Professor> listToInsert = params[0];
+		protected String doInBackground(List<Course>... params) {
+			List<Course> listToInsert = params[0];
 			String result = null;
-			//Professor p = new Professor(null, "Cool Professor", null, null, false);
-			//result = db.insertProfessor(p).toString();
-			//result = new TechnionRankerAPI().getProfessorByProfessorName(p);
-			/* This would populate the courses database:
-			String result = null;
-			for (int i = 0; i < params.length; i++) {
-				String[] splitted = params[i].split(" - ");
-				String number = splitted[0];
-				String name = splitted[1];
-				Log.d(number, name);
-				Course c = new Course(null, name, number, null, null, true);
-				result = db.insertCourse(c).toString();
-			}
-			return result;
-			*/ 
-			//This would get an example course:
-			//Course c = new Course(null, "Project in Software", "236504", null, null, "Computer Science", true);
-			//result = db.getCourse(c);
-			//
-			//result = new TechnionRankerAPI().insertCourse(c).toString();
-			//result = db.insertProfessor(listToInsert).toString();
+			
+			result = db.insertCourse(listToInsert).toString();
+			
 			return result;
 		}
 
