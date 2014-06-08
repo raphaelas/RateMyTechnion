@@ -14,6 +14,19 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
+        
+        <TextView
+            android:id="@+id/notAUserText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+            android:paddingRight="3dp"
+            android:text="@string/notAUserText"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/not_student_textfontsize" />
 
         	<TextView
         	    android:id="@+id/introductoryText"
@@ -26,13 +39,13 @@
         	    android:text="@string/instructions"
         	    android:textAppearance="?android:attr/textAppearanceMedium"
         	    android:textColor="@color/white"
-        	    android:textSize="16sp" />
+        	    android:textSize="@dimen/introduction_textfontsize" />
 
    </RelativeLayout>
    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3">
+        android:layout_weight="2">
    </RelativeLayout>
 </LinearLayout>
     
