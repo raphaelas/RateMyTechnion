@@ -54,6 +54,13 @@ public abstract class SearchResults extends ActionBarActivity {
 		if (!getLocalClassName().equals("MainActivity")) {
 	        getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
+		// Detect if connected to Internet
+		ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
+		boolean isInternetPresent = cd.isConnectingToInternet(); // true or false
+		if (!isInternetPresent) {
+			Log.d(getLocalClassName(), "Warning: there is no Internet connection.");
+		}
+		
 	}
 	
 	

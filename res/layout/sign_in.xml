@@ -15,6 +15,7 @@
         android:layout_height="0dp"
         android:layout_weight="1">
         
+        <!--  Make this adjust to screen sizes -->
         <TextView
             android:id="@+id/notAUserText"
             android:layout_width="match_parent"
@@ -22,24 +23,39 @@
             android:layout_gravity="right"
             android:gravity="right"
             android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-            android:paddingRight="3dp"
+            android:paddingRight="5dp"
             android:text="@string/notAUserText"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/gray"
             android:textSize="@dimen/not_student_textfontsize" />
 
-        	<TextView
-        	    android:id="@+id/introductoryText"
-        	    android:layout_width="wrap_content"
-        	    android:layout_height="match_parent"
-        	    android:layout_gravity="left"
-        	    android:gravity="center_vertical"
-        	    android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-        	    android:paddingRight="?android:attr/expandableListPreferredChildPaddingLeft"
-        	    android:text="@string/instructions"
-        	    android:textAppearance="?android:attr/textAppearanceMedium"
-        	    android:textColor="@color/white"
-        	    android:textSize="@dimen/introduction_textfontsize" />
+        <TextView
+            android:id="@+id/introductoryText"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:gravity="center_vertical"
+            android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+            android:paddingRight="?android:attr/expandableListPreferredChildPaddingLeft"
+            android:text="@string/instructions"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/white"
+            android:textSize="@dimen/introduction_textfontsize" />
+
+        <TextView
+            android:id="@+id/pleaseLogIn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:gravity="bottom"
+            android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+            android:paddingRight="?android:attr/expandableListPreferredChildPaddingLeft"
+            android:text="@string/pleaseLogIn"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/not_student_textfontsize" />
+        
+        
 
    </RelativeLayout>
    <RelativeLayout

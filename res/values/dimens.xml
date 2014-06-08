@@ -5,7 +5,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     -->
     
-	<dimen name="introduction_textfontsize">16sp</dimen>
+	<dimen name="introduction_textfontsize">13sp</dimen>
 	<dimen name="not_student_textfontsize">12sp</dimen>
 	
     
