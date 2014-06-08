@@ -19,8 +19,6 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_main_activity);
-
-		Log.d(getLocalClassName(), getSupportFragmentManager().getBackStackEntryCount() + "");
 		
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);
