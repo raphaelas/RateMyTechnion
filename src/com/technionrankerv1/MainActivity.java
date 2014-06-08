@@ -61,11 +61,11 @@ public class MainActivity extends SearchResults {
 			@Override
 			public void onClick(View v) {
 				//Temporary code to test FragmentMainActivity:
-				Intent i = new Intent(MainActivity.this,
-						FragmentMainActivity.class);
-				i.putExtra("the username", "שלום");
-				startActivity(i);
-				//setText();
+//				Intent i = new Intent(MainActivity.this,
+//						FragmentMainActivity.class);
+//				i.putExtra("the username", "שלום");
+//				startActivity(i);
+				setText();
 			}
 		});
 	}

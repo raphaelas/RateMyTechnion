@@ -168,13 +168,11 @@ public class ProfessorView extends SearchResults {
 		if (!alreadySubmitted && canSubmit) {
 			EditText et = (EditText) findViewById(R.id.professorComment);
 			String commentText = et.getText().toString();
-			long currTimeMillis = System.currentTimeMillis();
-			Time currentTime = new Time(currTimeMillis);
-			ProfessorComment pc = new ProfessorComment(professorId, studentId, commentText, currentTime, 0);
+			ProfessorComment pc = new ProfessorComment(professorId, studentId, commentText, null, 0);
 			comments.add(pc);
 			displayAllComments(comments);
 			ProfessorCommentClientAsync as2 = new ProfessorCommentClientAsync();
-			//as2.execute(pc);
+			as2.execute(pc);
 		}
 	}
 	

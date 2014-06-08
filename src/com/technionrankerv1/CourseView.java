@@ -1,6 +1,5 @@
 package com.technionrankerv1;
 
-import java.sql.Time;
 import java.util.ArrayList;
 
 import android.os.AsyncTask;
@@ -176,15 +175,11 @@ public class CourseView extends SearchResults {
 			EditText et = (EditText) findViewById(R.id.comment);
 	    	String commentText = et.getText().toString();
 	    	if (commentText != null && commentText.length() > 0) {
-		    	long currTimeMillis = System.currentTimeMillis();
-		    	//Time currentTime = new Time();
-		    	//currentTime.set(currTimeMillis);
-		    	Time currentTime = new Time(currTimeMillis);
-		    	CourseComment cc = new CourseComment(courseId, studentId, commentText, currentTime, 0);
+		    	CourseComment cc = new CourseComment(courseId, studentId, commentText, null, 0);
 		    	comments.add(cc);
 		    	displayAllComments(comments);
 		    	CourseCommentClientAsync as2 = new CourseCommentClientAsync();
-		    	//as2.execute(cc);
+		    	as2.execute(cc);
 	    	}
 		}
     }

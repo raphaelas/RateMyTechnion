@@ -1,6 +1,6 @@
 package com.technionrankerv1;
 
-import java.sql.Time;
+import android.text.format.Time;
 
 public class CourseComment {
   private Long id;

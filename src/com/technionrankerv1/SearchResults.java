@@ -1,4 +1,4 @@
-package com.technionrankerv1;
+ package com.technionrankerv1;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -45,7 +45,7 @@ public abstract class SearchResults extends ActionBarActivity {
 	HashMap<String, String> facultyMap = new HashMap<String, String>();
 	public ViewPager viewPager;
 	public HashSet<String> courseNumbers = new HashSet<String>();
-	private List<Professor> professorsToInsert = new ArrayList<Professor>();
+	private ArrayList<Professor> professorsToInsert = new ArrayList<Professor>();
 		
 	public void onCreate(Bundle savedInstance){
 
@@ -212,8 +212,8 @@ public abstract class SearchResults extends ActionBarActivity {
 		String[] numbersAndNamesToReturn = Arrays.copyOf(allNumbersAndNames,
 				allNumbersAndNames.length, String[].class);
 		//Code to populate database:
-		ClientAsync as = new ClientAsync();
-		as.execute(professorsToInsert);
+		//ClientAsync as = new ClientAsync();
+		//as.execute(professorsToInsert);
 		return numbersAndNamesToReturn;
 	} // parse()
 
@@ -466,6 +466,7 @@ public abstract class SearchResults extends ActionBarActivity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
+			Log.d(getLocalClassName(), "Starting SearchResults Async...");
 		}
 
 		/**
@@ -475,28 +476,10 @@ public abstract class SearchResults extends ActionBarActivity {
 		@Override
 		protected String doInBackground(List<Professor>... params) {
 			List<Professor> listToInsert = params[0];
+			listToInsert = listToInsert.subList(0, 100);
+			Log.d("First professor", listToInsert.get(0).getName());
 			String result = null;
-			//Professor p = new Professor(null, "Cool Professor", null, null, false);
-			//result = db.insertProfessor(p).toString();
-			//result = new TechnionRankerAPI().getProfessorByProfessorName(p);
-			/* This would populate the courses database:
-			String result = null;
-			for (int i = 0; i < params.length; i++) {
-				String[] splitted = params[i].split(" - ");
-				String number = splitted[0];
-				String name = splitted[1];
-				Log.d(number, name);
-				Course c = new Course(null, name, number, null, null, true);
-				result = db.insertCourse(c).toString();
-			}
-			return result;
-			*/ 
-			//This would get an example course:
-			//Course c = new Course(null, "Project in Software", "236504", null, null, "Computer Science", true);
-			//result = db.getCourse(c);
-			//
-			//result = new TechnionRankerAPI().insertCourse(c).toString();
-			//result = db.insertProfessor(listToInsert).toString();
+			//result = new TechnionRankerAPI().insertProfessor(listToInsert).toString();
 			return result;
 		}
 
