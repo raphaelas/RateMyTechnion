@@ -154,13 +154,25 @@ public class MainActivity extends SearchResults {
 						.substring(headParamterIndex + 10);
 				PLASTandPGRP.put(PLAST, PGRP);
 				Connection.Response existingRatingRes = Jsoup
-					.connect(
-							"http://techmvs.technion.ac.il/cics/wmn/wmrns1x?PSEM=201302&PSUB=315018&PGRP="+PGRP+"&PLAST="+PLAST)
-					.execute();
-				existingRatingDoc = existingRatingRes.parse();
-				String existingRatingString = existingRatingDoc.toString();
-				//Sam: Log.d(getLocalClassName(), existingRatingString); 
-				
+									.connect(
+											"http://techmvs.technion.ac.il/cics/wmn/wmrns1x?PSEM=201302&PSUB=315018&PGRP="
+													+ PGRP + "&PLAST=" + PLAST)
+									.data("SGLID", "YES", "PSEM", "011302",
+											"PSUB", "315018", "PGRP", PGRP,
+											"PLAST", PLAST, "ID", "922130141",
+											"PASS", "32016463")
+									.method(Method.POST).execute();
+							existingRatingDoc = existingRatingRes.parse();
+							String existingRatingString = existingRatingDoc
+									.toString();
+							// Log.d(getLocalClassName(), existingRatingString);
+							
+							if(existingRatingString.contains("No lecture and no exercise")){
+								Log.d(getLocalClassName(), "No lecture and no exercise");
+							}
+							Log.d(getLocalClassName(), "this the "+counter+" number of links from this course number "+courseNum);
+							counter++;
+				//Sam:
 			} //end of while loop */
 			
 
