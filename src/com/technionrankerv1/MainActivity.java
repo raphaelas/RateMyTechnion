@@ -2,6 +2,7 @@ package com.technionrankerv1;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -34,12 +35,13 @@ public class MainActivity extends SearchResults {
 	private ArrayList<Professor> professorsToInsert = new ArrayList<Professor>();
 	private Long currentProfessorId = null;
 	private Course currentCourse = null;
+	private HashMap<String, String> PLASTandPGRP = new HashMap<String, String>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sign_in);
-		
+
 		errorM = (TextView) findViewById(R.id.textView1);
 		final EditText passwordInput = (EditText) findViewById(R.id.editText2);
 		passwordInput.setOnKeyListener(new OnKeyListener() {
@@ -60,14 +62,15 @@ public class MainActivity extends SearchResults {
 		loginButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//Temporary code to test FragmentMainActivity:
-//				Intent i = new Intent(MainActivity.this,
-//						FragmentMainActivity.class);
-//				i.putExtra("the username", "שלום");
-//				startActivity(i);
+				// Temporary code to test FragmentMainActivity:
+				// Intent i = new Intent(MainActivity.this,
+				// FragmentMainActivity.class);
+				// i.putExtra("the username", "שלום");
+				// startActivity(i);
 				setText();
 			}
 		});
+
 	}
 
 	public void setText() {
@@ -91,8 +94,7 @@ public class MainActivity extends SearchResults {
 				errorM.setTextColor(getResources().getColor(R.color.red));
 				errorM.setText("Please fix the errors and try again.");
 				return;
-			}
-			else {
+			} else {
 				errorM.setTextColor(getResources().getColor(R.color.gray));
 				errorM.setText("Please wait.  Connecting to UG System.");
 				doLogin();
@@ -105,88 +107,148 @@ public class MainActivity extends SearchResults {
 			public void run() {
 				Document doc;
 				Document doc1;
+				Document existingRatingDoc;
 				Document catalogDoc;
 				try {
 					Connection.Response res = Jsoup
 							.connect("https://ug3.technion.ac.il/rishum/login")
-							.data("OP", "LI", "UID", username, "PWD", password,
-									"Login.x", "%D7%94%D7%AA%D7%97%D7%91%D7%A8")
+							.data("OP", "LI", "UID", "922130141", "PWD",
+									"32016463", "Login.x",
+									"%D7%94%D7%AA%D7%97%D7%91%D7%A8")
 							.method(Method.POST).execute();
 					doc = res.parse();
-					//Note to Leo: I moved the code further down in the file so it doesn't crash on failed logins.
+					// Note to Leo: I moved the code further down in the file so
+					// it doesn't crash on failed logins.
 					HashSet<String> course_nums = courseNumbers;
 					int curr = 0;
-					final int STOP = 50;
-	                for (String courseNum : course_nums){
-	                	if (curr > STOP) break;
-	                	curr++;
-	                	String URL = "https://ug3.technion.ac.il/rishum/course?MK=" + courseNum + "&CATINFO=&SEM=201302";
-	                	Connection.Response catalogRes = Jsoup.connect(URL)
-	                			.userAgent("User-Agent: Mozilla/5.0 (Macintosh; Intel"
-            					+ " Mac OS X 10.7; rv:29.0) Gecko/20100101 Firefox/29.0").maxBodySize(0)
-	                			.timeout(600000).execute();
-	                	catalogDoc = catalogRes.parse();
-	                	String catalogString = catalogDoc.toString();
-	                	int headProfessorIndex = catalogString.indexOf("אחראים");
-	                	int plastIndex = catalogString.indexOf("PLAST");
-	                	int regularProfessorIndex = catalogString.indexOf(">", plastIndex);
-	                	int endRegularProfessorIndex = catalogString.indexOf("<", regularProfessorIndex);
-	                	if (headProfessorIndex != -1) {
-		                	String[] str1 = catalogString.substring(headProfessorIndex+35, headProfessorIndex + 100).split(" ");
-		                	// get the head prof english name
-		                	String parsedHeadProfessor = getHeadProf(str1);
-		                	if (parsedHeadProfessor == null) {
-		                		Log.d(courseNum, "The head professor is empty");
-		                		String regularProfessorSubstring = catalogString.substring(regularProfessorIndex, endRegularProfessorIndex);
-		                		final int PROFESSORS_WOULD_BE_MUCH_FURTHER_DOWN_THAN_THIS = 100;
-		                		if (regularProfessorIndex < PROFESSORS_WOULD_BE_MUCH_FURTHER_DOWN_THAN_THIS ||
-		                				endRegularProfessorIndex < PROFESSORS_WOULD_BE_MUCH_FURTHER_DOWN_THAN_THIS) {
-		                			Log.d(courseNum, "The regular professor is empty");
-		                			coursesThatDidNotMeetInSpring2014.add(courseNum);
-		                		}
-		                		else {
-			                		String[] regularProfessorSplitted = regularProfessorSubstring.split(" ");
-			                		String professorResult = getHeadProf(regularProfessorSplitted);
-			                		if (professorResult == null) {
-			                			//TODO make sure that this condition is ever met - it may not be.
-			                			Log.d(courseNum, "Check 2: the regular professor is empty.");
-			                			coursesThatDidNotMeetInSpring2014.add(courseNum);
-			                		}
-			                		else {
-			                			String translatedRegularProfessor = hebrewTranslations.get(professorResult);
-			                			if (translatedRegularProfessor == null) {
-			                				Professor p = new Professor(null, null, null, professorResult, true);
-			                				professorsToInsert.add(p);
-			                				Log.d(courseNum, "Regular professor: no english name matches the hebrew name: " + professorResult);
-			                			}
-			                			else {
-					                		Log.d("Regular professor " + courseNum, translatedRegularProfessor);
-					                		//Course cToUpdate = new Course(null, null, courseNum, null, courseNum, courseNum, mCheckedForLoaderManager);
-			                			}
-			                		}
-		                		}
-		                	}
-		                	else {
-		                		Log.d(courseNum, parsedHeadProfessor);
-		                		String translatedProfessor = hebrewTranslations.get(parsedHeadProfessor);
-		                		if (translatedProfessor != null) {
-					                Log.d("Head professor translation:", translatedProfessor);
-		                		}
-		                		else {
-	                				Professor p = new Professor(null, null, null, parsedHeadProfessor, true);
-	                				professorsToInsert.add(p);
-		                			Log.d(courseNum, "No english name matches the hebrew name: " + parsedHeadProfessor);
-		                		}
-		                	}
-	                	}
-	                	else {
-	                		Log.d(courseNum, "No head professor exists");
-	                		coursesThatDidNotMeetInSpring2014.add(courseNum);
-	                	}
-	                } //end of for loop
-	                
+					final int STOP = 5; // course_nums.size();
+					Log.d(getLocalClassName(), course_nums.size() + "");
+					for (String courseNum : course_nums) {
+						//Log.d(getLocalClassName(), curr + " " + courseNum);
+						if (curr > STOP)
+							break;
+						curr++;
+						String URL = "https://ug3.technion.ac.il/rishum/course?MK="
+								+ courseNum + "&CATINFO=&SEM=201302";
+						Connection.Response catalogRes = Jsoup
+								.connect(URL)
+								.userAgent(
+										"User-Agent: Mozilla/5.0 (Macintosh; Intel"
+												+ " Mac OS X 10.7; rv:29.0) Gecko/20100101 Firefox/29.0")
+								.maxBodySize(0).timeout(600000).execute();
+						catalogDoc = catalogRes.parse();
+						String catalogString = catalogDoc.toString();
+
+						String ParamCatalogString = catalogString;
+						while (ParamCatalogString.contains("PLAST")) {
+							int headParamterIndex = ParamCatalogString
+									.indexOf("PLAST");
+							String placeholder = ParamCatalogString.substring(
+									headParamterIndex - 7,
+									headParamterIndex + 10);
+							String PGRP = placeholder.substring(0, 2);
+							String PLAST = placeholder.substring(13, 16);
+						//Log.d(getLocalClassName(), "course num "
+						//			+ courseNum + " PGRP " + PGRP + " PLAST "
+						//			+ PLAST);
+							ParamCatalogString = ParamCatalogString
+									.substring(headParamterIndex + 10);
+							PLASTandPGRP.put(PLAST, PGRP);
+							Connection.Response existingRatingRes = Jsoup
+								.connect(
+										"http://techmvs.technion.ac.il/cics/wmn/wmrns1x?PSEM=201302&PSUB=315018&PGRP="+PGRP+"&PLAST="+PLAST)
+								.execute();
+							existingRatingDoc = existingRatingRes.parse();
+							String existingRatingString = existingRatingDoc.toString();
+							Log.d(getLocalClassName(), existingRatingString);
+							
+						}
+						
+
+						int headProfessorIndex = catalogString
+								.indexOf("אחראים");
+						int plastIndex = catalogString.indexOf("PLAST");
+						int regularProfessorIndex = catalogString.indexOf(">",
+								plastIndex);
+						int endRegularProfessorIndex = catalogString.indexOf(
+								"<", regularProfessorIndex);
+						if (headProfessorIndex != -1) {
+							String[] str1 = catalogString.substring(
+									headProfessorIndex + 35,
+									headProfessorIndex + 100).split(" ");
+							// get the head prof english name
+							String parsedHeadProfessor = getHeadProf(str1);
+							if (parsedHeadProfessor == null) {
+								//Log.d(courseNum, "The head professor is empty");
+								String regularProfessorSubstring = catalogString
+										.substring(regularProfessorIndex,
+												endRegularProfessorIndex);
+								final int PROFESSORS_WOULD_BE_MUCH_FURTHER_DOWN_THAN_THIS = 100;
+								if (regularProfessorIndex < PROFESSORS_WOULD_BE_MUCH_FURTHER_DOWN_THAN_THIS
+										|| endRegularProfessorIndex < PROFESSORS_WOULD_BE_MUCH_FURTHER_DOWN_THAN_THIS) {
+									//Log.d(courseNum,
+									//		"The regular professor is empty");
+									coursesThatDidNotMeetInSpring2014
+											.add(courseNum);
+								} else {
+									String[] regularProfessorSplitted = regularProfessorSubstring
+											.split(" ");
+									String professorResult = getHeadProf(regularProfessorSplitted);
+									if (professorResult == null) {
+										// TODO make sure that this condition is
+										// ever met - it may not be.
+										//Log.d(courseNum,
+									//			"Check 2: the regular professor is empty.");
+										coursesThatDidNotMeetInSpring2014
+												.add(courseNum);
+									} else {
+										String translatedRegularProfessor = hebrewTranslations
+												.get(professorResult);
+										if (translatedRegularProfessor == null) {
+											Professor p = new Professor(null,
+													null, null,
+													professorResult, true);
+											professorsToInsert.add(p);
+											//Log.d(courseNum,
+												//	"Regular professor: no english name matches the hebrew name: "
+											//				+ professorResult);
+										} else {
+										//	Log.d("Regular professor "
+												//	+ courseNum,
+												//	translatedRegularProfessor);
+											// Course cToUpdate = new
+											// Course(null, null, courseNum,
+											// null, courseNum, courseNum,
+											// mCheckedForLoaderManager);
+										}
+									}
+								}
+							} else { // head Prof exists
+								//Log.d(courseNum, parsedHeadProfessor);
+								String translatedProfessor = hebrewTranslations
+										.get(parsedHeadProfessor);
+								if (translatedProfessor != null) {
+									//Log.d("Head professor translation:",
+								//			translatedProfessor);
+								} else {
+									Professor p = new Professor(null, null,
+											null, parsedHeadProfessor, true);
+									professorsToInsert.add(p);
+									//Log.d(courseNum,
+									//		"No english name matches the hebrew name: "
+									//				+ parsedHeadProfessor);
+								}
+							}
+						} else {
+							//Log.d(courseNum, "No head professor exists");
+							coursesThatDidNotMeetInSpring2014.add(courseNum);
+						}
+					} // end of for loop
+
+					Log.d(getLocalClassName(), PLASTandPGRP.toString());
+
 					int x = 1;
-					//Log.d(getLocalClassName(), doc.toString().length() + "");
+					// Log.d(getLocalClassName(), doc.toString().length() + "");
 					if (doc.toString().length() < 4920) {
 						// Log.d(getLocalClassName(), "fail");
 						x = 0;
@@ -194,7 +256,7 @@ public class MainActivity extends SearchResults {
 					}
 
 					// Log.d(getLocalClassName(),doc.toString());
-					// Log.d(getLocalClassName(), doc.toString().substring(4920,
+					// Log.d(getLocalClassName(), doc.toString().substring(4920,50
 					// 4930));
 					if (!doc.toString().substring(4609, 4618)
 							.equals("error-msg")
@@ -220,27 +282,28 @@ public class MainActivity extends SearchResults {
 						// .findViewById(R.id.textView23);
 						// myText.setText("Welcome " + name + "!");
 						// Log.d(getLocalClassName(), "in1");
-						
+
 						String rishum = res.cookie("rishum");
 						String _ga = "GA1.3.1829128590.1396009585";
-//						Log.d(getLocalClassName(),res.cookies().toString());
-//						Log.d(getLocalClassName(), rishum);
-//						Log.d(getLocalClassName(), _ga);
+						// Log.d(getLocalClassName(),res.cookies().toString());
+						// Log.d(getLocalClassName(), rishum);
+						// Log.d(getLocalClassName(), _ga);
 						Connection.Response res1 = Jsoup
 								.connect(
 										"http://techmvs.technion.ac.il:100/cics/wmn/wmnnut03?OP=WK&SEM=201302")
 								.cookie("rishum", rishum).method(Method.POST)
-								.cookie("_ga", _ga)
-								.execute();
+								.cookie("_ga", _ga).execute();
 						doc1 = res1.parse();
-//						Log.d(getLocalClassName(), doc1.toString().length() +"");
-//						URL url=res1.url();
-//						Log.d(getLocalClassName(), url.toString());
-						((ApplicationWithGlobalVariables) getApplication()).setStudentName(name);
+						// Log.d(getLocalClassName(), doc1.toString().length()
+						// +"");
+						// URL url=res1.url();
+						// Log.d(getLocalClassName(), url.toString());
+						((ApplicationWithGlobalVariables) getApplication())
+								.setStudentName(name);
 						Intent i = new Intent(MainActivity.this,
 								FragmentMainActivity.class);
-						//NOTE: if you change this message, also change it
-//						in SearchResults - onOptionsItemSelected().
+						// NOTE: if you change this message, also change it
+						// in SearchResults - onOptionsItemSelected().
 						i.putExtra("the username", "שלום " + name + "!");
 						startActivity(i);
 						// startActivity(new Intent(Login.this,
@@ -275,31 +338,38 @@ public class MainActivity extends SearchResults {
 				}
 			}
 		});
-	}			
-	String getHeadProf(String[] s){
-		
+	}
+
+	String getHeadProf(String[] s) {
+
 		String name = "";
-		
-		for (int t = 1; t < s.length; t++){
+
+		for (int t = 1; t < s.length; t++) {
 			// edit to add the different prefixes
-			if (!s[t].contains(" ") && !s[t].contains("פרופ") &&
-					!s[t].contains("חבר") && !s[t].contains("<") &&
-					!s[t].contains(">") && !s[t].contains("משנה") && 
-					!(s[t].length() == 3 && s[t].substring(0, 2).contains("דר"))){
-				name = name+ " " + s[t];
-			}		
+			if (!s[t].contains(" ")
+					&& !s[t].contains("פרופ")
+					&& !s[t].contains("חבר")
+					&& !s[t].contains("<")
+					&& !s[t].contains(">")
+					&& !s[t].contains("משנה")
+					&& !(s[t].length() == 3 && s[t].substring(0, 2).contains(
+							"דר"))) {
+				name = name + " " + s[t];
+			}
 		}
 		name = name.trim();
-		if (name.length() == 0) return null;
+		if (name.length() == 0)
+			return null;
 		Pattern p = Pattern.compile("\\p{InHebrew}");
 		Matcher m = p.matcher(name.substring(0, 1));
 		if (m.matches()) {
-			return name;		
+			return name;
 		}
 		return null;
 	}
-	
-	private class GetProfessorClientAsync extends AsyncTask<String, Void, List<Professor>> {
+
+	private class GetProfessorClientAsync extends
+			AsyncTask<String, Void, List<Professor>> {
 		public GetProfessorClientAsync() {
 		}
 
@@ -311,8 +381,9 @@ public class MainActivity extends SearchResults {
 		@Override
 		protected List<Professor> doInBackground(String... params) {
 			String hebrewName = params[0];
-	    	Professor lookup = new Professor(null, null, null, hebrewName, true);
-	    	List<Professor> result = new TechnionRankerAPI().getProfessorByProfessorHebrewName(lookup);
+			Professor lookup = new Professor(null, null, null, hebrewName, true);
+			List<Professor> result = new TechnionRankerAPI()
+					.getProfessorByProfessorHebrewName(lookup);
 			return result;
 		}
 
@@ -320,18 +391,18 @@ public class MainActivity extends SearchResults {
 		protected void onPostExecute(List<Professor> res) {
 			if (res == null) {
 				Log.d(getLocalClassName(), "Get of professor failed.");
-			}
-			else if (res.size() == 0) {
+			} else if (res.size() == 0) {
 				Log.d(getLocalClassName(), "Get of professor returned empty.");
-			}
-			else {
+			} else {
 				currentProfessorId = res.get(0).getId();
-				Log.d(getLocalClassName(), "The professor id: " + currentProfessorId);
+				Log.d(getLocalClassName(), "The professor id: "
+						+ currentProfessorId);
 			}
 		}
 	}
-	
-	private class GetCourseClientAsync extends AsyncTask<String, Void, List<Course>> {
+
+	private class GetCourseClientAsync extends
+			AsyncTask<String, Void, List<Course>> {
 		public GetCourseClientAsync() {
 		}
 
@@ -343,8 +414,10 @@ public class MainActivity extends SearchResults {
 		@Override
 		protected List<Course> doInBackground(String... params) {
 			String courseNumber = params[0];
-	    	Course lookup = new Course(null, null, courseNumber, null, null, null, true);
-	    	List<Course> result = new TechnionRankerAPI().getCourseByCourseNumber(lookup);
+			Course lookup = new Course(null, null, courseNumber, null, null,
+					null, true);
+			List<Course> result = new TechnionRankerAPI()
+					.getCourseByCourseNumber(lookup);
 			return result;
 		}
 
@@ -352,18 +425,18 @@ public class MainActivity extends SearchResults {
 		protected void onPostExecute(List<Course> res) {
 			if (res == null) {
 				Log.d(getLocalClassName(), "Get of course failed.");
-			}
-			else if (res.size() == 0) {
+			} else if (res.size() == 0) {
 				Log.d(getLocalClassName(), "Get of course returned empty.");
-			}
-			else {
+			} else {
 				currentCourse = res.get(0);
-				Log.d(getLocalClassName(), "The course id: " + currentCourse.getId());
+				Log.d(getLocalClassName(),
+						"The course id: " + currentCourse.getId());
 			}
 		}
 	}
-	
-	private class InsertCourseClientAsync extends AsyncTask<Course, Void, String> {
+
+	private class InsertCourseClientAsync extends
+			AsyncTask<Course, Void, String> {
 		public InsertCourseClientAsync() {
 		}
 
@@ -377,7 +450,8 @@ public class MainActivity extends SearchResults {
 			Course courseToAdd = params[0];
 			List<Course> listToAdd = new ArrayList<Course>();
 			listToAdd.add(courseToAdd);
-	    	String result = new TechnionRankerAPI().insertCourse(listToAdd).toString();
+			String result = new TechnionRankerAPI().insertCourse(listToAdd)
+					.toString();
 			return result;
 		}
 
@@ -385,14 +459,14 @@ public class MainActivity extends SearchResults {
 		protected void onPostExecute(String res) {
 			if (res == null) {
 				Log.d(getLocalClassName(), "Insert course failed.");
-			}
-			else {
+			} else {
 				Log.d(getLocalClassName(), "Insert course: " + res);
 			}
 		}
 	}
-	
-	private class InsertProfessorClientAsync extends AsyncTask<List<Professor>, Void, String> {
+
+	private class InsertProfessorClientAsync extends
+			AsyncTask<List<Professor>, Void, String> {
 		public InsertProfessorClientAsync() {
 		}
 
@@ -404,7 +478,8 @@ public class MainActivity extends SearchResults {
 		@Override
 		protected String doInBackground(List<Professor>... params) {
 			List<Professor> professorsToAdd = params[0];
-	    	String result = new TechnionRankerAPI().insertProfessor(professorsToAdd).toString();
+			String result = new TechnionRankerAPI().insertProfessor(
+					professorsToAdd).toString();
 			return result;
 		}
 
@@ -412,8 +487,7 @@ public class MainActivity extends SearchResults {
 		protected void onPostExecute(String res) {
 			if (res == null) {
 				Log.d(getLocalClassName(), "Insert professor failed.");
-			}
-			else {
+			} else {
 				Log.d(getLocalClassName(), "Insert professor: " + res);
 			}
 		}

@@ -45,7 +45,8 @@ public abstract class SearchResults extends ActionBarActivity {
 	HashMap<String, String> facultyMap = new HashMap<String, String>();
 	public ViewPager viewPager;
 	public HashSet<String> courseNumbers = new HashSet<String>();
-	private ArrayList<Professor> professorsToInsert = new ArrayList<Professor>();
+	private List<Professor> professorsToInsert = new ArrayList<Professor>();
+	private List<Course> coursesToInsert = new ArrayList<Course>();
 		
 	public void onCreate(Bundle savedInstance){
 
@@ -157,8 +158,8 @@ public abstract class SearchResults extends ActionBarActivity {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		ClientAsync as = new ClientAsync();
-		as.execute(professorsToInsert);
+//		ClientAsync as = new ClientAsync();
+//		as.execute();
 		Object[] professorArrayObjects = professorSet.toArray();
 		String[] professorArrayStrings = Arrays.copyOf(professorArrayObjects, professorArrayObjects.length, String[].class);
 		return professorArrayStrings;
@@ -196,6 +197,9 @@ public abstract class SearchResults extends ActionBarActivity {
 							facultyMap.put(number, faculty);
 							courseNumbers.add(number);
 							
+							Course c = new Course(null, name, number, null, null, faculty, true);
+							coursesToInsert.add(c);
+							
 							numberAndName.add("" + number + " - " + capsFix2(name));
 						} // for temp
 					} // if
@@ -212,8 +216,8 @@ public abstract class SearchResults extends ActionBarActivity {
 		String[] numbersAndNamesToReturn = Arrays.copyOf(allNumbersAndNames,
 				allNumbersAndNames.length, String[].class);
 		//Code to populate database:
-		//ClientAsync as = new ClientAsync();
-		//as.execute(professorsToInsert);
+//		ClientAsync as = new ClientAsync();
+//		as.execute(coursesToInsert);
 		return numbersAndNamesToReturn;
 	} // parse()
 
@@ -458,7 +462,7 @@ public abstract class SearchResults extends ActionBarActivity {
 	 * This is used whenever we need to populate the courses
 	 * or professors database tables.
 	 */
-	private class ClientAsync extends AsyncTask<List<Professor>, Void, String> {
+	private class ClientAsync extends AsyncTask<List<Course>, Void, String> {
 
 		public ClientAsync() {
 		}
