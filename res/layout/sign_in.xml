@@ -22,7 +22,7 @@
             android:id="@+id/introductoryText"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="left"
+            android:layout_gravity="center"
             android:gravity="center"
             android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
             android:paddingRight="?android:attr/expandableListPreferredChildPaddingLeft"

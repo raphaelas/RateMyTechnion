@@ -35,7 +35,6 @@ public class MainActivity extends SearchResults {
 	private String username;
 	private String password;
 	public LinkedHashSet<String> coursesThatDidNotMeetInSpring2014 = new LinkedHashSet<String>();
-	private ArrayList<Professor> mainActivityProfessorsToInsert = new ArrayList<Professor>();
 	private Long currentProfessorId = null;
 	private Course currentCourse = null;
 	private HashMap<String, String> PLASTandPGRP = new HashMap<String, String>();
@@ -196,18 +195,15 @@ public class MainActivity extends SearchResults {
 						if (professorResult == null) {
 							// TODO make sure that this condition is
 							// ever met - it may not be.
-							//Log.d(courseNum,
-						//			"Check 2: the regular professor is empty.");
+							Log.d(courseNum,
+									"Check 2: the regular professor is empty.");
 							coursesThatDidNotMeetInSpring2014
 									.add(courseNum);
 						} else {
 							String translatedRegularProfessor = hebrewTranslations
 									.get(professorResult);
 							if (translatedRegularProfessor == null) {
-								Professor p = new Professor(null,
-										null, null,
-										professorResult, true);
-								mainActivityProfessorsToInsert.add(p);
+								insertProfessorGetProfessorAndInsertCourse(professorResult, courseNum);
 								Log.d(courseNum,
 										"Regular professor: no english name matches the hebrew name: "
 												+ professorResult);
@@ -228,9 +224,7 @@ public class MainActivity extends SearchResults {
 						//Log.d("Head professor translation:",
 					//			translatedProfessor);
 					} else {
-						Professor p = new Professor(null, null,
-								null, parsedHeadProfessor, true);
-						mainActivityProfessorsToInsert.add(p);
+						insertProfessorGetProfessorAndInsertCourse(parsedHeadProfessor, courseNum);
 						Log.d(courseNum,
 								"No english name matches the hebrew name: "
 										+ parsedHeadProfessor);
@@ -245,6 +239,19 @@ public class MainActivity extends SearchResults {
 		//Sam: Log.d(getLocalClassName(), PLASTandPGRP.toString());
 	}
 	
+	public void insertProfessorGetProfessorAndInsertCourse(String hebrewName, String courseNum) {
+		try {
+			Professor p = new Professor(null, null, null, hebrewName, true);
+			InsertProfessorClientAsync ipca = new InsertProfessorClientAsync();
+			ipca.execute(p).get();
+			getCourseAndInsertCourse(hebrewName, courseNum);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void getCourseAndInsertCourse(String professorHebrewName, String courseNumber) {
 		try {
 			GetProfessorClientAsync pas = new GetProfessorClientAsync();
@@ -252,8 +259,8 @@ public class MainActivity extends SearchResults {
 			Long professorID = p.get(0).getId();
 			Course c = courseNumbersToCourses.get(courseNumber);
 			c.setProfessorID(professorID);
-			//InsertCourseClientAsync icca = new InsertCourseClientAsync();
-			//icca.execute(c);
+			InsertCourseClientAsync icca = new InsertCourseClientAsync();
+			icca.execute(c);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
@@ -277,8 +284,6 @@ public class MainActivity extends SearchResults {
 					
 					parseCatalogPages("201302"); //Spring 2013/2014
 					parseCatalogPages("201301"); //Winter 2013/2014
-//					InsertProfessorClientAsync ipas = new InsertProfessorClientAsync();
-//					ipas.execute(mainActivityProfessorsToInsert);
 					
 					int x = 1;
 					// Log.d(getLocalClassName(), doc.toString().length() + "");
@@ -455,11 +460,13 @@ public class MainActivity extends SearchResults {
 
 		@Override
 		protected String doInBackground(Course... params) {
+			String result = null;
 			Course courseToAdd = params[0];
+			Log.d(getLocalClassName(), courseToAdd.toString());
 			List<Course> listToAdd = new ArrayList<Course>();
 			listToAdd.add(courseToAdd);
-			String result = new TechnionRankerAPI().insertCourse(listToAdd)
-					.toString();
+			//result = new TechnionRankerAPI().insertCourse(listToAdd)
+			//		.toString();
 			return result;
 		}
 
@@ -474,7 +481,7 @@ public class MainActivity extends SearchResults {
 	}
 
 	private class InsertProfessorClientAsync extends
-			AsyncTask<List<Professor>, Void, String> {
+			AsyncTask<Professor, Void, String> {
 		public InsertProfessorClientAsync() {
 		}
 
@@ -484,10 +491,14 @@ public class MainActivity extends SearchResults {
 		}
 
 		@Override
-		protected String doInBackground(List<Professor>... params) {
-			List<Professor> professorsToAdd = params[0];
-			String result = new TechnionRankerAPI().insertProfessor(
-					professorsToAdd).toString();
+		protected String doInBackground(Professor... params) {
+			String result = null;
+			Professor professorToAdd = params[0];
+			Log.d(getLocalClassName(), "Inserting: " + professorToAdd.getHebrewName());
+			List<Professor> lToAdd = new ArrayList<Professor>();
+			lToAdd.add(professorToAdd);
+			//result = new TechnionRankerAPI().insertProfessor(
+			//		lToAdd).toString();
 			return result;
 		}
 

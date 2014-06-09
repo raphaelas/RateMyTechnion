@@ -306,14 +306,21 @@ public abstract class SearchResults extends ActionBarActivity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main_activity_actions, menu);
 		MenuItem logoutItem = menu.findItem(R.id.action_logout);
+		MenuItem loginItem = menu.findItem(R.id.action_login);
 		MenuItem myAccountItem = menu.findItem(R.id.action_my_account);
     	boolean loggedIn = ((ApplicationWithGlobalVariables) this.getApplication()).isLoggedIn();
 		if (!loggedIn) {
 			logoutItem.setVisible(false);
 			myAccountItem.setVisible(false);
 		}
+		else {
+			loginItem.setVisible(false);
+		}
 		if (getLocalClassName().equals("FragmentMainActivity")) {
 			myAccountItem.setVisible(false);
+		}
+		if (getLocalClassName().equals("MainActivity")) {
+			loginItem.setVisible(false);
 		}
 		// Get the SearchView and set the searchable configuration
 		MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -403,6 +410,10 @@ public abstract class SearchResults extends ActionBarActivity {
 	    	((ApplicationWithGlobalVariables) this.getApplication()).setLoggedIn(false);
 			Intent i = new Intent(SearchResults.this, MainActivity.class);
 			startActivity(i);
+			return true;
+		case R.id.action_login:
+			Intent i2 = new Intent(SearchResults.this, MainActivity.class);
+			startActivity(i2);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

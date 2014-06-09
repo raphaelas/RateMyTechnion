@@ -120,5 +120,11 @@ public class Course {
   public Long getId() {
     return id;
   }
+  
+  @Override
+  public String toString() {
+	  String toReturn = "" + name + " " + number + " " + professorID.toString() + " " + faculty;
+	  return toReturn;
+  }
 
 }

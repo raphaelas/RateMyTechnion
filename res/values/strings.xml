@@ -3,7 +3,7 @@
 
     <string name="app_name">TechnionRanker</string>
     <string name="action_settings">Settings</string>
-    <string name="search_hint">Search: Professors/Courses</string>
+    <string name="search_hint">Search: Courses/Professors</string>
     <string android:id="@+id/string1" name="string1" android:layout_height="">Welcome to the TechnionRanker.</string>
     <string android:id="@+id/string4" name="string4" android:layout_width="wrap_content" android:layout_height="wrap_content">Log In</string>
     <string android:id="@+id/string9" name="string9" android:layout_width="wrap_content" android:layout_height="wrap_content">Hello visitor!</string>
@@ -17,12 +17,12 @@
     <string name="action_search">Search</string>
     <string name="commentsHeader">Comments</string>
     <string name="privacyStatement">Privacy: statement goes here.</string>
-    <string name="instructions">Welcome. Log in to your Technion UG account to rate your courses and professors.</string>
+    <string name="instructions">Welcome. Log in to your Technion UG account to rate your courses and professors, or search above.</string>
     <string name="thumbImageDescription">Thumbs up image</string>
     <string name="emptyCommentsList">There are no comments to show yet.</string>
     <string name="action_my_account">My Account</string>
-    <string name="notAUserText">Not a current student?  Use the search bar above.</string>
-    <string name="pleaseLogIn">Students, please log in:</string>
+    <string name="action_login">Log In</string>
+    
     
     
     

@@ -18,6 +18,11 @@
         app:showAsAction="never">
     </item>
     <item
+        android:id="@+id/action_login"
+        android:title="@string/action_login"
+        app:showAsAction="never">
+    </item>
+    <item
         android:id="@+id/action_my_account"
         android:title="@string/action_my_account"
         app:showAsAction="never">
