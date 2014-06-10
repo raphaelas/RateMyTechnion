@@ -36,6 +36,33 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2">
+        
+        <EditText
+            android:id="@+id/editTextStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="200dp"
+            android:background="@drawable/login"
+            android:ems="10"
+            android:hint="Start"
+            android:inputType="number"
+            android:textColor="@color/LoginBorderColor"
+            android:textColorHint="@color/LoginBorderColor"
+            android:textCursorDrawable="@null" />
+
+        <EditText
+            android:id="@+id/editTextEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="250dp"
+            android:background="@drawable/login"
+            android:ems="10"
+            android:hint="End"
+            android:inputType="number"
+            android:textColor="@color/LoginBorderColor"
+            android:textColorHint="@color/LoginBorderColor"
+            android:textCursorDrawable="@null" />
+       
    </RelativeLayout>
 </LinearLayout>
     

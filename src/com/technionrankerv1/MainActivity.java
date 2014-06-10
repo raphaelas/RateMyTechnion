@@ -108,8 +108,13 @@ public class MainActivity extends SearchResults {
 		Document catalogDoc;
 		Document existingRatingDoc;
 		List<String> course_nums = null;
+		EditText startText = (EditText) findViewById(R.id.editTextStart);
+		EditText endText = (EditText) findViewById(R.id.editTextEnd);
+		
+		int start = Integer.parseInt(startText.getText().toString());
+		int end = Integer.parseInt(endText.getText().toString());
 		if (sem == "201302") {
-			course_nums= new ArrayList<String>(courseNumbers).subList(0, 50);
+			course_nums= new ArrayList<String>(courseNumbers).subList(start, end);
 		}
 		else if (sem.equals("201301")) {
 			course_nums = new ArrayList<String>(coursesThatDidNotMeetInSpring2014);
@@ -122,10 +127,12 @@ public class MainActivity extends SearchResults {
 		//making x * 2 requests (winter and spring) and 2 database
 		//calls per request (GetProfessor and InsertCourse).
 		//The database guy recommend 100 database calls at a time.
-		Log.d(getLocalClassName(), course_nums.size() + "");
+		Log.d(getLocalClassName(), "Total # of courses: " + courseNumbers.size());
+		Log.d(getLocalClassName(), "Size: " + course_nums.size() + " Start: " + start + " End: " + end);
 		// Limit the size for Spring semester - but almost definitely
 		// not for Winter semester.
 		for (String courseNum : course_nums) {
+			Log.d(getLocalClassName(), curr++ + " / " + (curr + start));
 			String URL = "https://ug3.technion.ac.il/rishum/course?MK="
 					+ courseNum + "&CATINFO=&SEM=" + sem;
 			Connection.Response catalogRes = Jsoup
@@ -167,7 +174,7 @@ public class MainActivity extends SearchResults {
 					.indexOf("אחראים");
 			int plastIndex = catalogString.indexOf("PLAST");
 			int regularProfessorIndex = catalogString.indexOf(">",
-					plastIndex);
+					plastIndex) + 1;
 			int endRegularProfessorIndex = catalogString.indexOf(
 					"<", regularProfessorIndex);
 			if (headProfessorIndex != -1) {
@@ -177,15 +184,15 @@ public class MainActivity extends SearchResults {
 				// get the head prof english name
 				String parsedHeadProfessor = getHeadProf(str1);
 				if (parsedHeadProfessor == null) {
-					//Log.d(courseNum, "The head professor is empty");
+					Log.d(courseNum, "The head professor is empty");
 					String regularProfessorSubstring = catalogString
 							.substring(regularProfessorIndex,
 									endRegularProfessorIndex);
 					final int PROFESSORS_WOULD_BE_MUCH_FURTHER_DOWN_THAN_THIS = 100;
 					if (regularProfessorIndex < PROFESSORS_WOULD_BE_MUCH_FURTHER_DOWN_THAN_THIS
 							|| endRegularProfessorIndex < PROFESSORS_WOULD_BE_MUCH_FURTHER_DOWN_THAN_THIS) {
-						//Log.d(courseNum,
-						//		"The regular professor is empty");
+						Log.d(courseNum,
+								"The regular professor is empty");
 						coursesThatDidNotMeetInSpring2014
 								.add(courseNum);
 					} else {
@@ -231,7 +238,7 @@ public class MainActivity extends SearchResults {
 					}
 				}
 			} else {
-				//Log.d(courseNum, "No head professor exists");
+				Log.d(courseNum, "No head professor or regular professor exists.");
 				coursesThatDidNotMeetInSpring2014.add(courseNum);
 			}
 		} // end of for loop
@@ -274,6 +281,7 @@ public class MainActivity extends SearchResults {
 				Document doc;
 				Document doc1;
 				try {
+					/*
 					Connection.Response res = Jsoup
 							.connect("https://ug3.technion.ac.il/rishum/login")
 							.data("OP", "LI", "UID", "922130141", "PWD",
@@ -281,10 +289,12 @@ public class MainActivity extends SearchResults {
 									"%D7%94%D7%AA%D7%97%D7%91%D7%A8")
 							.method(Method.POST).execute();
 					doc = res.parse();
-					
+					*/
 					parseCatalogPages("201302"); //Spring 2013/2014
+					Log.d(getLocalClassName(), "Starting Winter semester.");
 					parseCatalogPages("201301"); //Winter 2013/2014
-					
+					Log.d(getLocalClassName(), "Done (with catalog pages).");
+					/*
 					int x = 1;
 					// Log.d(getLocalClassName(), doc.toString().length() + "");
 					if (doc.toString().length() < 4920) {
@@ -351,7 +361,7 @@ public class MainActivity extends SearchResults {
 						Log.d(getLocalClassName(), "Log in unsucessful");
 						reportError(1);
 						// Log.d(getLocalClassName(),
-					}
+					}*/
 				} catch (SocketTimeoutException e2) {
 					runOnUiThread(new Runnable() {
 						public void run() {
@@ -398,9 +408,14 @@ public class MainActivity extends SearchResults {
 					&& !s[t].contains("<")
 					&& !s[t].contains(">")
 					&& !s[t].contains("/")
-					&& !s[t].contains("משנה")
+					&& !s[t].equals("מר")
+					&& !(s[t].contains("משנה") && !s[t-1].contains("דוד"))
+					&& !s[t].contains("ארכיטקט")
 					&& !(s[t].length() == 3 && s[t].substring(0, 2).contains(
-							"דר"))) {
+							"גב") && s[t].substring(2, 3).contains("."))
+					&& !(s[t].length() == 3 && s[t].substring(0, 2).contains(
+							"דר") && s[t].substring(2, 3).contains("."))) {
+				
 				name = name + " " + s[t];
 			}
 		}
@@ -465,8 +480,8 @@ public class MainActivity extends SearchResults {
 			Log.d(getLocalClassName(), courseToAdd.toString());
 			List<Course> listToAdd = new ArrayList<Course>();
 			listToAdd.add(courseToAdd);
-			//result = new TechnionRankerAPI().insertCourse(listToAdd)
-			//		.toString();
+			result = new TechnionRankerAPI().insertCourse(listToAdd)
+					.toString();
 			return result;
 		}
 
@@ -497,8 +512,10 @@ public class MainActivity extends SearchResults {
 			Log.d(getLocalClassName(), "Inserting: " + professorToAdd.getHebrewName());
 			List<Professor> lToAdd = new ArrayList<Professor>();
 			lToAdd.add(professorToAdd);
-			//result = new TechnionRankerAPI().insertProfessor(
-			//		lToAdd).toString();
+			result = new TechnionRankerAPI().insertProfessor(
+					lToAdd).toString();
+			//This line ensures that no duplicate professors are inserted into the DB.
+			hebrewTranslations.put(professorToAdd.getHebrewName(), "");
 			return result;
 		}
 
