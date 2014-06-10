@@ -40,7 +40,8 @@ public class ProfessorCommentsListAdapter extends ArrayAdapter<ProfessorComment>
 				ProfessorComment thisProfessorComment = values[position];
 				//If the comment is not liked according to the global variables:
 				if (!((ApplicationWithGlobalVariables) context.getApplicationContext()).
-						isProfessorCommentLiked(thisProfessorComment)) {
+						isProfessorCommentLiked(thisProfessorComment)
+						&& ((ApplicationWithGlobalVariables) context.getApplicationContext()).isLoggedIn()) {
 					((ApplicationWithGlobalVariables) context.getApplicationContext()).likeProfessorComment(thisProfessorComment);
 					int oldCount = Integer.parseInt(likesTextView.getText().toString());
 					thisProfessorComment.incrementLikes();

@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
 import org.jsoup.Jsoup;
@@ -414,9 +415,15 @@ public class MainActivity extends SearchResults {
 					&& !(s[t].length() == 3 && s[t].substring(0, 2).contains(
 							"גב") && s[t].substring(2, 3).contains("."))
 					&& !(s[t].length() == 3 && s[t].substring(0, 2).contains(
-							"דר") && s[t].substring(2, 3).contains("."))) {
-				
-				name = name + " " + s[t];
+							"דר") && s[t].substring(2, 3).contains(".")))
+			{
+				if (s[t].contains("שיץ)")) {
+					//Handling Shlomo (Shitz) Shamai of Electrical Engineering (046733):
+					name = name + " " + StringEscapeUtils.unescapeHtml4("(&#1513;&#1497;&#1509;) &#1513;&#1502;&#1488;&#1497;");
+				}
+				else {
+					name = name + " " + s[t];
+				}
 			}
 		}
 		name = name.trim();

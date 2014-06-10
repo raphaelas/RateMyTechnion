@@ -7,16 +7,17 @@ TODO:
 	Or one or the other depending on whether it met that semester?
 5. About page?
 
+Small fixes:
+Login screen back to ScrollView.
+Fix log in button.
+
 
 Raphi's questions:
 Rename app - maybe TechnionRater?  Our app currently does not rank teachers - it rates them.
 Maybe add loading page?
-New question: forget about liking comments? It's a little challenging and might not be worth the trouble.
 
 Leo - Raphi discussed:
 
-Welcome page consists of welcoming message and menu bar.
-Menu bar consists of your courses, your head professors.
 Every professor in the UG system you can search for.
 You can rate anyone - but limit 10 ratings per semester.
 
