@@ -64,7 +64,7 @@ public abstract class SearchResults extends ActionBarActivity {
 		if (!isInternetPresent) {
 			Log.d(getLocalClassName(), "Warning: there is no Internet connection.");
 			Toast.makeText(getApplicationContext(), "Please check your"
-					+ "Internet connection.", Toast.LENGTH_SHORT).show();
+					+ "Internet connection.", Toast.LENGTH_LONG).show();
 		}
 		
 	}

@@ -172,8 +172,10 @@ public class CourseView extends SearchResults {
 		if (!alreadySubmitted && canSubmit) {
 			((ApplicationWithGlobalVariables) this.getApplication()).incrementRatingsSubmitted();
 	    	canSubmit = ((ApplicationWithGlobalVariables) this.getApplication()).canSubmitRatings();
+	    	String studentName = ((ApplicationWithGlobalVariables) this.getApplication()).getStudentName();
 			EditText et = (EditText) findViewById(R.id.comment);
 	    	String commentText = et.getText().toString();
+	    	commentText = studentName + ": " + commentText;
 	    	if (commentText != null && commentText.length() > 0) {
 		    	CourseComment cc = new CourseComment(courseId, studentId, commentText, null, 0);
 		    	comments.add(cc);

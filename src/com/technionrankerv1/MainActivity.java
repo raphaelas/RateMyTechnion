@@ -39,6 +39,7 @@ public class MainActivity extends SearchResults {
 	private Long currentProfessorId = null;
 	private Course currentCourse = null;
 	private HashMap<String, String> PLASTandPGRP = new HashMap<String, String>();
+	private HashMap<String, Long> lookedUpProfessors = new HashMap<String, Long>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -172,7 +173,7 @@ public class MainActivity extends SearchResults {
 			
 
 			int headProfessorIndex = catalogString
-					.indexOf("אחראים");
+					.indexOf(" אחראים");
 			int plastIndex = catalogString.indexOf("PLAST");
 			int regularProfessorIndex = catalogString.indexOf(">",
 					plastIndex) + 1;
@@ -262,9 +263,15 @@ public class MainActivity extends SearchResults {
 	
 	public void getCourseAndInsertCourse(String professorHebrewName, String courseNumber) {
 		try {
-			GetProfessorClientAsync pas = new GetProfessorClientAsync();
-			List<Professor> p = pas.execute(professorHebrewName).get();
-			Long professorID = p.get(0).getId();
+			Long professorID;
+			if (lookedUpProfessors.containsKey(professorHebrewName)) {
+				professorID = lookedUpProfessors.get(professorHebrewName);
+			}
+			else {
+				GetProfessorClientAsync pas = new GetProfessorClientAsync();
+				List<Professor> p = pas.execute(professorHebrewName).get();
+				professorID = p.get(0).getId();
+			}
 			Course c = courseNumbersToCourses.get(courseNumber);
 			c.setProfessorID(professorID);
 			InsertCourseClientAsync icca = new InsertCourseClientAsync();
@@ -367,7 +374,7 @@ public class MainActivity extends SearchResults {
 					runOnUiThread(new Runnable() {
 						public void run() {
 							Toast.makeText(getApplicationContext(), "Please check your"
-									+ "Internet connection.", Toast.LENGTH_SHORT).show();						  }
+									+ "Internet connection.", Toast.LENGTH_LONG).show();						  }
 					});
 					e2.printStackTrace();
 				}
@@ -408,6 +415,7 @@ public class MainActivity extends SearchResults {
 					&& !s[t].contains("חבר")
 					&& !s[t].contains("<")
 					&& !s[t].contains(">")
+					&& !s[t].contains("=")					
 					&& !s[t].contains("/")
 					&& !s[t].equals("מר")
 					&& !(s[t].contains("משנה") && !s[t-1].contains("דוד"))
@@ -439,6 +447,7 @@ public class MainActivity extends SearchResults {
 
 	private class GetProfessorClientAsync extends
 			AsyncTask<String, Void, List<Professor>> {
+		private String currentHebrewName;
 		public GetProfessorClientAsync() {
 		}
 
@@ -450,6 +459,7 @@ public class MainActivity extends SearchResults {
 		@Override
 		protected List<Professor> doInBackground(String... params) {
 			String hebrewName = params[0];
+			currentHebrewName = hebrewName;
 			Professor lookup = new Professor(null, null, null, hebrewName, true);
 			List<Professor> result = new TechnionRankerAPI()
 					.getProfessorByProfessorHebrewName(lookup);
@@ -466,6 +476,7 @@ public class MainActivity extends SearchResults {
 				currentProfessorId = res.get(0).getId();
 				Log.d(getLocalClassName(), "The professor id: "
 						+ currentProfessorId);
+				lookedUpProfessors.put(currentHebrewName, currentProfessorId);
 			}
 		}
 	}

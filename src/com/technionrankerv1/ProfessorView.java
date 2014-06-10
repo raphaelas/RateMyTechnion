@@ -167,7 +167,9 @@ public class ProfessorView extends SearchResults {
 	protected void createProfessorComment(Long professorId, Long studentId) {
 		if (!alreadySubmitted && canSubmit) {
 			EditText et = (EditText) findViewById(R.id.professorComment);
+	    	String studentName = ((ApplicationWithGlobalVariables) this.getApplication()).getStudentName();
 			String commentText = et.getText().toString();
+	    	commentText = studentName + ": " + commentText;
 			ProfessorComment pc = new ProfessorComment(professorId, studentId, commentText, null, 0);
 			comments.add(pc);
 			displayAllComments(comments);
