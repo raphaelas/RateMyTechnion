@@ -163,6 +163,9 @@ public abstract class SearchResults extends ActionBarActivity {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+		//Code to populate database:
+//		ClientAsync as = new ClientAsync();
+//		as.execute(professorsToInsert);
 		Object[] professorArrayObjects = professorSet.toArray();
 		String[] professorArrayStrings = Arrays.copyOf(professorArrayObjects, professorArrayObjects.length, String[].class);
 		return professorArrayStrings;
@@ -219,9 +222,6 @@ public abstract class SearchResults extends ActionBarActivity {
 		Object[] allNumbersAndNames = numberAndName.toArray();
 		String[] numbersAndNamesToReturn = Arrays.copyOf(allNumbersAndNames,
 				allNumbersAndNames.length, String[].class);
-		//Code to populate database:
-//		ClientAsync as = new ClientAsync();
-//		as.execute(professorsToInsert);
 		return numbersAndNamesToReturn;
 	} // parse()
 
@@ -495,7 +495,8 @@ public abstract class SearchResults extends ActionBarActivity {
 		@Override
 		protected String doInBackground(List<Professor>... params) {
 			String result = null;
-			//result = db.dropAllCourses().toString();
+			//List<Professor> listToInsert = params[0].subList(1600, params[0].size());
+			//result = db.insertProfessor(listToInsert).toString();
 			return result;
 		}
 
@@ -504,7 +505,7 @@ public abstract class SearchResults extends ActionBarActivity {
 			if (res == null)
 				Log.d(getLocalClassName(), "SearchResults async unsuccessful");
 			else {
-				Log.d(getLocalClassName(), "Dropping courses: " + res);
+				Log.d(getLocalClassName(), "Inserting professors: " + res);
 			}
 		}
 	}

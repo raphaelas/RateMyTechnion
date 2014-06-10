@@ -3,6 +3,7 @@ package com.technionrankerv1;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -183,8 +184,10 @@ public class MainActivity extends SearchResults {
 				String[] str1 = catalogString.substring(
 						headProfessorIndex + 35,
 						headProfessorIndex + 100).split(" ");
+				//Log.d(getLocalClassName(), Arrays.toString(str1));
 				// get the head prof english name
-				String parsedHeadProfessor = getHeadProf(str1);
+				String parsedHeadProfessor = getHeadProf(str1, true);
+				parsedHeadProfessor = StringEscapeUtils.unescapeHtml4(parsedHeadProfessor);
 				if (parsedHeadProfessor == null) {
 					Log.d(courseNum, "The head professor is empty");
 					String regularProfessorSubstring = catalogString
@@ -200,7 +203,9 @@ public class MainActivity extends SearchResults {
 					} else {
 						String[] regularProfessorSplitted = regularProfessorSubstring
 								.split(" ");
-						String professorResult = getHeadProf(regularProfessorSplitted);
+						//Log.d(getLocalClassName(), "Array: " + Arrays.toString(regularProfessorSplitted));
+						String professorResult = getHeadProf(regularProfessorSplitted, false);
+						professorResult = StringEscapeUtils.unescapeHtml4(professorResult);
 						if (professorResult == null) {
 							// TODO make sure that this condition is
 							// ever met - it may not be.
@@ -265,6 +270,7 @@ public class MainActivity extends SearchResults {
 		try {
 			Long professorID;
 			if (lookedUpProfessors.containsKey(professorHebrewName)) {
+				Log.d(getLocalClassName(), "The ProfessorID has already been gotten.");
 				professorID = lookedUpProfessors.get(professorHebrewName);
 			}
 			else {
@@ -302,6 +308,7 @@ public class MainActivity extends SearchResults {
 					Log.d(getLocalClassName(), "Starting Winter semester.");
 					parseCatalogPages("201301"); //Winter 2013/2014
 					Log.d(getLocalClassName(), "Done (with catalog pages).");
+					coursesThatDidNotMeetInSpring2014.clear();
 					/*
 					int x = 1;
 					// Log.d(getLocalClassName(), doc.toString().length() + "");
@@ -404,11 +411,14 @@ public class MainActivity extends SearchResults {
 		});
 	}
 
-	String getHeadProf(String[] s) {
+	String getHeadProf(String[] s, boolean startOn1) {
 
 		String name = "";
 
-		for (int t = 1; t < s.length; t++) {
+		int x;
+		if (startOn1 == false) x = 0;
+		else x = 1;
+		for (int t = x; t < s.length; t++) {
 			// edit to add the different prefixes
 			if (!s[t].contains(" ")
 					&& !s[t].contains("פרופ")
@@ -431,6 +441,9 @@ public class MainActivity extends SearchResults {
 				}
 				else {
 					name = name + " " + s[t];
+				}
+				if (s[t].contains("<br)")) {
+					break;
 				}
 			}
 		}
