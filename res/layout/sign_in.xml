@@ -37,6 +37,7 @@
         android:layout_height="0dp"
         android:layout_weight="2">
         
+       <!-- Raphi: code to populate courses and professors: 
         <EditText
             android:id="@+id/editTextStart"
             android:layout_width="wrap_content"
@@ -62,7 +63,7 @@
             android:textColor="@color/LoginBorderColor"
             android:textColorHint="@color/LoginBorderColor"
             android:textCursorDrawable="@null" />
-       
+       -->
    </RelativeLayout>
 </LinearLayout>
     

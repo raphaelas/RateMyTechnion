@@ -24,14 +24,15 @@ public class Communicator {
   public static String execute(String... strs) {
     String $ = "";
     try {
-      URL url = new URL("https://android-236504-i2.appspot.com/" + strs[0]);
+      URL url = new URL("https://android-236504-i.appspot.com/" + strs[0]);
       String param = encodeParams(strs);
       HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
       con.setDoOutput(true);
       con.setRequestMethod("POST");
       con.setFixedLengthStreamingMode(param.getBytes().length);
+      con.setRequestProperty("accept-charset", "UTF-8");
       con.setRequestProperty("Content-Type",
-          "application/x-www-form-urlencoded");
+          "application/x-www-form-urlencoded; charset=utf-8");
       con.addRequestProperty("Auth", "123");
       PrintWriter out = new PrintWriter(con.getOutputStream());
       out.print(param);

@@ -34,7 +34,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.CursorAdapter;
+import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.serverapi.TechnionRankerAPI;
@@ -42,13 +43,12 @@ import com.serverapi.TechnionRankerAPI;
 public abstract class SearchResults extends ActionBarActivity {
 	TechnionRankerAPI db = new TechnionRankerAPI();
 	public String[] professorsAndCourses = null;
-	android.support.v4.widget.CursorAdapter cursorAdapter;
+	CursorAdapter cursorAdapter;
 	public HashMap<String, String> hebrewTranslations = new HashMap<String, String>();
 	HashMap<String, String> facultyMap = new HashMap<String, String>();
 	public ViewPager viewPager;
 	public LinkedHashSet<String> courseNumbers = new LinkedHashSet<String>();
 	public HashMap<String, Course> courseNumbersToCourses = new HashMap<String, Course>();
-	public List<Professor> professorsToInsert = new ArrayList<Professor>();
 	public List<Course> coursesToInsert = new ArrayList<Course>();
 		
 	public void onCreate(Bundle savedInstance){
@@ -66,7 +66,8 @@ public abstract class SearchResults extends ActionBarActivity {
 			Toast.makeText(getApplicationContext(), "Please check your"
 					+ "Internet connection.", Toast.LENGTH_LONG).show();
 		}
-		
+//		ClientAsyncForTesting t = new ClientAsyncForTesting();
+//		t.execute();
 	}
 	
 	
@@ -76,6 +77,7 @@ public abstract class SearchResults extends ActionBarActivity {
 	 * @return
 	 */
 	public String[] parseHebrewProfessors() {
+		List<Professor> professorsToInsert = new ArrayList<Professor>();
 		HashSet<String> professorSet = new HashSet<String>();
 		String inputLine;
 		BufferedReader infile;
@@ -145,8 +147,9 @@ public abstract class SearchResults extends ActionBarActivity {
 						}
 						hebrewTranslations.put(StringEscapeUtils.unescapeHtml4(hebrewName), englishName);
 						String faculty = hebrewProfessorFiles[i].substring(0, hebrewProfessorFiles[i].indexOf(".html"));
-						String hebrewNameToUse = StringEscapeUtils.unescapeHtml4(hebrewName);		
-						Professor p = new Professor(null, englishName, faculty, hebrewNameToUse, true);
+						String hebrewNameToUse = StringEscapeUtils.unescapeHtml4(hebrewName);
+						String hebrewNameEscapedJava = StringEscapeUtils.escapeJava(hebrewNameToUse);
+						Professor p = new Professor(null, englishName, faculty, hebrewNameEscapedJava, true);
 						professorsToInsert.add(p);
 						facultyMap.put(hebrewNameToUse, faculty);
 						//This will make the hebrew professor name in a new line after the english name.
@@ -349,7 +352,7 @@ public abstract class SearchResults extends ActionBarActivity {
 	    String[] from = {"coursesAndProfessors", "hebrewProfessorName"}; 
 	    int[] to = {R.id.lblListItem, R.id.hebrewListItem};
 	    cursorAdapter = 
-	    		new android.support.v4.widget.SimpleCursorAdapter(getApplicationContext(), R.layout.list_item, cursor, from, to, 0);
+	    		new SimpleCursorAdapter(getApplicationContext(), R.layout.list_item, cursor, from, to, 0);
         searchView.setOnQueryTextListener(searchQueryListener);
         searchView.setSuggestionsAdapter(cursorAdapter);
         searchView.setOnSuggestionListener(new OnSuggestionListener() {
@@ -495,7 +498,7 @@ public abstract class SearchResults extends ActionBarActivity {
 		@Override
 		protected String doInBackground(List<Professor>... params) {
 			String result = null;
-			//List<Professor> listToInsert = params[0].subList(1600, params[0].size());
+			List<Professor> listToInsert = params[0].subList(1500, params[0].size());
 			//result = db.insertProfessor(listToInsert).toString();
 			return result;
 		}

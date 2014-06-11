@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <string name="app_name">TechnionRanker</string>
+    <string name="app_name">Rate My Technion</string>
     <string name="action_settings">Settings</string>
     <string name="search_hint">Search: Courses/Professors</string>
-    <string android:id="@+id/string1" name="string1" android:layout_height="">Welcome to the TechnionRanker.</string>
+    <string android:id="@+id/string1" name="string1" android:layout_height="">Welcome to Rate My Technion.</string>
     <string android:id="@+id/string4" name="string4" android:layout_width="wrap_content" android:layout_height="wrap_content">Log In</string>
     <string android:id="@+id/string9" name="string9" android:layout_width="wrap_content" android:layout_height="wrap_content">Hello visitor!</string>
     <string name="username">UG Student ID</string>

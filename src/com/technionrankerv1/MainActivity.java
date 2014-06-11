@@ -111,6 +111,12 @@ public class MainActivity extends SearchResults {
 		Document catalogDoc;
 		Document existingRatingDoc;
 		List<String> course_nums = null;
+		//Sam may need these 3 lines so I copy/pasted:
+		int start = 0;
+		int end = 5;
+		course_nums= new ArrayList<String>(courseNumbers).subList(start, end);
+
+		/* Raphi: code to populate the database:
 		EditText startText = (EditText) findViewById(R.id.editTextStart);
 		EditText endText = (EditText) findViewById(R.id.editTextEnd);
 		
@@ -125,17 +131,18 @@ public class MainActivity extends SearchResults {
 		else {
 			throw new IOException("Invalid semester.");
 		}
+		*/
 		int curr = 0;
 		//Remember that this method is getting called twice so we're
 		//making x * 2 requests (winter and spring) and 2 database
 		//calls per request (GetProfessor and InsertCourse).
 		//The database guy recommend 100 database calls at a time.
 		Log.d(getLocalClassName(), "Total # of courses: " + courseNumbers.size());
-		Log.d(getLocalClassName(), "Size: " + course_nums.size() + " Start: " + start + " End: " + end);
+		//Raphi: Log.d(getLocalClassName(), "Size: " + course_nums.size() + " Start: " + start + " End: " + end);
 		// Limit the size for Spring semester - but almost definitely
 		// not for Winter semester.
 		for (String courseNum : course_nums) {
-			Log.d(getLocalClassName(), curr++ + " / " + (curr + start));
+			//Raphi: Log.d(getLocalClassName(), curr++ + " / " + (curr + start));
 			String URL = "https://ug3.technion.ac.il/rishum/course?MK="
 					+ courseNum + "&CATINFO=&SEM=" + sem;
 			Connection.Response catalogRes = Jsoup
@@ -146,33 +153,129 @@ public class MainActivity extends SearchResults {
 					.maxBodySize(0).timeout(600000).execute();
 			catalogDoc = catalogRes.parse();
 			String catalogString = catalogDoc.toString();
-/* Sam:
-			String ParamCatalogString = catalogString;
-			while (ParamCatalogString.contains("PLAST")) {
-				int headParamterIndex = ParamCatalogString
-						.indexOf("PLAST");
-				String placeholder = ParamCatalogString.substring(
-						headParamterIndex - 7,
-						headParamterIndex + 10);
-				String PGRP = placeholder.substring(0, 2);
-				String PLAST = placeholder.substring(13, 16);
-			//Log.d(getLocalClassName(), "course num "
-			//			+ courseNum + " PGRP " + PGRP + " PLAST "
-			//			+ PLAST);
-				ParamCatalogString = ParamCatalogString
-						.substring(headParamterIndex + 10);
-				PLASTandPGRP.put(PLAST, PGRP);
-				Connection.Response existingRatingRes = Jsoup
-					.connect(
-							"http://techmvs.technion.ac.il/cics/wmn/wmrns1x?PSEM=201302&PSUB=315018&PGRP="+PGRP+"&PLAST="+PLAST)
-					.execute();
-				existingRatingDoc = existingRatingRes.parse();
-				String existingRatingString = existingRatingDoc.toString();
-				//Sam: Log.d(getLocalClassName(), existingRatingString); 
-				
-			} //end of while loop */
+            String ParamCatalogString = catalogString;
+            int counter = 1;
+            while (ParamCatalogString.contains("PLAST")) {
+                int headParamterIndex = ParamCatalogString.indexOf("PLAST");
+                String placeholder = ParamCatalogString.substring(
+                        headParamterIndex - 7, headParamterIndex + 10);
+                String PGRP = placeholder.substring(0, 2);
+                String PLAST = placeholder.substring(13, 16);
+                // Log.d(getLocalClassName(), "course num "
+                // + courseNum + " PGRP " + PGRP + " PLAST "
+                // + PLAST);
+                ParamCatalogString = ParamCatalogString
+                        .substring(headParamterIndex + 10);
+                PLASTandPGRP.put(PLAST, PGRP);
+                Connection.Response existingRatingRes = Jsoup
+                        .connect(
+                                "http://techmvs.technion.ac.il/cics/wmn/wmrns1x?PSEM="
+                                        + sem + "&PSUB=315018&PGRP=" + PGRP
+                                        + "&PLAST=" + PLAST)
+                        .data("SGLID", "YES", "PSEM", "011302", "PSUB",
+                                courseNum, "PGRP", PGRP, "PLAST", PLAST, "ID",
+                                "922130141", "PASS", "32016463")
+                        .method(Method.POST).execute();
+                existingRatingDoc = existingRatingRes.parse();
+                String existingRatingString = existingRatingDoc.toString();
+
+                // Log.d(getLocalClassName(), existingRatingString);
+
+                if (existingRatingString.contains("No lecture and no exercise")) {
+                    Log.d(getLocalClassName(), "No lecture and no exercise");
+                } else {
+                    Log.d(getLocalClassName(),
+                            "There are lecture and/or exercises");
+                    while (existingRatingString.contains("<tr>")
+                            && existingRatingString.length() > 350) {
+                        int startOfRatings = existingRatingString
+                                .indexOf("<tr>");
+                        int endOfRatings = existingRatingString
+                                .indexOf("<td class=\"l\">");
+                        // Log.d(getLocalClassName(),startOfRatings+" "+endOfRatings);
+
+                        // Log.d(getLocalClassName(),
+                        // startOfRatings+" "+endOfRatings+" "+existingRatingString);
+                        String ratingTable = existingRatingString.substring(
+                                startOfRatings, endOfRatings);
+                        String[] ratingArray = ratingTable.substring(13).split(
+                                "</td>");
+
+                        for (int r = 0; r <= 9; r++) {
+                            if (r == 0) {
+                                ratingArray[r] = ratingArray[r].trim()
+                                        .substring(3).trim();
+                            } else {
+                                ratingArray[r] = ratingArray[r].trim()
+                                        .substring(4).trim();
+                            }
+                            // Log.d(getLocalClassName(), r + " " +
+                            // ratingArray[r]);
+                        }
+
+                        int numberOfRaters = 0;
+                        double overall = 0.0;
+                        double preparedness = 0.0;
+                        double clarity = 0.0;
+                        double interactivity = 0.0;
+
+                        if (ratingArray.length == 11) {
+                            numberOfRaters = Integer.parseInt(ratingArray[8]);
+                            overall = Double.parseDouble(ratingArray[7]);
+                            preparedness = Double.parseDouble(ratingArray[6]);
+                            clarity = Double.parseDouble(ratingArray[4]);
+                            interactivity = Double.parseDouble(ratingArray[1]);
+                        } else if (ratingArray.length == 13) {
+//                            Log.d(getLocalClassName(),
+//                                    Arrays.toString(ratingArray));
+                            String tempNumRate = ratingArray[10]
+                                    .substring(5);
+                            tempNumRate = tempNumRate.substring(tempNumRate.indexOf("<td>"));
+                            tempNumRate = tempNumRate.substring(5);
+                            numberOfRaters = Integer.parseInt(tempNumRate);
+                            preparedness = Double.parseDouble(ratingArray[7]);
+                            overall = Double.parseDouble(ratingArray[9]);
+                            clarity = Double.parseDouble(ratingArray[5]);
+                            interactivity = Double.parseDouble(ratingArray[2]);
+                        } else {
+                            Log.d(getLocalClassName(), "Array is not 11 or 13");
+                        }
+                        // print all data to screen
+                        Log.d(getLocalClassName(), "number of raters = "
+                                + numberOfRaters + " overall = " + overall
+                                + " preparedness = " + preparedness
+                                + " clarity = " + clarity + " interactivity = "
+                                + interactivity);
+                       
+                        ProfessorRating pr = new ProfessorRating(null, null, currentProfessorId, overall, clarity, preparedness, interactivity);
+                       
+                        // Log.d(getLocalClassName(), existingRatingString +
+                        // "");
+                        existingRatingString = existingRatingString
+                                .substring(endOfRatings);
+                        existingRatingString = existingRatingString
+                                .substring(existingRatingString.indexOf("<tr>"));
+                        existingRatingString = existingRatingString
+                                .substring(5);
+                        if (existingRatingString.contains("<tr>")) {
+                            existingRatingString = existingRatingString
+                                    .substring(existingRatingString
+                                            .indexOf("<tr>"));
+                        }
+                        // Log.d(getLocalClassName(), existingRatingString);
+                    }
+                    // Log.d(getLocalClassName(), "course num "
+                    // + courseNum + " PGRP " + PGRP + " PLAST "
+                    // + PLAST);
+                }
+                Log.d(getLocalClassName(), "this the " + counter
+                        + " number of links from this course number "
+                        + courseNum);
+                counter++;
+            } //end of while loop
 			
 
+			/* Raphi: This code is for populating Courses and Professors
 			int headProfessorIndex = catalogString
 					.indexOf(" אחראים");
 			int plastIndex = catalogString.indexOf("PLAST");
@@ -247,12 +350,13 @@ public class MainActivity extends SearchResults {
 			} else {
 				Log.d(courseNum, "No head professor or regular professor exists.");
 				coursesThatDidNotMeetInSpring2014.add(courseNum);
-			}
+			}*/
 		} // end of for loop
 
 		//Sam: Log.d(getLocalClassName(), PLASTandPGRP.toString());
 	}
 	
+	/* Raphi: For populating Courses and Professors
 	public void insertProfessorGetProfessorAndInsertCourse(String hebrewName, String courseNum) {
 		try {
 			Professor p = new Professor(null, null, null, hebrewName, true);
@@ -288,6 +392,7 @@ public class MainActivity extends SearchResults {
 			e.printStackTrace();
 		}
 	}
+	*/
 	
 	public void doLogin() {
 		Thread downloadThread = new Thread() {
@@ -295,21 +400,22 @@ public class MainActivity extends SearchResults {
 				Document doc;
 				Document doc1;
 				try {
-					/*
+					
 					Connection.Response res = Jsoup
 							.connect("https://ug3.technion.ac.il/rishum/login")
-							.data("OP", "LI", "UID", "922130141", "PWD",
-									"32016463", "Login.x",
+							.data("OP", "LI", "UID", username, "PWD",
+									password, "Login.x",
 									"%D7%94%D7%AA%D7%97%D7%91%D7%A8")
 							.method(Method.POST).execute();
 					doc = res.parse();
-					*/
+					
 					parseCatalogPages("201302"); //Spring 2013/2014
+					Log.d(getLocalClassName(), "Done (with catalog pages).");
+					/*Sam, maybe you want to use this?:
 					Log.d(getLocalClassName(), "Starting Winter semester.");
 					parseCatalogPages("201301"); //Winter 2013/2014
-					Log.d(getLocalClassName(), "Done (with catalog pages).");
-					coursesThatDidNotMeetInSpring2014.clear();
-					/*
+					coursesThatDidNotMeetInSpring2014.clear();*/
+					
 					int x = 1;
 					// Log.d(getLocalClassName(), doc.toString().length() + "");
 					if (doc.toString().length() < 4920) {
@@ -376,7 +482,7 @@ public class MainActivity extends SearchResults {
 						Log.d(getLocalClassName(), "Log in unsucessful");
 						reportError(1);
 						// Log.d(getLocalClassName(),
-					}*/
+					}
 				} catch (SocketTimeoutException e2) {
 					runOnUiThread(new Runnable() {
 						public void run() {
@@ -458,6 +564,7 @@ public class MainActivity extends SearchResults {
 		return null;
 	}
 
+	/* Raphi: code for populating courses and professors:
 	private class GetProfessorClientAsync extends
 			AsyncTask<String, Void, List<Professor>> {
 		private String currentHebrewName;
@@ -473,7 +580,8 @@ public class MainActivity extends SearchResults {
 		protected List<Professor> doInBackground(String... params) {
 			String hebrewName = params[0];
 			currentHebrewName = hebrewName;
-			Professor lookup = new Professor(null, null, null, hebrewName, true);
+			String encodedHebrewName = StringEscapeUtils.escapeJava(hebrewName);
+			Professor lookup = new Professor(null, null, null, encodedHebrewName, true);
 			List<Professor> result = new TechnionRankerAPI()
 					.getProfessorByProfessorHebrewName(lookup);
 			return result;
@@ -488,7 +596,7 @@ public class MainActivity extends SearchResults {
 			} else {
 				currentProfessorId = res.get(0).getId();
 				Log.d(getLocalClassName(), "The professor id: "
-						+ currentProfessorId);
+						+ currentProfessorId + " - " + StringEscapeUtils.unescapeJava(res.get(0).getHebrewName()));
 				lookedUpProfessors.put(currentHebrewName, currentProfessorId);
 			}
 		}
@@ -540,6 +648,8 @@ public class MainActivity extends SearchResults {
 		protected String doInBackground(Professor... params) {
 			String result = null;
 			Professor professorToAdd = params[0];
+			String encodedHebrewName = StringEscapeUtils.escapeJava(professorToAdd.getHebrewName());
+			professorToAdd.setHebrewName(encodedHebrewName);
 			Log.d(getLocalClassName(), "Inserting: " + professorToAdd.getHebrewName());
 			List<Professor> lToAdd = new ArrayList<Professor>();
 			lToAdd.add(professorToAdd);
@@ -558,5 +668,5 @@ public class MainActivity extends SearchResults {
 				Log.d(getLocalClassName(), "Insert professor: " + res);
 			}
 		}
-	}
+	} */
 }
