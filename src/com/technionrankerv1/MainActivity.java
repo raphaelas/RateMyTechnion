@@ -273,8 +273,6 @@ public class MainActivity extends SearchResults {
                         + courseNum);
                 counter++;
             } //end of while loop
-			
-
 			/* Raphi: This code is for populating Courses and Professors
 			int headProfessorIndex = catalogString
 					.indexOf(" אחראים");
