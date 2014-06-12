@@ -40,6 +40,10 @@ public class ProfessorView extends SearchResults {
 	float averageClarity = 0;
 	float averagePreparedness = 0;
 	float averageInteractivity = 0;
+	public RatingBar rOverall;
+	public RatingBar rPreparedness;
+	public RatingBar rClarity;
+	public RatingBar rInteractivity;
 
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,10 +78,10 @@ public class ProfessorView extends SearchResults {
 		String faculty = bundle.getString("faculty");
 		TextView facultyText = (TextView) findViewById(R.id.professorFacultyText);
 		facultyText.setText(faculty);
-    	RatingBar rOverall = (RatingBar) findViewById(R.id.professorRatingBarOverall);
-    	RatingBar rClarity = (RatingBar) findViewById(R.id.professorRatingBarClarity);
-    	RatingBar rPreparedness = (RatingBar) findViewById(R.id.professorRatingBarPreparedness);
-    	RatingBar rInteractivity = (RatingBar) findViewById(R.id.professorRatingBarInteractivity);
+    	rOverall = (RatingBar) findViewById(R.id.professorRatingBarOverall);
+    	rClarity = (RatingBar) findViewById(R.id.professorRatingBarClarity);
+    	rPreparedness = (RatingBar) findViewById(R.id.professorRatingBarPreparedness);
+    	rInteractivity = (RatingBar) findViewById(R.id.professorRatingBarInteractivity);
     	
     	final ProfessorRating pr = new ProfessorRating(null, studentId, professorId,
     			Math.round(rOverall.getRating()), Math.round(rClarity.getRating()),
@@ -103,10 +107,6 @@ public class ProfessorView extends SearchResults {
 			et.setGravity(Gravity.CENTER);
 			et.setFocusable(false);
     	}
-    	rOverall.setRating(averageOverall);
-    	rPreparedness.setRating(averagePreparedness);
-    	rClarity.setRating(averageClarity);
-    	rInteractivity.setRating(averageInteractivity);
     	rOverall.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
 			@Override
 			public void onRatingChanged(RatingBar ratingBar, float rating,
@@ -356,6 +356,10 @@ public class ProfessorView extends SearchResults {
 	    		averagePreparedness /= totalRatings;
 	    		averageInteractivity /= totalRatings;
 	    		Log.d(getLocalClassName(), "" + averageOverall);
+	        	rOverall.setRating(averageOverall);
+	        	rPreparedness.setRating(averagePreparedness);
+	        	rClarity.setRating(averageClarity);
+	        	rInteractivity.setRating(averageInteractivity);
 			}
 		}
 	}
