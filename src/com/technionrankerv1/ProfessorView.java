@@ -1,8 +1,10 @@
 package com.technionrankerv1;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,9 +33,13 @@ public class ProfessorView extends SearchResults {
     public Professor professor;
     public boolean alreadySubmitted = false;
     public TextView textViewProfessorRatingSubmitted;
-	ArrayList<ProfessorComment> comments =  new ArrayList<ProfessorComment>();
+	List<ProfessorComment> comments =  new ArrayList<ProfessorComment>();
 	boolean canSubmit;
 	boolean loggedIn;
+	float averageOverall = 0;
+	float averageClarity = 0;
+	float averagePreparedness = 0;
+	float averageInteractivity = 0;
 
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,23 +51,29 @@ public class ProfessorView extends SearchResults {
     	displayAllComments(comments);
 		Bundle bundle = getIntent().getExtras();
     	String lookupProfessorName = bundle.getString("professorName");
+    	Professor cLookup = new Professor(null, null, null, StringEscapeUtils.escapeJava(lookupProfessorName), true);
+    	ClientAsyncGetProfessorByProfessorName cagpbpn = new ClientAsyncGetProfessorByProfessorName();
+    	Long pID;
+		try {
+			pID = cagpbpn.execute(cLookup).get().get(0).getId();
+	    	ProfessorRating crLookup = new ProfessorRating(null, null, pID, 0, 0, 0, 0);
+	    	GetProfessorRatingsClientAsync gcrca = new GetProfessorRatingsClientAsync();
+	    	gcrca.execute(crLookup);
+    		GetProfessorCommentsClientAsync gccca = new GetProfessorCommentsClientAsync();
+    		ProfessorComment ccLookup = new ProfessorComment(pID, null, null, null, 0);
+    		gccca.execute(ccLookup);
+
+		} catch (InterruptedException e) {
+			//TODO: better exception handlers.
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
     	TextView professorNameText = (TextView) findViewById(R.id.professorNameText);
     	professorNameText.setText(lookupProfessorName);
 		String faculty = bundle.getString("faculty");
 		TextView facultyText = (TextView) findViewById(R.id.professorFacultyText);
 		facultyText.setText(faculty);
-    	Professor lookupProfessor = new Professor(null, lookupProfessorName, null, null, true);
-    	ProfessorClientAsync as = new ProfessorClientAsync();
-    	as.execute(lookupProfessor);
-    	/* Bring this back as soon as our database really works:
-    	try {
-			as.get(); //This will block until the professor is gotten.
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		}
-    	 */
     	RatingBar rOverall = (RatingBar) findViewById(R.id.professorRatingBarOverall);
     	RatingBar rClarity = (RatingBar) findViewById(R.id.professorRatingBarClarity);
     	RatingBar rPreparedness = (RatingBar) findViewById(R.id.professorRatingBarPreparedness);
@@ -91,6 +103,10 @@ public class ProfessorView extends SearchResults {
 			et.setGravity(Gravity.CENTER);
 			et.setFocusable(false);
     	}
+    	rOverall.setRating(averageOverall);
+    	rPreparedness.setRating(averagePreparedness);
+    	rClarity.setRating(averageClarity);
+    	rInteractivity.setRating(averageInteractivity);
     	rOverall.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
 			@Override
 			public void onRatingChanged(RatingBar ratingBar, float rating,
@@ -155,7 +171,7 @@ public class ProfessorView extends SearchResults {
     	else if (!alreadySubmitted) {
 			textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
 			textViewProfessorRatingSubmitted.setText("Please wait while we record your response.");
-			ProfessorRatingClientAsync as3 = new ProfessorRatingClientAsync();
+			InsertProfessorRatingClientAsync as3 = new InsertProfessorRatingClientAsync();
 			as3.execute(pr);
 		}
 		else {
@@ -173,12 +189,12 @@ public class ProfessorView extends SearchResults {
 			ProfessorComment pc = new ProfessorComment(professorId, studentId, commentText, null, 0);
 			comments.add(pc);
 			displayAllComments(comments);
-			ProfessorCommentClientAsync as2 = new ProfessorCommentClientAsync();
+			InsertProfessorCommentClientAsync as2 = new InsertProfessorCommentClientAsync();
 			as2.execute(pc);
 		}
 	}
 	
-	public void displayAllComments(ArrayList<ProfessorComment> allComments) {
+	public void displayAllComments(List<ProfessorComment> allComments) {
 		ListView professorCommentsList = (ListView) findViewById(R.id.professorCommentsList);
 	    ProfessorCommentsListAdapter adapter = new ProfessorCommentsListAdapter(
 	    		this, allComments.toArray(new ProfessorComment[(allComments.size())]));
@@ -187,8 +203,8 @@ public class ProfessorView extends SearchResults {
 	    professorCommentsList.setAdapter(adapter);
 	}
 	
-	private class ProfessorClientAsync extends AsyncTask<Professor, Void, List<Professor>> {
-		public ProfessorClientAsync() {
+	private class ClientAsyncGetProfessorByProfessorName extends AsyncTask<Professor, Void, List<Professor>> {
+		public ClientAsyncGetProfessorByProfessorName() {
 		}
 
 		@Override
@@ -198,18 +214,21 @@ public class ProfessorView extends SearchResults {
 
 		@Override
 		protected List<Professor> doInBackground(Professor... params) {
-	    	//Professor professorToLookUp = params[0];
-	    	//Professor theProfessor = new TechnionRankerAPI().getProfessor(professorToLookUp);
-	    	List<Professor> allProfessors = new TechnionRankerAPI().getAllProfessors();
-			return allProfessors;
+	    	Professor professorToLookUp = params[0];
+	    	List<Professor> theProfessors = new TechnionRankerAPI().
+	    			getProfessorByProfessorHebrewName(professorToLookUp);
+			return theProfessors;
 		}
 
 		@Override
 		protected void onPostExecute(List<Professor> res) {
 			if (res == null)
-				Log.d(getLocalClassName(), "Professor clientAsync unsuccessful");
+				Log.d(getLocalClassName(), "GetProfessor clientAsync unsuccessful");
+			else if (res.isEmpty()) {
+				Log.d(getLocalClassName(), "GetProfessor clientAsync returned empty.");
+			}
 			else {
-				//Log.d(getLocalClassName(), res.get(0).getName());
+				Log.d(getLocalClassName(), "GetProfessor clientAsync successful");
 		    	professorId = res.get(0).getId();
 		    	professor = res.get(0);
 			}
@@ -217,12 +236,13 @@ public class ProfessorView extends SearchResults {
 	}
 	
 	
-	private class ProfessorRatingClientAsync extends AsyncTask<ProfessorRating, Void, String> {
-		public ProfessorRatingClientAsync() {
+	private class InsertProfessorRatingClientAsync extends AsyncTask<ProfessorRating, Void, String> {
+		public InsertProfessorRatingClientAsync() {
 		}
 
 		@Override
 		protected void onPreExecute() {
+			Log.d(getLocalClassName(), "Starting InsertProfessorRatingClientAsync...");
 			super.onPreExecute();
 		}
 
@@ -249,12 +269,13 @@ public class ProfessorView extends SearchResults {
 	}
 	
 	
-	private class ProfessorCommentClientAsync extends AsyncTask<ProfessorComment, Void, String> {
-		public ProfessorCommentClientAsync() {
+	private class InsertProfessorCommentClientAsync extends AsyncTask<ProfessorComment, Void, String> {
+		public InsertProfessorCommentClientAsync() {
 		}
 
 		@Override
 		protected void onPreExecute() {
+			Log.d(getLocalClassName(), "Starting InsertProfessorCommentClientAsync...");
 			super.onPreExecute();
 		}
 
@@ -271,6 +292,103 @@ public class ProfessorView extends SearchResults {
 				Log.d(getLocalClassName(), "ProfessorComment clientAsync unsuccessful");
 			else {
 				Log.d(getLocalClassName(), res);
+			}
+		}
+	}
+	
+	private class GetProfessorRatingsClientAsync extends AsyncTask<ProfessorRating, Void, List<ProfessorRating>> {
+		public GetProfessorRatingsClientAsync() {
+		}
+
+		@Override
+		protected void onPreExecute() {
+			Log.d(getLocalClassName(), "Starting ProfessorCommentClientAsync...");
+			super.onPreExecute();
+		}
+
+		@Override
+		protected List<ProfessorRating> doInBackground(ProfessorRating... params) {
+	    	ProfessorRating cr = params[0];
+	    	List<ProfessorRating> result = new TechnionRankerAPI().getProfessorRatingByProfessor(cr);
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(List<ProfessorRating> res) {
+			if (res == null) {
+				Log.d(getLocalClassName(), "Get ProfessorRatings failed.");
+			}
+			else if (res.isEmpty()) {
+				Log.d(getLocalClassName(), "Get ProfessorRatings returned empty.");
+			}
+			else {
+				Log.d(getLocalClassName(), "Get ProfessorRatings succeeded.");
+		    	List<ProfessorRating> currRatings = res;
+		    	int totalRatings = currRatings.size();
+		    	averageOverall = 0;
+		    	averageClarity = 0;
+		    	averagePreparedness = 0;
+		    	averageInteractivity = 0;
+		    	for (ProfessorRating pRating: currRatings) {
+		    		Long tempStudentId = pRating.getStudentID();
+		    		double tempOverallRating = pRating.getOverallRating();
+		    		double tempClarity = pRating.getClarity();
+		    		double tempPreparedness = pRating.getPreparedness();
+		    		double tempInteractivity = pRating.getInteractivity();
+		    		if (tempStudentId.equals(studentId)) {
+		    			alreadySubmitted = true;
+		    		}
+		    		else if (tempStudentId < 1000) {
+		    			totalRatings += tempStudentId;
+		    			tempOverallRating *= totalRatings;
+		    			tempClarity *= totalRatings;
+		    			tempPreparedness *= totalRatings;
+		    			tempInteractivity *= totalRatings;
+		    		}
+					averageOverall += tempOverallRating;
+					averageClarity += tempClarity;
+					averagePreparedness += tempPreparedness;
+					averageInteractivity += tempInteractivity;
+
+		    	}
+	    		averageOverall /= totalRatings;
+	    		averageClarity /= totalRatings;
+	    		averagePreparedness /= totalRatings;
+	    		averageInteractivity /= totalRatings;
+	    		Log.d(getLocalClassName(), "" + averageOverall);
+			}
+		}
+	}
+	
+	private class GetProfessorCommentsClientAsync extends AsyncTask<ProfessorComment, Void, List<ProfessorComment>> {
+		public GetProfessorCommentsClientAsync() {
+		}
+
+		@Override
+		protected void onPreExecute() {
+			Log.d(getLocalClassName(), "Starting GetProfessorCommentClientAsync...");
+			super.onPreExecute();
+		}
+
+		@Override
+		protected List<ProfessorComment> doInBackground(ProfessorComment... params) {
+	    	ProfessorComment cc = params[0];
+	    	List<ProfessorComment> result = new TechnionRankerAPI().getProfessorCommentByProfessor(cc);
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(List<ProfessorComment> res) {
+			if (res == null) {
+				Log.d(getLocalClassName(), "Get ProfessorComments failed.");
+			}
+			else if (res.isEmpty()) {
+				Log.d(getLocalClassName(), "Get ProfessorComments returned empty.");
+			}
+			else {
+				Log.d(getLocalClassName(), "Get ProfessorComments succeeded.");
+				comments = res;
+		    	displayAllComments(comments);
 			}
 		}
 	}

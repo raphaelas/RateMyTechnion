@@ -1,6 +1,8 @@
 package com.technionrankerv1;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,7 +30,7 @@ public class CourseView extends SearchResults {
 	Long studentId = Long.valueOf(0);
 	boolean alreadySubmitted = false;
 	TextView textViewCourseRatingSubmitted;
-	ArrayList<CourseComment> comments =  new ArrayList<CourseComment>();
+	List<CourseComment> comments =  new ArrayList<CourseComment>();
 	boolean canSubmit;
 	boolean loggedIn;
 	
@@ -38,11 +40,52 @@ public class CourseView extends SearchResults {
     	studentId = ((ApplicationWithGlobalVariables) this.getApplication()).getStudentID();
     	canSubmit = ((ApplicationWithGlobalVariables) this.getApplication()).canSubmitRatings();
     	loggedIn = ((ApplicationWithGlobalVariables) this.getApplication()).isLoggedIn();
-    	displayAllComments(comments);
     	textViewCourseRatingSubmitted = (TextView) findViewById(R.id.textViewCourseRatingSubmitted);
     	Bundle bundle = getIntent().getExtras();
     	final String courseNumber = bundle.getString("courseNumber");
     	final String courseName = bundle.getString("courseName");
+    	Course cLookup = new Course(null, null, courseNumber, null, null, null, true);
+    	ClientAsyncGetCourseByCourseNumber cagcbcn = new ClientAsyncGetCourseByCourseNumber();
+    	Long cID;
+    	float averageOverall = 0;
+    	float averageEnjoyability = 0;
+    	float averageUsefulness = 0;
+    	float averageDifficulty = 0;
+		try {
+			cID = cagcbcn.execute(cLookup).get().get(0).getId();
+	    	CourseRating crLookup = new CourseRating(null, cID, 0, 0, 0, 0);
+	    	GetCourseRatingsClientAsync gcrca = new GetCourseRatingsClientAsync();
+	    	List<CourseRating> currRatings = gcrca.execute(crLookup).get();
+	    	int totalRatings = currRatings.size();
+	    	averageOverall = 0;
+	    	averageEnjoyability = 0;
+	    	averageUsefulness = 0;
+	    	averageDifficulty = 0;
+	    	for (CourseRating cRating: currRatings) {
+	    		Long tempStudentId = cRating.getStudentID();
+	    		averageOverall += cRating.getOverallRating();
+	    		averageEnjoyability += cRating.getEnjoyability();
+	    		averageUsefulness += cRating.getUsefulness();
+	    		averageDifficulty += cRating.getDifficulty();
+	    		if (tempStudentId.equals(studentId)) {
+	    			alreadySubmitted = true;
+	    		}
+	    	}
+    		averageOverall /= totalRatings;
+    		averageEnjoyability /= totalRatings;
+    		averageUsefulness /= totalRatings;
+    		averageDifficulty /= totalRatings;
+    		GetCourseCommentsClientAsync gccca = new GetCourseCommentsClientAsync();
+    		CourseComment ccLookup = new CourseComment(cID, null, null, null, 0);
+    		comments = gccca.execute(ccLookup).get();
+	    	displayAllComments(comments);
+		} catch (InterruptedException e) {
+			//TODO: better exception handlers.
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+
 		String faculty = bundle.getString("faculty");
 		TextView facultyText = (TextView) findViewById(R.id.courseFacultyText);
 		facultyText.setText(faculty);
@@ -50,7 +93,7 @@ public class CourseView extends SearchResults {
 		textViewCourseName.setText(courseNumber + " - " + courseName);
 
     	Course c = new Course(null, null, courseNumber, null, null, null, false);
-		ClientAsync as = new ClientAsync();
+		ClientAsyncGetCourseByCourseNumber as = new ClientAsyncGetCourseByCourseNumber();
 		as.execute(c);
 		/* Bring this back once our database really works:
 		try {
@@ -92,6 +135,10 @@ public class CourseView extends SearchResults {
 			et.setGravity(Gravity.CENTER);
 			et.setFocusable(false);
     	}
+    	rOverall.setRating(averageOverall);
+    	rEnjoyability.setRating(averageEnjoyability);
+    	rUsefulness.setRating(averageUsefulness);
+    	rDifficulty.setRating(averageDifficulty);
     	rOverall.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
 			@Override
 			public void onRatingChanged(RatingBar ratingBar, float rating,
@@ -186,17 +233,17 @@ public class CourseView extends SearchResults {
 		}
     }
 	 
-	public void displayAllComments(ArrayList<CourseComment> allComments) {
+	public void displayAllComments(List<CourseComment> comments2) {
 		ListView courseCommentsList = (ListView) findViewById(R.id.courseCommentsList);
 	    CourseCommentsListAdapter adapter = new CourseCommentsListAdapter(
-	    		this, allComments.toArray(new CourseComment[(allComments.size())]));
+	    		this, comments2.toArray(new CourseComment[(comments2.size())]));
 	    TextView emptyComments = (TextView) findViewById(R.id.emptyCourseComments);
 	    courseCommentsList.setEmptyView(emptyComments);
 	    courseCommentsList.setAdapter(adapter);
 	}
 	
-	private class ClientAsync extends AsyncTask<Course, Void, Course> {
-		public ClientAsync() {
+	private class ClientAsyncGetCourseByCourseNumber extends AsyncTask<Course, Void, List<Course>> {
+		public ClientAsyncGetCourseByCourseNumber() {
 		}
 
 		@Override
@@ -205,19 +252,19 @@ public class CourseView extends SearchResults {
 		}
 
 		@Override
-		protected Course doInBackground(Course... params) {
+		protected List<Course> doInBackground(Course... params) {
 	    	Course courseToLookUp = params[0];
-	    	Course theCourse = new TechnionRankerAPI().getCourse(courseToLookUp);
+	    	List<Course> theCourse = new TechnionRankerAPI().getCourseByCourseNumber(courseToLookUp);
 			return theCourse;
 		}
 
 		@Override
-		protected void onPostExecute(Course res) {
+		protected void onPostExecute(List<Course> res) {
 			if (res == null)
 				Log.d(getLocalClassName(), "Course clientAsync unsuccessful");
 			else {
-				Log.d(getLocalClassName(), res.getName());
-		    	courseId = res.getId();
+				Log.d(getLocalClassName(), res.get(0).getName());
+		    	courseId = res.get(0).getId();
 			}
 		}
 	}
@@ -276,6 +323,63 @@ public class CourseView extends SearchResults {
 			else {
 				textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
 				textViewCourseRatingSubmitted.setText("Thank you.  Your rating was received.");
+			}
+		}
+	}
+	
+	private class GetCourseRatingsClientAsync extends AsyncTask<CourseRating, Void, List<CourseRating>> {
+		public GetCourseRatingsClientAsync() {
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected List<CourseRating> doInBackground(CourseRating... params) {
+	    	CourseRating cr = params[0];
+	    	List<CourseRating> result = new TechnionRankerAPI().getCourseRatingByCourse(cr);
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(List<CourseRating> res) {
+			if (res == null) {
+				Log.d(getLocalClassName(), "Get CourseRatings failed.");
+			}
+			
+			else {
+				Log.d(getLocalClassName(), "Get CourseRatings succeeded.");
+			}
+		}
+	}
+	
+	private class GetCourseCommentsClientAsync extends AsyncTask<CourseComment, Void, List<CourseComment>> {
+		public GetCourseCommentsClientAsync() {
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected List<CourseComment> doInBackground(CourseComment... params) {
+	    	CourseComment cc = params[0];
+	    	List<CourseComment> result = new TechnionRankerAPI().getCourseCommentByCourse(cc);
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(List<CourseComment> res) {
+			if (res == null) {
+				Log.d(getLocalClassName(), "Get CourseComments failed.");
+
+			}
+			else {
+				Log.d(getLocalClassName(), "Get CourseComments succeeded.");
+
 			}
 		}
 	}

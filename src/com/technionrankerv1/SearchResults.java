@@ -22,6 +22,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
@@ -34,18 +36,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.serverapi.TechnionRankerAPI;
 
 public abstract class SearchResults extends ActionBarActivity {
-	TechnionRankerAPI db = new TechnionRankerAPI();
+	private TechnionRankerAPI db = new TechnionRankerAPI();
 	public String[] professorsAndCourses = null;
-	CursorAdapter cursorAdapter;
+	private CursorAdapter cursorAdapter;
 	public HashMap<String, String> hebrewTranslations = new HashMap<String, String>();
-	HashMap<String, String> facultyMap = new HashMap<String, String>();
+	public HashMap<String, String> facultyMap = new HashMap<String, String>();
 	public ViewPager viewPager;
 	public LinkedHashSet<String> courseNumbers = new LinkedHashSet<String>();
 	public HashMap<String, Course> courseNumbersToCourses = new HashMap<String, Course>();
@@ -54,7 +54,6 @@ public abstract class SearchResults extends ActionBarActivity {
 	public void onCreate(Bundle savedInstance){
 
 		super.onCreate(savedInstance);
-		professorsAndCourses = concat(capsFix(parseCourses()), parseHebrewProfessors());
 		if (!getLocalClassName().equals("MainActivity")) {
 	        getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
@@ -66,8 +65,43 @@ public abstract class SearchResults extends ActionBarActivity {
 			Toast.makeText(getApplicationContext(), "Please check your"
 					+ "Internet connection.", Toast.LENGTH_LONG).show();
 		}
-//		ClientAsyncForTesting t = new ClientAsyncForTesting();
+		professorsAndCourses = concat(parseCourses(), parseHebrewProfessors());
+		/*
+		GetAllCoursesClientAsync gacca = new GetAllCoursesClientAsync();
+		GetAllProfessorsClientAsync gapca = new GetAllProfessorsClientAsync();
+			try {
+				Log.d(getLocalClassName(), "Entered try.  About to get professors");
+				List<Professor> allProfessors = gapca.execute().get(10, TimeUnit.SECONDS);
+				Log.d(getLocalClassName(), "Got professors.  About to get courses.");
+				List<Course> allCourses = gacca.execute().get(10, TimeUnit.SECONDS);
+				professorsAndCourses = new String[allProfessors.size() + allCourses.size()];
+				int j;
+				Log.d(getLocalClassName(), "Entering loop 1");
+				for (j = 0; j < allCourses.size(); j++) {
+					Course c = allCourses.get(j);
+					professorsAndCourses[j] = c.getName();
+				}
+				Log.d(getLocalClassName(), "Entering loop 2");
+				for (int i = 0; i < allProfessors.size(); i++) {
+					Professor p = allProfessors.get(i);
+					if (p.getName() == null) {
+						professorsAndCourses[i+j] = "\n" + p.getHebrewName();
+					}
+					else {
+						professorsAndCourses[i+j] = p.getName() + "\n" + p.getHebrewName();
+						facultyMap.put(StringEscapeUtils.unescapeJava(p.getHebrewName()), p.getFaculty());
+					}
+				}
+			} catch (Exception e) {
+				Log.d(getLocalClassName(), "Entering catch block");
+				e.printStackTrace();
+				professorsAndCourses = concat(parseCourses(), parseHebrewProfessors());
+			}
+			*/
+
+//		ClientAsync t = new ClientAsync();
 //		t.execute();
+		
 	}
 	
 	
@@ -166,9 +200,6 @@ public abstract class SearchResults extends ActionBarActivity {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		//Code to populate database:
-//		ClientAsync as = new ClientAsync();
-//		as.execute(professorsToInsert);
 		Object[] professorArrayObjects = professorSet.toArray();
 		String[] professorArrayStrings = Arrays.copyOf(professorArrayObjects, professorArrayObjects.length, String[].class);
 		return professorArrayStrings;
@@ -199,6 +230,7 @@ public abstract class SearchResults extends ActionBarActivity {
 						for (int t = 0; t < temp.length; t++) {
 							String number = temp[0].trim();// number;
 							String name = temp[1].replaceAll("</A>", "").trim();
+							name = capsFix2(name);
 							String faculty = courseFiles[i].substring(0, courseFiles[i].indexOf(".html"));
 							//Course c = new Course(null, name, number, null, null, faculty, true);
 							map.put(number, name); // trim and place only the number
@@ -206,11 +238,11 @@ public abstract class SearchResults extends ActionBarActivity {
 							facultyMap.put(number, faculty);
 							courseNumbers.add(number);
 							
-							Course c = new Course(null, capsFix2(name), number, null, null, faculty, true);
+							Course c = new Course(null, name, number, null, null, faculty, true);
 							coursesToInsert.add(c);
 							courseNumbersToCourses.put(number, c);
 							
-							numberAndName.add("" + number + " - " + capsFix2(name));
+							numberAndName.add("" + number + " - " + name);
 						} // for temp
 					} // if
 					inputLine = infile.readLine(); // read the next line of the text
@@ -235,40 +267,6 @@ public abstract class SearchResults extends ActionBarActivity {
 		System.arraycopy(a, 0, c, 0, aLen);
 		System.arraycopy(b, 0, c, aLen, bLen);
 		return c;
-	}
-	
-	public String[] capsFix(String[] s) {
-		for (int z = 0; z < s.length; z++) {
-			String[] temp = s[z].split(" ");
-
-			for (int t = 0; t < temp.length; t++) {
-				if (t == 0 && temp[t].equals("A")) {
-					t++;
-				}
-				if (temp[t].equals("A") || temp[t].equals("FOR")
-						|| temp[t].equals("THE") || temp[t].equals("OF")
-						|| temp[t].equals("AND") || temp[t].equals("IN")
-						|| temp[t].equals("AT") || temp[t].equals("AN")) {
-					temp[t] = temp[t].toLowerCase(Locale.ENGLISH);
-				}
-				String firstLetter = temp[t].substring(0, 1); // take the first
-																// letter
-				temp[t] = temp[t].toLowerCase(Locale.ENGLISH); // make the word
-																// lowercase
-				String end = temp[t].substring(1, temp[t].length()); // get ride
-																		// of
-																		// the
-																		// first
-																		// letter
-				temp[t] = firstLetter + end; // add firstletter and the rest of
-												// the word
-			}
-			s[z] = "";
-			for (int q = 0; q < temp.length; q++) {
-				s[z] = s[z] + temp[q] + " ";
-			}
-		}
-		return s;
 	}
 	
 	public String capsFix2(String s) {
@@ -375,12 +373,12 @@ public abstract class SearchResults extends ActionBarActivity {
 					String englishName = value;
 					String hebrewName = c.getString(c.getColumnIndexOrThrow("hebrewProfessorName"));
 					Intent i = new Intent(SearchResults.this, ProfessorView.class);
-					if (englishName.equals(" ")) {
+					if (englishName.equals("")) {
 						i.putExtra("professorName", hebrewName);
 						i.putExtra("faculty", "");
 					}
 					else {
-						i.putExtra("professorName", englishName);
+						i.putExtra("professorName", hebrewName);
 						i.putExtra("faculty", facultyMap.get(hebrewName));
 					}
 					startActivity(i);
@@ -426,7 +424,7 @@ public abstract class SearchResults extends ActionBarActivity {
 	private OnQueryTextListener searchQueryListener = new OnQueryTextListener() {
 	    @Override
 	    public boolean onQueryTextSubmit(String query) {
-	        search(query);
+	        //search(query);
 	        return true;
 	    }
 
@@ -440,7 +438,6 @@ public abstract class SearchResults extends ActionBarActivity {
 	        	//Swap cursor with blank cursor to remove all suggestions.
 			    String[] columnNames = {"_id","coursesAndProfessors", "hebrewProfessorName"};
 			    MatrixCursor cursor = new MatrixCursor(columnNames);
-		        //TODO: deal with the internal IllegalStateException problem.
 			    cursorAdapter.swapCursor(cursor);
 	        }
 	        return true;
@@ -455,7 +452,6 @@ public abstract class SearchResults extends ActionBarActivity {
 		    int id = 0;
 		    for(String item : professorsAndCourses){
 		    	String toCheck = item.toLowerCase(Locale.ENGLISH);
-				//TODO: make the english and hebrew names appear in the same line together.
 		    	if (toCheck.contains(query)) {
 			        temp[0] = Integer.toString(id++);
 			        if (!item.contains("\n")) {
@@ -498,8 +494,7 @@ public abstract class SearchResults extends ActionBarActivity {
 		@Override
 		protected String doInBackground(List<Professor>... params) {
 			String result = null;
-			List<Professor> listToInsert = params[0].subList(1500, params[0].size());
-			//result = db.insertProfessor(listToInsert).toString();
+			//result = db.dropAllProfessorRatings().toString();
 			return result;
 		}
 
@@ -508,10 +503,74 @@ public abstract class SearchResults extends ActionBarActivity {
 			if (res == null)
 				Log.d(getLocalClassName(), "SearchResults async unsuccessful");
 			else {
-				Log.d(getLocalClassName(), "Inserting professors: " + res);
+				Log.d(getLocalClassName(), "Dropping professor ratings: " + res);
 			}
 		}
 	}
+//	
+//	private class GetAllProfessorsClientAsync extends AsyncTask<Void, Void, List<Professor>> {
+//
+//		public GetAllProfessorsClientAsync() {
+//		}
+//
+//		@Override
+//		protected void onPreExecute() {
+//			super.onPreExecute();
+//			Log.d(getLocalClassName(), "Starting GetAllProfessors async...");
+//		}
+//
+//		/**
+//		 * This is the method that does the database call.  Comment
+//		 * everything in this method to ignore the database.
+//		 */
+//		@Override
+//		protected List<Professor> doInBackground(Void... params) {
+//			List<Professor> result = null;
+//			result = db.getAllProfessors();
+//			return result;
+//		}
+//
+//		@Override
+//		protected void onPostExecute(List<Professor> res) {
+//			if (res == null)
+//				Log.d(getLocalClassName(), "GetAllProfessors async unsuccessful");
+//			else {
+//				Log.d(getLocalClassName(), "Get all professors successful");
+//			}
+//		}
+//	}
+//	
+//	private class GetAllCoursesClientAsync extends AsyncTask<Void, Void, List<Course>> {
+//
+//		public GetAllCoursesClientAsync() {
+//		}
+//
+//		@Override
+//		protected void onPreExecute() {
+//			super.onPreExecute();
+//			Log.d(getLocalClassName(), "Starting GetAllCourses Async...");
+//		}
+//
+//		/**
+//		 * This is the method that does the database call.  Comment
+//		 * everything in this method to ignore the database.
+//		 */
+//		@Override
+//		protected List<Course> doInBackground(Void... params) {
+//			List<Course> result = null;
+//			result = db.getAllCourses();
+//			return result;
+//		}
+//
+//		@Override
+//		protected void onPostExecute(List<Course> res) {
+//			if (res == null)
+//				Log.d(getLocalClassName(), "GetAllCourses async unsuccessful");
+//			else {
+//				Log.d(getLocalClassName(), "Get all couses successful");
+//			}
+//		}
+//	}
 }
 
 

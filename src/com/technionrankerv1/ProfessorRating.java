@@ -120,5 +120,13 @@ public class ProfessorRating {
   public void setStudentID(Long studentID1) {
     studentID = studentID1;
   }
+  
+  @Override
+  public String toString() {
+	  return "" + studentID + " " + professorID + " " 
+  + overallRating + " " + clarity + " " +
+			  preparedness + " " + interactivity;
+	  
+  }
 
 }

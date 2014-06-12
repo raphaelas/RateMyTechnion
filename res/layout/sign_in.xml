@@ -36,40 +36,16 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2">
-        
-       <!-- Raphi: code to populate courses and professors: 
-        <EditText
-            android:id="@+id/editTextStart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="200dp"
-            android:background="@drawable/login"
-            android:ems="10"
-            android:hint="Start"
-            android:inputType="number"
-            android:textColor="@color/LoginBorderColor"
-            android:textColorHint="@color/LoginBorderColor"
-            android:textCursorDrawable="@null" />
-
-        <EditText
-            android:id="@+id/editTextEnd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="250dp"
-            android:background="@drawable/login"
-            android:ems="10"
-            android:hint="End"
-            android:inputType="number"
-            android:textColor="@color/LoginBorderColor"
-            android:textColorHint="@color/LoginBorderColor"
-            android:textCursorDrawable="@null" />
-       -->
    </RelativeLayout>
 </LinearLayout>
-    
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical" >
@@ -127,7 +103,34 @@
             android:text="@string/blank"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/red" />
+        <!--   
+        <EditText
+            android:id="@+id/editTextStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login"
+            android:layout_gravity="bottom|left"
+            android:ems="10"
+            android:hint="Start"
+            android:inputType="number"
+            android:textColor="@color/LoginBorderColor"
+            android:textColorHint="@color/LoginBorderColor"
+            android:textCursorDrawable="@null" />
 
+        <EditText
+            android:id="@+id/editTextEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:background="@drawable/login"
+            android:ems="10"
+            android:hint="End"
+            android:inputType="number"
+            android:textColor="@color/LoginBorderColor"
+            android:textColorHint="@color/LoginBorderColor"
+            android:textCursorDrawable="@null" />
+-->
     </LinearLayout>
+    </ScrollView>
     
 </RelativeLayout>

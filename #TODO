@@ -1,29 +1,14 @@
 TODO:
-1. Add "Your Account" to the overflow.
-2. Add a back button.
-3. # of ratings - a global variable.
-4. What to do about semester:
-	Should we only do Spring 2014 - or also Winter 2013?  
-	Or one or the other depending on whether it met that semester?
-5. About page?
 
 Small fixes:
-Login screen back to ScrollView.
 Fix log in button.
 Set up CourseView/ProfessorView existing ratings.
 
 
-Raphi's questions:
-Rename app - maybe TechnionRater?  Our app currently does not rank teachers - it rates them.
 Maybe add loading page?
-
-Leo - Raphi discussed:
 
 Every professor in the UG system you can search for.
 You can rate anyone - but limit 10 ratings per semester.
-
-Raphi - Sam discussed:
-Rename app to RateMyTechnion
 
 Include screenshots of parsed pages in our poster?
 
