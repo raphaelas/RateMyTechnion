@@ -2,14 +2,10 @@ package com.technionrankerv1;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Connection;
@@ -512,15 +508,26 @@ public class MainActivity extends SearchResults {
 						doc1 = res1.parse();
 						// Log.d(getLocalClassName(), doc1.toString().length()
 						// +"");
-						// URL url=res1.url();
-						// Log.d(getLocalClassName(), url.toString());
-						((ApplicationWithGlobalVariables) getApplication())
-								.setStudentName(name);
+						 URL url=res1.url();
+						 Log.d(getLocalClassName(), url.toString());
+							String tempString=url.toString();
+							String[] stringArray=new String[(int)((tempString.length()-50)/7)-2];
+							int tempint=50;
+							for(int i=0; i<(int)((tempString.length()-50)/7-2);i++){
+								stringArray[i]=tempString.substring(tempint, tempint+6);
+								tempint=tempint+8;
+							}
+							for(int i=0; i<(int)((tempString.length()-50)/7-2);i++){
+								Log.d("Leo", stringArray[i]);
+								Log.d("leo1", i+"");
+							}
+						((ApplicationWithGlobalVariables) getApplication()).setStudentName(name);
 						Intent i = new Intent(MainActivity.this,
 								FragmentMainActivity.class);
 						// NOTE: if you change this message, also change it
 						// in SearchResults - onOptionsItemSelected().
-						i.putExtra("the username", "שלום " + name + "!");
+						i.putExtra("the username", name);
+						i.putExtra("courseList", stringArray);
 						startActivity(i);
 						// startActivity(new Intent(Login.this,
 						// welcomeView.class));
@@ -530,15 +537,14 @@ public class MainActivity extends SearchResults {
 						reportError(1);
 						// Log.d(getLocalClassName(),
 					}
-				} catch (SocketTimeoutException e2) {
-					runOnUiThread(new Runnable() {
-						public void run() {
-							Toast.makeText(getApplicationContext(), "Please check your"
-									+ "Internet connection.", Toast.LENGTH_LONG).show();						  }
-					});
-					e2.printStackTrace();
 				}
 				catch (IOException e) {
+					runOnUiThread(new Runnable() {
+						public void run() {
+							errorM.setText("");
+							Toast.makeText(getApplicationContext(), "Please check your"
+									+ " Internet connection.", Toast.LENGTH_LONG).show();						  }
+					});
 					e.printStackTrace();
 				} 
 			}

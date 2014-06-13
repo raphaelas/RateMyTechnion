@@ -1,44 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blueish"
-    android:fillViewport="true" >
-    
-	<LinearLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_gravity="center"
-	    android:background="@color/black"
-	    android:orientation="vertical" >
+    android:background="@color/black"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+   </RelativeLayout>   
+   <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="13">
 
 		<TextView
-		    android:id="@+id/textView23"
-		    android:layout_width="256dp"
-		    android:layout_height="wrap_content"
-		    android:layout_marginLeft="35dp"
-		   	android:layout_marginTop="25dp"
-		   	android:singleLine="true"
-		    android:ellipsize="none"
-		    android:text="@string/string9"
-		    android:textAppearance="?android:attr/textAppearanceMedium"
-		    android:textColor="@color/white" />
-
-		<TextView
-		    android:id="@+id/TextView012"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_marginLeft="35dp"
-		    android:layout_marginTop="10dp"
-		    android:text="@string/string1"
-		    android:textAppearance="?android:attr/textAppearanceMedium"
-		    android:textColor="@color/white" />
-		
-		<ExpandableListView
-		    android:id="@+id/lvExp"
+		    android:id="@+id/helloVisitorTextView"
 		    android:layout_width="match_parent"
-		    android:layout_height="match_parent" />
-		 
-	</LinearLayout>
-	
-</ScrollView>	
+		    android:layout_height="match_parent"
+		    android:ellipsize="none"
+		    android:gravity="center_horizontal"
+		    android:text="@string/helloVisitor"
+		    android:textColor="@color/LoginBorderColor"
+		    android:textSize="@dimen/yourname_textfontsize"
+		    android:textStyle="bold" />
+
+		<TextView
+		    android:id="@+id/welcomeToTextView"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:layout_marginTop="80dp"
+		    android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+		    android:paddingRight="?android:attr/expandableListPreferredChildPaddingLeft"
+		    android:text="@string/welcomeTo"
+		    android:textColor="@color/LoginBorderColor"
+		    android:textSize="@dimen/welcomeview_textfontsize" />
+
+		<TextView
+		    android:id="@+id/ratingsSubmittedAndThresholdTextView"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:layout_marginTop="130dp"
+		    android:ellipsize="none"
+		    android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+		    android:paddingRight="?android:attr/expandableListPreferredChildPaddingLeft"
+		    android:text="@string/sampleSubmittedThreshold"
+		    android:textColor="@color/LoginBorderColor"
+		    android:textSize="@dimen/welcomeview_textfontsize" />
+		
+		<TextView
+		    android:id="@+id/youMaySubmitTextView"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:layout_marginTop="160dp"
+		    android:ellipsize="none"
+		    android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+		    android:paddingRight="?android:attr/expandableListPreferredChildPaddingLeft"
+		    android:text="@string/youMaySubmit"
+		    android:textColor="@color/LoginBorderColor"
+		    android:textSize="@dimen/welcomeview_textfontsize" />
+				
+		<TextView
+		    android:id="@+id/privacyPolicyTextView"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:ellipsize="none"
+		    android:gravity="bottom"
+		    android:layout_marginBottom="30dp"
+		    android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+		    android:paddingRight="?android:attr/expandableListPreferredChildPaddingLeft"
+		    android:text="@string/privacyPolicy"
+		    android:textColor="@color/LoginBorderColor"
+		    android:textSize="@dimen/introduction_textfontsize" />
+
+                        </RelativeLayout>
+              
+</LinearLayout>

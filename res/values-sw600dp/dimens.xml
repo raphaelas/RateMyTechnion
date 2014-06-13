@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
+    <dimen name="yourname_textfontsize">30sp</dimen>
+    <dimen name="welcomeview_textfontsize">26sp</dimen>
 	<dimen name="introduction_textfontsize">22sp</dimen>
 	<dimen name="not_student_textfontsize">16sp</dimen>
 	

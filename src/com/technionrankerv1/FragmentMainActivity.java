@@ -1,12 +1,14 @@
 package com.technionrankerv1;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import android.app.ActionBar;
 import android.app.ActionBar.TabListener;
 import android.app.FragmentTransaction;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 
 public class FragmentMainActivity extends SearchResults implements TabListener {
 	private ViewPager viewPager;
@@ -41,8 +43,8 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 			public void onPageSelected(int position) {
 				// on changing the page
 				// make respected tab selected
-				viewPager.setCurrentItem(position, true);
-				//Before implementing smoothscroll it was: actionBar.setSelectedNavigationItem(position);
+				//viewPager.setCurrentItem(position, true);
+				actionBar.setSelectedNavigationItem(position);
 			}
 
 			@Override
@@ -53,8 +55,28 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 			public void onPageScrollStateChanged(int arg0) {
 			}
 		});
+		
+		resetGlobalVariables();
 	}
 	
+	private void resetGlobalVariables() {
+		ApplicationWithGlobalVariables a = ((ApplicationWithGlobalVariables) getApplication());
+		boolean isExistingStudent = false;
+		a.setCourseCommentsLiked(new HashSet<CourseComment>());
+		a.setProfessorCommentsLiked(new HashSet<ProfessorComment>());
+		Set<String> studentNameSet = a.studentsToRatingsSubmitted.keySet();
+		for (String studentName : studentNameSet) {
+			if (studentName.equals(a.getStudentName())) {
+				a.setRatingsSubmitted(a.studentsToRatingsSubmitted.get(a.getStudentName()));
+				isExistingStudent = true;
+			}
+		}
+		if (!isExistingStudent) {
+			a.setRatingsSubmitted(0);
+			a.resetStudentID();
+		}
+	}
+
 	@Override
 	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
 	}

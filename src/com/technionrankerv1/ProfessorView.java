@@ -345,6 +345,9 @@ public class ProfessorView extends SearchResults {
 		    			tempPreparedness *= totalRatings;
 		    			tempInteractivity *= totalRatings;
 		    		}
+		    		else {
+		    			totalRatings++;
+		    		}
 					averageOverall += tempOverallRating;
 					averageClarity += tempClarity;
 					averagePreparedness += tempPreparedness;

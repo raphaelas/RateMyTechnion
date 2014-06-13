@@ -1,5 +1,6 @@
 package com.technionrankerv1;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 import android.app.Application;
@@ -11,8 +12,15 @@ public class ApplicationWithGlobalVariables extends Application {
     private Long studentID = Long.valueOf((long) (Math.random() * 100000000));
     private HashSet<CourseComment> courseCommentsLiked = new HashSet<CourseComment>();
     private HashSet<ProfessorComment> professorCommentsLiked = new HashSet<ProfessorComment>();
-    private String studentName = null;
-
+    private String studentName = "";
+    private int ratingsThreshold = 0;
+    public HashMap<String, Integer> studentsToRatingsSubmitted = new HashMap<String, Integer>();
+    
+	@Override
+    public void onCreate() {
+    	studentsToRatingsSubmitted.put(studentName, 0);
+    }
+	
     
 
 	/**
@@ -38,8 +46,7 @@ public class ApplicationWithGlobalVariables extends Application {
 	 * @return Whether the user submitted fewer than the ratings threshold.
 	 */
 	public boolean canSubmitRatings() {
-		int RATINGS_THRESHOLD = 10;
-		return ratingsSubmitted < RATINGS_THRESHOLD;
+		return ratingsSubmitted < ratingsThreshold;
 	}
 
 	/**
@@ -66,10 +73,17 @@ public class ApplicationWithGlobalVariables extends Application {
 	/**
 	 * @param studentID the studentID to set
 	 */
-	public void setStudentID(Long studentID) {
-		this.studentID = studentID;
+	public void resetStudentID() {
+		this.studentID = Long.valueOf((long) (Math.random() * 100000000));
 	}
 
+	/**
+	 * @param studentId the studentId to set
+	 */
+	public void setStudentId(Long studentId) {
+		this.studentID = studentId;
+	}
+	
 	/**
 	 * @return the courseCommentsLiked
 	 */
@@ -126,6 +140,20 @@ public class ApplicationWithGlobalVariables extends Application {
 	 */
 	public void setStudentName(String studentName) {
 		this.studentName = studentName;
+	}
+
+	/**
+	 * @return the ratingsThreshold
+	 */
+	public int getRatingsThreshold() {
+		return ratingsThreshold;
+	}
+
+	/**
+	 * @param ratingsThreshold the ratingsThreshold to set
+	 */
+	public void setRatingsThreshold(int ratingsThreshold) {
+		this.ratingsThreshold = ratingsThreshold;
 	}
 
 }
