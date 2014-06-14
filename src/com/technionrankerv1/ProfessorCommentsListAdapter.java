@@ -61,7 +61,6 @@ public class ProfessorCommentsListAdapter extends ArrayAdapter<ProfessorComment>
 			}
 		});
 		String commentBeingDisplayed = values[position].getComment();
-		Log.d("ProfessorCommentsListAdapter", commentBeingDisplayed);
 		commentTextView.setText(commentBeingDisplayed);
 		likesTextView.setText(values[position].getLikes() + "");
 
