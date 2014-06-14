@@ -249,7 +249,7 @@
                     android:background="@android:color/black"
                     android:hint="@string/commentHint"
                     android:maxLines="2"
-                    android:maxLength="300"
+                    android:maxLength="200"
                     android:textColor="@android:color/white"
                     android:textColorHint="@android:color/white"
                     android:textCursorDrawable="@null" />

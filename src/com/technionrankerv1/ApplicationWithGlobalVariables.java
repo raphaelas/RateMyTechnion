@@ -156,4 +156,10 @@ public class ApplicationWithGlobalVariables extends Application {
 		this.ratingsThreshold = ratingsThreshold;
 	}
 
+
+
+	public void decrementRatingsThreshold() {
+		ratingsThreshold--;
+	}
+
 }

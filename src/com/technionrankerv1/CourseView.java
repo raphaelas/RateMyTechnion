@@ -45,6 +45,7 @@ public class CourseView extends SearchResults {
     float averageEnjoyability = 0;
     float averageUsefulness = 0;
     float averageDifficulty = 0;
+    int totalRatings = 0;
 	public RatingBar rOverall;
 	public RatingBar rUsefulness;
 	public RatingBar rEnjoyability;
@@ -69,9 +70,7 @@ public class CourseView extends SearchResults {
     	ClientAsyncGetCourseByCourseNumber cagpbpn = new ClientAsyncGetCourseByCourseNumber();
 		try {
 			courseId = cagpbpn.execute(cLookup).get().get(0).getId();
-	    	CourseRating crLookup = new CourseRating(studentId, courseId, 0, 0, 0, 0);
-	    	GetCourseRatingsClientAsync gcrca = new GetCourseRatingsClientAsync();
-	    	gcrca.execute(crLookup);
+			getAllCourseRatingsDatabase();
 	    	getAllCourseCommentsDatabase();
 		} catch (InterruptedException e) {
 			//TODO: better exception handlers.
@@ -174,20 +173,20 @@ public class CourseView extends SearchResults {
 			textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
 			textViewCourseRatingSubmitted.setText("Whoops, you've reached the limit for posting ratings this semester.");
     	}
+    	else if (alreadySubmitted) {
+			textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
+			textViewCourseRatingSubmitted.setText("Please wait while we update your response.");
+			InsertCourseRatingClientAsync as3 = new InsertCourseRatingClientAsync();
+			as3.execute(cr);
+		}
 		else if (shouldPreventSubmit){
 			textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
 			textViewCourseRatingSubmitted.setText("Whoops, you already submitted on "
 					+ "another device.");
 		}
-    	else if (!alreadySubmitted) {
-			textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
-			textViewCourseRatingSubmitted.setText("Please wait while we record your response.");
-			InsertCourseRatingClientAsync as3 = new InsertCourseRatingClientAsync();
-			as3.execute(cr);
-		}
 		else {
 			textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
-			textViewCourseRatingSubmitted.setText("Please wait while we update your response.");
+			textViewCourseRatingSubmitted.setText("Please wait while we record your response.");
 			InsertCourseRatingClientAsync as3 = new InsertCourseRatingClientAsync();
 			as3.execute(cr);
 		}
@@ -200,6 +199,12 @@ public class CourseView extends SearchResults {
 		gccca.execute(ccLookup);
 	}
 	
+	public void getAllCourseRatingsDatabase() {
+    	CourseRating crLookup = new CourseRating(studentId, courseId, 0, 0, 0, 0);
+    	GetCourseRatingsClientAsync gcrca = new GetCourseRatingsClientAsync();
+    	gcrca.execute(crLookup);
+	}
+	
 	private void hideSoftKeyboard(){
 		EditText et = (EditText) findViewById(R.id.comment);
 	    if(getCurrentFocus()!=null && getCurrentFocus() instanceof EditText){
@@ -209,7 +214,7 @@ public class CourseView extends SearchResults {
 	}
 	
 	protected void createProfessorComment(Long courseId, Long studentId) {
-		if (!shouldPreventSubmit && canSubmit) {
+		if ((!shouldPreventSubmit || alreadySubmitted) && canSubmit) {
 			EditText et = (EditText) findViewById(R.id.comment);
 	    	String studentName = ((ApplicationWithGlobalVariables) this.getApplication()).getStudentName();
 			String tempCommentText = et.getText().toString();
@@ -309,10 +314,12 @@ public class CourseView extends SearchResults {
 				textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
 				textViewCourseRatingSubmitted.setText("Thank you.  Your rating was received.");
 				alreadySubmitted = true;
+				getAllCourseRatingsDatabase();
 			}
 			else {
 				textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
 				textViewCourseRatingSubmitted.setText("Thank you.  Your rating was updated.");
+				getAllCourseRatingsDatabase();
 			}
 		}
 	}
@@ -373,7 +380,7 @@ public class CourseView extends SearchResults {
 			else {
 				Log.d(getLocalClassName(), "Get CourseRatings succeeded.");
 		    	List<CourseRating> currRatings = res;
-		    	int totalRatings = currRatings.size();
+		    	totalRatings = currRatings.size();
 		    	averageOverall = 0;
 		    	averageEnjoyability = 0;
 		    	averageUsefulness = 0;
@@ -412,6 +419,8 @@ public class CourseView extends SearchResults {
 	        	rUsefulness.setRating(averageUsefulness);
 	        	rEnjoyability.setRating(averageEnjoyability);
 	        	rDifficulty.setRating(averageDifficulty);
+	        	TextView totalRatingsTextView = (TextView) findViewById(R.id.totalRatingsCountCourse);
+	        	totalRatingsTextView.setText(totalRatings + "");
 			}
 		}
 	}

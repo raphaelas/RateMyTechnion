@@ -73,6 +73,8 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 
 		List<String> profList=new ArrayList<String>();
 		int professorCount = 0;
+		ApplicationWithGlobalVariables a = ((ApplicationWithGlobalVariables) getApplication());
+		a.setRatingsThreshold(tempString.length*2);
 		for(int i =0; i<tempString.length; i++){
 			GetProfessorClientAsync tempbla=new GetProfessorClientAsync();
 			try{
@@ -80,6 +82,7 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 				if (dbProfessor==null) {
 					//profList.add(tempString[i]);
 					Log.d("FragmentProfessors", "We don't have that professor.");
+					a.decrementRatingsThreshold();
 				}
 				else {
 					String hebNameToUse = StringEscapeUtils.unescapeJava(dbProfessor.getHebrewName());
@@ -110,13 +113,11 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 		tempString=bundle.getStringArray("courseList");
         
 		List<String> courseList=new ArrayList<String>();
-		((ApplicationWithGlobalVariables) getApplication()).
-		setRatingsThreshold(tempString.length*2);
 		int courseCount = 0;
 		for(int i=0; i<tempString.length; i++){
-			GetCourseClientAsync tempbla=new GetCourseClientAsync();
+			GetCourseClientAsync gcca = new GetCourseClientAsync();
 			try{
-				List<Course> dbCourseList = tempbla.execute(tempString[i]).get();
+				List<Course> dbCourseList = gcca.execute(tempString[i]).get();
 				if (dbCourseList == null || dbCourseList.isEmpty()) {
 					//courseList.add(tempString[i]);
 					Log.d(getLocalClassName(), "We don't have that course.");
@@ -205,7 +206,7 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 				Log.d("FragmentProfessors", "Get of professor for course failed.");
 			} 
 			else {
-				Professor currentProfessor = res;
+				//Professor currentProfessor = res;
 			}
 		}
 	}
@@ -237,7 +238,7 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 			} else if (res.size() == 0) {
 				Log.d("FragmentCourses", "Get of course returned empty.");
 			} else {
-				Course currentCourse = res.get(0);
+				//Course currentCourse = res.get(0);
 			}
 		}
 }

@@ -412,7 +412,6 @@ public class ProfessorView extends SearchResults {
 	    		averageClarity /= totalRatings;
 	    		averagePreparedness /= totalRatings;
 	    		averageInteractivity /= totalRatings;
-	    		Log.d(getLocalClassName(), "" + averageOverall);
 	        	rOverall.setRating(averageOverall);
 	        	rPreparedness.setRating(averagePreparedness);
 	        	rClarity.setRating(averageClarity);
