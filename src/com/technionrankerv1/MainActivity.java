@@ -1,7 +1,6 @@
 package com.technionrankerv1;
 
 import java.io.IOException;
-import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -13,6 +12,7 @@ import org.jsoup.Connection.Method;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +21,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -75,6 +76,7 @@ public class MainActivity extends SearchResults {
 	}
 
 	public void setText() {
+		hideSoftKeyboard();
 		final EditText input1 = (EditText) findViewById(R.id.editText1);
 		final EditText input2 = (EditText) findViewById(R.id.editText2);
 		username = input1.getText().toString();
@@ -101,6 +103,14 @@ public class MainActivity extends SearchResults {
 				doLogin();
 			}
 		}
+	}
+	
+	private void hideSoftKeyboard(){
+		final EditText input2 = (EditText) findViewById(R.id.editText2);
+	    if(getCurrentFocus()!=null && getCurrentFocus() instanceof EditText){
+	        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+	        imm.hideSoftInputFromWindow(input2.getWindowToken(), 0);
+	    }
 	}
 
 //	public void parseCatalogPages(String sem) throws IOException {
@@ -537,7 +547,8 @@ public class MainActivity extends SearchResults {
 				catch (IOException e) {
 					runOnUiThread(new Runnable() {
 						public void run() {
-							errorM.setText("");
+							errorM.setTextColor(getResources().getColor(R.color.red));
+							errorM.setText("Please try again.");
 							Toast.makeText(getApplicationContext(), "Please check your"
 									+ " Internet connection.", Toast.LENGTH_LONG).show();						  }
 					});

@@ -149,8 +149,8 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 	private void resetGlobalVariables() {
 		ApplicationWithGlobalVariables a = ((ApplicationWithGlobalVariables) getApplication());
 		boolean isExistingStudent = false;
-		a.setCourseCommentsLiked(new HashSet<CourseComment>());
-		a.setProfessorCommentsLiked(new HashSet<ProfessorComment>());
+		a.setCourseCommentsLiked(new HashSet<Long>());
+		a.setProfessorCommentsLiked(new HashSet<Long>());
 		Set<String> studentNameSet = a.studentsToRatingsSubmitted.keySet();
 		for (String studentName : studentNameSet) {
 			if (studentName.equals(a.getStudentName())) {

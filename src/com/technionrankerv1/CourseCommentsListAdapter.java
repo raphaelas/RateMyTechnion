@@ -38,11 +38,12 @@ public class CourseCommentsListAdapter extends ArrayAdapter<CourseComment> {
 			@Override
 			public void onClick(View v) {
 				CourseComment thisCourseComment = values[position];
+				ApplicationWithGlobalVariables a = ((ApplicationWithGlobalVariables) context.getApplicationContext());
 				//If the comment is not liked according to the global variables:
-				if (!((ApplicationWithGlobalVariables) context.getApplicationContext()).
-						isCourseCommentLiked(thisCourseComment)
-						&& ((ApplicationWithGlobalVariables) context.getApplicationContext()).isLoggedIn()) {
-					((ApplicationWithGlobalVariables) context.getApplicationContext()).likeCourseComment(thisCourseComment);
+				if (!a.isCourseCommentLiked(thisCourseComment.getId())
+						&& a.isLoggedIn() && !thisCourseComment.
+						getStudentID().equals(a.getStudentID())) {
+					((ApplicationWithGlobalVariables) context.getApplicationContext()).likeCourseComment(thisCourseComment.getId());
 					int oldCount = Integer.parseInt(likesTextView.getText().toString());
 					thisCourseComment.incrementLikes();
 					CourseCommentClientAsync as = new CourseCommentClientAsync();

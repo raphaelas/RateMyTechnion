@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -38,6 +40,7 @@ public class ProfessorView extends SearchResults {
 	List<ProfessorComment> comments =  new ArrayList<ProfessorComment>();
 	boolean canSubmit;
 	boolean loggedIn;
+	boolean shouldPreventSubmit = false;
 	float averageOverall = 0;
 	float averageClarity = 0;
 	float averagePreparedness = 0;
@@ -47,13 +50,15 @@ public class ProfessorView extends SearchResults {
 	public RatingBar rClarity;
 	public RatingBar rInteractivity;
 	public String emptyCommentsString;
+	ApplicationWithGlobalVariables a;
 
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     	setContentView(R.layout.prof_view);
-    	studentId = ((ApplicationWithGlobalVariables) this.getApplication()).getStudentID();
-    	canSubmit = ((ApplicationWithGlobalVariables) this.getApplication()).canSubmitRatings();
-    	loggedIn = ((ApplicationWithGlobalVariables) this.getApplication()).isLoggedIn();
+    	a = ((ApplicationWithGlobalVariables) this.getApplication());
+    	studentId = a.getStudentID();
+    	canSubmit = a.canSubmitRatings();
+    	loggedIn = a.isLoggedIn();
     	textViewProfessorRatingSubmitted = (TextView) findViewById(R.id.textViewProfessorRatingSubmitted);
 		Bundle bundle = getIntent().getExtras();
     	String lookupProfessorName = bundle.getString("professorName");
@@ -64,10 +69,7 @@ public class ProfessorView extends SearchResults {
 	    	ProfessorRating crLookup = new ProfessorRating(null, null, professorId, 0, 0, 0, 0);
 	    	GetProfessorRatingsClientAsync gcrca = new GetProfessorRatingsClientAsync();
 	    	gcrca.execute(crLookup);
-    		GetProfessorCommentsClientAsync gccca = new GetProfessorCommentsClientAsync();
-    		ProfessorComment ccLookup = new ProfessorComment(professorId, null, null, null, 0);
-    		gccca.execute(ccLookup);
-
+	    	getAllProfessorCommentsDatabase();
 		} catch (InterruptedException e) {
 			//TODO: better exception handlers.
 			e.printStackTrace();
@@ -91,9 +93,10 @@ public class ProfessorView extends SearchResults {
     	ratingButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				hideSoftKeyboard();
 				saveProfessorRating(pr);
 				createProfessorComment(pr.getProfessorID(), pr.getStudentID());
-				alreadySubmitted = true;
+//				alreadySubmitted = true;
 			}
 		});
     	if (!loggedIn) {
@@ -169,6 +172,11 @@ public class ProfessorView extends SearchResults {
 			textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
 			textViewProfessorRatingSubmitted.setText("Whoops, you've reached the limit for posting ratings this semester.");
     	}
+		else if (shouldPreventSubmit){
+			textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
+			textViewProfessorRatingSubmitted.setText("Whoops, you already submitted on "
+					+ "another device.");
+		}
     	else if (!alreadySubmitted) {
 			textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
 			textViewProfessorRatingSubmitted.setText("Please wait while we record your response.");
@@ -177,12 +185,29 @@ public class ProfessorView extends SearchResults {
 		}
 		else {
 			textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
-			textViewProfessorRatingSubmitted.setText("Whoops, you already submitted and cannot submit again.");
+			textViewProfessorRatingSubmitted.setText("Please wait while we update your response.");
+			InsertProfessorRatingClientAsync as3 = new InsertProfessorRatingClientAsync();
+			as3.execute(pr);
 		}
-	}
 
+	}
+ 
+	public void getAllProfessorCommentsDatabase() {
+		GetProfessorCommentsClientAsync gccca = new GetProfessorCommentsClientAsync();
+		ProfessorComment ccLookup = new ProfessorComment(professorId, null, null, null, 0);
+		gccca.execute(ccLookup);
+	}
+	
+	private void hideSoftKeyboard(){
+		EditText et = (EditText) findViewById(R.id.professorComment);
+	    if(getCurrentFocus()!=null && getCurrentFocus() instanceof EditText){
+	        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+	        imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+	    }
+	}
+	
 	protected void createProfessorComment(Long professorId, Long studentId) {
-		if (!alreadySubmitted && canSubmit) {
+		if (!shouldPreventSubmit && canSubmit) {
 			EditText et = (EditText) findViewById(R.id.professorComment);
 	    	String studentName = ((ApplicationWithGlobalVariables) this.getApplication()).getStudentName();
 			String tempCommentText = et.getText().toString();
@@ -190,11 +215,8 @@ public class ProfessorView extends SearchResults {
 	    	Log.d("Immediate comment:", immediateCommentText);
 	    	String dbCommentText = StringEscapeUtils.escapeJava(immediateCommentText);
 			ProfessorComment databasePC = new ProfessorComment(professorId, studentId, dbCommentText, null, 0);
-			ProfessorComment immediatePC = new ProfessorComment(professorId, studentId, immediateCommentText, null, 0);
-			comments.add(immediatePC);
-			displayAllComments(comments);
 			InsertProfessorCommentClientAsync as2 = new InsertProfessorCommentClientAsync();
-			as2.execute(databasePC);
+			as2.execute(databasePC);			
 		}
 	}
 	
@@ -216,8 +238,11 @@ public class ProfessorView extends SearchResults {
 	    professorCommentsList.setEmptyView(emptyComments);
 	    professorCommentsList.setAdapter(adapter);
 	    LayoutParams l = professorCommentsList.getLayoutParams();
-	    l.height = l.height + (allComments.size() * 70);
-	    professorCommentsList.setLayoutParams(l);
+	    if (l.height < 400) {
+		    l.height = l.height + (allComments.size() * 100);
+		    professorCommentsList.setLayoutParams(l);
+	    }
+
 	}
 	
 	private class ClientAsyncGetProfessorByProfessorName extends AsyncTask<Professor, Void, List<Professor>> {
@@ -277,10 +302,15 @@ public class ProfessorView extends SearchResults {
 				textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.red));
 				textViewProfessorRatingSubmitted.setText("Sorry, please try submitting your rating again.");
 			}
-			else {
+			else if (!alreadySubmitted) {
 				//Log.d(getLocalClassName(), res);
 				textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
 				textViewProfessorRatingSubmitted.setText("Thank you.  Your rating was received.");
+				alreadySubmitted = true;
+			}
+			else {
+				textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
+				textViewProfessorRatingSubmitted.setText("Thank you.  Your rating was updated.");
 			}
 		}
 	}
@@ -309,6 +339,7 @@ public class ProfessorView extends SearchResults {
 				Log.d(getLocalClassName(), "ProfessorComment clientAsync unsuccessful");
 			else {
 				Log.d(getLocalClassName(), "Insert ProfessorComment: " + res);
+				getAllProfessorCommentsDatabase();
 			}
 		}
 	}
@@ -416,11 +447,14 @@ public class ProfessorView extends SearchResults {
 				Log.d(getLocalClassName(), "Get ProfessorComments succeeded.");
 				for (int i = 0; i < res.size(); i++) {
 					ProfessorComment tempPC = res.get(i);
-					//String[] splitted = tempPC.getComment().split("\n");
-					//Log.d(getLocalClassName(), Arrays.toString(splitted));
-					//String sName = StringEscapeUtils.unescapeJava(splitted[0]);
 					String nameToSet = StringEscapeUtils.unescapeJava(tempPC.getComment());
-					Log.d("nameToSet:", nameToSet);
+					//Log.d("nameToSet:", nameToSet);
+					String realName = StringEscapeUtils.escapeJava(nameToSet.split("\n")[0]);
+					Log.d("global: " + StringEscapeUtils.escapeJava(a.getStudentName().trim()), "curr: " + realName);
+					if ((StringEscapeUtils.escapeJava(a.getStudentName().trim())).contains(realName)) {
+						Log.d(getLocalClassName(), "Hoorah");
+						shouldPreventSubmit = true;
+					}
 					tempPC.setComment(nameToSet);
 					res.set(i, tempPC);
 				}

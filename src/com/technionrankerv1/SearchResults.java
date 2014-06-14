@@ -36,6 +36,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.serverapi.TechnionRankerAPI;
@@ -103,7 +105,6 @@ public abstract class SearchResults extends ActionBarActivity {
 		t.execute();
 		
 	}
-	
 	
 	/**
 	 * This populates the professorSet (returned) and hebrewTranslations
@@ -325,7 +326,7 @@ public abstract class SearchResults extends ActionBarActivity {
 		}
 		// Get the SearchView and set the searchable configuration
 		MenuItem searchItem = menu.findItem(R.id.action_search);
-		SearchView searchView = (SearchView) MenuItemCompat
+		final SearchView searchView = (SearchView) MenuItemCompat
 				.getActionView(searchItem);
 		final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 		// Assumes current activity is the searchable activity
@@ -357,6 +358,10 @@ public abstract class SearchResults extends ActionBarActivity {
 
            @Override
            public boolean onSuggestionClick(int position) {
+        	   if(getCurrentFocus()!=null && getCurrentFocus() instanceof EditText){
+        		   InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        		   imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+        	   }
         	   Cursor c = (MatrixCursor) cursorAdapter.getItem(position);
         	   String value =  c.getString(c.getColumnIndexOrThrow("coursesAndProfessors"));
         	   if (Character.isDigit(value.charAt(0))) {

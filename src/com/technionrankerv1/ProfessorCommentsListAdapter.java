@@ -33,16 +33,24 @@ public class ProfessorCommentsListAdapter extends ArrayAdapter<ProfessorComment>
 		View rowView = inflater.inflate(R.layout.comments_list_item, parent, false);
 		TextView commentTextView = (TextView) rowView.findViewById(R.id.singleCommentText);
 		final TextView likesTextView = (TextView) rowView.findViewById(R.id.likesCountText);
-		final ImageButton thumbImage = (ImageButton) rowView.findViewById(R.id.thumbImage);
+		ImageButton thumbImage = (ImageButton) rowView.findViewById(R.id.thumbImage);
+		ApplicationWithGlobalVariables a2 = ((ApplicationWithGlobalVariables) context.getApplicationContext());
+		ProfessorComment thisProfessorComment2 = values[position];
+		if (a2.isProfessorCommentLiked(a2.getStudentID())
+				|| !a2.isLoggedIn() || thisProfessorComment2.
+				getStudentID().equals(a2.getStudentID())) {
+			thumbImage.setEnabled(false);
+		}
 		thumbImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				ApplicationWithGlobalVariables a = ((ApplicationWithGlobalVariables) context.getApplicationContext());
 				ProfessorComment thisProfessorComment = values[position];
 				//If the comment is not liked according to the global variables:
-				if (!((ApplicationWithGlobalVariables) context.getApplicationContext()).
-						isProfessorCommentLiked(thisProfessorComment)
-						&& ((ApplicationWithGlobalVariables) context.getApplicationContext()).isLoggedIn()) {
-					((ApplicationWithGlobalVariables) context.getApplicationContext()).likeProfessorComment(thisProfessorComment);
+				if (!a.isProfessorCommentLiked(a.getStudentID())
+						&& a.isLoggedIn() && !thisProfessorComment.
+						getStudentID().equals(a.getStudentID())) {
+					a.likeProfessorComment(a.getStudentID());
 					int oldCount = Integer.parseInt(likesTextView.getText().toString());
 					thisProfessorComment.incrementLikes();
 					ProfessorCommentClientAsync as = new ProfessorCommentClientAsync();

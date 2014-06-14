@@ -27,7 +27,6 @@ public class Communicator {
       URL url = new URL("https://android-236504-i.appspot.com/" + strs[0]);
       String param = encodeParams(strs);
       HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
-      System.setProperty("http.keepAlive", "false");
       con.setDoOutput(true);
       con.setRequestMethod("POST");
       con.setFixedLengthStreamingMode(param.getBytes().length);
@@ -37,13 +36,14 @@ public class Communicator {
       PrintWriter out = new PrintWriter(con.getOutputStream());
       out.print(param);
       out.close();
-      Log.d("Communicator", "Response code: " + con.getResponseCode());
+      //Log.d("Communicator", "Response code: " + con.getResponseCode());
       Scanner inStream = new Scanner(con.getInputStream());
       while (inStream.hasNextLine())
         $ += inStream.nextLine();
       inStream.close();
     } catch (Exception e) {
       e.printStackTrace();
+  	  return $;
     }
     return $;
   }
