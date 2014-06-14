@@ -24,7 +24,7 @@
     <string name="action_login">Log In</string>
     <string name="sampleSubmittedThreshold">You have submitted 3 ratings. You may submit 7 more ratings this semester.</string>
     <string name="youMaySubmit"></string>
-    <string name="privacyPolicy">Don\'t worry: we will not store your student information. We will only save your name when you submit a comment.</string>
+    <string name="privacyPolicy">Your privacy: we will not store your student information. We will only save your name when you submit a comment.</string>
     
     
    

@@ -24,7 +24,7 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
 	// Tab titles
-	private String[] tabs = { "Welcome View", "Courses", "Professors" };
+	private String[] tabs = { "Home", "Courses", "Professors" };
 	private String[] professorValuesToPassToAdapter;
 	private String[] courseValuesToPassToAdapter;
 	public HashMap<String, String> facultyMap = new HashMap<String, String>();

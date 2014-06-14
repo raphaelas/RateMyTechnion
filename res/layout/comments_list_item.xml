@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="70dp"
     android:orientation="horizontal" >
 
     <TextView
@@ -9,23 +9,26 @@
         android:layout_width="0dip"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:text="This is a really \n great \n course."
         android:gravity="center_vertical"
         android:paddingBottom="5dp"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:paddingRight="10dp"
         android:paddingTop="5dp"
         android:textColor="@color/white"
         android:textSize="17sp" />
 
     <ImageButton
         android:id="@+id/thumbImage"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:background="@drawable/thumb_selector"
         android:contentDescription="@string/thumbImageDescription"
         android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
         android:paddingBottom="5dp"
         android:paddingTop="5dp"
-        android:src="@drawable/ic_action_good"
+        android:src="@drawable/newthumbimage"
         android:textColor="@color/white"
         android:textSize="17sp" />
     

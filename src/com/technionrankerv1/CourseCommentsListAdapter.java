@@ -46,7 +46,7 @@ public class CourseCommentsListAdapter extends ArrayAdapter<CourseComment> {
 					int oldCount = Integer.parseInt(likesTextView.getText().toString());
 					thisCourseComment.incrementLikes();
 					CourseCommentClientAsync as = new CourseCommentClientAsync();
-					//as.execute(thisCourseComment);
+					as.execute(thisCourseComment);
 					likesTextView.setText("" + (oldCount + 1));
 					notifyDataSetChanged(); //This line is necessary for sorting.
 				}
@@ -91,7 +91,7 @@ public class CourseCommentsListAdapter extends ArrayAdapter<CourseComment> {
 			if (res == null)
 				Log.d("CommentsListAdapter", "CourseComment clientAsync unsuccessful");
 			else {
-				Log.d("CommentsListAdapter", "CourseComment saving: " + res);
+				Log.d("CommentsListAdapter", "CourseComment updating: " + res);
 			}
 		}
 	}

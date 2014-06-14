@@ -1,7 +1,7 @@
 package com.technionrankerv1;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -45,6 +46,7 @@ public class ProfessorView extends SearchResults {
 	public RatingBar rPreparedness;
 	public RatingBar rClarity;
 	public RatingBar rInteractivity;
+	public String emptyCommentsString;
 
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -183,26 +185,39 @@ public class ProfessorView extends SearchResults {
 		if (!alreadySubmitted && canSubmit) {
 			EditText et = (EditText) findViewById(R.id.professorComment);
 	    	String studentName = ((ApplicationWithGlobalVariables) this.getApplication()).getStudentName();
-	    	String studentNameEncoded = StringEscapeUtils.escapeJava(studentName);
-			String commentText = et.getText().toString();
-	    	commentText = studentName + ": " + commentText;
-	    	String dbCommentText = studentNameEncoded + ": " + commentText;
-			ProfessorComment pc = new ProfessorComment(professorId, studentId, dbCommentText, null, 0);
-			comments.add(pc);
+			String tempCommentText = et.getText().toString();
+	    	String immediateCommentText = "" + studentName + tempCommentText;
+	    	Log.d("Immediate comment:", immediateCommentText);
+	    	String dbCommentText = StringEscapeUtils.escapeJava(immediateCommentText);
+			ProfessorComment databasePC = new ProfessorComment(professorId, studentId, dbCommentText, null, 0);
+			ProfessorComment immediatePC = new ProfessorComment(professorId, studentId, immediateCommentText, null, 0);
+			comments.add(immediatePC);
 			displayAllComments(comments);
 			InsertProfessorCommentClientAsync as2 = new InsertProfessorCommentClientAsync();
-			as2.execute(pc);
+			as2.execute(databasePC);
 		}
 	}
 	
 	public void displayAllComments(List<ProfessorComment> allComments) {
 		ListView professorCommentsList = (ListView) findViewById(R.id.professorCommentsList);
-		Log.d("allComments.size: ", allComments.size() + "");
 	    ProfessorCommentsListAdapter adapter = new ProfessorCommentsListAdapter(
 	    		this, allComments.toArray(new ProfessorComment[(allComments.size())]));
 	    TextView emptyComments = (TextView) findViewById(R.id.emptyProfessorComments);
+	    emptyComments.setText(emptyCommentsString);
+	    adapter.sort(new Comparator<ProfessorComment>() {
+
+			@Override
+			public int compare(ProfessorComment o1, ProfessorComment o2) {
+				int toReturn = o2.getLikes() - o1.getLikes();
+				return toReturn;
+			}
+	    	
+	    });
 	    professorCommentsList.setEmptyView(emptyComments);
 	    professorCommentsList.setAdapter(adapter);
+	    LayoutParams l = professorCommentsList.getLayoutParams();
+	    l.height = l.height + (allComments.size() * 70);
+	    professorCommentsList.setLayoutParams(l);
 	}
 	
 	private class ClientAsyncGetProfessorByProfessorName extends AsyncTask<Professor, Void, List<Professor>> {
@@ -390,20 +405,24 @@ public class ProfessorView extends SearchResults {
 		protected void onPostExecute(List<ProfessorComment> res) {
 			if (res == null) {
 				Log.d(getLocalClassName(), "Get ProfessorComments failed.");
+				emptyCommentsString = "Whoops, there was an error retrieving the comments.";
 			}
 			else if (res.isEmpty()) {
 				Log.d(getLocalClassName(), "Get ProfessorComments returned empty.");
+				emptyCommentsString = "There are no comments to show yet.";
+		    	displayAllComments(comments);
 			}
 			else {
 				Log.d(getLocalClassName(), "Get ProfessorComments succeeded.");
 				for (int i = 0; i < res.size(); i++) {
 					ProfessorComment tempPC = res.get(i);
-					String[] splitted = tempPC.getComment().split(":");
-					Log.d(getLocalClassName(), Arrays.toString(splitted));
-					String sName = StringEscapeUtils.unescapeJava(splitted[0]);
-					String nameToSet = sName + ":\n" + splitted[1];
-					Log.d(getLocalClassName(), nameToSet);
+					//String[] splitted = tempPC.getComment().split("\n");
+					//Log.d(getLocalClassName(), Arrays.toString(splitted));
+					//String sName = StringEscapeUtils.unescapeJava(splitted[0]);
+					String nameToSet = StringEscapeUtils.unescapeJava(tempPC.getComment());
+					Log.d("nameToSet:", nameToSet);
 					tempPC.setComment(nameToSet);
+					res.set(i, tempPC);
 				}
 				comments = res;
 		    	displayAllComments(comments);

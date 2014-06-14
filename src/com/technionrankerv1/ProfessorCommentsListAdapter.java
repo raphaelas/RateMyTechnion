@@ -46,13 +46,15 @@ public class ProfessorCommentsListAdapter extends ArrayAdapter<ProfessorComment>
 					int oldCount = Integer.parseInt(likesTextView.getText().toString());
 					thisProfessorComment.incrementLikes();
 					ProfessorCommentClientAsync as = new ProfessorCommentClientAsync();
-					//as.execute(thisProfessorComment);
+					as.execute(thisProfessorComment);
 					likesTextView.setText("" + (oldCount + 1));
 					notifyDataSetChanged(); //This line is necessary for sorting.
 				}
 			}
 		});
-		commentTextView.setText(values[position].getComment());
+		String commentBeingDisplayed = values[position].getComment();
+		Log.d("ProfessorCommentsListAdapter", commentBeingDisplayed);
+		commentTextView.setText(commentBeingDisplayed);
 		likesTextView.setText(values[position].getLikes() + "");
 
 		return rowView;
@@ -91,7 +93,7 @@ public class ProfessorCommentsListAdapter extends ArrayAdapter<ProfessorComment>
 			if (res == null)
 				Log.d("CommentsListAdapter", "ProfessorComment clientAsync unsuccessful");
 			else {
-				Log.d("CommentsListAdapter", "ProfessorComment saving: " + res);
+				Log.d("CommentsListAdapter", "ProfessorComment updating: " + res);
 			}
 		}
 	}

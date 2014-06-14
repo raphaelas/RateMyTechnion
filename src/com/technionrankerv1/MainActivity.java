@@ -43,7 +43,6 @@ public class MainActivity extends SearchResults {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sign_in);
 
-		Log.d("+null is:", "" + null);
 		errorM = (TextView) findViewById(R.id.textView1);
 		final EditText passwordInput = (EditText) findViewById(R.id.editText2);
 		passwordInput.setOnKeyListener(new OnKeyListener() {

@@ -27,12 +27,12 @@ public class Communicator {
       URL url = new URL("https://android-236504-i.appspot.com/" + strs[0]);
       String param = encodeParams(strs);
       HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+      System.setProperty("http.keepAlive", "false");
       con.setDoOutput(true);
       con.setRequestMethod("POST");
       con.setFixedLengthStreamingMode(param.getBytes().length);
-      con.setRequestProperty("accept-charset", "UTF-8");
       con.setRequestProperty("Content-Type",
-          "application/x-www-form-urlencoded; charset=utf-8");
+          "application/x-www-form-urlencoded");
       con.addRequestProperty("Auth", "123");
       PrintWriter out = new PrintWriter(con.getOutputStream());
       out.print(param);
