@@ -1,6 +1,7 @@
 package com.technionrankerv1;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -52,19 +53,17 @@ public class ProfessorView extends SearchResults {
     	canSubmit = ((ApplicationWithGlobalVariables) this.getApplication()).canSubmitRatings();
     	loggedIn = ((ApplicationWithGlobalVariables) this.getApplication()).isLoggedIn();
     	textViewProfessorRatingSubmitted = (TextView) findViewById(R.id.textViewProfessorRatingSubmitted);
-    	displayAllComments(comments);
 		Bundle bundle = getIntent().getExtras();
     	String lookupProfessorName = bundle.getString("professorName");
     	Professor cLookup = new Professor(null, null, null, StringEscapeUtils.escapeJava(lookupProfessorName), true);
     	ClientAsyncGetProfessorByProfessorName cagpbpn = new ClientAsyncGetProfessorByProfessorName();
-    	Long pID;
 		try {
-			pID = cagpbpn.execute(cLookup).get().get(0).getId();
-	    	ProfessorRating crLookup = new ProfessorRating(null, null, pID, 0, 0, 0, 0);
+			professorId = cagpbpn.execute(cLookup).get().get(0).getId();
+	    	ProfessorRating crLookup = new ProfessorRating(null, null, professorId, 0, 0, 0, 0);
 	    	GetProfessorRatingsClientAsync gcrca = new GetProfessorRatingsClientAsync();
 	    	gcrca.execute(crLookup);
     		GetProfessorCommentsClientAsync gccca = new GetProfessorCommentsClientAsync();
-    		ProfessorComment ccLookup = new ProfessorComment(pID, null, null, null, 0);
+    		ProfessorComment ccLookup = new ProfessorComment(professorId, null, null, null, 0);
     		gccca.execute(ccLookup);
 
 		} catch (InterruptedException e) {
@@ -184,9 +183,11 @@ public class ProfessorView extends SearchResults {
 		if (!alreadySubmitted && canSubmit) {
 			EditText et = (EditText) findViewById(R.id.professorComment);
 	    	String studentName = ((ApplicationWithGlobalVariables) this.getApplication()).getStudentName();
+	    	String studentNameEncoded = StringEscapeUtils.escapeJava(studentName);
 			String commentText = et.getText().toString();
 	    	commentText = studentName + ": " + commentText;
-			ProfessorComment pc = new ProfessorComment(professorId, studentId, commentText, null, 0);
+	    	String dbCommentText = studentNameEncoded + ": " + commentText;
+			ProfessorComment pc = new ProfessorComment(professorId, studentId, dbCommentText, null, 0);
 			comments.add(pc);
 			displayAllComments(comments);
 			InsertProfessorCommentClientAsync as2 = new InsertProfessorCommentClientAsync();
@@ -196,6 +197,7 @@ public class ProfessorView extends SearchResults {
 	
 	public void displayAllComments(List<ProfessorComment> allComments) {
 		ListView professorCommentsList = (ListView) findViewById(R.id.professorCommentsList);
+		Log.d("allComments.size: ", allComments.size() + "");
 	    ProfessorCommentsListAdapter adapter = new ProfessorCommentsListAdapter(
 	    		this, allComments.toArray(new ProfessorComment[(allComments.size())]));
 	    TextView emptyComments = (TextView) findViewById(R.id.emptyProfessorComments);
@@ -291,7 +293,7 @@ public class ProfessorView extends SearchResults {
 			if (res == null)
 				Log.d(getLocalClassName(), "ProfessorComment clientAsync unsuccessful");
 			else {
-				Log.d(getLocalClassName(), res);
+				Log.d(getLocalClassName(), "Insert ProfessorComment: " + res);
 			}
 		}
 	}
@@ -379,8 +381,8 @@ public class ProfessorView extends SearchResults {
 
 		@Override
 		protected List<ProfessorComment> doInBackground(ProfessorComment... params) {
-	    	ProfessorComment cc = params[0];
-	    	List<ProfessorComment> result = new TechnionRankerAPI().getProfessorCommentByProfessor(cc);
+	    	ProfessorComment pc = params[0];
+	    	List<ProfessorComment> result = new TechnionRankerAPI().getProfessorCommentByProfessor(pc);
 			return result;
 		}
 
@@ -394,6 +396,15 @@ public class ProfessorView extends SearchResults {
 			}
 			else {
 				Log.d(getLocalClassName(), "Get ProfessorComments succeeded.");
+				for (int i = 0; i < res.size(); i++) {
+					ProfessorComment tempPC = res.get(i);
+					String[] splitted = tempPC.getComment().split(":");
+					Log.d(getLocalClassName(), Arrays.toString(splitted));
+					String sName = StringEscapeUtils.unescapeJava(splitted[0]);
+					String nameToSet = sName + ":\n" + splitted[1];
+					Log.d(getLocalClassName(), nameToSet);
+					tempPC.setComment(nameToSet);
+				}
 				comments = res;
 		    	displayAllComments(comments);
 			}

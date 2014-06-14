@@ -275,6 +275,5 @@
   		        android:textAppearance="?android:attr/textAppearanceMedium"
   		        android:textColor="@color/gray"
   		        />
-  		        
         </LinearLayout>
     </ScrollView>

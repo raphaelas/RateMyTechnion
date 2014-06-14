@@ -43,6 +43,7 @@ public class MainActivity extends SearchResults {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sign_in);
 
+		Log.d("+null is:", "" + null);
 		errorM = (TextView) findViewById(R.id.textView1);
 		final EditText passwordInput = (EditText) findViewById(R.id.editText2);
 		passwordInput.setOnKeyListener(new OnKeyListener() {
@@ -517,10 +518,6 @@ public class MainActivity extends SearchResults {
 								stringArray[i]=tempString.substring(tempint, tempint+6);
 								tempint=tempint+8;
 							}
-							for(int i=0; i<(int)((tempString.length()-50)/7-2);i++){
-								Log.d("Leo", stringArray[i]);
-								Log.d("leo1", i+"");
-							}
 						((ApplicationWithGlobalVariables) getApplication()).setStudentName(name);
 						Intent i = new Intent(MainActivity.this,
 								FragmentMainActivity.class);
@@ -568,6 +565,10 @@ public class MainActivity extends SearchResults {
 				}
 			}
 		});
+	}
+	
+	@Override
+	public void onBackPressed() {
 	}
 
 //	String getHeadProf(String[] s, boolean startOn1) {

@@ -10,6 +10,8 @@
         android:id="@+id/leosCourse"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp" />
+        android:layout_marginTop="50dp"
+        android:divider="@color/gray"
+        android:dividerHeight="1dp" />
 
 </RelativeLayout>

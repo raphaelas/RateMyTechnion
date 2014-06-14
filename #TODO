@@ -1,19 +1,6 @@
 TODO:
-
-Small fixes:
-Fix log in button.
-Set up CourseView/ProfessorView existing ratings.
-
-
-Maybe add loading page?
-
-Every professor in the UG system you can search for.
-You can rate anyone - but limit 10 ratings per semester.
-
-Include screenshots of parsed pages in our poster?
-
-Big tasks:
-1. Database
-2. Menu bar
-3. Previous ratings
-
+Local database.
+Fix comments look: alignment and button.
+Repopulate courses, professors, professor ratings.
+Layout for phones.
+Update CourseView.

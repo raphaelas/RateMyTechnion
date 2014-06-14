@@ -33,7 +33,7 @@ public class CourseCommentsListAdapter extends ArrayAdapter<CourseComment> {
 		View rowView = inflater.inflate(R.layout.comments_list_item, parent, false);
 		TextView commentTextView = (TextView) rowView.findViewById(R.id.singleCommentText);
 		final TextView likesTextView = (TextView) rowView.findViewById(R.id.likesCountText);
-		final ImageButton thumbImage = (ImageButton) rowView.findViewById(R.id.thumbImage);
+		ImageButton thumbImage = (ImageButton) rowView.findViewById(R.id.thumbImage);
 		thumbImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

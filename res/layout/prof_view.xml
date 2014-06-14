@@ -279,5 +279,4 @@
   		        android:textColor="@color/gray"
   		        />
         </LinearLayout>
-
     </ScrollView>

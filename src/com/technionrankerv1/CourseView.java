@@ -348,7 +348,6 @@ public class CourseView extends SearchResults {
 			if (res == null) {
 				Log.d(getLocalClassName(), "Get CourseRatings failed.");
 			}
-			
 			else {
 				Log.d(getLocalClassName(), "Get CourseRatings succeeded.");
 			}
@@ -375,11 +374,9 @@ public class CourseView extends SearchResults {
 		protected void onPostExecute(List<CourseComment> res) {
 			if (res == null) {
 				Log.d(getLocalClassName(), "Get CourseComments failed.");
-
 			}
 			else {
 				Log.d(getLocalClassName(), "Get CourseComments succeeded.");
-
 			}
 		}
 	}
