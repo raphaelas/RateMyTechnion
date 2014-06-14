@@ -499,7 +499,7 @@ public abstract class SearchResults extends ActionBarActivity {
 		@Override
 		protected String doInBackground(List<Professor>... params) {
 			String result = null;
-			//result = db.dropAllProfessorComments().toString();
+			//result = db.dropAllCourseComments().toString();
 			return result;
 		}
 
@@ -508,7 +508,7 @@ public abstract class SearchResults extends ActionBarActivity {
 			if (res == null)
 				Log.d(getLocalClassName(), "SearchResults async unsuccessful");
 			else {
-				Log.d(getLocalClassName(), "Dropping professor comments: " + res);
+				Log.d(getLocalClassName(), "Dropping course comments: " + res);
 			}
 		}
 	}

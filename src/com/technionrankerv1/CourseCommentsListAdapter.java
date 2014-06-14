@@ -34,6 +34,13 @@ public class CourseCommentsListAdapter extends ArrayAdapter<CourseComment> {
 		TextView commentTextView = (TextView) rowView.findViewById(R.id.singleCommentText);
 		final TextView likesTextView = (TextView) rowView.findViewById(R.id.likesCountText);
 		ImageButton thumbImage = (ImageButton) rowView.findViewById(R.id.thumbImage);
+		ApplicationWithGlobalVariables a2 = ((ApplicationWithGlobalVariables) context.getApplicationContext());
+		CourseComment thisCourseComment2 = values[position];
+		if (a2.isCourseCommentLiked(a2.getStudentID())
+				|| !a2.isLoggedIn() || thisCourseComment2.
+				getStudentID().equals(a2.getStudentID())) {
+			thumbImage.setEnabled(false);
+		}
 		thumbImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

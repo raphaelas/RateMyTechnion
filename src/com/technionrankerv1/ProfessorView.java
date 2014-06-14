@@ -54,7 +54,7 @@ public class ProfessorView extends SearchResults {
 
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    	setContentView(R.layout.prof_view);
+    	setContentView(R.layout.professor_view);
     	a = ((ApplicationWithGlobalVariables) this.getApplication());
     	studentId = a.getStudentID();
     	canSubmit = a.canSubmitRatings();
@@ -87,8 +87,8 @@ public class ProfessorView extends SearchResults {
     	rInteractivity = (RatingBar) findViewById(R.id.professorRatingBarInteractivity);
     	
     	final ProfessorRating pr = new ProfessorRating(null, studentId, professorId,
-    			Math.round(rOverall.getRating()), Math.round(rClarity.getRating()),
-    			Math.round(rPreparedness.getRating()), Math.round(rInteractivity.getRating()));
+    			rOverall.getRating(), rClarity.getRating(),
+    			rPreparedness.getRating(), rInteractivity.getRating());
     	Button ratingButton = (Button) findViewById(R.id.professorRatingButton);
     	ratingButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -96,7 +96,6 @@ public class ProfessorView extends SearchResults {
 				hideSoftKeyboard();
 				saveProfessorRating(pr);
 				createProfessorComment(pr.getProfessorID(), pr.getStudentID());
-//				alreadySubmitted = true;
 			}
 		});
     	if (!loggedIn) {

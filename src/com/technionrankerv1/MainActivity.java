@@ -519,7 +519,7 @@ public class MainActivity extends SearchResults {
 						// Log.d(getLocalClassName(), doc1.toString().length()
 						// +"");
 						 URL url=res1.url();
-						 Log.d(getLocalClassName(), url.toString());
+						 //Log.d(getLocalClassName(), url.toString());
 							String tempString=url.toString();
 							String[] stringArray=new String[(int)((tempString.length()-50)/7)-2];
 							int tempint=50;

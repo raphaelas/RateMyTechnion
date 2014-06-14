@@ -1,9 +1,13 @@
 package com.technionrankerv1;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +15,8 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -21,106 +27,78 @@ import android.widget.TextView;
 import com.serverapi.TechnionRankerAPI;
 
 /**
- * This class requires one variable to be passed in: "courseNumber"
+ * This class requires two variables to be passed in: "courseName" and "studentId"
  * @author raphaelas
  *
  */
 public class CourseView extends SearchResults {
-	Long courseId = Long.valueOf(0);
-	Long studentId = Long.valueOf(0);
-	boolean alreadySubmitted = false;
-	TextView textViewCourseRatingSubmitted;
+    public Long courseId = Long.valueOf(0);
+    public Long studentId = Long.valueOf(0);
+    public Course course;
+    public boolean alreadySubmitted = false;
+    public TextView textViewCourseRatingSubmitted;
 	List<CourseComment> comments =  new ArrayList<CourseComment>();
 	boolean canSubmit;
 	boolean loggedIn;
-	
-    public void onCreate(Bundle savedInstanceState) {
+	boolean shouldPreventSubmit = false;
+    float averageOverall = 0;
+    float averageEnjoyability = 0;
+    float averageUsefulness = 0;
+    float averageDifficulty = 0;
+	public RatingBar rOverall;
+	public RatingBar rUsefulness;
+	public RatingBar rEnjoyability;
+	public RatingBar rDifficulty;
+	public String emptyCommentsString;
+	ApplicationWithGlobalVariables a;
+
+	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     	setContentView(R.layout.course_view);
-    	studentId = ((ApplicationWithGlobalVariables) this.getApplication()).getStudentID();
-    	canSubmit = ((ApplicationWithGlobalVariables) this.getApplication()).canSubmitRatings();
-    	loggedIn = ((ApplicationWithGlobalVariables) this.getApplication()).isLoggedIn();
+    	a = ((ApplicationWithGlobalVariables) this.getApplication());
+    	studentId = a.getStudentID();
+    	canSubmit = a.canSubmitRatings();
+    	loggedIn = a.isLoggedIn();
     	textViewCourseRatingSubmitted = (TextView) findViewById(R.id.textViewCourseRatingSubmitted);
-    	Bundle bundle = getIntent().getExtras();
-    	final String courseNumber = bundle.getString("courseNumber");
-    	final String courseName = bundle.getString("courseName");
-    	Course cLookup = new Course(null, null, courseNumber, null, null, null, true);
-    	ClientAsyncGetCourseByCourseNumber cagcbcn = new ClientAsyncGetCourseByCourseNumber();
-    	Long cID;
-    	float averageOverall = 0;
-    	float averageEnjoyability = 0;
-    	float averageUsefulness = 0;
-    	float averageDifficulty = 0;
+		Bundle bundle = getIntent().getExtras();
+		String lookupCourseNumber = bundle.getString("courseNumber");
+    	String lookupCourseName = bundle.getString("courseName");
+    	Course cLookup = new Course(null, null, lookupCourseNumber, 
+    			null, null, null, true);
+    	Log.d(lookupCourseNumber, lookupCourseName);
+    	ClientAsyncGetCourseByCourseNumber cagpbpn = new ClientAsyncGetCourseByCourseNumber();
 		try {
-			cID = cagcbcn.execute(cLookup).get().get(0).getId();
-	    	CourseRating crLookup = new CourseRating(null, cID, 0, 0, 0, 0);
+			courseId = cagpbpn.execute(cLookup).get().get(0).getId();
+	    	CourseRating crLookup = new CourseRating(studentId, courseId, 0, 0, 0, 0);
 	    	GetCourseRatingsClientAsync gcrca = new GetCourseRatingsClientAsync();
-	    	List<CourseRating> currRatings = gcrca.execute(crLookup).get();
-	    	int totalRatings = currRatings.size();
-	    	averageOverall = 0;
-	    	averageEnjoyability = 0;
-	    	averageUsefulness = 0;
-	    	averageDifficulty = 0;
-	    	for (CourseRating cRating: currRatings) {
-	    		Long tempStudentId = cRating.getStudentID();
-	    		averageOverall += cRating.getOverallRating();
-	    		averageEnjoyability += cRating.getEnjoyability();
-	    		averageUsefulness += cRating.getUsefulness();
-	    		averageDifficulty += cRating.getDifficulty();
-	    		if (tempStudentId.equals(studentId)) {
-	    			alreadySubmitted = true;
-	    		}
-	    	}
-    		averageOverall /= totalRatings;
-    		averageEnjoyability /= totalRatings;
-    		averageUsefulness /= totalRatings;
-    		averageDifficulty /= totalRatings;
-    		GetCourseCommentsClientAsync gccca = new GetCourseCommentsClientAsync();
-    		CourseComment ccLookup = new CourseComment(cID, null, null, null, 0);
-    		comments = gccca.execute(ccLookup).get();
-	    	displayAllComments(comments);
+	    	gcrca.execute(crLookup);
+	    	getAllCourseCommentsDatabase();
 		} catch (InterruptedException e) {
 			//TODO: better exception handlers.
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
-
+    	TextView courseNameText = (TextView) findViewById(R.id.textViewCourseName);
+    	courseNameText.setText(lookupCourseNumber + " - " + lookupCourseName);
 		String faculty = bundle.getString("faculty");
 		TextView facultyText = (TextView) findViewById(R.id.courseFacultyText);
 		facultyText.setText(faculty);
-		TextView textViewCourseName = (TextView) findViewById(R.id.textViewCourseName);
-		textViewCourseName.setText(courseNumber + " - " + courseName);
-
-    	Course c = new Course(null, null, courseNumber, null, null, null, false);
-		ClientAsyncGetCourseByCourseNumber as = new ClientAsyncGetCourseByCourseNumber();
-		as.execute(c);
-		/* Bring this back once our database really works:
-		try {
-			as.get(); //This will block until as.execute completes
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
+    	rOverall = (RatingBar) findViewById(R.id.ratingBarOverall);
+    	rEnjoyability = (RatingBar) findViewById(R.id.ratingBarEnjoyability);
+    	rUsefulness = (RatingBar) findViewById(R.id.ratingBarUsefulness);
+    	rDifficulty = (RatingBar) findViewById(R.id.ratingBarDifficulty);
     	
-    	RatingBar rOverall = (RatingBar) findViewById(R.id.ratingBarOverall);
-    	RatingBar rEnjoyability = (RatingBar) findViewById(R.id.ratingBarEnjoyability);
-    	RatingBar rUsefulness = (RatingBar) findViewById(R.id.ratingBarUsefulness);
-    	RatingBar rDifficulty = (RatingBar) findViewById(R.id.ratingBarDifficulty);
-    	final CourseRating cr = new CourseRating(studentId, Long.valueOf(courseNumber),
-    			Math.round(rOverall.getRating()), Math.round(rEnjoyability.getRating()),
-    			Math.round(rUsefulness.getRating()), Math.round(rDifficulty.getRating()));
+    	final CourseRating cr = new CourseRating(studentId, courseId,
+    			rOverall.getRating(), rEnjoyability.getRating(),
+    			rUsefulness.getRating(), rDifficulty.getRating());
     	Button ratingButton = (Button) findViewById(R.id.rating_button);
     	ratingButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				saveRatings(cr);
-				createComment(cr.getCourseId(), cr.getStudentID());
-				alreadySubmitted = true;
+				hideSoftKeyboard();
+				saveCourseRating(cr);
+				createProfessorComment(cr.getCourseId(), cr.getStudentID());
 			}
 		});
     	if (!loggedIn) {
@@ -135,45 +113,38 @@ public class CourseView extends SearchResults {
 			et.setGravity(Gravity.CENTER);
 			et.setFocusable(false);
     	}
-    	rOverall.setRating(averageOverall);
-    	rEnjoyability.setRating(averageEnjoyability);
-    	rUsefulness.setRating(averageUsefulness);
-    	rDifficulty.setRating(averageDifficulty);
     	rOverall.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
 			@Override
 			public void onRatingChanged(RatingBar ratingBar, float rating,
 					boolean fromUser) {
-				cr.setOverallRating(Math.round(rating));
+				cr.setOverallRating(rating);
 			}
     	});
-    	rEnjoyability.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
-			@Override
-			public void onRatingChanged(RatingBar ratingBar, float rating,
-					boolean fromUser) {		
-				cr.setEnjoyability(Math.round(rating));
-			}
-    	});
+    	
     	rUsefulness.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
 			@Override
 			public void onRatingChanged(RatingBar ratingBar, float rating,
-					boolean fromUser) {		
-				cr.setUsefulness(Math.round(rating));
+					boolean fromUser) {
+				cr.setUsefulness(rating);
 			}
     	});
+    	
+    	rEnjoyability.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
+			@Override
+			public void onRatingChanged(RatingBar ratingBar, float rating,
+					boolean fromUser) {
+				cr.setEnjoyability(rating);
+			}
+    	});
+    	
     	rDifficulty.setOnRatingBarChangeListener(new OnRatingBarChangeListener() {
 			@Override
 			public void onRatingChanged(RatingBar ratingBar, float rating,
-					boolean fromUser) {		
+					boolean fromUser) {
 				cr.setDifficulty(Math.round(rating));
 			}
     	});
     	
-
-    	/**
-    	 * This was copied from StackOverflow to allow for the comments
-    	 * ListView to be inside a ScrollView (without this code, only
-    	 * the first comment would be displayed)
-    	 */
     	ListView lv = (ListView)findViewById(R.id.courseCommentsList);  // your listview inside scrollview
     	lv.setOnTouchListener(new ListView.OnTouchListener() {
     	        @Override
@@ -197,49 +168,83 @@ public class CourseView extends SearchResults {
     	        }
     	    });
     }
-    
-    protected void saveRatings(CourseRating cr) {
+	
+	protected void saveCourseRating(CourseRating cr) {
     	if (!canSubmit) {
 			textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
 			textViewCourseRatingSubmitted.setText("Whoops, you've reached the limit for posting ratings this semester.");
     	}
+		else if (shouldPreventSubmit){
+			textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
+			textViewCourseRatingSubmitted.setText("Whoops, you already submitted on "
+					+ "another device.");
+		}
     	else if (!alreadySubmitted) {
 			textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
 			textViewCourseRatingSubmitted.setText("Please wait while we record your response.");
-			CourseRatingClientAsync as3 = new CourseRatingClientAsync();
+			InsertCourseRatingClientAsync as3 = new InsertCourseRatingClientAsync();
 			as3.execute(cr);
 		}
 		else {
 			textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
-			textViewCourseRatingSubmitted.setText("Whoops, you already submitted and cannot submit again.");
+			textViewCourseRatingSubmitted.setText("Please wait while we update your response.");
+			InsertCourseRatingClientAsync as3 = new InsertCourseRatingClientAsync();
+			as3.execute(cr);
 		}
-    }
-    
-	public void createComment(Long courseId, Long studentId) {
-		if (!alreadySubmitted && canSubmit) {
-			((ApplicationWithGlobalVariables) this.getApplication()).incrementRatingsSubmitted();
-	    	canSubmit = ((ApplicationWithGlobalVariables) this.getApplication()).canSubmitRatings();
-	    	String studentName = ((ApplicationWithGlobalVariables) this.getApplication()).getStudentName();
+
+	}
+ 
+	public void getAllCourseCommentsDatabase() {
+		GetCourseCommentsClientAsync gccca = new GetCourseCommentsClientAsync();
+		ProfessorComment ccLookup = new ProfessorComment(courseId, null, null, null, 0);
+		gccca.execute(ccLookup);
+	}
+	
+	private void hideSoftKeyboard(){
+		EditText et = (EditText) findViewById(R.id.comment);
+	    if(getCurrentFocus()!=null && getCurrentFocus() instanceof EditText){
+	        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+	        imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+	    }
+	}
+	
+	protected void createProfessorComment(Long courseId, Long studentId) {
+		if (!shouldPreventSubmit && canSubmit) {
 			EditText et = (EditText) findViewById(R.id.comment);
-	    	String commentText = et.getText().toString();
-	    	commentText = studentName + ": " + commentText;
-	    	if (commentText != null && commentText.length() > 0) {
-		    	CourseComment cc = new CourseComment(courseId, studentId, commentText, null, 0);
-		    	comments.add(cc);
-		    	displayAllComments(comments);
-		    	CourseCommentClientAsync as2 = new CourseCommentClientAsync();
-		    	as2.execute(cc);
-	    	}
+	    	String studentName = ((ApplicationWithGlobalVariables) this.getApplication()).getStudentName();
+			String tempCommentText = et.getText().toString();
+	    	String immediateCommentText = "" + studentName + tempCommentText;
+	    	Log.d("Immediate comment:", immediateCommentText);
+	    	String dbCommentText = StringEscapeUtils.escapeJava(immediateCommentText);
+			ProfessorComment databasePC = new ProfessorComment(courseId, studentId, dbCommentText, null, 0);
+			InsertCourseCommentClientAsync as2 = new InsertCourseCommentClientAsync();
+			as2.execute(databasePC);			
 		}
-    }
-	 
-	public void displayAllComments(List<CourseComment> comments2) {
+	}
+	
+	public void displayAllComments(List<CourseComment> allComments) {
 		ListView courseCommentsList = (ListView) findViewById(R.id.courseCommentsList);
 	    CourseCommentsListAdapter adapter = new CourseCommentsListAdapter(
-	    		this, comments2.toArray(new CourseComment[(comments2.size())]));
+	    		this, allComments.toArray(new CourseComment[(allComments.size())]));
 	    TextView emptyComments = (TextView) findViewById(R.id.emptyCourseComments);
+	    emptyComments.setText(emptyCommentsString);
+	    adapter.sort(new Comparator<CourseComment>() {
+
+			@Override
+			public int compare(CourseComment o1, CourseComment o2) {
+				int toReturn = o2.getLikes() - o1.getLikes();
+				return toReturn;
+			}
+	    	
+	    });
 	    courseCommentsList.setEmptyView(emptyComments);
 	    courseCommentsList.setAdapter(adapter);
+	    LayoutParams l = courseCommentsList.getLayoutParams();
+	    if (l.height < 400) {
+		    l.height = l.height + (allComments.size() * 100);
+		    courseCommentsList.setLayoutParams(l);
+	    }
+
 	}
 	
 	private class ClientAsyncGetCourseByCourseNumber extends AsyncTask<Course, Void, List<Course>> {
@@ -254,55 +259,34 @@ public class CourseView extends SearchResults {
 		@Override
 		protected List<Course> doInBackground(Course... params) {
 	    	Course courseToLookUp = params[0];
-	    	List<Course> theCourse = new TechnionRankerAPI().getCourseByCourseNumber(courseToLookUp);
-			return theCourse;
+	    	List<Course> theCourses = new TechnionRankerAPI().
+	    			getCourseByCourseNumber(courseToLookUp);
+			return theCourses;
 		}
 
 		@Override
 		protected void onPostExecute(List<Course> res) {
 			if (res == null)
-				Log.d(getLocalClassName(), "Course clientAsync unsuccessful");
+				Log.d(getLocalClassName(), "GetCourse clientAsync unsuccessful");
+			else if (res.isEmpty()) {
+				Log.d(getLocalClassName(), "GetCourse clientAsync returned empty.");
+			}
 			else {
-				Log.d(getLocalClassName(), res.get(0).getName());
+				Log.d(getLocalClassName(), "GetCourse clientAsync successful");
 		    	courseId = res.get(0).getId();
+		    	course = res.get(0);
 			}
 		}
 	}
 	
 	
-	private class CourseCommentClientAsync extends AsyncTask<CourseComment, Void, String> {
-		public CourseCommentClientAsync() {
+	private class InsertCourseRatingClientAsync extends AsyncTask<CourseRating, Void, String> {
+		public InsertCourseRatingClientAsync() {
 		}
 
 		@Override
 		protected void onPreExecute() {
-			super.onPreExecute();
-		}
-
-		@Override
-		protected String doInBackground(CourseComment... params) {
-	    	CourseComment cc = params[0];
-	    	String result = new TechnionRankerAPI().insertCourseComment(cc).toString();
-			return result;
-		}
-
-		@Override
-		protected void onPostExecute(String res) {
-			if (res == null)
-				Log.d(getLocalClassName(), "CourseComment clientAsync unsuccessful");
-			else {
-				Log.d(getLocalClassName(), "CourseComment saving: " + res);
-			}
-		}
-	}
-	
-	
-	private class CourseRatingClientAsync extends AsyncTask<CourseRating, Void, String> {
-		public CourseRatingClientAsync() {
-		}
-
-		@Override
-		protected void onPreExecute() {
+			Log.d(getLocalClassName(), "Starting InsertCourseRatingClientAsync...");
 			super.onPreExecute();
 		}
 
@@ -316,13 +300,47 @@ public class CourseView extends SearchResults {
 		@Override
 		protected void onPostExecute(String res) {
 			if (res == null) {
+				//Log.d(getLocalClassName(), "CourseRating ClientAsync unsuccessful");
 				textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.red));
 				textViewCourseRatingSubmitted.setText("Sorry, please try submitting your rating again.");
 			}
-			
-			else {
+			else if (!alreadySubmitted) {
+				//Log.d(getLocalClassName(), res);
 				textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
 				textViewCourseRatingSubmitted.setText("Thank you.  Your rating was received.");
+				alreadySubmitted = true;
+			}
+			else {
+				textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
+				textViewCourseRatingSubmitted.setText("Thank you.  Your rating was updated.");
+			}
+		}
+	}
+	
+	private class InsertCourseCommentClientAsync extends AsyncTask<ProfessorComment, Void, String> {
+		public InsertCourseCommentClientAsync() {
+		}
+
+		@Override
+		protected void onPreExecute() {
+			Log.d(getLocalClassName(), "Starting InsertProfessorCommentClientAsync...");
+			super.onPreExecute();
+		}
+
+		@Override
+		protected String doInBackground(ProfessorComment... params) {
+	    	ProfessorComment cc = params[0];
+	    	String result = new TechnionRankerAPI().insertProfessorComment(cc).toString();
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(String res) {
+			if (res == null)
+				Log.d(getLocalClassName(), "CourseComment clientAsync unsuccessful");
+			else {
+				Log.d(getLocalClassName(), "Insert CourseComment: " + res);
+				getAllCourseCommentsDatabase();
 			}
 		}
 	}
@@ -333,6 +351,7 @@ public class CourseView extends SearchResults {
 
 		@Override
 		protected void onPreExecute() {
+			Log.d(getLocalClassName(), "Starting ProfessorCommentClientAsync...");
 			super.onPreExecute();
 		}
 
@@ -348,35 +367,110 @@ public class CourseView extends SearchResults {
 			if (res == null) {
 				Log.d(getLocalClassName(), "Get CourseRatings failed.");
 			}
+			else if (res.isEmpty()) {
+				Log.d(getLocalClassName(), "Get CourseRatings returned empty.");
+			}
 			else {
 				Log.d(getLocalClassName(), "Get CourseRatings succeeded.");
+		    	List<CourseRating> currRatings = res;
+		    	int totalRatings = currRatings.size();
+		    	averageOverall = 0;
+		    	averageEnjoyability = 0;
+		    	averageUsefulness = 0;
+		    	averageDifficulty = 0;
+		    	for (CourseRating cRating: currRatings) {
+		    		Long tempStudentId = cRating.getStudentID();
+		    		double tempOverallRating = cRating.getOverallRating();
+		    		double tempEnjoyability = cRating.getEnjoyability();
+		    		double tempUsefulness = cRating.getUsefulness();
+		    		double tempDifficulty = cRating.getDifficulty();
+		    		if (tempStudentId.equals(studentId)) {
+		    			alreadySubmitted = true;
+		    		}
+		    		else if (tempStudentId < 1000) {
+		    			totalRatings += tempStudentId;
+		    			tempOverallRating *= totalRatings;
+		    			tempEnjoyability *= totalRatings;
+		    			tempUsefulness *= totalRatings;
+		    			tempDifficulty *= totalRatings;
+		    		}
+		    		else {
+		    			totalRatings++;
+		    		}
+					averageOverall += tempOverallRating;
+					averageEnjoyability += tempEnjoyability;
+					averageUsefulness += tempUsefulness;
+					averageDifficulty += tempDifficulty;
+
+		    	}
+	    		averageOverall /= totalRatings;
+	    		averageEnjoyability /= totalRatings;
+	    		averageUsefulness /= totalRatings;
+	    		averageDifficulty /= totalRatings;
+	    		Log.d(getLocalClassName(), "" + averageOverall);
+	        	rOverall.setRating(averageOverall);
+	        	rUsefulness.setRating(averageUsefulness);
+	        	rEnjoyability.setRating(averageEnjoyability);
+	        	rDifficulty.setRating(averageDifficulty);
 			}
 		}
 	}
 	
-	private class GetCourseCommentsClientAsync extends AsyncTask<CourseComment, Void, List<CourseComment>> {
+	/**
+	 * Note: getCourseComments doesn't work - it returns useless ProfessorComments
+	 * So we are using ProfessorComment database calls instead.
+	 * @author raphaelas
+	 *
+	 */
+	private class GetCourseCommentsClientAsync extends AsyncTask<ProfessorComment, Void, List<ProfessorComment>> {
 		public GetCourseCommentsClientAsync() {
 		}
 
 		@Override
 		protected void onPreExecute() {
+			Log.d(getLocalClassName(), "Starting GetCourseCommentClientAsync...");
 			super.onPreExecute();
 		}
 
 		@Override
-		protected List<CourseComment> doInBackground(CourseComment... params) {
-	    	CourseComment cc = params[0];
-	    	List<CourseComment> result = new TechnionRankerAPI().getCourseCommentByCourse(cc);
+		protected List<ProfessorComment> doInBackground(ProfessorComment... params) {
+	    	ProfessorComment cc = params[0];
+	    	List<ProfessorComment> result = new TechnionRankerAPI().getProfessorCommentByProfessor(cc);
 			return result;
 		}
 
 		@Override
-		protected void onPostExecute(List<CourseComment> res) {
+		protected void onPostExecute(List<ProfessorComment> res) {
 			if (res == null) {
 				Log.d(getLocalClassName(), "Get CourseComments failed.");
+				emptyCommentsString = "Whoops, there was an error retrieving the comments.";
+			}
+			else if (res.isEmpty()) {
+				Log.d(getLocalClassName(), "Get CourseComments returned empty.");
+				emptyCommentsString = "There are no comments to show yet.";
+		    	displayAllComments(comments);
 			}
 			else {
+				ArrayList<CourseComment> resToUse = new ArrayList<CourseComment>();
 				Log.d(getLocalClassName(), "Get CourseComments succeeded.");
+				Log.d(getLocalClassName(), res.toString());
+				for (int i = 0; i < res.size(); i++) {
+					ProfessorComment tempPC = res.get(i);
+					CourseComment tempCC = new CourseComment(tempPC.getProfessorID(),
+							tempPC.getStudentID(), tempPC.getComment(), null, tempPC.getLikes());
+					String nameToSet = StringEscapeUtils.unescapeJava(tempCC.getComment());
+					//Log.d("nameToSet:", nameToSet);
+					String realName = StringEscapeUtils.escapeJava(nameToSet.split("\n")[0]);
+					Log.d("global: " + StringEscapeUtils.escapeJava(a.getStudentName().trim()), "curr: " + realName);
+					if ((StringEscapeUtils.escapeJava(a.getStudentName().trim())).contains(realName)) {
+						Log.d(getLocalClassName(), "Hoorah");
+						shouldPreventSubmit = true;
+					}
+					tempCC.setComment(nameToSet);
+					resToUse.add(tempCC);
+				}
+				comments = resToUse;
+		    	displayAllComments(comments);
 			}
 		}
 	}
