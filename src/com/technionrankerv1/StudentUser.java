@@ -4,7 +4,7 @@ package com.technionrankerv1;
 public class StudentUser {
   private Long id;
   private String studentID;
-  private String passwordHash; // TODO
+  private String passwordHash; 
   private String name;
   private boolean active;
 

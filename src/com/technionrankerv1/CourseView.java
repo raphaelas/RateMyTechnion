@@ -91,7 +91,6 @@ public class CourseView extends SearchResults {
 			getAllCourseRatingsDatabase();
 			getAllCourseCommentsDatabase();
 		} catch (InterruptedException e) {
-			// TODO: better exception handlers.
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			e.printStackTrace();

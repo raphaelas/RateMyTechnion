@@ -70,6 +70,7 @@
                 android:paddingTop="12dp"
                 android:text="@string/totalRatingsCaption"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="@dimen/pageview_textfontsize"
                 android:textColor="@color/white" />
 
             <TextView

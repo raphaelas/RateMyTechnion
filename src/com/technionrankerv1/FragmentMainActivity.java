@@ -67,7 +67,6 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 			}
 		});
 	
-        Bundle bundle = getIntent().getExtras();
 		String[] tempString = new String[a.courseList.length];
 		tempString=a.courseList;
 		List<String> profList = new ArrayList<String>();
@@ -102,7 +101,6 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 	}
 
 	public void coursesPart() {
-        Bundle bundle = getIntent().getExtras();
 		String[] tempString = new String[a.courseList.length];
 
 		tempString=a.courseList;

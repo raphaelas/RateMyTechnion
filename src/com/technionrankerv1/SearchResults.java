@@ -341,7 +341,6 @@ public abstract class SearchResults extends ActionBarActivity {
 	// infile.close();
 	// } // for courseFiles
 	// } catch (IOException e) {
-	// // TODO Auto-generated catch block
 	// e.printStackTrace();
 	// }
 	// Object[] allNumbersAndNames = numberAndName.toArray();
@@ -500,7 +499,7 @@ public abstract class SearchResults extends ActionBarActivity {
 				Cursor c = (MatrixCursor) cursorAdapter.getItem(position);
 				String value = c.getString(c
 						.getColumnIndexOrThrow("coursesAndProfessors"));
-				if (Character.isDigit(value.charAt(0))) {
+				if (value.length() > 0 && Character.isDigit(value.charAt(0))) {
 					String[] splitted = value.split(" - ");
 					String courseNumber = splitted[0];
 					String courseName = splitted[1];

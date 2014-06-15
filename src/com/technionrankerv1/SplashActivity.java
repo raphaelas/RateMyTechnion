@@ -3,7 +3,6 @@ package com.technionrankerv1;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Window;
 import android.view.WindowManager;
 
 public class SplashActivity extends SearchResults {

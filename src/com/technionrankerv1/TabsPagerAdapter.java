@@ -1,14 +1,8 @@
 package com.technionrankerv1;
  
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 
  
 public class TabsPagerAdapter extends FragmentPagerAdapter {

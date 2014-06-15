@@ -2,12 +2,7 @@ package com.technionrankerv1;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
 import org.jsoup.Jsoup;
@@ -16,7 +11,6 @@ import org.jsoup.nodes.Document;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -31,17 +25,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.serverapi.TechnionRankerAPI;
-
 public class MainActivity extends SearchResults {
 	private TextView errorM;
 	private String username;
 	private String password;
-	public LinkedHashSet<String> coursesThatDidNotMeetInSpring2014 = new LinkedHashSet<String>();
-	private Long currentProfessorId = null;
-	private Course currentCourse = null;
-	private HashMap<String, String> PLASTandPGRP = new HashMap<String, String>();
-	private HashMap<String, Long> lookedUpProfessors = new HashMap<String, Long>();
+	//private LinkedHashSet<String> coursesThatDidNotMeetInSpring2014 = new LinkedHashSet<String>();
+	//private Long currentProfessorId = null;
+	//private Course currentCourse = null;
+	//private HashMap<String, String> PLASTandPGRP = new HashMap<String, String>();
+	//private HashMap<String, Long> lookedUpProfessors = new HashMap<String, Long>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -523,10 +515,6 @@ public class MainActivity extends SearchResults {
 					e.printStackTrace();
 				}
 			}
-			// OP=LI&UID=922130174&PWD=43150202&Login.x=%D7%94%D7%AA%D7%97%D7%91%D7%A8
-			// 32016463
-			// 203868179
-			// 65374675
 		};
 		downloadThread.start();
 	}
@@ -598,48 +586,48 @@ public class MainActivity extends SearchResults {
 	// return null;
 	// }
 
-	private class GetProfessorClientAsync extends
-			AsyncTask<String, Void, List<Professor>> {
-		private String currentHebrewName;
-
-		public GetProfessorClientAsync() {
-		}
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		}
-
-		@Override
-		protected List<Professor> doInBackground(String... params) {
-			String hebrewName = params[0];
-			currentHebrewName = hebrewName;
-			String encodedHebrewName = StringEscapeUtils.escapeJava(hebrewName);
-			Professor lookup = new Professor(null, null, null,
-					encodedHebrewName, true);
-			List<Professor> result = new TechnionRankerAPI()
-					.getProfessorByProfessorHebrewName(lookup);
-			return result;
-		}
-
-		@Override
-		protected void onPostExecute(List<Professor> res) {
-			if (res == null) {
-				Log.d(getLocalClassName(), "Get of professor failed.");
-			} else if (res.size() == 0) {
-				Log.d(getLocalClassName(), "Get of professor returned empty.");
-			} else {
-				currentProfessorId = res.get(0).getId();
-				Log.d(getLocalClassName(),
-						"The professor id: "
-								+ currentProfessorId
-								+ " - "
-								+ StringEscapeUtils.unescapeJava(res.get(0)
-										.getHebrewName()));
-				lookedUpProfessors.put(currentHebrewName, currentProfessorId);
-			}
-		}
-	}
+//	private class GetProfessorClientAsync extends
+//			AsyncTask<String, Void, List<Professor>> {
+//		private String currentHebrewName;
+//
+//		public GetProfessorClientAsync() {
+//		}
+//
+//		@Override
+//		protected void onPreExecute() {
+//			super.onPreExecute();
+//		}
+//
+//		@Override
+//		protected List<Professor> doInBackground(String... params) {
+//			String hebrewName = params[0];
+//			currentHebrewName = hebrewName;
+//			String encodedHebrewName = StringEscapeUtils.escapeJava(hebrewName);
+//			Professor lookup = new Professor(null, null, null,
+//					encodedHebrewName, true);
+//			List<Professor> result = new TechnionRankerAPI()
+//					.getProfessorByProfessorHebrewName(lookup);
+//			return result;
+//		}
+//
+//		@Override
+//		protected void onPostExecute(List<Professor> res) {
+//			if (res == null) {
+//				Log.d(getLocalClassName(), "Get of professor failed.");
+//			} else if (res.size() == 0) {
+//				Log.d(getLocalClassName(), "Get of professor returned empty.");
+//			} else {
+//				currentProfessorId = res.get(0).getId();
+//				Log.d(getLocalClassName(),
+//						"The professor id: "
+//								+ currentProfessorId
+//								+ " - "
+//								+ StringEscapeUtils.unescapeJava(res.get(0)
+//										.getHebrewName()));
+//				lookedUpProfessors.put(currentHebrewName, currentProfessorId);
+//			}
+//		}
+//	}
 
 	/*
 	 * Raphi: code for populating courses and professors: private class
@@ -681,33 +669,34 @@ public class MainActivity extends SearchResults {
 	 * Log.d(getLocalClassName(), "Insert professor: " + res); } } }
 	 */
 
-	private class InsertProfessorRatingClientAsync extends
-			AsyncTask<ProfessorRating, Void, String> {
-		public InsertProfessorRatingClientAsync() {
-		}
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		}
-
-		@Override
-		protected String doInBackground(ProfessorRating... params) {
-			String result = null;
-			ProfessorRating professorRatingToAdd = params[0];
-			Log.d(getLocalClassName(), professorRatingToAdd.toString());
-			result = new TechnionRankerAPI().insertProfessorRating(
-					professorRatingToAdd).toString();
-			return result;
-		}
-
-		@Override
-		protected void onPostExecute(String res) {
-			if (res == null) {
-				Log.d(getLocalClassName(), "Insert professor rating failed.");
-			} else {
-				Log.d(getLocalClassName(), "Insert professor rating: " + res);
-			}
-		}
-	}
+	
+//	private class InsertProfessorRatingClientAsync extends
+//			AsyncTask<ProfessorRating, Void, String> {
+//		public InsertProfessorRatingClientAsync() {
+//		}
+//
+//		@Override
+//		protected void onPreExecute() {
+//			super.onPreExecute();
+//		}
+//
+//		@Override
+//		protected String doInBackground(ProfessorRating... params) {
+//			String result = null;
+//			ProfessorRating professorRatingToAdd = params[0];
+//			Log.d(getLocalClassName(), professorRatingToAdd.toString());
+//			result = new TechnionRankerAPI().insertProfessorRating(
+//					professorRatingToAdd).toString();
+//			return result;
+//		}
+//
+//		@Override
+//		protected void onPostExecute(String res) {
+//			if (res == null) {
+//				Log.d(getLocalClassName(), "Insert professor rating failed.");
+//			} else {
+//				Log.d(getLocalClassName(), "Insert professor rating: " + res);
+//			}
+//		}
+//	}
 }

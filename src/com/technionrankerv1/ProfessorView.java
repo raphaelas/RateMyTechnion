@@ -87,7 +87,6 @@ public class ProfessorView extends SearchResults {
 			getAllProfessorRatingsDatabase();
 	    	getAllProfessorCommentsDatabase();
 		} catch (InterruptedException e) {
-			//TODO: better exception handlers.
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			e.printStackTrace();
