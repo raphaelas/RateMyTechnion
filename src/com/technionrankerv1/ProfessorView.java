@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutionException;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -53,6 +54,10 @@ public class ProfessorView extends SearchResults {
 	public String emptyCommentsString;
 	ApplicationWithGlobalVariables a;
 
+	
+	public static boolean isTablet(Context context) {
+		return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+	}
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     	setContentView(R.layout.professor_view);
@@ -62,6 +67,17 @@ public class ProfessorView extends SearchResults {
     	loggedIn = a.isLoggedIn();
     	textViewProfessorRatingSubmitted = (TextView) findViewById(R.id.textViewProfessorRatingSubmitted);
 		Bundle bundle = getIntent().getExtras();
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
+				&& (!isTablet(getApplicationContext()))) {
+			TextView t = (TextView) findViewById(R.id.prof_clarity);
+			t.setTextSize(18);
+			TextView t1 = (TextView) findViewById(R.id.prof_interactivity);
+			t1.setTextSize(18);
+			TextView t2 = (TextView) findViewById(R.id.prof_preparedness);
+			t2.setTextSize(18);
+			TextView t3 = (TextView) findViewById(R.id.prof_overall);
+			t3.setTextSize(18);
+		}
     	String lookupProfessorName = bundle.getString("professorName");
     	Professor cLookup = new Professor(null, null, null, StringEscapeUtils.escapeJava(lookupProfessorName), true);
     	ClientAsyncGetProfessorByProfessorName cagpbpn = new ClientAsyncGetProfessorByProfessorName();

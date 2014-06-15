@@ -74,7 +74,8 @@ public abstract class SearchResults extends ActionBarActivity {
 				getApplication()).professorsAndCourses;
 		if (globalProfessorsAndCourses == null) {
 			professorsAndCourses = concat(parseCourses(), parseHebrewProfessors());
-			globalProfessorsAndCourses = professorsAndCourses;
+			((ApplicationWithGlobalVariables)
+					getApplication()).professorsAndCourses = professorsAndCourses;
 		}
 		else {
 			professorsAndCourses = globalProfessorsAndCourses;
@@ -344,8 +345,8 @@ public abstract class SearchResults extends ActionBarActivity {
 	    		if (getResources().getConfiguration().orientation ==
 	    				Configuration.ORIENTATION_LANDSCAPE) {
 	    			if (getLocalClassName().equals("MainActivity")) {
-		    			TextView t = (TextView) findViewById(R.id.introductoryText);
-		    			t.setVisibility(View.GONE);
+		    		//	TextView t = (TextView) findViewById(R.id.introductoryText);
+		    	//		t.setVisibility(View.GONE);
 	    			}
 	    			else if (getLocalClassName().equals("FragmentMainActivity")) {
 	    				TextView t2 = (TextView) findViewById(R.id.privacyPolicyTextView);
@@ -360,8 +361,8 @@ public abstract class SearchResults extends ActionBarActivity {
 	    		if (getResources().getConfiguration().orientation ==
 	    				Configuration.ORIENTATION_LANDSCAPE) {
 	    			if (getLocalClassName().equals("MainActivity")) {
-		    			TextView t = (TextView) findViewById(R.id.introductoryText);
-		    			t.setVisibility(View.VISIBLE);
+		    	//		TextView t = (TextView) findViewById(R.id.introductoryText);
+		    		//	t.setVisibility(View.VISIBLE);
 	    			}
 	    			else if (getLocalClassName().equals("FragmentMainActivity")) {
 	    				TextView t2 = (TextView) findViewById(R.id.privacyPolicyTextView);

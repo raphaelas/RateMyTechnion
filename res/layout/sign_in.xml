@@ -104,33 +104,16 @@
             android:text="@string/blank"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/red" />
-        <!--   
-        <EditText
-            android:id="@+id/editTextStart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/login"
-            android:layout_gravity="bottom|left"
-            android:ems="10"
-            android:hint="Start"
-            android:inputType="number"
-            android:textColor="@color/LoginBorderColor"
-            android:textColorHint="@color/LoginBorderColor"
-            android:textCursorDrawable="@null" />
 
-        <EditText
-            android:id="@+id/editTextEnd"
+        <ProgressBar
+            style="?android:attr/progressBarStyleInverse"
+            android:id="@+id/mainSpinner1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:background="@drawable/login"
-            android:ems="10"
-            android:hint="End"
-            android:inputType="number"
-            android:textColor="@color/LoginBorderColor"
-            android:textColorHint="@color/LoginBorderColor"
-            android:textCursorDrawable="@null" />
--->
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="invisible">
+            </ProgressBar>
     </LinearLayout>
     </ScrollView>
     
