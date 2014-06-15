@@ -60,7 +60,7 @@ public abstract class SearchResults extends ActionBarActivity {
 	public void onCreate(Bundle savedInstance){
 
 		super.onCreate(savedInstance);
-		if (!getLocalClassName().equals("MainActivity")) {
+		if (!getLocalClassName().equals("MainActivity") && !getLocalClassName().equals("FragmentMainActivity") && !getLocalClassName().equals("SplashActivity")) {
 	        getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 		// Detect if connected to Internet
