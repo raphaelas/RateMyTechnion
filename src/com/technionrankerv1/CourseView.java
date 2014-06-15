@@ -468,11 +468,8 @@ public class CourseView extends SearchResults {
 					CourseComment tempCC = new CourseComment(tempPC.getProfessorID(),
 							tempPC.getStudentID(), tempPC.getComment(), null, tempPC.getLikes());
 					String nameToSet = StringEscapeUtils.unescapeJava(tempCC.getComment());
-					//Log.d("nameToSet:", nameToSet);
 					String realName = StringEscapeUtils.escapeJava(nameToSet.split("\n")[0]);
-					Log.d("global: " + StringEscapeUtils.escapeJava(a.getStudentName().trim()), "curr: " + realName);
-					if ((StringEscapeUtils.escapeJava(a.getStudentName().trim())).contains(realName)) {
-						Log.d(getLocalClassName(), "Hoorah");
+					if ((StringEscapeUtils.escapeJava(a.getStudentName().trim())).equals(realName)) {
 						shouldPreventSubmit = true;
 					}
 					tempCC.setComment(nameToSet);

@@ -28,6 +28,7 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 	private String[] professorValuesToPassToAdapter;
 	private String[] courseValuesToPassToAdapter;
 	public HashMap<String, String> facultyMap = new HashMap<String, String>();
+	ApplicationWithGlobalVariables a;
 
 
 	@Override
@@ -73,12 +74,12 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 
 		List<String> profList=new ArrayList<String>();
 		int professorCount = 0;
-		ApplicationWithGlobalVariables a = ((ApplicationWithGlobalVariables) getApplication());
+		a = ((ApplicationWithGlobalVariables) getApplication());
 		a.setRatingsThreshold(tempString.length*2);
 		for(int i =0; i<tempString.length; i++){
-			GetProfessorClientAsync tempbla=new GetProfessorClientAsync();
+			GetProfessorClientAsync gpca = new GetProfessorClientAsync();
 			try{
-				Professor dbProfessor = tempbla.execute(tempString[i]).get();
+				Professor dbProfessor = gpca.execute(tempString[i]).get();
 				if (dbProfessor==null) {
 					//profList.add(tempString[i]);
 					Log.d("FragmentProfessors", "We don't have that professor.");
@@ -204,6 +205,7 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 		protected void onPostExecute(Professor res) {
 			if (res == null) {
 				Log.d("FragmentProfessors", "Get of professor for course failed.");
+				a.decrementRatingsThreshold();
 			} 
 			else {
 				//Professor currentProfessor = res;

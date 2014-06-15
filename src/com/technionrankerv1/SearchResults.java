@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.os.AsyncTask;
@@ -33,11 +34,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MenuItem.OnActionExpandListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.serverapi.TechnionRankerAPI;
@@ -67,7 +70,15 @@ public abstract class SearchResults extends ActionBarActivity {
 			Toast.makeText(getApplicationContext(), "Please check your"
 					+ "Internet connection.", Toast.LENGTH_LONG).show();
 		}
-		professorsAndCourses = concat(parseCourses(), parseHebrewProfessors());
+		String[] globalProfessorsAndCourses = ((ApplicationWithGlobalVariables)
+				getApplication()).professorsAndCourses;
+		if (globalProfessorsAndCourses == null) {
+			professorsAndCourses = concat(parseCourses(), parseHebrewProfessors());
+			globalProfessorsAndCourses = professorsAndCourses;
+		}
+		else {
+			professorsAndCourses = globalProfessorsAndCourses;
+		}
 		/*
 		GetAllCoursesClientAsync gacca = new GetAllCoursesClientAsync();
 		GetAllProfessorsClientAsync gapca = new GetAllProfessorsClientAsync();
@@ -326,6 +337,40 @@ public abstract class SearchResults extends ActionBarActivity {
 		}
 		// Get the SearchView and set the searchable configuration
 		MenuItem searchItem = menu.findItem(R.id.action_search);
+		searchItem.setOnActionExpandListener(new OnActionExpandListener() {
+
+			@Override
+			public boolean onMenuItemActionExpand(MenuItem item) {
+	    		if (getResources().getConfiguration().orientation ==
+	    				Configuration.ORIENTATION_LANDSCAPE) {
+	    			if (getLocalClassName().equals("MainActivity")) {
+		    			TextView t = (TextView) findViewById(R.id.introductoryText);
+		    			t.setVisibility(View.GONE);
+	    			}
+	    			else if (getLocalClassName().equals("FragmentMainActivity")) {
+	    				TextView t2 = (TextView) findViewById(R.id.privacyPolicyTextView);
+	    				t2.setVisibility(View.GONE);
+	    			}
+	    		}
+    			return true;
+			}
+
+			@Override
+			public boolean onMenuItemActionCollapse(MenuItem item) {
+	    		if (getResources().getConfiguration().orientation ==
+	    				Configuration.ORIENTATION_LANDSCAPE) {
+	    			if (getLocalClassName().equals("MainActivity")) {
+		    			TextView t = (TextView) findViewById(R.id.introductoryText);
+		    			t.setVisibility(View.VISIBLE);
+	    			}
+	    			else if (getLocalClassName().equals("FragmentMainActivity")) {
+	    				TextView t2 = (TextView) findViewById(R.id.privacyPolicyTextView);
+	    				t2.setVisibility(View.VISIBLE);
+	    			}
+	    		}
+    			return true;
+			}
+		});
 		final SearchView searchView = (SearchView) MenuItemCompat
 				.getActionView(searchItem);
 		final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);

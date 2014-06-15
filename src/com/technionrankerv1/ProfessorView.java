@@ -456,7 +456,7 @@ public class ProfessorView extends SearchResults {
 					ProfessorComment tempPC = res.get(i);
 					String nameToSet = StringEscapeUtils.unescapeJava(tempPC.getComment());
 					String realName = StringEscapeUtils.escapeJava(nameToSet.split("\n")[0]);
-					if ((StringEscapeUtils.escapeJava(a.getStudentName().trim())).contains(realName)) {
+					if ((StringEscapeUtils.escapeJava(a.getStudentName().trim())).equals(realName)) {
 						shouldPreventSubmit = true;
 					}
 					tempPC.setComment(nameToSet);

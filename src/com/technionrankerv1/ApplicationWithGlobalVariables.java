@@ -15,10 +15,11 @@ public class ApplicationWithGlobalVariables extends Application {
     private String studentName = "";
     private int ratingsThreshold = 0;
     public HashMap<String, Integer> studentsToRatingsSubmitted = new HashMap<String, Integer>();
+    public String[] professorsAndCourses = null;
     
 	@Override
     public void onCreate() {
-    	studentsToRatingsSubmitted.put(studentName, 0);
+    	//studentsToRatingsSubmitted.put(studentName, 0);
     }
 	
     
