@@ -63,6 +63,7 @@ public class ProfessorView extends SearchResults {
     	textViewProfessorRatingSubmitted = (TextView) findViewById(R.id.textViewProfessorRatingSubmitted);
 		Bundle bundle = getIntent().getExtras();
     	String lookupProfessorName = bundle.getString("professorName");
+    	Log.d(getLocalClassName(), StringEscapeUtils.escapeJava(lookupProfessorName));
     	Professor cLookup = new Professor(null, null, null, StringEscapeUtils.escapeJava(lookupProfessorName), true);
     	ClientAsyncGetProfessorByProfessorName cagpbpn = new ClientAsyncGetProfessorByProfessorName();
 		try {

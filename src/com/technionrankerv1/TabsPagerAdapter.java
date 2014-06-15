@@ -8,8 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Gallery;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 
  

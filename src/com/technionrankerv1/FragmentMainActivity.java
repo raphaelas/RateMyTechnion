@@ -36,6 +36,7 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_main_activity);
 		
+		a = ((ApplicationWithGlobalVariables) getApplication());
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		actionBar = getActionBar();
@@ -69,12 +70,11 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 		});
 		
         Bundle bundle = getIntent().getExtras();
-		String[] tempString = new String[bundle.getStringArray("courseList").length];
-		tempString=bundle.getStringArray("courseList");
+		String[] tempString = new String[a.courseList.length];
+		tempString=a.courseList;
 
 		List<String> profList=new ArrayList<String>();
 		int professorCount = 0;
-		a = ((ApplicationWithGlobalVariables) getApplication());
 		a.setRatingsThreshold(tempString.length*2);
 		for(int i =0; i<tempString.length; i++){
 			GetProfessorClientAsync gpca = new GetProfessorClientAsync();
@@ -109,9 +109,9 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 	
 	public void coursesPart() {
         Bundle bundle = getIntent().getExtras();
-		String[] tempString = new String[bundle.getStringArray("courseList").length];
+		String[] tempString = new String[a.courseList.length];
 
-		tempString=bundle.getStringArray("courseList");
+		tempString=a.courseList;
         
 		List<String> courseList=new ArrayList<String>();
 		int courseCount = 0;

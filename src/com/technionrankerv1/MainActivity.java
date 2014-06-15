@@ -2,6 +2,7 @@ package com.technionrankerv1;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -518,13 +519,15 @@ public class MainActivity extends SearchResults {
 								stringArray[i]=tempString.substring(tempint, tempint+6);
 								tempint=tempint+8;
 							}
-						((ApplicationWithGlobalVariables) getApplication()).setStudentName(name);
+						ApplicationWithGlobalVariables a = ((ApplicationWithGlobalVariables) getApplication());
+						a.setStudentName(name);
+						a.courseList = stringArray.clone();
 						Intent i = new Intent(MainActivity.this,
 								FragmentMainActivity.class);
 						// NOTE: if you change this message, also change it
 						// in SearchResults - onOptionsItemSelected().
 						i.putExtra("the username", name);
-						i.putExtra("courseList", stringArray);
+						//i.putExtra("courseList", stringArray);
 						startActivity(i);
 					} else if (x != 0) {
 						Log.d(getLocalClassName(), "Log in unsucessful");

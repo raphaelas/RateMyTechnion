@@ -16,6 +16,7 @@ public class ApplicationWithGlobalVariables extends Application {
     private int ratingsThreshold = 0;
     public HashMap<String, Integer> studentsToRatingsSubmitted = new HashMap<String, Integer>();
     public String[] professorsAndCourses = null;
+    public String[] courseList = new String[0];
     
 	@Override
     public void onCreate() {

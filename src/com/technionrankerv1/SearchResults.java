@@ -79,137 +79,30 @@ public abstract class SearchResults extends ActionBarActivity {
 		else {
 			professorsAndCourses = globalProfessorsAndCourses;
 		}
-		/*
-		GetAllCoursesClientAsync gacca = new GetAllCoursesClientAsync();
-		GetAllProfessorsClientAsync gapca = new GetAllProfessorsClientAsync();
-			try {
-				Log.d(getLocalClassName(), "Entered try.  About to get professors");
-				List<Professor> allProfessors = gapca.execute().get(10, TimeUnit.SECONDS);
-				Log.d(getLocalClassName(), "Got professors.  About to get courses.");
-				List<Course> allCourses = gacca.execute().get(10, TimeUnit.SECONDS);
-				professorsAndCourses = new String[allProfessors.size() + allCourses.size()];
-				int j;
-				Log.d(getLocalClassName(), "Entering loop 1");
-				for (j = 0; j < allCourses.size(); j++) {
-					Course c = allCourses.get(j);
-					professorsAndCourses[j] = c.getName();
-				}
-				Log.d(getLocalClassName(), "Entering loop 2");
-				for (int i = 0; i < allProfessors.size(); i++) {
-					Professor p = allProfessors.get(i);
-					if (p.getName() == null) {
-						professorsAndCourses[i+j] = "\n" + p.getHebrewName();
-					}
-					else {
-						professorsAndCourses[i+j] = p.getName() + "\n" + p.getHebrewName();
-						facultyMap.put(StringEscapeUtils.unescapeJava(p.getHebrewName()), p.getFaculty());
-					}
-				}
-			} catch (Exception e) {
-				Log.d(getLocalClassName(), "Entering catch block");
-				e.printStackTrace();
-				professorsAndCourses = concat(parseCourses(), parseHebrewProfessors());
-			}
-			*/
 
 		ClientAsync t = new ClientAsync();
 		t.execute();
 		
 	}
-	
-	/**
-	 * This populates the professorSet (returned) and hebrewTranslations
-	 * HashMap (class variable).
-	 * @return
-	 */
+
 	public String[] parseHebrewProfessors() {
-		List<Professor> professorsToInsert = new ArrayList<Professor>();
 		HashSet<String> professorSet = new HashSet<String>();
-		String inputLine;
-		BufferedReader infile;
-		int start;
-		int end;
-		String englishName = null;
-		String hebrewName;
-		boolean arrivedAtProfessors = false;
 		try {
-			String[] hebrewProfessorFiles = getAssets().list("HebrewProfessorListingsEncoded");
-			for (int i = 0; i < hebrewProfessorFiles.length; i++) {
-				arrivedAtProfessors = false;
-				infile = new BufferedReader(new InputStreamReader(
-						getAssets().open("HebrewProfessorListingsEncoded/" + hebrewProfessorFiles[i])));
-				while (infile.ready()) {// while more info exists
-					inputLine = infile.readLine();
-					if (inputLine.contains("mailto:")  && arrivedAtProfessors == true) {
-						start = inputLine.indexOf("[") + 1;
-						end = inputLine.indexOf("]");
-						englishName = inputLine.substring(start, end);
-						//Make name first name last name.
-						String[] splittedOnSpace = englishName.split(" ");
-						if (splittedOnSpace.length == 2) {
-							englishName = "" + splittedOnSpace[1] + " " + splittedOnSpace[0];
-						}
-						else if (splittedOnSpace.length == 1){
-							englishName = "" + splittedOnSpace[0];
-						}
-						else if (splittedOnSpace.length == 3) {
-							if (splittedOnSpace[0].indexOf("-") == splittedOnSpace[0].length() - 1) {
-								englishName = splittedOnSpace[2] + " " + splittedOnSpace[0] + splittedOnSpace[1];  
-							}
-							else {
-								englishName = splittedOnSpace[1] + " " + splittedOnSpace[2] + " " + splittedOnSpace[0];
-							}						
-						}
-						else {
-							throw new IOException("Unfortunately, there is a quadruple name.");
-						}
-					}
-					else if (inputLine.contains("GetEmployeeDetails") && arrivedAtProfessors == true) {
-						start = inputLine.indexOf(">") + 1;
-						end = inputLine.length();
-						hebrewName = inputLine.substring(start, end);
-						String[] splittedOnSpace = hebrewName.split(" ");
-						if (splittedOnSpace.length == 2) {
-							hebrewName = "" + splittedOnSpace[1] + " " + splittedOnSpace[0];
-						}
-						else if (splittedOnSpace.length == 1){
-							hebrewName = "" + splittedOnSpace[0];
-						}
-						else if (splittedOnSpace.length == 3) {
-							if (splittedOnSpace[0].indexOf("-") == splittedOnSpace[0].length() - 1) {
-								hebrewName = splittedOnSpace[2] + " " + splittedOnSpace[0] + splittedOnSpace[1];  
-							}
-							else {
-								hebrewName = splittedOnSpace[1] + " " + splittedOnSpace[2] + " " + splittedOnSpace[0];
-							}
-						}
-						else {
-							throw new IOException("Unfortunately, there is a quadruple hebrew name.");
-						}
-						if (englishName == null || hebrewName == null) {
-							//There's a null name, so throw an exception 
-							//(albeit IOException is not proper type but it works)
-							throw new IOException("There's a null name."); 
-						}
-						hebrewTranslations.put(StringEscapeUtils.unescapeHtml4(hebrewName), englishName);
-						String faculty = hebrewProfessorFiles[i].substring(0, hebrewProfessorFiles[i].indexOf(".html"));
-						String hebrewNameToUse = StringEscapeUtils.unescapeHtml4(hebrewName);
-						String hebrewNameEscapedJava = StringEscapeUtils.escapeJava(hebrewNameToUse);
-						Professor p = new Professor(null, englishName, faculty, hebrewNameEscapedJava, true);
-						professorsToInsert.add(p);
-						facultyMap.put(hebrewNameToUse, faculty);
-						//This will make the hebrew professor name in a new line after the english name.
-						professorSet.add(englishName + "\n" + hebrewNameToUse);
-					}
-					else if (inputLine.contains("searchtable")) {
-						//We've arrived at the professor listing section.
-						arrivedAtProfessors = true;
-					}
-				}
-				infile.close();
-			} //for loop
-		}
-		catch (IOException e) {
+			BufferedReader infile = new BufferedReader(new InputStreamReader(
+					getAssets().open("professors.txt")));
+			while (infile.ready()) {
+				String inputLine = infile.readLine().trim();
+				String[] splitted = inputLine.split("\t");
+				String hebName = StringEscapeUtils.unescapeJava(splitted[3]).trim();
+				String engName = splitted[4].trim();
+				hebrewTranslations.put(hebName, engName);
+				String faculty = splitted[2].trim();
+				String hebrewNameToUse = hebName;
+				facultyMap.put(hebrewNameToUse, faculty);
+				//This will make the hebrew professor name in a new line after the english name.
+				professorSet.add(engName + "\n" + hebrewNameToUse);
+			}
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		Object[] professorArrayObjects = professorSet.toArray();
@@ -218,59 +111,190 @@ public abstract class SearchResults extends ActionBarActivity {
 	}
 
 	public String[] parseCourses() {
-		// create Hashmap, where the numbers are the keys and the Titles are the
-		// values
-
-		HashMap<String, String> map = new HashMap<String, String>();
 		HashSet<String> numberAndName = new HashSet<String>();
-		String inputLine = "";
-		String[] temp;
-
-		String[] courseFiles;
 		try {
-			courseFiles = getAssets().list("CourseListings");
-			for (int i = 0; i < courseFiles.length; i++) {
-				int lineNumber = 0;
-				BufferedReader infile = new BufferedReader(new InputStreamReader(
-						getAssets().open("CourseListings/" + courseFiles[i])));
-				while (infile.ready()) {// while more info exists
-					if (lineNumber >= 13 && lineNumber % 3 == 1) { // only take
-																	// numbers 13
-																	// and up for
-																	// every 3
-						temp = inputLine.split(" - ");
-						for (int t = 0; t < temp.length; t++) {
-							String number = temp[0].trim();// number;
-							String name = temp[1].replaceAll("</A>", "").trim();
-							name = capsFix2(name);
-							String faculty = courseFiles[i].substring(0, courseFiles[i].indexOf(".html"));
-							//Course c = new Course(null, name, number, null, null, faculty, true);
-							map.put(number, name); // trim and place only the number
-													// and name in
-							facultyMap.put(number, faculty);
-							courseNumbers.add(number);
-							
-							Course c = new Course(null, name, number, null, null, faculty, true);
-							coursesToInsert.add(c);
-							courseNumbersToCourses.put(number, c);
-							
-							numberAndName.add("" + number + " - " + name);
-						} // for temp
-					} // if
-					inputLine = infile.readLine(); // read the next line of the text
-					lineNumber++;
-				} // while infile
-				infile.close();
-			} // for courseFiles
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			BufferedReader infile = new BufferedReader(new InputStreamReader(
+					getAssets().open("courses.txt")));
+			while (infile.ready()) {
+				String inputLine = infile.readLine();
+				String[] splitted = inputLine.split("\t");
+				String number = splitted[4].trim();
+				String name = splitted[3].trim();
+				String faculty = splitted[2].trim();
+//				map.put(number, name);
+				facultyMap.put(number, faculty);
+				courseNumbers.add(number);
+				Course c = new Course(null, name, number, null, null, faculty, true);
+				coursesToInsert.add(c);
+				courseNumbersToCourses.put(number, c);
+				numberAndName.add("" + number + " - " + name);
+
+			}
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		Object[] allNumbersAndNames = numberAndName.toArray();
 		String[] numbersAndNamesToReturn = Arrays.copyOf(allNumbersAndNames,
 				allNumbersAndNames.length, String[].class);
 		return numbersAndNamesToReturn;
-	} // parse()
+	}
+
+	
+//	/**
+//	 * This populates the professorSet (returned) and hebrewTranslations
+//	 * HashMap (class variable).
+//	 * @return
+//	 */
+//	public String[] parseHebrewProfessors() {
+//		List<Professor> professorsToInsert = new ArrayList<Professor>();
+//		HashSet<String> professorSet = new HashSet<String>();
+//		String inputLine;
+//		BufferedReader infile;
+//		int start;
+//		int end;
+//		String englishName = null;
+//		String hebrewName;
+//		boolean arrivedAtProfessors = false;
+//		try {
+//			String[] hebrewProfessorFiles = getAssets().list("HebrewProfessorListingsEncoded");
+//			for (int i = 0; i < hebrewProfessorFiles.length; i++) {
+//				arrivedAtProfessors = false;
+//				infile = new BufferedReader(new InputStreamReader(
+//						getAssets().open("HebrewProfessorListingsEncoded/" + hebrewProfessorFiles[i])));
+//				while (infile.ready()) {// while more info exists
+//					inputLine = infile.readLine();
+//					if (inputLine.contains("mailto:")  && arrivedAtProfessors == true) {
+//						start = inputLine.indexOf("[") + 1;
+//						end = inputLine.indexOf("]");
+//						englishName = inputLine.substring(start, end);
+//						//Make name first name last name.
+//						String[] splittedOnSpace = englishName.split(" ");
+//						if (splittedOnSpace.length == 2) {
+//							englishName = "" + splittedOnSpace[1] + " " + splittedOnSpace[0];
+//						}
+//						else if (splittedOnSpace.length == 1){
+//							englishName = "" + splittedOnSpace[0];
+//						}
+//						else if (splittedOnSpace.length == 3) {
+//							if (splittedOnSpace[0].indexOf("-") == splittedOnSpace[0].length() - 1) {
+//								englishName = splittedOnSpace[2] + " " + splittedOnSpace[0] + splittedOnSpace[1];  
+//							}
+//							else {
+//								englishName = splittedOnSpace[1] + " " + splittedOnSpace[2] + " " + splittedOnSpace[0];
+//							}						
+//						}
+//						else {
+//							throw new IOException("Unfortunately, there is a quadruple name.");
+//						}
+//					}
+//					else if (inputLine.contains("GetEmployeeDetails") && arrivedAtProfessors == true) {
+//						start = inputLine.indexOf(">") + 1;
+//						end = inputLine.length();
+//						hebrewName = inputLine.substring(start, end);
+//						String[] splittedOnSpace = hebrewName.split(" ");
+//						if (splittedOnSpace.length == 2) {
+//							hebrewName = "" + splittedOnSpace[1] + " " + splittedOnSpace[0];
+//						}
+//						else if (splittedOnSpace.length == 1){
+//							hebrewName = "" + splittedOnSpace[0];
+//						}
+//						else if (splittedOnSpace.length == 3) {
+//							if (splittedOnSpace[0].indexOf("-") == splittedOnSpace[0].length() - 1) {
+//								hebrewName = splittedOnSpace[2] + " " + splittedOnSpace[0] + splittedOnSpace[1];  
+//							}
+//							else {
+//								hebrewName = splittedOnSpace[1] + " " + splittedOnSpace[2] + " " + splittedOnSpace[0];
+//							}
+//						}
+//						else {
+//							throw new IOException("Unfortunately, there is a quadruple hebrew name.");
+//						}
+//						if (englishName == null || hebrewName == null) {
+//							//There's a null name, so throw an exception 
+//							//(albeit IOException is not proper type but it works)
+//							throw new IOException("There's a null name."); 
+//						}
+//						hebrewTranslations.put(StringEscapeUtils.unescapeHtml4(hebrewName), englishName);
+//						String faculty = hebrewProfessorFiles[i].substring(0, hebrewProfessorFiles[i].indexOf(".html"));
+//						String hebrewNameToUse = StringEscapeUtils.unescapeHtml4(hebrewName);
+//						String hebrewNameEscapedJava = StringEscapeUtils.escapeJava(hebrewNameToUse);
+//						Professor p = new Professor(null, englishName, faculty, hebrewNameEscapedJava, true);
+//						professorsToInsert.add(p);
+//						facultyMap.put(hebrewNameToUse, faculty);
+//						//This will make the hebrew professor name in a new line after the english name.
+//						professorSet.add(englishName + "\n" + hebrewNameToUse);
+//					}
+//					else if (inputLine.contains("searchtable")) {
+//						//We've arrived at the professor listing section.
+//						arrivedAtProfessors = true;
+//					}
+//				}
+//				infile.close();
+//			} //for loop
+//		}
+//		catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		Object[] professorArrayObjects = professorSet.toArray();
+//		String[] professorArrayStrings = Arrays.copyOf(professorArrayObjects, professorArrayObjects.length, String[].class);
+//		return professorArrayStrings;
+//	}
+
+//	public String[] parseCourses() {
+//		// create Hashmap, where the numbers are the keys and the Titles are the
+//		// values
+//
+//		HashMap<String, String> map = new HashMap<String, String>();
+//		HashSet<String> numberAndName = new HashSet<String>();
+//		String inputLine = "";
+//		String[] temp;
+//
+//		String[] courseFiles;
+//		try {
+//			courseFiles = getAssets().list("CourseListings");
+//			for (int i = 0; i < courseFiles.length; i++) {
+//				int lineNumber = 0;
+//				BufferedReader infile = new BufferedReader(new InputStreamReader(
+//						getAssets().open("CourseListings/" + courseFiles[i])));
+//				while (infile.ready()) {// while more info exists
+//					if (lineNumber >= 13 && lineNumber % 3 == 1) { // only take
+//																	// numbers 13
+//																	// and up for
+//																	// every 3
+//						temp = inputLine.split(" - ");
+//						for (int t = 0; t < temp.length; t++) {
+//							String number = temp[0].trim();// number;
+//							String name = temp[1].replaceAll("</A>", "").trim();
+//							name = capsFix2(name);
+//							String faculty = courseFiles[i].substring(0, courseFiles[i].indexOf(".html"));
+//							//Course c = new Course(null, name, number, null, null, faculty, true);
+//							map.put(number, name); // trim and place only the number
+//													// and name in
+//							facultyMap.put(number, faculty);
+//							courseNumbers.add(number);
+//							
+//							Course c = new Course(null, name, number, null, null, faculty, true);
+//							coursesToInsert.add(c);
+//							courseNumbersToCourses.put(number, c);
+//							
+//							numberAndName.add("" + number + " - " + name);
+//						} // for temp
+//					} // if
+//					inputLine = infile.readLine(); // read the next line of the text
+//					lineNumber++;
+//				} // while infile
+//				infile.close();
+//			} // for courseFiles
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		Object[] allNumbersAndNames = numberAndName.toArray();
+//		String[] numbersAndNamesToReturn = Arrays.copyOf(allNumbersAndNames,
+//				allNumbersAndNames.length, String[].class);
+//		return numbersAndNamesToReturn;
+//	} // parse()
 
 	String[] concat(String[] a, String[] b) {
 		int aLen = a.length;
@@ -544,7 +568,7 @@ public abstract class SearchResults extends ActionBarActivity {
 		@Override
 		protected String doInBackground(List<Professor>... params) {
 			String result = null;
-			//result = db.dropAllCourseComments().toString();
+			//result = db.dropAllProfessorComments().toString();
 			return result;
 		}
 
@@ -553,74 +577,10 @@ public abstract class SearchResults extends ActionBarActivity {
 			if (res == null)
 				Log.d(getLocalClassName(), "SearchResults async unsuccessful");
 			else {
-				Log.d(getLocalClassName(), "Dropping course comments: " + res);
+				Log.d(getLocalClassName(), "Dropping professor comments: " + res);
 			}
 		}
 	}
-//	
-//	private class GetAllProfessorsClientAsync extends AsyncTask<Void, Void, List<Professor>> {
-//
-//		public GetAllProfessorsClientAsync() {
-//		}
-//
-//		@Override
-//		protected void onPreExecute() {
-//			super.onPreExecute();
-//			Log.d(getLocalClassName(), "Starting GetAllProfessors async...");
-//		}
-//
-//		/**
-//		 * This is the method that does the database call.  Comment
-//		 * everything in this method to ignore the database.
-//		 */
-//		@Override
-//		protected List<Professor> doInBackground(Void... params) {
-//			List<Professor> result = null;
-//			result = db.getAllProfessors();
-//			return result;
-//		}
-//
-//		@Override
-//		protected void onPostExecute(List<Professor> res) {
-//			if (res == null)
-//				Log.d(getLocalClassName(), "GetAllProfessors async unsuccessful");
-//			else {
-//				Log.d(getLocalClassName(), "Get all professors successful");
-//			}
-//		}
-//	}
-//	
-//	private class GetAllCoursesClientAsync extends AsyncTask<Void, Void, List<Course>> {
-//
-//		public GetAllCoursesClientAsync() {
-//		}
-//
-//		@Override
-//		protected void onPreExecute() {
-//			super.onPreExecute();
-//			Log.d(getLocalClassName(), "Starting GetAllCourses Async...");
-//		}
-//
-//		/**
-//		 * This is the method that does the database call.  Comment
-//		 * everything in this method to ignore the database.
-//		 */
-//		@Override
-//		protected List<Course> doInBackground(Void... params) {
-//			List<Course> result = null;
-//			result = db.getAllCourses();
-//			return result;
-//		}
-//
-//		@Override
-//		protected void onPostExecute(List<Course> res) {
-//			if (res == null)
-//				Log.d(getLocalClassName(), "GetAllCourses async unsuccessful");
-//			else {
-//				Log.d(getLocalClassName(), "Get all couses successful");
-//			}
-//		}
-//	}
 }
 
 
