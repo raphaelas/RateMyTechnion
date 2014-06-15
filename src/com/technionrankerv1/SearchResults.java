@@ -74,7 +74,8 @@ public abstract class SearchResults extends ActionBarActivity {
 				getApplication()).professorsAndCourses;
 		if (globalProfessorsAndCourses == null) {
 			professorsAndCourses = concat(parseCourses(), parseHebrewProfessors());
-			globalProfessorsAndCourses = professorsAndCourses;
+			((ApplicationWithGlobalVariables)
+					getApplication()).professorsAndCourses = professorsAndCourses;
 		}
 		else {
 			professorsAndCourses = globalProfessorsAndCourses;

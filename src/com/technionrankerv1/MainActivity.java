@@ -120,6 +120,7 @@ public class MainActivity extends SearchResults {
 			} else {
 				errorM.setTextColor(getResources().getColor(R.color.gray));
 				errorM.setText("Please wait.  Connecting to UG System.");
+				findViewById(R.id.mainSpinner1).setVisibility(View.VISIBLE);
 				doLogin();
 			}
 		}
@@ -554,6 +555,7 @@ public class MainActivity extends SearchResults {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				findViewById(R.id.mainSpinner1).setVisibility(View.INVISIBLE);
 				errorM.setTextColor(getResources().getColor(R.color.red));
 				if (x == 1) {
 					errorM.setText("Incorrect username or password. Please try again.");
