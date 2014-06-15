@@ -3,6 +3,8 @@ package com.technionrankerv1;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import com.serverapi.TechnionRankerAPI;
 
 import android.content.Context;
@@ -53,8 +55,15 @@ public class CourseCommentsListAdapter extends ArrayAdapter<CourseComment> {
 					((ApplicationWithGlobalVariables) context.getApplicationContext()).likeCourseComment(thisCourseComment.getId());
 					int oldCount = Integer.parseInt(likesTextView.getText().toString());
 					thisCourseComment.incrementLikes();
+					String[] beenSplit = thisCourseComment.getComment().split("\n"); 
+					thisCourseComment.setComment(StringEscapeUtils.escapeJava(beenSplit[0]) + beenSplit[1]);
 					CourseCommentClientAsync as = new CourseCommentClientAsync();
-					as.execute(thisCourseComment);
+					ProfessorComment professorCopy = new ProfessorComment(
+							thisCourseComment.getCourseID(), 
+							thisCourseComment.getStudentID(),
+							thisCourseComment.getComment(),
+							null, thisCourseComment.getLikes());
+					as.execute(professorCopy);
 					likesTextView.setText("" + (oldCount + 1));
 					notifyDataSetChanged(); //This line is necessary for sorting.
 				}
@@ -78,7 +87,7 @@ public class CourseCommentsListAdapter extends ArrayAdapter<CourseComment> {
 		super.notifyDataSetChanged();
 	}
 	
-	private class CourseCommentClientAsync extends AsyncTask<CourseComment, Void, String> {
+	private class CourseCommentClientAsync extends AsyncTask<ProfessorComment, Void, String> {
 		public CourseCommentClientAsync() {
 		}
 
@@ -88,9 +97,9 @@ public class CourseCommentsListAdapter extends ArrayAdapter<CourseComment> {
 		}
 
 		@Override
-		protected String doInBackground(CourseComment... params) {
-	    	CourseComment cc = params[0];
-	    	String result = new TechnionRankerAPI().insertCourseComment(cc).toString();
+		protected String doInBackground(ProfessorComment... params) {
+	    	ProfessorComment cc = params[0];
+	    	String result = new TechnionRankerAPI().insertProfessorComment(cc).toString();
 			return result;
 		}
 

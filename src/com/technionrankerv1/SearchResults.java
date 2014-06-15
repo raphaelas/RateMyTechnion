@@ -131,7 +131,12 @@ public abstract class SearchResults extends ActionBarActivity {
 				String hebrewNameToUse = hebName;
 				facultyMap.put(hebrewNameToUse, faculty);
 				//This will make the hebrew professor name in a new line after the english name.
-				professorSet.add(engName + "\n" + hebrewNameToUse);
+				if (!engName.equals("<null>")) {
+					professorSet.add(engName + "\n" + hebrewNameToUse);
+				}
+				else {
+					professorSet.add("\n" + hebrewNameToUse);
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

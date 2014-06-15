@@ -3,6 +3,8 @@ package com.technionrankerv1;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -53,6 +55,8 @@ public class ProfessorCommentsListAdapter extends ArrayAdapter<ProfessorComment>
 					a.likeProfessorComment(a.getStudentID());
 					int oldCount = Integer.parseInt(likesTextView.getText().toString());
 					thisProfessorComment.incrementLikes();
+					String[] beenSplit = thisProfessorComment.getComment().split("\n"); 
+					thisProfessorComment.setComment(StringEscapeUtils.escapeJava(beenSplit[0]) + beenSplit[1]);
 					ProfessorCommentClientAsync as = new ProfessorCommentClientAsync();
 					as.execute(thisProfessorComment);
 					likesTextView.setText("" + (oldCount + 1));

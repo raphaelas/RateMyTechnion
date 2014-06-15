@@ -20,7 +20,6 @@ public class ApplicationWithGlobalVariables extends Application {
     
 	@Override
     public void onCreate() {
-    	//studentsToRatingsSubmitted.put(studentName, 0);
     }
 	
     

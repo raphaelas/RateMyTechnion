@@ -251,10 +251,12 @@
                 android:layout_marginRight="20dp"
                 android:background="@android:color/black"
                 android:hint="@string/commentHint"
+                android:maxLength="70"
                 android:maxLines="2"
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white"
                 android:textCursorDrawable="@null" >
+
             </EditText>
         </LinearLayout>
 
