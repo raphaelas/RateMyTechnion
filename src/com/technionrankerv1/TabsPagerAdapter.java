@@ -41,18 +41,4 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
         // get item count - equal to number of tabs
         return 3;
     }
-    
-    @Override
-    public Object instantiateItem(View collection, final int position) {
-
-        LayoutInflater inflater = (LayoutInflater) collection.getContext()
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-
-        final FrameLayout imageLayout = (FrameLayout) inflater.inflate(R.layout.loading_bar_view_pager, null);
-        final ProgressBar spinner = (ProgressBar) imageLayout.findViewById(R.id.loading);
-        spinner.setIndeterminate(true);
-        ((ViewPager) collection).addView(imageLayout,0);
-        return imageLayout;
-}
 }

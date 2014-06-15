@@ -46,6 +46,8 @@ public class MainActivity extends SearchResults {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sign_in);
+		
+		Log.d(getLocalClassName(), "HERERE");
 	
 		errorM = (TextView) findViewById(R.id.textView1);
 		final EditText passwordInput = (EditText) findViewById(R.id.editText2);
