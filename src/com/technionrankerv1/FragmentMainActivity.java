@@ -30,12 +30,11 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 	public HashMap<String, String> facultyMap = new HashMap<String, String>();
 	ApplicationWithGlobalVariables a;
 
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_main_activity);
-		
+
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		actionBar = getActionBar();
@@ -67,87 +66,83 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 			public void onPageScrollStateChanged(int arg0) {
 			}
 		});
-		
-        Bundle bundle = getIntent().getExtras();
-		String[] tempString = new String[bundle.getStringArray("courseList").length];
-		tempString=bundle.getStringArray("courseList");
 
-		List<String> profList=new ArrayList<String>();
+		Bundle bundle = getIntent().getExtras();
+		String[] tempString = new String[bundle.getStringArray("courseList").length];
+		tempString = bundle.getStringArray("courseList");
+
+		List<String> profList = new ArrayList<String>();
 		int professorCount = 0;
 		a = ((ApplicationWithGlobalVariables) getApplication());
-		a.setRatingsThreshold(tempString.length*2);
-		for(int i =0; i<tempString.length; i++){
+		a.setRatingsThreshold(tempString.length * 2);
+		for (int i = 0; i < tempString.length; i++) {
 			GetProfessorClientAsync gpca = new GetProfessorClientAsync();
-			try{
+			try {
 				Professor dbProfessor = gpca.execute(tempString[i]).get();
-				if (dbProfessor==null) {
-					//profList.add(tempString[i]);
+				if (dbProfessor == null) {
+					// profList.add(tempString[i]);
 					Log.d("FragmentProfessors", "We don't have that professor.");
 					a.decrementRatingsThreshold();
-				}
-				else {
-					String hebNameToUse = StringEscapeUtils.unescapeJava(dbProfessor.getHebrewName());
+				} else {
+					String hebNameToUse = StringEscapeUtils
+							.unescapeJava(dbProfessor.getHebrewName());
 					profList.add(hebNameToUse);
 					professorCount++;
 					facultyMap.put(hebNameToUse, dbProfessor.getFaculty());
 				}
-			}
-			catch(Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		professorValuesToPassToAdapter=new String[professorCount];
-        for(int i=0; i<profList.size(); i++){
-        	professorValuesToPassToAdapter[i]=profList.get(i);
-        }
-        
-        
-        
-        coursesPart();
+		professorValuesToPassToAdapter = new String[professorCount];
+		for (int i = 0; i < profList.size(); i++) {
+			professorValuesToPassToAdapter[i] = profList.get(i);
+		}
+
+		coursesPart();
 		resetGlobalVariables();
 	}
-	
+
 	public void coursesPart() {
-        Bundle bundle = getIntent().getExtras();
+		Bundle bundle = getIntent().getExtras();
 		String[] tempString = new String[bundle.getStringArray("courseList").length];
 
-		tempString=bundle.getStringArray("courseList");
-        
-		List<String> courseList=new ArrayList<String>();
+		tempString = bundle.getStringArray("courseList");
+
+		List<String> courseList = new ArrayList<String>();
 		int courseCount = 0;
-		for(int i=0; i<tempString.length; i++){
+		for (int i = 0; i < tempString.length; i++) {
 			GetCourseClientAsync gcca = new GetCourseClientAsync();
-			try{
+			try {
 				List<Course> dbCourseList = gcca.execute(tempString[i]).get();
 				if (dbCourseList == null || dbCourseList.isEmpty()) {
-					//courseList.add(tempString[i]);
+					// courseList.add(tempString[i]);
 					Log.d(getLocalClassName(), "We don't have that course.");
-				}
-				else {
+				} else {
 					Course currCourse = dbCourseList.get(0);
 					courseList.add(tempString[i] + ": " + currCourse.getName());
-					facultyMap.put(currCourse.getNumber(), currCourse.getFaculty());
+					facultyMap.put(currCourse.getNumber(),
+							currCourse.getFaculty());
 					courseCount++;
 				}
-			}
-			catch(Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-        courseValuesToPassToAdapter=new String[courseCount];
-        for(int i=0; i<courseList.size(); i++){
-        	courseValuesToPassToAdapter[i]=courseList.get(i);
-        }
+		courseValuesToPassToAdapter = new String[courseCount];
+		for (int i = 0; i < courseList.size(); i++) {
+			courseValuesToPassToAdapter[i] = courseList.get(i);
+		}
 	}
-	
+
 	public String[] getProfessorValues() {
 		return professorValuesToPassToAdapter;
 	}
-	
+
 	public String[] getCourseValues() {
 		return courseValuesToPassToAdapter;
 	}
-	
+
 	private void resetGlobalVariables() {
 		ApplicationWithGlobalVariables a = ((ApplicationWithGlobalVariables) getApplication());
 		boolean isExistingStudent = false;
@@ -156,7 +151,8 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 		Set<String> studentNameSet = a.studentsToRatingsSubmitted.keySet();
 		for (String studentName : studentNameSet) {
 			if (studentName.equals(a.getStudentName())) {
-				a.setRatingsSubmitted(a.studentsToRatingsSubmitted.get(a.getStudentName()));
+				a.setRatingsSubmitted(a.studentsToRatingsSubmitted.get(a
+						.getStudentName()));
 				isExistingStudent = true;
 			}
 		}
@@ -182,7 +178,7 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 	}
 
 	private class GetProfessorClientAsync extends
-	AsyncTask<String, Void,Professor> {
+			AsyncTask<String, Void, Professor> {
 		public GetProfessorClientAsync() {
 		}
 
@@ -197,24 +193,24 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 			Course lookup = new Course(null, null, courseNumber, null, null,
 					null, true);
 			Professor result = new TechnionRankerAPI()
-			.getProfessorForCourse(lookup);
+					.getProfessorForCourse(lookup);
 			return result;
 		}
 
 		@Override
 		protected void onPostExecute(Professor res) {
 			if (res == null) {
-				Log.d("FragmentProfessors", "Get of professor for course failed.");
+				Log.d("FragmentProfessors",
+						"Get of professor for course failed.");
 				a.decrementRatingsThreshold();
-			} 
-			else {
-				//Professor currentProfessor = res;
+			} else {
+				// Professor currentProfessor = res;
 			}
 		}
 	}
 
 	private class GetCourseClientAsync extends
-	AsyncTask<String, Void, List<Course>> {
+			AsyncTask<String, Void, List<Course>> {
 		public GetCourseClientAsync() {
 		}
 
@@ -229,7 +225,7 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 			Course lookup = new Course(null, null, courseNumber, null, null,
 					null, true);
 			List<Course> result = new TechnionRankerAPI()
-			.getCourseByCourseNumber(lookup);
+					.getCourseByCourseNumber(lookup);
 			return result;
 		}
 
@@ -240,8 +236,12 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 			} else if (res.size() == 0) {
 				Log.d("FragmentCourses", "Get of course returned empty.");
 			} else {
-				//Course currentCourse = res.get(0);
+				// Course currentCourse = res.get(0);
 			}
 		}
-}
+	}
+	@Override
+	public void onBackPressed(){
+		
+	}
 }

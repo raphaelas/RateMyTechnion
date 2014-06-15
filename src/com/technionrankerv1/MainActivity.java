@@ -46,7 +46,6 @@ public class MainActivity extends SearchResults {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sign_in);
-
 		errorM = (TextView) findViewById(R.id.textView1);
 		final EditText passwordInput = (EditText) findViewById(R.id.editText2);
 		passwordInput.setOnKeyListener(new OnKeyListener() {
@@ -535,6 +534,7 @@ public class MainActivity extends SearchResults {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
+				findViewById(R.id.mainSpinner1).setVisibility(View.INVISIBLE);
 				errorM.setTextColor(getResources().getColor(R.color.red));
 				findViewById(R.id.mainSpinner1).setVisibility(View.INVISIBLE);
 				if (x == 1) {
