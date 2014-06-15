@@ -313,6 +313,7 @@ public class ProfessorView extends SearchResults {
 				textViewProfessorRatingSubmitted.setText("Thank you.  Your rating was received.");
 				alreadySubmitted = true;
 				getAllProfessorRatingsDatabase();
+				a.incrementRatingsSubmitted();
 			}
 			else {
 				textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.white));

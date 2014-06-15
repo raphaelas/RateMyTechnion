@@ -315,6 +315,7 @@ public class CourseView extends SearchResults {
 				textViewCourseRatingSubmitted.setText("Thank you.  Your rating was received.");
 				alreadySubmitted = true;
 				getAllCourseRatingsDatabase();
+				a.incrementRatingsSubmitted();
 			}
 			else {
 				textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.white));

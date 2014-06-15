@@ -155,13 +155,14 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 		a.setProfessorCommentsLiked(new HashSet<Long>());
 		Set<String> studentNameSet = a.studentsToRatingsSubmitted.keySet();
 		for (String studentName : studentNameSet) {
+			Log.d(studentName.length() + "", a.getStudentName().length() + "");
 			if (studentName.equals(a.getStudentName())) {
 				a.setRatingsSubmitted(a.studentsToRatingsSubmitted.get(a.getStudentName()));
 				isExistingStudent = true;
 			}
 		}
 		if (!isExistingStudent) {
-			a.setRatingsSubmitted(0);
+			//a.setRatingsSubmitted(0);
 			a.resetStudentID();
 		}
 	}
