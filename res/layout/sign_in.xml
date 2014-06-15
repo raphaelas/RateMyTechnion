@@ -6,132 +6,116 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
     android:orientation="vertical" >
-    
-        <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:baselineAligned="false">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-        
-        <!--  Make this adjust to screen sizes -->
 
-        <TextView
-            android:id="@+id/introductoryText"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-            android:paddingRight="?android:attr/expandableListPreferredChildPaddingLeft"
-            android:text="@string/instructions"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/LoginBorderColor"
-            android:textSize="@dimen/introduction_textfontsize" />
-
-   </RelativeLayout>
-   <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2">
-   </RelativeLayout>
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:baselineAligned="false"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" >
+
+            <!-- Make this adjust to screen sizes -->
+
+            <TextView
+                android:id="@+id/introductoryText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+                android:paddingRight="?android:attr/expandableListPreferredChildPaddingLeft"
+                android:text="@string/instructions"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/LoginBorderColor"
+                android:textSize="@dimen/introduction_textfontsize" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2" >
+        </RelativeLayout>
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical" >
-        
-        <EditText
-            android:id="@+id/editText1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/login"
-            android:ems="10"
-            android:hint="@string/username"
-            android:inputType="numberPassword"
-            android:maxLength="9"
-            android:textColor="@color/LoginBorderColor"
-            android:textColorHint="@color/LoginBorderColor"
-            android:textCursorDrawable="@null" />
-
-        <EditText
-            android:id="@+id/editText2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/login"
-            android:ems="10"
-            android:hint="@string/password"
-            android:inputType="numberPassword"
-            android:maxLength="8"
-            android:textColor="@color/LoginBorderColor"
-            android:textColorHint="@color/LoginBorderColor"
-            android:textCursorDrawable="@null" />
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="215dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="18dp"
-            android:background="@drawable/button_selector"
-            android:text="@string/string4"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textColorLink="@color/black" />
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="50dp"
-            android:ellipsize="none"
-            android:text="@string/blank"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/red" />
-        <!--   
-        <EditText
-            android:id="@+id/editTextStart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/login"
-            android:layout_gravity="bottom|left"
-            android:ems="10"
-            android:hint="Start"
-            android:inputType="number"
-            android:textColor="@color/LoginBorderColor"
-            android:textColorHint="@color/LoginBorderColor"
-            android:textCursorDrawable="@null" />
+            android:gravity="center"
+            android:orientation="vertical" >
 
-        <EditText
-            android:id="@+id/editTextEnd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:background="@drawable/login"
-            android:ems="10"
-            android:hint="End"
-            android:inputType="number"
-            android:textColor="@color/LoginBorderColor"
-            android:textColorHint="@color/LoginBorderColor"
-            android:textCursorDrawable="@null" />
--->
-    </LinearLayout>
+            <EditText
+                android:id="@+id/editText1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/login"
+                android:ems="10"
+                android:hint="@string/username"
+                android:inputType="numberPassword"
+                android:maxLength="9"
+                android:textColor="@color/LoginBorderColor"
+                android:textColorHint="@color/LoginBorderColor"
+                android:textCursorDrawable="@null" />
+
+            <EditText
+                android:id="@+id/editText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/login"
+                android:ems="10"
+                android:hint="@string/password"
+                android:inputType="numberPassword"
+                android:maxLength="8"
+                android:textColor="@color/LoginBorderColor"
+                android:textColorHint="@color/LoginBorderColor"
+                android:textCursorDrawable="@null" />
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="215dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/button_selector"
+                android:text="@string/string4"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textColorLink="@color/black" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="50dp"
+                android:layout_marginTop="10dp"
+                android:ellipsize="none"
+                android:text="@string/blank"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/red" />
+
+            <ProgressBar
+                android:id="@+id/mainSpinner1"
+                style="?android:attr/progressBarStyleInverse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:visibility="invisible">
+            </ProgressBar>
+        </LinearLayout>
+>>>>>>> origin/master
     </ScrollView>
-    
+
 </RelativeLayout>

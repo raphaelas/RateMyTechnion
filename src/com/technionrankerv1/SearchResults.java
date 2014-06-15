@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -55,11 +56,11 @@ public abstract class SearchResults extends ActionBarActivity {
 	public LinkedHashSet<String> courseNumbers = new LinkedHashSet<String>();
 	public HashMap<String, Course> courseNumbersToCourses = new HashMap<String, Course>();
 	public List<Course> coursesToInsert = new ArrayList<Course>();
-		
+
 	public void onCreate(Bundle savedInstance){
 
 		super.onCreate(savedInstance);
-		if (!getLocalClassName().equals("MainActivity")) {
+		if (!getLocalClassName().equals("MainActivity") && !getLocalClassName().equals("FragmentMainActivity") && !getLocalClassName().equals("SplashActivity")) {
 	        getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 		// Detect if connected to Internet
@@ -73,18 +74,48 @@ public abstract class SearchResults extends ActionBarActivity {
 		String[] globalProfessorsAndCourses = ((ApplicationWithGlobalVariables)
 				getApplication()).professorsAndCourses;
 		if (globalProfessorsAndCourses == null) {
-			professorsAndCourses = concat(parseCourses(), parseHebrewProfessors());
-			globalProfessorsAndCourses = professorsAndCourses;
+			concatMethod concatMethod1 = new concatMethod();
+			concatMethod1.execute();
+			((ApplicationWithGlobalVariables)
+					getApplication()).professorsAndCourses = professorsAndCourses;
 		}
 		else {
 			professorsAndCourses = globalProfessorsAndCourses;
 		}
-
-		ClientAsync t = new ClientAsync();
-		t.execute();
+//
+//		ClientAsync t = new ClientAsync();
+//		t.execute();
 		
 	}
+	
+	private class concatMethod extends AsyncTask<String[], Void, Void> {
+	
+		public concatMethod(){	
+		}
 
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+		
+		@Override
+		protected Void doInBackground(String[]... params) {
+			((ApplicationWithGlobalVariables)
+					getApplication()).professorsAndCourses = concat(parseCourses(), parseHebrewProfessors());
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void res) {
+			Log.d(getLocalClassName(), "done!");
+		}
+		}
+
+	/**
+	 * This populates the professorSet (returned) and hebrewTranslations
+	 * HashMap (class variable).
+	 * @return
+	 */
 	public String[] parseHebrewProfessors() {
 		HashSet<String> professorSet = new HashSet<String>();
 		try {
@@ -361,6 +392,10 @@ public abstract class SearchResults extends ActionBarActivity {
 		}
 		// Get the SearchView and set the searchable configuration
 		MenuItem searchItem = menu.findItem(R.id.action_search);
+		if (getLocalClassName().equals("SplashActivity")){
+			searchItem.setVisible(false);
+			loginItem.setVisible(false);
+		}
 		searchItem.setOnActionExpandListener(new OnActionExpandListener() {
 
 			@Override
@@ -368,8 +403,8 @@ public abstract class SearchResults extends ActionBarActivity {
 	    		if (getResources().getConfiguration().orientation ==
 	    				Configuration.ORIENTATION_LANDSCAPE) {
 	    			if (getLocalClassName().equals("MainActivity")) {
-		    			TextView t = (TextView) findViewById(R.id.introductoryText);
-		    			t.setVisibility(View.GONE);
+		    		//	TextView t = (TextView) findViewById(R.id.introductoryText);
+		    	//		t.setVisibility(View.GONE);
 	    			}
 	    			else if (getLocalClassName().equals("FragmentMainActivity")) {
 	    				TextView t2 = (TextView) findViewById(R.id.privacyPolicyTextView);
@@ -384,8 +419,8 @@ public abstract class SearchResults extends ActionBarActivity {
 	    		if (getResources().getConfiguration().orientation ==
 	    				Configuration.ORIENTATION_LANDSCAPE) {
 	    			if (getLocalClassName().equals("MainActivity")) {
-		    			TextView t = (TextView) findViewById(R.id.introductoryText);
-		    			t.setVisibility(View.VISIBLE);
+		    	//		TextView t = (TextView) findViewById(R.id.introductoryText);
+		    		//	t.setVisibility(View.VISIBLE);
 	    			}
 	    			else if (getLocalClassName().equals("FragmentMainActivity")) {
 	    				TextView t2 = (TextView) findViewById(R.id.privacyPolicyTextView);
@@ -580,6 +615,7 @@ public abstract class SearchResults extends ActionBarActivity {
 				Log.d(getLocalClassName(), "Dropping professor comments: " + res);
 			}
 		}
+		
 	}
 }
 

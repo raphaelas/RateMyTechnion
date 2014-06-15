@@ -1,5 +1,6 @@
 package com.technionrankerv1;
 
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,7 +19,6 @@ public class FragmentWelcomeView extends Fragment {
 		a.setLoggedIn(true);
 		Bundle bundle = getActivity().getIntent().getExtras();
 		String personName = bundle.getString("the username");
-
 		TextView myText = (TextView) rootView.findViewById(R.id.helloVisitorTextView);
 		myText.setText(personName);
 		TextView thresholdText = (TextView) rootView.findViewById(R.id.ratingsSubmittedAndThresholdTextView);

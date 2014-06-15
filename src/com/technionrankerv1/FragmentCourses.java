@@ -1,6 +1,7 @@
 package com.technionrankerv1;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,6 +22,8 @@ public class FragmentCourses extends Fragment {
 
         String[] tempString2 = ((FragmentMainActivity) getActivity()).getCourseValues();
 		ListView list = (ListView)rootView.findViewById(R.id.leosCourse);
+		
+
 		ArrayAdapter<String> ad=new ArrayAdapter<String>(getActivity(), R.layout.text_item, tempString2);
 		list.setAdapter(ad);
 		list.setOnItemClickListener(new OnItemClickListener() {

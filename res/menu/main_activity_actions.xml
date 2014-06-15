@@ -11,20 +11,20 @@
         app:showAsAction="ifRoom|collapseActionView"/>
 
     <!-- Settings, should always be in the overflow -->
-     
+     <item
+        android:id="@+id/action_my_account"
+        android:title="@string/action_my_account"
+        app:showAsAction="ifRoom">
+    </item>
     <item
         android:id="@+id/action_logout"
         android:title="@string/action_logout"
-        app:showAsAction="never">
+        app:showAsAction="ifRoom">
     </item>
     <item
         android:id="@+id/action_login"
         android:title="@string/action_login"
-        app:showAsAction="never">
+        app:showAsAction="ifRoom">
     </item>
-    <item
-        android:id="@+id/action_my_account"
-        android:title="@string/action_my_account"
-        app:showAsAction="never">
-    </item>
+    
 </menu>
