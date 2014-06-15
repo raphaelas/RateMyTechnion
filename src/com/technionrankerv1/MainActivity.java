@@ -511,6 +511,7 @@ public class MainActivity extends SearchResults {
 						public void run() {
 							errorM.setTextColor(getResources().getColor(
 									R.color.red));
+							findViewById(R.id.mainSpinner1).setVisibility(View.INVISIBLE);
 							errorM.setText("Please try again.");
 							Toast.makeText(
 									getApplicationContext(),
@@ -536,7 +537,6 @@ public class MainActivity extends SearchResults {
 			public void run() {
 				findViewById(R.id.mainSpinner1).setVisibility(View.INVISIBLE);
 				errorM.setTextColor(getResources().getColor(R.color.red));
-				findViewById(R.id.mainSpinner1).setVisibility(View.INVISIBLE);
 				if (x == 1) {
 					errorM.setText("Incorrect username or password. Please try again.");
 				} else {
