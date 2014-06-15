@@ -395,12 +395,12 @@ public abstract class SearchResults extends ActionBarActivity {
 		MenuItem logoutItem = menu.findItem(R.id.action_logout);
 		MenuItem loginItem = menu.findItem(R.id.action_login);
 		MenuItem myAccountItem = menu.findItem(R.id.action_my_account);
-    	boolean loggedIn = ((ApplicationWithGlobalVariables) this.getApplication()).isLoggedIn();
+		boolean loggedIn = ((ApplicationWithGlobalVariables) this
+				.getApplication()).isLoggedIn();
 		if (!loggedIn) {
 			logoutItem.setVisible(false);
 			myAccountItem.setVisible(false);
-		}
-		else {
+		} else {
 			loginItem.setVisible(false);
 		}
 		if (getLocalClassName().equals("FragmentMainActivity")) {
@@ -411,7 +411,7 @@ public abstract class SearchResults extends ActionBarActivity {
 		}
 		// Get the SearchView and set the searchable configuration
 		MenuItem searchItem = menu.findItem(R.id.action_search);
-		if (getLocalClassName().equals("SplashActivity")){
+		if (getLocalClassName().equals("SplashActivity")) {
 			searchItem.setVisible(false);
 			loginItem.setVisible(false);
 		}
@@ -419,34 +419,34 @@ public abstract class SearchResults extends ActionBarActivity {
 
 			@Override
 			public boolean onMenuItemActionExpand(MenuItem item) {
-	    		if (getResources().getConfiguration().orientation ==
-	    				Configuration.ORIENTATION_LANDSCAPE) {
-	    			if (getLocalClassName().equals("MainActivity")) {
-		    		//	TextView t = (TextView) findViewById(R.id.introductoryText);
-		    	//		t.setVisibility(View.GONE);
-	    			}
-	    			else if (getLocalClassName().equals("FragmentMainActivity")) {
-	    				TextView t2 = (TextView) findViewById(R.id.privacyPolicyTextView);
-	    				t2.setVisibility(View.GONE);
-	    			}
-	    		}
-    			return true;
+				if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+					if (getLocalClassName().equals("MainActivity")) {
+						// TextView t = (TextView)
+						// findViewById(R.id.introductoryText);
+						// t.setVisibility(View.GONE);
+					} else if (getLocalClassName().equals(
+							"FragmentMainActivity")) {
+						TextView t2 = (TextView) findViewById(R.id.privacyPolicyTextView);
+						t2.setVisibility(View.GONE);
+					}
+				}
+				return true;
 			}
 
 			@Override
 			public boolean onMenuItemActionCollapse(MenuItem item) {
-	    		if (getResources().getConfiguration().orientation ==
-	    				Configuration.ORIENTATION_LANDSCAPE) {
-	    			if (getLocalClassName().equals("MainActivity")) {
-		    	//		TextView t = (TextView) findViewById(R.id.introductoryText);
-		    		//	t.setVisibility(View.VISIBLE);
-	    			}
-	    			else if (getLocalClassName().equals("FragmentMainActivity")) {
-	    				TextView t2 = (TextView) findViewById(R.id.privacyPolicyTextView);
-	    				t2.setVisibility(View.VISIBLE);
-	    			}
-	    		}
-    			return true;
+				if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+					if (getLocalClassName().equals("MainActivity")) {
+						// TextView t = (TextView)
+						// findViewById(R.id.introductoryText);
+						// t.setVisibility(View.VISIBLE);
+					} else if (getLocalClassName().equals(
+							"FragmentMainActivity")) {
+						TextView t2 = (TextView) findViewById(R.id.privacyPolicyTextView);
+						t2.setVisibility(View.VISIBLE);
+					}
+				}
+				return true;
 			}
 		});
 		final SearchView searchView = (SearchView) MenuItemCompat
@@ -455,42 +455,48 @@ public abstract class SearchResults extends ActionBarActivity {
 		// Assumes current activity is the searchable activity
 		searchView.setSearchableInfo(searchManager
 				.getSearchableInfo(getComponentName()));
-		 // Do not iconify the widget; expand it by default
+		// Do not iconify the widget; expand it by default
 		searchView.setIconifiedByDefault(false);
-		//This onclicklistener widens the search text:
+		// This onclicklistener widens the search text:
 		searchView.setOnSearchClickListener(new OnClickListener() {
-			
-		    private boolean extended = false;
-		    @Override
-		    public void onClick(View v) {
-				TextView t = (TextView) findViewById(R.id.introductoryText);
-				t.setVisibility(View.GONE);
-		        if (!extended) {
-		            extended = true;
-		            LayoutParams lp2 = ((View) v.getParent()).getLayoutParams();
-		            lp2.width = LayoutParams.MATCH_PARENT;
-		        }
-		    }
-		});
-	    String[] columnNames = {"_id","coursesAndProfessors", "hebrewProfessorName"};
-	    MatrixCursor cursor = new MatrixCursor(columnNames);
-	    String[] from = {"coursesAndProfessors", "hebrewProfessorName"}; 
-	    int[] to = {R.id.lblListItem, R.id.hebrewListItem};
-	    cursorAdapter = 
-	    		new SimpleCursorAdapter(getApplicationContext(), R.layout.list_item, cursor, from, to, 0);
-        searchView.setOnQueryTextListener(searchQueryListener);
-        searchView.setSuggestionsAdapter(cursorAdapter);
-        searchView.setOnSuggestionListener(new OnSuggestionListener() {
 
-           @Override
-           public boolean onSuggestionClick(int position) {
-        	   if(getCurrentFocus()!=null && getCurrentFocus() instanceof EditText){
-        		   InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        		   imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-        	   }
-        	   Cursor c = (MatrixCursor) cursorAdapter.getItem(position);
-        	   String value =  c.getString(c.getColumnIndexOrThrow("coursesAndProfessors"));
-        	   if (Character.isDigit(value.charAt(0))) {
+			private boolean extended = false;
+
+			@Override
+			public void onClick(View v) {
+				if (getLocalClassName().equals("MainActivity")) {
+					TextView t = (TextView) findViewById(R.id.introductoryText);
+					t.setVisibility(View.GONE);
+				}
+				if (!extended) {
+					extended = true;
+					LayoutParams lp2 = ((View) v.getParent()).getLayoutParams();
+					lp2.width = LayoutParams.MATCH_PARENT;
+				}
+			}
+		});
+		String[] columnNames = { "_id", "coursesAndProfessors",
+				"hebrewProfessorName" };
+		MatrixCursor cursor = new MatrixCursor(columnNames);
+		String[] from = { "coursesAndProfessors", "hebrewProfessorName" };
+		int[] to = { R.id.lblListItem, R.id.hebrewListItem };
+		cursorAdapter = new SimpleCursorAdapter(getApplicationContext(),
+				R.layout.list_item, cursor, from, to, 0);
+		searchView.setOnQueryTextListener(searchQueryListener);
+		searchView.setSuggestionsAdapter(cursorAdapter);
+		searchView.setOnSuggestionListener(new OnSuggestionListener() {
+
+			@Override
+			public boolean onSuggestionClick(int position) {
+				if (getCurrentFocus() != null
+						&& getCurrentFocus() instanceof EditText) {
+					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+				}
+				Cursor c = (MatrixCursor) cursorAdapter.getItem(position);
+				String value = c.getString(c
+						.getColumnIndexOrThrow("coursesAndProfessors"));
+				if (Character.isDigit(value.charAt(0))) {
 					String[] splitted = value.split(" - ");
 					String courseNumber = splitted[0];
 					String courseName = splitted[1];
@@ -499,30 +505,30 @@ public abstract class SearchResults extends ActionBarActivity {
 					i.putExtra("courseName", courseName);
 					i.putExtra("faculty", facultyMap.get(courseNumber));
 					startActivity(i);
-				}
-				else {
+				} else {
 					String englishName = value;
-					String hebrewName = c.getString(c.getColumnIndexOrThrow("hebrewProfessorName"));
-					Intent i = new Intent(SearchResults.this, ProfessorView.class);
+					String hebrewName = c.getString(c
+							.getColumnIndexOrThrow("hebrewProfessorName"));
+					Intent i = new Intent(SearchResults.this,
+							ProfessorView.class);
 					if (englishName.equals("")) {
 						i.putExtra("professorName", hebrewName);
 						i.putExtra("faculty", "");
-					}
-					else {
+					} else {
 						i.putExtra("professorName", hebrewName);
 						i.putExtra("faculty", facultyMap.get(hebrewName));
 					}
 					startActivity(i);
 				}
-               return true;
-           }
+				return true;
+			}
 
-           @Override
-           public boolean onSuggestionSelect(int position) {
-               return false;
-           }
-        });
-        return true;
+			@Override
+			public boolean onSuggestionSelect(int position) {
+				return false;
+			}
+		});
+		return true;
 	}
 
 	@Override
