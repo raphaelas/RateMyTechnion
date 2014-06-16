@@ -118,7 +118,7 @@ public class CourseCommentsListAdapter extends ArrayAdapter<CourseComment> {
 		protected String doInBackground(ProfessorComment... params) {
 	    	ProfessorComment cc = params[0];
 			String[] beenSplit = cc.getComment().split("\n"); 
-			cc.setComment(StringEscapeUtils.escapeJava(beenSplit[0]) + "\n" + beenSplit[1]);
+			cc.setComment(StringEscapeUtils.escapeJava(beenSplit[0] + "\n" + beenSplit[1]));
 	    	String result = new TechnionRankerAPI().insertProfessorComment(cc).toString();
 			return result;
 		}

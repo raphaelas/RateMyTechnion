@@ -43,10 +43,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.serverapi.TechnionRankerAPI;
-
 public abstract class SearchResults extends ActionBarActivity {
-	private TechnionRankerAPI db = new TechnionRankerAPI();
+	//private TechnionRankerAPI db = new TechnionRankerAPI();
 	public String[] professorsAndCourses = null;
 	private CursorAdapter cursorAdapter;
 	public HashMap<String, String> hebrewTranslations = new HashMap<String, String>();
@@ -72,7 +70,7 @@ public abstract class SearchResults extends ActionBarActivity {
 			Log.d(getLocalClassName(),
 					"Warning: there is no Internet connection.");
 			Toast.makeText(getApplicationContext(),
-					"Please check your" + "Internet connection.",
+					"Please check your" + " Internet connection.",
 					Toast.LENGTH_LONG).show();
 		}
 		String[] globalProfessorsAndCourses = ((ApplicationWithGlobalVariables) getApplication()).professorsAndCourses;
@@ -84,8 +82,8 @@ public abstract class SearchResults extends ActionBarActivity {
 			professorsAndCourses = globalProfessorsAndCourses;
 		}
 		//
-		// ClientAsync t = new ClientAsync();
-		// t.execute();
+//		 ClientAsync t = new ClientAsync();
+//		 t.execute();
 
 	}
 
@@ -620,37 +618,37 @@ public abstract class SearchResults extends ActionBarActivity {
 	 * This is used whenever we need to populate the courses or professors
 	 * database tables.
 	 */
-	private class ClientAsync extends AsyncTask<List<Professor>, Void, String> {
-
-		public ClientAsync() {
-		}
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			Log.d(getLocalClassName(), "Starting SearchResults Async...");
-		}
-
-		/**
-		 * This is the method that does the database call. Comment everything in
-		 * this method to ignore the database.
-		 */
-		@Override
-		protected String doInBackground(List<Professor>... params) {
-			String result = null;
-			// result = db.dropAllProfessorComments().toString();
-			return result;
-		}
-
-		@Override
-		protected void onPostExecute(String res) {
-			if (res == null)
-				Log.d(getLocalClassName(), "SearchResults async unsuccessful");
-			else {
-				Log.d(getLocalClassName(), "Dropping professor comments: "
-						+ res);
-			}
-		}
-
-	}
+//	private class ClientAsync extends AsyncTask<List<Professor>, Void, String> {
+//
+//		public ClientAsync() {
+//		}
+//
+//		@Override
+//		protected void onPreExecute() {
+//			super.onPreExecute();
+//			Log.d(getLocalClassName(), "Starting SearchResults Async...");
+//		}
+//
+//		/**
+//		 * This is the method that does the database call. Comment everything in
+//		 * this method to ignore the database.
+//		 */
+//		@Override
+//		protected String doInBackground(List<Professor>... params) {
+//			String result = null;
+//			//result = db.dropAllCourseComments().toString();
+//			return result;
+//		}
+//
+//		@Override
+//		protected void onPostExecute(String res) {
+//			if (res == null)
+//				Log.d(getLocalClassName(), "SearchResults async unsuccessful");
+//			else {
+//				Log.d(getLocalClassName(), "Dropping course comments: "
+//						+ res);
+//			}
+//		}
+//
+//	}
 }

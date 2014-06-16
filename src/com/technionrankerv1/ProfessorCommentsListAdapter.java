@@ -96,9 +96,12 @@ public class ProfessorCommentsListAdapter extends ArrayAdapter<ProfessorComment>
 		@Override
 		protected String doInBackground(ProfessorComment... params) {
 	    	ProfessorComment cc = params[0];
-			String[] beenSplit = cc.getComment().split("\n"); 
-			cc.setComment(StringEscapeUtils.escapeJava(beenSplit[0]) + "\n" + beenSplit[1]);
-	    	String result = new TechnionRankerAPI().insertProfessorComment(cc).toString();
+	    	ProfessorComment toInsert = new ProfessorComment(cc.getProfessorID(), cc.getStudentID(),
+	    			cc.getComment(), null, cc.getLikes());
+			String[] beenSplit = toInsert.getComment().split("\n");
+			//Log.d("ProfessorCommentsListAdapter", Arrays.toString(beenSplit));
+			toInsert.setComment(StringEscapeUtils.escapeJava(beenSplit[0] + "\n" + beenSplit[1]));
+			String result = new TechnionRankerAPI().insertProfessorComment(toInsert).toString();
 			return result;
 		}
 
