@@ -79,7 +79,6 @@ public class ProfessorView extends SearchResults {
 			t3.setTextSize(18);
 		}
     	String lookupProfessorName = bundle.getString("professorName");
-    	Log.d(getLocalClassName(), StringEscapeUtils.escapeJava(lookupProfessorName));
     	Professor cLookup = new Professor(null, null, null, StringEscapeUtils.escapeJava(lookupProfessorName), true);
     	ClientAsyncGetProfessorByProfessorName cagpbpn = new ClientAsyncGetProfessorByProfessorName();
 		try {
@@ -230,15 +229,13 @@ public class ProfessorView extends SearchResults {
 			EditText et = (EditText) findViewById(R.id.professorComment);
 	    	String studentName = ((ApplicationWithGlobalVariables) this.getApplication()).getStudentName();
 			String tempCommentText = et.getText().toString();
-	    	String immediateCommentText = "" + studentName + tempCommentText;
-	    	Log.d("Immediate comment:", immediateCommentText);
-	    	String dbCommentText = StringEscapeUtils.escapeJava(immediateCommentText);
-			ProfessorComment databasePC = new ProfessorComment(professorId, studentId, dbCommentText, null, 0);
-			InsertProfessorCommentClientAsync as2 = new InsertProfessorCommentClientAsync();
-			as2.execute(databasePC);			
-		}
-		else {
-			Log.d(getLocalClassName(), "" + shouldPreventSubmit + " " + alreadySubmitted + " " + canSubmit);
+			if (tempCommentText.length() > 0) {
+		    	String immediateCommentText = "" + studentName + tempCommentText;
+		    	String dbCommentText = StringEscapeUtils.escapeJava(immediateCommentText);
+				ProfessorComment databasePC = new ProfessorComment(professorId, studentId, dbCommentText, null, 0);
+				InsertProfessorCommentClientAsync as2 = new InsertProfessorCommentClientAsync();
+				as2.execute(databasePC);		
+			}
 		}
 	}
 	

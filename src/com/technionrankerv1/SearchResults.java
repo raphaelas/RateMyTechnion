@@ -48,20 +48,22 @@ public abstract class SearchResults extends ActionBarActivity {
 	public String[] professorsAndCourses = null;
 	private CursorAdapter cursorAdapter;
 	public HashMap<String, String> hebrewTranslations = new HashMap<String, String>();
-	public HashMap<String, String> facultyMap = new HashMap<String, String>();
 	public ViewPager viewPager;
 	public LinkedHashSet<String> courseNumbers = new LinkedHashSet<String>();
 	public HashMap<String, Course> courseNumbersToCourses = new HashMap<String, Course>();
 	public List<Course> coursesToInsert = new ArrayList<Course>();
+	private ApplicationWithGlobalVariables a;
 
 	public void onCreate(Bundle savedInstance) {
 
 		super.onCreate(savedInstance);
 		if (!getLocalClassName().equals("MainActivity")
 				&& !getLocalClassName().equals("FragmentMainActivity")
-				&& !getLocalClassName().equals("SplashActivity")) {
+				&& !getLocalClassName().equals("SplashActivity")
+				&& !getLocalClassName().equals("SplashActivityAfterLogin")) {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
+		a = ((ApplicationWithGlobalVariables) this.getApplication());
 		// Detect if connected to Internet
 		ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
 		boolean isInternetPresent = cd.isConnectingToInternet(); // true or
@@ -73,11 +75,11 @@ public abstract class SearchResults extends ActionBarActivity {
 					"Please check your" + " Internet connection.",
 					Toast.LENGTH_LONG).show();
 		}
-		String[] globalProfessorsAndCourses = ((ApplicationWithGlobalVariables) getApplication()).professorsAndCourses;
+		String[] globalProfessorsAndCourses = a.professorsAndCourses;
 		if (globalProfessorsAndCourses == null) {
 			concatMethod concatMethod1 = new concatMethod();
 			concatMethod1.execute();
-			((ApplicationWithGlobalVariables) getApplication()).professorsAndCourses = professorsAndCourses;
+			a.professorsAndCourses = professorsAndCourses;
 		} else {
 			professorsAndCourses = globalProfessorsAndCourses;
 		}
@@ -99,7 +101,7 @@ public abstract class SearchResults extends ActionBarActivity {
 
 		@Override
 		protected Void doInBackground(String[]... params) {
-			((ApplicationWithGlobalVariables) getApplication()).professorsAndCourses = concat(
+			a.professorsAndCourses = concat(
 					parseCourses(), parseHebrewProfessors());
 			return null;
 		}
@@ -130,7 +132,7 @@ public abstract class SearchResults extends ActionBarActivity {
 				hebrewTranslations.put(hebName, engName);
 				String faculty = splitted[2].trim();
 				String hebrewNameToUse = hebName;
-				facultyMap.put(hebrewNameToUse, faculty);
+				a.facultyMap.put(hebrewNameToUse, faculty);
 				//This will make the hebrew professor name in a new line after the english name.
 				if (!engName.equals("<null>")) {
 					professorSet.add(engName + "\n" + hebrewNameToUse);
@@ -160,7 +162,7 @@ public abstract class SearchResults extends ActionBarActivity {
 				String name = splitted[3].trim();
 				String faculty = splitted[2].trim();
 				// map.put(number, name);
-				facultyMap.put(number, faculty);
+				a.facultyMap.put(number, faculty);
 				courseNumbers.add(number);
 				Course c = new Course(null, name, number, null, null, faculty,
 						true);
@@ -396,8 +398,7 @@ public abstract class SearchResults extends ActionBarActivity {
 		MenuItem logoutItem = menu.findItem(R.id.action_logout);
 		MenuItem loginItem = menu.findItem(R.id.action_login);
 		MenuItem myAccountItem = menu.findItem(R.id.action_my_account);
-		boolean loggedIn = ((ApplicationWithGlobalVariables) this
-				.getApplication()).isLoggedIn();
+		boolean loggedIn = a.isLoggedIn();
 		if (!loggedIn) {
 			logoutItem.setVisible(false);
 			myAccountItem.setVisible(false);
@@ -412,7 +413,8 @@ public abstract class SearchResults extends ActionBarActivity {
 		}
 		// Get the SearchView and set the searchable configuration
 		MenuItem searchItem = menu.findItem(R.id.action_search);
-		if (getLocalClassName().equals("SplashActivity")) {
+		if (getLocalClassName().equals("SplashActivity") ||
+				getLocalClassName().equals("SplashActivityAfterLogin")) {
 			searchItem.setVisible(false);
 			loginItem.setVisible(false);
 		}
@@ -504,7 +506,8 @@ public abstract class SearchResults extends ActionBarActivity {
 					Intent i = new Intent(SearchResults.this, CourseView.class);
 					i.putExtra("courseNumber", courseNumber);
 					i.putExtra("courseName", courseName);
-					i.putExtra("faculty", facultyMap.get(courseNumber));
+//					Log.d(getLocalClassName(), a.facultyMap.get(courseNumber));
+					i.putExtra("faculty", a.facultyMap.get(courseNumber));
 					startActivity(i);
 				} else {
 					String englishName = value;
@@ -517,7 +520,7 @@ public abstract class SearchResults extends ActionBarActivity {
 						i.putExtra("faculty", "");
 					} else {
 						i.putExtra("professorName", hebrewName);
-						i.putExtra("faculty", facultyMap.get(hebrewName));
+						i.putExtra("faculty", a.facultyMap.get(hebrewName));
 					}
 					startActivity(i);
 				}
@@ -542,14 +545,12 @@ public abstract class SearchResults extends ActionBarActivity {
 		case R.id.action_my_account:
 			Intent i1 = new Intent(SearchResults.this,
 					FragmentMainActivity.class);
-			String globalStudentName = ((ApplicationWithGlobalVariables) getApplication())
-					.getStudentName();
+			String globalStudentName = a.getStudentName();
 			i1.putExtra("the username", globalStudentName);
 			startActivity(i1);
 			return true;
 		case R.id.action_logout:
-			((ApplicationWithGlobalVariables) this.getApplication())
-					.setLoggedIn(false);
+			a.setLoggedIn(false);
 			Intent i = new Intent(SearchResults.this, MainActivity.class);
 			startActivity(i);
 			return true;

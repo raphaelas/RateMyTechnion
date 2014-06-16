@@ -84,7 +84,6 @@ public class CourseView extends SearchResults {
 		}
 		Course cLookup = new Course(null, null, lookupCourseNumber, null, null,
 				null, true);
-		Log.d(lookupCourseNumber, lookupCourseName);
 		ClientAsyncGetCourseByCourseNumber cagpbpn = new ClientAsyncGetCourseByCourseNumber();
 		try {
 			courseId = cagpbpn.execute(cLookup).get().get(0).getId();
@@ -249,14 +248,15 @@ public class CourseView extends SearchResults {
 			String studentName = ((ApplicationWithGlobalVariables) this
 					.getApplication()).getStudentName();
 			String tempCommentText = et.getText().toString();
-			String immediateCommentText = "" + studentName + tempCommentText;
-			Log.d("Immediate comment:", immediateCommentText);
-			String dbCommentText = StringEscapeUtils
-					.escapeJava(immediateCommentText);
-			ProfessorComment databasePC = new ProfessorComment(courseId,
-					studentId, dbCommentText, null, 0);
-			InsertCourseCommentClientAsync as2 = new InsertCourseCommentClientAsync();
-			as2.execute(databasePC);
+			if (tempCommentText.length() > 0) {
+				String immediateCommentText = "" + studentName + tempCommentText;
+				String dbCommentText = StringEscapeUtils
+						.escapeJava(immediateCommentText);
+				ProfessorComment databasePC = new ProfessorComment(courseId,
+						studentId, dbCommentText, null, 0);
+				InsertCourseCommentClientAsync as2 = new InsertCourseCommentClientAsync();
+				as2.execute(databasePC);
+			}
 		}
 	}
 
@@ -341,14 +341,12 @@ public class CourseView extends SearchResults {
 		@Override
 		protected void onPostExecute(String res) {
 			if (res == null) {
-				// Log.d(getLocalClassName(),
 				// "CourseRating ClientAsync unsuccessful");
 				textViewCourseRatingSubmitted.setTextColor(getResources()
 						.getColor(R.color.red));
 				textViewCourseRatingSubmitted
 						.setText("Sorry, please try submitting your rating again.");
 			} else if (!alreadySubmitted) {
-				// Log.d(getLocalClassName(), res);
 				textViewCourseRatingSubmitted.setTextColor(getResources()
 						.getColor(R.color.white));
 				textViewCourseRatingSubmitted
@@ -460,7 +458,6 @@ public class CourseView extends SearchResults {
 				averageEnjoyability /= totalRatings;
 				averageUsefulness /= totalRatings;
 				averageDifficulty /= totalRatings;
-				Log.d(getLocalClassName(), "" + averageOverall);
 				rOverall.setRating(averageOverall);
 				rUsefulness.setRating(averageUsefulness);
 				rEnjoyability.setRating(averageEnjoyability);
@@ -512,7 +509,6 @@ public class CourseView extends SearchResults {
 			} else {
 				ArrayList<CourseComment> resToUse = new ArrayList<CourseComment>();
 				Log.d(getLocalClassName(), "Get CourseComments succeeded.");
-				Log.d(getLocalClassName(), res.toString());
 				for (int i = 0; i < res.size(); i++) {
 					ProfessorComment tempPC = res.get(i);
 					CourseComment tempCC = new CourseComment(
