@@ -38,9 +38,10 @@ public class ProfessorCommentsListAdapter extends ArrayAdapter<ProfessorComment>
 		ImageButton thumbImage = (ImageButton) rowView.findViewById(R.id.thumbImage);
 		ApplicationWithGlobalVariables a2 = ((ApplicationWithGlobalVariables) context.getApplicationContext());
 		ProfessorComment thisProfessorComment2 = values[position];
-		if (a2.isProfessorCommentLiked(a2.getStudentID())
-				|| !a2.isLoggedIn() || thisProfessorComment2.
-				getStudentID().equals(a2.getStudentID())) {
+		String commentorName = thisProfessorComment2.getComment().split("\n")[0] + "\n"; 
+		if (a2.isProfessorCommentLiked("" + thisProfessorComment2.getProfessorID()+
+				thisProfessorComment2.getStudentID() + thisProfessorComment2.getComment())
+				|| !a2.isLoggedIn() || commentorName.equals(a2.getStudentName())) {
 			thumbImage.setEnabled(false);
 		}
 		thumbImage.setOnClickListener(new OnClickListener() {
@@ -48,15 +49,15 @@ public class ProfessorCommentsListAdapter extends ArrayAdapter<ProfessorComment>
 			public void onClick(View v) {
 				ApplicationWithGlobalVariables a = ((ApplicationWithGlobalVariables) context.getApplicationContext());
 				ProfessorComment thisProfessorComment = values[position];
+				String commentorName = thisProfessorComment.getComment().split("\n")[0] + "\n"; 
 				//If the comment is not liked according to the global variables:
-				if (!a.isProfessorCommentLiked(a.getStudentID())
-						&& a.isLoggedIn() && !thisProfessorComment.
-						getStudentID().equals(a.getStudentID())) {
-					a.likeProfessorComment(a.getStudentID());
+				if (!a.isProfessorCommentLiked("" + thisProfessorComment.getProfessorID() +
+						thisProfessorComment.getStudentID() + thisProfessorComment.getComment())
+						&& a.isLoggedIn() && !commentorName.equals(a.getStudentName())) {
+					a.likeProfessorComment("" + thisProfessorComment.getProfessorID() +
+							thisProfessorComment.getStudentID() + thisProfessorComment.getComment());
 					int oldCount = Integer.parseInt(likesTextView.getText().toString());
 					thisProfessorComment.incrementLikes();
-					String[] beenSplit = thisProfessorComment.getComment().split("\n"); 
-					thisProfessorComment.setComment(StringEscapeUtils.escapeJava(beenSplit[0]) + beenSplit[1]);
 					ProfessorCommentClientAsync as = new ProfessorCommentClientAsync();
 					as.execute(thisProfessorComment);
 					likesTextView.setText("" + (oldCount + 1));
@@ -95,6 +96,8 @@ public class ProfessorCommentsListAdapter extends ArrayAdapter<ProfessorComment>
 		@Override
 		protected String doInBackground(ProfessorComment... params) {
 	    	ProfessorComment cc = params[0];
+			String[] beenSplit = cc.getComment().split("\n"); 
+			cc.setComment(StringEscapeUtils.escapeJava(beenSplit[0]) + "\n" + beenSplit[1]);
 	    	String result = new TechnionRankerAPI().insertProfessorComment(cc).toString();
 			return result;
 		}

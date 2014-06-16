@@ -329,6 +329,7 @@ public class ProfessorView extends SearchResults {
 				alreadySubmitted = true;
 				getAllProfessorRatingsDatabase();
 				a.incrementRatingsSubmitted();
+				a.studentsToRatingsSubmitted.put(a.getStudentName(), a.getRatingsSubmitted());
 			}
 			else {
 				textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.white));

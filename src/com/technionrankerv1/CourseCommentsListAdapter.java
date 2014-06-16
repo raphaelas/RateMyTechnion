@@ -38,25 +38,31 @@ public class CourseCommentsListAdapter extends ArrayAdapter<CourseComment> {
 		ImageButton thumbImage = (ImageButton) rowView.findViewById(R.id.thumbImage);
 		ApplicationWithGlobalVariables a2 = ((ApplicationWithGlobalVariables) context.getApplicationContext());
 		CourseComment thisCourseComment2 = values[position];
-		if (a2.isCourseCommentLiked(a2.getStudentID())
-				|| !a2.isLoggedIn() || thisCourseComment2.
-				getStudentID().equals(a2.getStudentID())) {
+		String commentorName = thisCourseComment2.getComment().split("\n")[0] + "\n"; 
+		if (a2.isCourseCommentLiked("" + thisCourseComment2.getCourseID()+
+				thisCourseComment2.getStudentID() + thisCourseComment2.getComment())
+				|| !a2.isLoggedIn() || commentorName.equals(a2.getStudentName())) {
 			thumbImage.setEnabled(false);
+		}
+		else {
+			Log.d("CourseCommentsListAdapter", a2.getCourseCommentsLiked().toString());
 		}
 		thumbImage.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				CourseComment thisCourseComment = values[position];
 				ApplicationWithGlobalVariables a = ((ApplicationWithGlobalVariables) context.getApplicationContext());
+				String commentorName = thisCourseComment.getComment().split("\n")[0] + "\n"; 
 				//If the comment is not liked according to the global variables:
-				if (!a.isCourseCommentLiked(thisCourseComment.getId())
-						&& a.isLoggedIn() && !thisCourseComment.
-						getStudentID().equals(a.getStudentID())) {
-					((ApplicationWithGlobalVariables) context.getApplicationContext()).likeCourseComment(thisCourseComment.getId());
+				if (!a.isCourseCommentLiked("" + thisCourseComment.getCourseID() +
+						thisCourseComment.getStudentID() + thisCourseComment.getComment())
+						&& a.isLoggedIn() && !commentorName.equals(a.getStudentName())) {
+					Log.d("Liking comment:", thisCourseComment.getComment());
+					a.likeCourseComment("" + thisCourseComment.getCourseID()+
+							thisCourseComment.getStudentID() + thisCourseComment.getComment());
 					int oldCount = Integer.parseInt(likesTextView.getText().toString());
 					thisCourseComment.incrementLikes();
-					String[] beenSplit = thisCourseComment.getComment().split("\n"); 
-					thisCourseComment.setComment(StringEscapeUtils.escapeJava(beenSplit[0]) + beenSplit[1]);
+
 					CourseCommentClientAsync as = new CourseCommentClientAsync();
 					ProfessorComment professorCopy = new ProfessorComment(
 							thisCourseComment.getCourseID(), 
@@ -66,6 +72,18 @@ public class CourseCommentsListAdapter extends ArrayAdapter<CourseComment> {
 					as.execute(professorCopy);
 					likesTextView.setText("" + (oldCount + 1));
 					notifyDataSetChanged(); //This line is necessary for sorting.
+				}
+				else {
+					Log.d("CourseCommentsListAdapter", a.getCourseCommentsLiked().toString());
+					Log.d("CourseCommentsListAdapter text:", thisCourseComment.getComment());
+					Log.d("CourseCommentsListAdapter + isPreviouslyLiked:", a.isCourseCommentLiked("" +
+					thisCourseComment.getCourseID()+
+							thisCourseComment.getStudentID() + thisCourseComment.getComment()) + "");
+					Log.d("CourseCommentsListAdapter loggedIn:", a.isLoggedIn() + "");
+					Log.d("CourseCommentsListAdapter isOwnComment:", thisCourseComment.
+							getStudentID().equals(a.getStudentID()) + "");
+
+					
 				}
 			}
 		});
@@ -99,6 +117,8 @@ public class CourseCommentsListAdapter extends ArrayAdapter<CourseComment> {
 		@Override
 		protected String doInBackground(ProfessorComment... params) {
 	    	ProfessorComment cc = params[0];
+			String[] beenSplit = cc.getComment().split("\n"); 
+			cc.setComment(StringEscapeUtils.escapeJava(beenSplit[0]) + "\n" + beenSplit[1]);
 	    	String result = new TechnionRankerAPI().insertProfessorComment(cc).toString();
 			return result;
 		}

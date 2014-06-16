@@ -356,6 +356,8 @@ public class CourseView extends SearchResults {
 				alreadySubmitted = true;
 				getAllCourseRatingsDatabase();
 				a.incrementRatingsSubmitted();
+				a.studentsToRatingsSubmitted.put(a.getStudentName(), a.getRatingsSubmitted());
+
 			}
 			else {
 				textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
