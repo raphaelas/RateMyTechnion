@@ -33,6 +33,9 @@ public class FragmentProfessors extends Fragment {
 				Intent i = new Intent(getActivity(), ProfessorView.class);
 				i.putExtra("professorName", value);
 				i.putExtra("faculty", ((FragmentMainActivity) getActivity()).facultyMap.get(value));
+				i.putExtra("courseValues", ((FragmentMainActivity) getActivity()).getCourseValues());
+				i.putExtra("professorValues", ((FragmentMainActivity) getActivity()).getProfessorValues());
+				i.putExtra("facultyMap", ((FragmentMainActivity) getActivity()).facultyMap);
 				startActivity(i);
 			}
 		});

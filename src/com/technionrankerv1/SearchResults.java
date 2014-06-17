@@ -53,7 +53,11 @@ public abstract class SearchResults extends ActionBarActivity {
 	public HashMap<String, Course> courseNumbersToCourses = new HashMap<String, Course>();
 	public List<Course> coursesToInsert = new ArrayList<Course>();
 	private ApplicationWithGlobalVariables a;
+	private HashMap<String, String> scheduleFacultyMap;
+	private String[] actionBarCourseValues;
+	private String[] actionBarProfessorValues;
 
+	@SuppressWarnings("unchecked")
 	public void onCreate(Bundle savedInstance) {
 
 		super.onCreate(savedInstance);
@@ -62,6 +66,12 @@ public abstract class SearchResults extends ActionBarActivity {
 				&& !getLocalClassName().equals("SplashActivity")
 				&& !getLocalClassName().equals("SplashActivityAfterLogin")) {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
+		Bundle b = getIntent().getExtras();
+		if (getIntent().hasExtra("courseValues")) {
+			actionBarCourseValues = b.getStringArray("courseValues");
+			actionBarProfessorValues = b.getStringArray("professorValues");
+			scheduleFacultyMap = (HashMap<String, String>) getIntent().getSerializableExtra("facultyMap");
 		}
 		a = ((ApplicationWithGlobalVariables) this.getApplication());
 		// Detect if connected to Internet
@@ -508,6 +518,11 @@ public abstract class SearchResults extends ActionBarActivity {
 					i.putExtra("courseName", courseName);
 //					Log.d(getLocalClassName(), a.facultyMap.get(courseNumber));
 					i.putExtra("faculty", a.facultyMap.get(courseNumber));
+					if (actionBarCourseValues != null) {
+						i.putExtra("courseValues", actionBarCourseValues);
+						i.putExtra("professorValues", actionBarProfessorValues);
+						i.putExtra("facultyMap", scheduleFacultyMap);
+					}
 					startActivity(i);
 				} else {
 					String englishName = value;
@@ -521,6 +536,11 @@ public abstract class SearchResults extends ActionBarActivity {
 					} else {
 						i.putExtra("professorName", hebrewName);
 						i.putExtra("faculty", a.facultyMap.get(hebrewName));
+					}
+					if (actionBarCourseValues != null) {
+						i.putExtra("courseValues", actionBarCourseValues);
+						i.putExtra("professorValues", actionBarProfessorValues);
+						i.putExtra("facultyMap", scheduleFacultyMap);
 					}
 					startActivity(i);
 				}
@@ -547,6 +567,11 @@ public abstract class SearchResults extends ActionBarActivity {
 					FragmentMainActivity.class);
 			String globalStudentName = a.getStudentName();
 			i1.putExtra("the username", globalStudentName);
+			if (actionBarCourseValues != null) {
+				i1.putExtra("courseValues", actionBarCourseValues);
+				i1.putExtra("professorValues", actionBarProfessorValues);
+				i1.putExtra("facultyMap", scheduleFacultyMap);
+			}
 			startActivity(i1);
 			return true;
 		case R.id.action_logout:

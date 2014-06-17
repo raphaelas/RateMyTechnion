@@ -1,8 +1,6 @@
 package com.technionrankerv1;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 import android.app.ActionBar;
 import android.app.ActionBar.TabListener;
@@ -10,7 +8,6 @@ import android.app.FragmentTransaction;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 
 public class FragmentMainActivity extends SearchResults implements TabListener {
 	private ViewPager viewPager;
@@ -65,9 +62,6 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 			public void onPageScrollStateChanged(int arg0) {
 			}
 		});
-
-
-		resetGlobalVariables();
 	}
 	
 	public String[] getProfessorValues() {
@@ -76,26 +70,6 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 
 	public String[] getCourseValues() {
 		return courseValuesToPassToAdapter;
-	}
-
-	private void resetGlobalVariables() {
-		ApplicationWithGlobalVariables a = ((ApplicationWithGlobalVariables) getApplication());
-		boolean isExistingStudent = false;
-		Set<String> studentNameSet = a.studentsToRatingsSubmitted.keySet();
-		for (String studentName : studentNameSet) {
-			Log.d(studentName.length() + "", a.getStudentName().length() + "");
-			if (studentName.equals(a.getStudentName())) {
-				a.setRatingsSubmitted(a.studentsToRatingsSubmitted.get(a
-						.getStudentName()));
-				isExistingStudent = true;
-			}
-		}
-		if (!isExistingStudent) {
-			a.setCourseCommentsLiked(new HashSet<String>());
-			a.setProfessorCommentsLiked(new HashSet<String>());
-			a.setRatingsSubmitted(0);
-			a.resetStudentID();
-		}
 	}
 
 	@Override

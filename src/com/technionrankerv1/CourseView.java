@@ -278,8 +278,8 @@ public class CourseView extends SearchResults {
 		courseCommentsList.setEmptyView(emptyComments);
 		courseCommentsList.setAdapter(adapter);
 		LayoutParams l = courseCommentsList.getLayoutParams();
-		if (l.height < 400) {
-			l.height = l.height + (allComments.size() * 100);
+		if (l.height < 450) {
+			l.height = l.height + (allComments.size() * 150);
 			courseCommentsList.setLayoutParams(l);
 		}
 

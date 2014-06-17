@@ -36,6 +36,10 @@ public class FragmentCourses extends Fragment {
 				i.putExtra("courseNumber", splitted[0]);
 				i.putExtra("courseName", splitted[1]);
 				i.putExtra("faculty", ((FragmentMainActivity) getActivity()).facultyMap.get(splitted[0]));
+				i.putExtra("courseValues", ((FragmentMainActivity) getActivity()).getCourseValues());
+				i.putExtra("professorValues", ((FragmentMainActivity) getActivity()).getProfessorValues());
+				i.putExtra("facultyMap", ((FragmentMainActivity) getActivity()).facultyMap);
+
 				startActivity(i);
 			}
 		});

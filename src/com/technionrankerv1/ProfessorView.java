@@ -257,8 +257,8 @@ public class ProfessorView extends SearchResults {
 	    professorCommentsList.setEmptyView(emptyComments);
 	    professorCommentsList.setAdapter(adapter);
 	    LayoutParams l = professorCommentsList.getLayoutParams();
-	    if (l.height < 400) {
-		    l.height = l.height + (allComments.size() * 100);
+	    if (l.height < 450) {
+		    l.height = l.height + (allComments.size() * 150);
 		    professorCommentsList.setLayoutParams(l);
 	    }
 
