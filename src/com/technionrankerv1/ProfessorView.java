@@ -85,6 +85,8 @@ public class ProfessorView extends SearchResults {
 			professorId = cagpbpn.execute(cLookup).get().get(0).getId();
 			getAllProfessorRatingsDatabase();
 	    	getAllProfessorCommentsDatabase();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {

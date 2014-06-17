@@ -89,6 +89,8 @@ public class CourseView extends SearchResults {
 			courseId = cagpbpn.execute(cLookup).get().get(0).getId();
 			getAllCourseRatingsDatabase();
 			getAllCourseCommentsDatabase();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
