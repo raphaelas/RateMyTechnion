@@ -318,7 +318,7 @@ public class ProfessorView extends SearchResults {
 
 		@Override
 		protected void onPostExecute(String res) {
-			if (res == null) {
+			if (res == null || res.equals("FAILED")) {
 				textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.red));
 				textViewProfessorRatingSubmitted.setText("Sorry, please try submitting your rating again.");
 			}
@@ -358,7 +358,7 @@ public class ProfessorView extends SearchResults {
 
 		@Override
 		protected void onPostExecute(String res) {
-			if (res == null)
+			if (res == null || res.equals("FAILED")) 
 				Log.d(getLocalClassName(), "ProfessorComment clientAsync unsuccessful");
 			else {
 				Log.d(getLocalClassName(), "Insert ProfessorComment: " + res);

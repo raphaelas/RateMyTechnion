@@ -342,7 +342,7 @@ public class CourseView extends SearchResults {
 
 		@Override
 		protected void onPostExecute(String res) {
-			if (res == null) {
+			if (res == null || res.equals("FAILED")) {
 				// "CourseRating ClientAsync unsuccessful");
 				textViewCourseRatingSubmitted.setTextColor(getResources()
 						.getColor(R.color.red));
@@ -389,7 +389,7 @@ public class CourseView extends SearchResults {
 
 		@Override
 		protected void onPostExecute(String res) {
-			if (res == null)
+			if (res == null || res.equals("FAILED")) 
 				Log.d(getLocalClassName(),
 						"CourseComment clientAsync unsuccessful");
 			else {
