@@ -2,10 +2,9 @@ package com.technionrankerv1;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-
-import com.serverapi.TechnionRankerAPI;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -17,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.serverapi.TechnionRankerAPI;
 
 public class CourseCommentsListAdapter extends ArrayAdapter<CourseComment> {
 	private final Context context;
@@ -38,9 +39,8 @@ public class CourseCommentsListAdapter extends ArrayAdapter<CourseComment> {
 		ImageButton thumbImage = (ImageButton) rowView.findViewById(R.id.thumbImage);
 		ApplicationWithGlobalVariables a2 = ((ApplicationWithGlobalVariables) context.getApplicationContext());
 		CourseComment thisCourseComment2 = values[position];
-		String commentorName = thisCourseComment2.getComment().split("\n")[0] + "\n"; 
-		if (a2.isCourseCommentLiked("" + thisCourseComment2.getCourseID()+
-				thisCourseComment2.getStudentID() + thisCourseComment2.getComment())
+		String commentorName = StringEscapeUtils.unescapeJava(thisCourseComment2.getComment().split("\n")[0] + "\n"); 
+		if (thisCourseComment2.getStudentsWhoLikedThisComment().contains(StringEscapeUtils.escapeJava(a2.getStudentName()))
 				|| !a2.isLoggedIn() || commentorName.equals(a2.getStudentName())) {
 			thumbImage.setEnabled(false);
 		}
@@ -48,37 +48,35 @@ public class CourseCommentsListAdapter extends ArrayAdapter<CourseComment> {
 			Log.d("CourseCommentsListAdapter", a2.getCourseCommentsLiked().toString());
 		}
 		thumbImage.setOnClickListener(new OnClickListener() {
+			@SuppressWarnings("unchecked")
 			@Override
 			public void onClick(View v) {
 				CourseComment thisCourseComment = values[position];
 				ApplicationWithGlobalVariables a = ((ApplicationWithGlobalVariables) context.getApplicationContext());
-				String commentorName = thisCourseComment.getComment().split("\n")[0] + "\n"; 
+				String commentorName = StringEscapeUtils.unescapeJava(thisCourseComment.getComment().split("\n")[0] + "\n"); 
 				//If the comment is not liked according to the global variables:
-				if (!a.isCourseCommentLiked("" + thisCourseComment.getCourseID() +
-						thisCourseComment.getStudentID() + thisCourseComment.getComment())
+				if (!thisCourseComment.getStudentsWhoLikedThisComment().contains(StringEscapeUtils.escapeJava(a.getStudentName()))
 						&& a.isLoggedIn() && !commentorName.equals(a.getStudentName())) {
-					Log.d("Liking comment:", thisCourseComment.getComment());
-					a.likeCourseComment("" + thisCourseComment.getCourseID()+
-							thisCourseComment.getStudentID() + thisCourseComment.getComment());
+					Log.d(StringEscapeUtils.escapeJava(a.getStudentName()), thisCourseComment.getStudentsWhoLikedThisComment().toString());
 					int oldCount = Integer.parseInt(likesTextView.getText().toString());
 					thisCourseComment.incrementLikes();
-
+					thisCourseComment.addStudentsWhoLikedThisComment(StringEscapeUtils.escapeJava(a.getStudentName()));
 					CourseCommentClientAsync as = new CourseCommentClientAsync();
 					ProfessorComment professorCopy = new ProfessorComment(
 							thisCourseComment.getCourseID(), 
 							thisCourseComment.getStudentID(),
 							thisCourseComment.getComment(),
 							null, thisCourseComment.getLikes());
+					professorCopy.setStudentsWhoLikedThisComment((HashSet<String>) thisCourseComment.getStudentsWhoLikedThisComment().clone());
+					Log.d("ToInsert HS:", professorCopy.getStudentsWhoLikedThisComment().toString());
 					as.execute(professorCopy);
 					likesTextView.setText("" + (oldCount + 1));
 					notifyDataSetChanged(); //This line is necessary for sorting.
 				}
 				else {
-					Log.d("CourseCommentsListAdapter", a.getCourseCommentsLiked().toString());
+					Log.d("CourseCommentsListAdapter", thisCourseComment.getStudentsWhoLikedThisComment().toString());
 					Log.d("CourseCommentsListAdapter text:", thisCourseComment.getComment());
-					Log.d("CourseCommentsListAdapter + isPreviouslyLiked:", a.isCourseCommentLiked("" +
-					thisCourseComment.getCourseID()+
-							thisCourseComment.getStudentID() + thisCourseComment.getComment()) + "");
+					Log.d("CourseCommentsListAdapter + isPreviouslyLiked:", thisCourseComment.getStudentsWhoLikedThisComment().contains(StringEscapeUtils.escapeJava(a.getStudentName()))+"");
 					Log.d("CourseCommentsListAdapter loggedIn:", a.isLoggedIn() + "");
 					Log.d("CourseCommentsListAdapter isOwnComment:", thisCourseComment.
 							getStudentID().equals(a.getStudentID()) + "");

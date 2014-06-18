@@ -93,9 +93,9 @@ public abstract class SearchResults extends ActionBarActivity {
 		} else {
 			professorsAndCourses = globalProfessorsAndCourses;
 		}
-		//
-//		 ClientAsync t = new ClientAsync();
-//		 t.execute();
+		
+//		ClientAsync t = new ClientAsync();
+//		t.execute();
 
 	}
 
@@ -662,7 +662,7 @@ public abstract class SearchResults extends ActionBarActivity {
 //		@Override
 //		protected String doInBackground(List<Professor>... params) {
 //			String result = null;
-//			//result = db.dropAllCourseComments().toString();
+//			result = new TechnionRankerAPI().dropAllProfessorComments().toString();
 //			return result;
 //		}
 //
@@ -671,7 +671,7 @@ public abstract class SearchResults extends ActionBarActivity {
 //			if (res == null)
 //				Log.d(getLocalClassName(), "SearchResults async unsuccessful");
 //			else {
-//				Log.d(getLocalClassName(), "Dropping course comments: "
+//				Log.d(getLocalClassName(), "Dropping professor comments: "
 //						+ res);
 //			}
 //		}

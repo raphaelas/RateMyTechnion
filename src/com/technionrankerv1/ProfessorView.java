@@ -33,31 +33,27 @@ import com.serverapi.TechnionRankerAPI;
  *
  */
 public class ProfessorView extends SearchResults {
-    public Long professorId = Long.valueOf(0);
-    public Long studentId = Long.valueOf(0);
-    public Professor professor;
-    public boolean alreadySubmitted = false;
-    public TextView textViewProfessorRatingSubmitted;
-	List<ProfessorComment> comments =  new ArrayList<ProfessorComment>();
-	boolean canSubmit;
-	boolean loggedIn;
-	boolean shouldPreventSubmit = false;
-	float averageOverall = 0;
-	float averageClarity = 0;
-	float averagePreparedness = 0;
-	float averageInteractivity = 0;
-	int totalRatings;
-	public RatingBar rOverall;
-	public RatingBar rPreparedness;
-	public RatingBar rClarity;
-	public RatingBar rInteractivity;
-	public String emptyCommentsString;
-	ApplicationWithGlobalVariables a;
-
+    private Long professorId = Long.valueOf(0);
+    private Long studentId = Long.valueOf(0);
+    private boolean alreadySubmitted = false;
+    private TextView textViewProfessorRatingSubmitted;
+	private List<ProfessorComment> comments =  new ArrayList<ProfessorComment>();
+	private boolean canSubmit;
+	private boolean loggedIn;
+	private boolean shouldPreventSubmit = false;
+	private float averageOverall = 0;
+	private float averageClarity = 0;
+	private float averagePreparedness = 0;
+	private float averageInteractivity = 0;
+	private int totalRatings;
+	private RatingBar rOverall;
+	private RatingBar rPreparedness;
+	private RatingBar rClarity;
+	private RatingBar rInteractivity;
+	private String emptyCommentsString;
+	private ApplicationWithGlobalVariables a;
+	private ProfessorComment professorCommentToUpdate;
 	
-	public static boolean isTablet(Context context) {
-		return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
-	}
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     	setContentView(R.layout.professor_view);
@@ -187,16 +183,11 @@ public class ProfessorView extends SearchResults {
 			textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
 			textViewProfessorRatingSubmitted.setText("Whoops, you've reached the limit for posting ratings this semester.");
     	}
-		else if (alreadySubmitted) {
+		else if (alreadySubmitted || shouldPreventSubmit) {
 			textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
 			textViewProfessorRatingSubmitted.setText("Please wait while we update your response.");
 			InsertProfessorRatingClientAsync as3 = new InsertProfessorRatingClientAsync();
 			as3.execute(pr);
-		}
-		else if (shouldPreventSubmit){
-			textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
-			textViewProfessorRatingSubmitted.setText("Whoops, you already submitted on "
-					+ "another device.");
 		}
     	else {
 			textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
@@ -227,14 +218,26 @@ public class ProfessorView extends SearchResults {
 	}
 	
 	protected void createProfessorComment(Long professorId, Long studentId) {
-		if ((!shouldPreventSubmit || alreadySubmitted) && canSubmit) {
+		if (canSubmit) {
 			EditText et = (EditText) findViewById(R.id.professorComment);
 	    	String studentName = ((ApplicationWithGlobalVariables) this.getApplication()).getStudentName();
 			String tempCommentText = et.getText().toString();
 			if (tempCommentText.length() > 0) {
 		    	String immediateCommentText = "" + studentName + tempCommentText;
 		    	String dbCommentText = StringEscapeUtils.escapeJava(immediateCommentText);
-				ProfessorComment databasePC = new ProfessorComment(professorId, studentId, dbCommentText, null, 0);
+		    	ProfessorComment databasePC;
+				if (shouldPreventSubmit) {
+					databasePC = new ProfessorComment(
+							professorCommentToUpdate.getProfessorID(), 
+							professorCommentToUpdate.getStudentID(),
+							dbCommentText, null,
+							professorCommentToUpdate.getLikes());
+					databasePC.setStudentsWhoLikedThisComment(
+							professorCommentToUpdate.getStudentsWhoLikedThisComment());
+				}
+				else {
+					databasePC = new ProfessorComment(professorId, studentId, dbCommentText, null, 0);
+				}
 				InsertProfessorCommentClientAsync as2 = new InsertProfessorCommentClientAsync();
 				as2.execute(databasePC);		
 			}
@@ -266,6 +269,10 @@ public class ProfessorView extends SearchResults {
 
 	}
 	
+	public static boolean isTablet(Context context) {
+		return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+	}
+	
 	private class ClientAsyncGetProfessorByProfessorName extends AsyncTask<Professor, Void, List<Professor>> {
 		public ClientAsyncGetProfessorByProfessorName() {
 		}
@@ -293,7 +300,6 @@ public class ProfessorView extends SearchResults {
 			else {
 				Log.d(getLocalClassName(), "GetProfessor clientAsync successful");
 		    	professorId = res.get(0).getId();
-		    	professor = res.get(0);
 			}
 		}
 	}
@@ -322,12 +328,15 @@ public class ProfessorView extends SearchResults {
 				textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.red));
 				textViewProfessorRatingSubmitted.setText("Sorry, please try submitting your rating again.");
 			}
-			else if (!alreadySubmitted) {
+			else if (!alreadySubmitted && !shouldPreventSubmit) {
 				textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
 				textViewProfessorRatingSubmitted.setText("Thank you.  Your rating was received.");
 				alreadySubmitted = true;
 				getAllProfessorRatingsDatabase();
 				a.incrementRatingsSubmitted();
+				Course c = new Course(null, null, StringEscapeUtils.escapeJava(a.getStudentName()), Long.valueOf(a.getRatingsSubmitted()), null, null, true);
+				InsertCourseClientAsync icca = new InsertCourseClientAsync();
+				icca.execute(c);
 				a.studentsToRatingsSubmitted.put(a.getStudentName(), a.getRatingsSubmitted());
 			}
 			else {
@@ -475,12 +484,41 @@ public class ProfessorView extends SearchResults {
 					String realName = StringEscapeUtils.escapeJava(nameToSet.split("\n")[0]);
 					if ((StringEscapeUtils.escapeJava(a.getStudentName().trim())).equals(realName)) {
 						shouldPreventSubmit = true;
+						professorCommentToUpdate = tempPC;
 					}
 					tempPC.setComment(nameToSet);
 					res.set(i, tempPC);
 				}
 				comments = res;
 		    	displayAllComments(comments);
+			}
+		}
+	}
+
+	private class InsertCourseClientAsync extends AsyncTask<Course, Void, String> { 
+		public InsertCourseClientAsync() {
+		}
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute(); 
+		}
+
+		@Override 
+		protected String doInBackground(Course... params) {
+			String result = null; Course courseToAdd = params[0];
+			Log.d(getLocalClassName(), courseToAdd.toString());
+			List<Course> listToAdd = new ArrayList<Course>();
+			listToAdd.add(courseToAdd); result = new TechnionRankerAPI().insertCourse(listToAdd).toString();
+			return result;
+		}
+
+		@Override 
+		protected void onPostExecute(String res) { 
+			if (res == null || res.equals("FAILED")) {
+				Log.d(getLocalClassName(), "Insert course failed.");
+			} 
+			else {
+				Log.d(getLocalClassName(), "Insert course: " + res);
 			}
 		}
 	}

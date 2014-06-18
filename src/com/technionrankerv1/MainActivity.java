@@ -4,17 +4,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
-import com.serverapi.TechnionRankerAPI;
 
 import android.content.Context;
 import android.content.Intent;
@@ -33,6 +31,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.serverapi.TechnionRankerAPI;
 
 public class MainActivity extends SearchResults {
 	private TextView errorM;
@@ -568,7 +568,7 @@ public class MainActivity extends SearchResults {
 				Professor dbProfessor = gpca.execute(tempString[i]).get();
 				if (dbProfessor == null) {
 					// profList.add(tempString[i]);
-					Log.d("FragmentProfessors", "We don't have that professor.");
+					Log.d(getLocalClassName(), "We don't have that professor.");
 					a.decrementRatingsThreshold();
 				} else {
 					String hebNameToUse = StringEscapeUtils
@@ -642,7 +642,7 @@ public class MainActivity extends SearchResults {
 		@Override
 		protected void onPostExecute(Professor res) {
 			if (res == null) {
-				Log.d("FragmentProfessors",
+				Log.d(getLocalClassName(),
 						"Get of professor for course failed.");
 				a.decrementRatingsThreshold();
 			} else {
@@ -673,9 +673,9 @@ public class MainActivity extends SearchResults {
 		@Override
 		protected void onPostExecute(List<Course> res) {
 			if (res == null) {
-				Log.d("FragmentCourses", "Get of course failed.");
+				Log.d(getLocalClassName(), "Get of course failed.");
 			} else if (res.size() == 0) {
-				Log.d("FragmentCourses", "Get of course returned empty.");
+				Log.d(getLocalClassName(), "Get of course returned empty.");
 			} else {
 			}
 		}
@@ -683,20 +683,35 @@ public class MainActivity extends SearchResults {
 	
 	private void resetGlobalVariables() {
 		ApplicationWithGlobalVariables a = ((ApplicationWithGlobalVariables) getApplication());
+		GetCourseClientAsync gcca2= new GetCourseClientAsync();
+		int ratingsSubmitted = 0;
+		try {
+			String lookupName = StringEscapeUtils.escapeJava(a.getStudentName());
+			Log.d(getLocalClassName(), lookupName);
+			 List<Course> tempListOfOneStudent = gcca2.execute(lookupName).get();
+			 if (tempListOfOneStudent.size() > 0) {
+				 ratingsSubmitted = tempListOfOneStudent.get(0).getProfessorID().intValue();
+			 }
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+		a.setRatingsSubmitted(ratingsSubmitted);
 		boolean isExistingStudent = false;
 		Set<String> studentNameSet = a.studentsToRatingsSubmitted.keySet();
 		for (String studentName : studentNameSet) {
 			Log.d(studentName.length() + "", a.getStudentName().length() + "");
 			if (studentName.equals(a.getStudentName())) {
-				a.setRatingsSubmitted(a.studentsToRatingsSubmitted.get(a
-						.getStudentName()));
+				//It's an existing student on the device.
 				isExistingStudent = true;
 			}
 		}
 		if (!isExistingStudent) {
-			a.setCourseCommentsLiked(new HashSet<String>());
-			a.setProfessorCommentsLiked(new HashSet<String>());
-			a.setRatingsSubmitted(0);
+			a.resetCourseCommentsLiked();
+			a.resetProfessorCommentsLiked();
 			a.resetStudentID();
 		}
 	}

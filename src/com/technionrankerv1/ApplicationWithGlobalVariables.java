@@ -10,8 +10,8 @@ public class ApplicationWithGlobalVariables extends Application {
     private int ratingsSubmitted = 0;
     private boolean loggedIn = false;
     private Long studentID = Long.valueOf((long) (Math.random() * 100000000));
-    private HashSet<String> courseCommentsLiked = new HashSet<String>();
-    private HashSet<String> professorCommentsLiked = new HashSet<String>();
+    private HashMap<String, HashSet<String>> courseCommentsLiked = new HashMap<String, HashSet<String>>();
+    private HashMap<String, HashSet<String>> professorCommentsLiked = new HashMap<String, HashSet<String>>();
     private String studentName = "";
     private int ratingsThreshold = 0;
     public HashMap<String, Integer> studentsToRatingsSubmitted = new HashMap<String, Integer>();
@@ -91,44 +91,38 @@ public class ApplicationWithGlobalVariables extends Application {
 	 * @return the courseCommentsLiked
 	 */
 	public HashSet<String> getCourseCommentsLiked() {
-		return courseCommentsLiked;
+		return courseCommentsLiked.get(studentName);
 	}
-
-	/**
-	 * @param courseCommentsLiked the courseCommentsLiked to set
-	 */
-	public void setCourseCommentsLiked(HashSet<String> courseCommentsLiked) {
-		this.courseCommentsLiked = courseCommentsLiked;
+	
+	public void resetCourseCommentsLiked() {
+		this.courseCommentsLiked.put(studentName, new HashSet<String>());
 	}
 	
 	public boolean isCourseCommentLiked(String cc) {
-		return courseCommentsLiked.contains(cc);
+		return courseCommentsLiked.get(studentName).contains(cc);
 	}
 	
 	public void likeCourseComment(String cc) {
-		courseCommentsLiked.add(cc);
+		courseCommentsLiked.get(studentName).add(cc);
 	}
 
 	/**
 	 * @return the professorCommentsLiked
 	 */
 	public HashSet<String> getProfessorCommentsLiked() {
-		return professorCommentsLiked;
+		return professorCommentsLiked.get(studentName);
 	}
-
-	/**
-	 * @param professorCommentsLiked the professorCommentsLiked to set
-	 */
-	public void setProfessorCommentsLiked(HashSet<String> professorCommentsLiked) {
-		this.professorCommentsLiked = professorCommentsLiked;
+	
+	public void resetProfessorCommentsLiked() {
+		this.professorCommentsLiked.put(studentName, new HashSet<String>());
 	}
 	
 	public boolean isProfessorCommentLiked(String pc) {
-		return professorCommentsLiked.contains(pc);
+		return professorCommentsLiked.get(studentName).contains(pc);
 	}
 	
 	public void likeProfessorComment(String pc) {
-		professorCommentsLiked.add(pc);
+		professorCommentsLiked.get(studentName).add(pc);
 	}
 
 	/**
