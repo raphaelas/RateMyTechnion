@@ -8,7 +8,9 @@ import java.util.concurrent.ExecutionException;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -82,10 +84,32 @@ public class CourseView extends SearchResults {
 			TextView t3 = (TextView) findViewById(R.id.course_usefulness);
 			t3.setTextSize(18);
 		}
+		GetProfessorClientAsync gpca = new GetProfessorClientAsync();
 		Course cLookup = new Course(null, null, lookupCourseNumber, null, null,
 				null, true);
 		ClientAsyncGetCourseByCourseNumber cagpbpn = new ClientAsyncGetCourseByCourseNumber();
 		try {
+			Professor p = gpca.execute(lookupCourseNumber).get();
+			final String tempPHebrewName = StringEscapeUtils.unescapeJava(p.getHebrewName());
+			TextView headProfessor = (TextView) findViewById(R.id.headProfessorText);
+			headProfessor.setPaintFlags(headProfessor.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+			headProfessor.setText(tempPHebrewName);
+			headProfessor.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Intent i = new Intent(CourseView.this, ProfessorView.class);
+					Log.d(getLocalClassName(), "Start of listener.");
+					i.putExtra("professorName", tempPHebrewName);
+					i.putExtra("faculty", a.facultyMap.get(tempPHebrewName));
+					i.putExtra("courseValues", actionBarCourseValues);
+					i.putExtra("professorValues", actionBarProfessorValues);
+					i.putExtra("facultyMap", scheduleFacultyMap);
+					Log.d(getLocalClassName(), "End of listener.");
+					startActivity(i);
+				}
+				
+			});
 			courseId = cagpbpn.execute(cLookup).get().get(0).getId();
 			getAllCourseRatingsDatabase();
 			getAllCourseCommentsDatabase();
@@ -569,6 +593,37 @@ public class CourseView extends SearchResults {
 			} 
 			else {
 				Log.d(getLocalClassName(), "Insert course: " + res);
+			}
+		}
+	}
+	
+	private class GetProfessorClientAsync extends
+	AsyncTask<String, Void, Professor> {
+		public GetProfessorClientAsync() {
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		@Override
+		protected Professor doInBackground(String... params) {
+			String courseNumber = params[0];
+			Course lookup = new Course(null, null, courseNumber, null, null,
+					null, true);
+			Professor result = new TechnionRankerAPI()
+			.getProfessorForCourse(lookup);
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(Professor res) {
+			if (res == null) {
+				Log.d(getLocalClassName(),
+						"Get of professor for course failed.");
+				a.decrementRatingsThreshold();
+			} else {
 			}
 		}
 	}

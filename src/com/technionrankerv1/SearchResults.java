@@ -53,9 +53,9 @@ public abstract class SearchResults extends ActionBarActivity {
 	public HashMap<String, Course> courseNumbersToCourses = new HashMap<String, Course>();
 	public List<Course> coursesToInsert = new ArrayList<Course>();
 	private ApplicationWithGlobalVariables a;
-	private HashMap<String, String> scheduleFacultyMap;
-	private String[] actionBarCourseValues;
-	private String[] actionBarProfessorValues;
+	public HashMap<String, String> scheduleFacultyMap;
+	public String[] actionBarCourseValues;
+	public String[] actionBarProfessorValues;
 
 	@SuppressWarnings("unchecked")
 	public void onCreate(Bundle savedInstance) {
