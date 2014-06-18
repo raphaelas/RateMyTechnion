@@ -83,6 +83,8 @@ public class CourseView extends SearchResults {
 			t2.setTextSize(18);
 			TextView t3 = (TextView) findViewById(R.id.course_usefulness);
 			t3.setTextSize(18);
+			TextView t4 = (TextView) findViewById(R.id.totalRatingsCaption);
+			t4.setTextSize(18);
 		}
 		GetProfessorClientAsync gpca = new GetProfessorClientAsync();
 		Course cLookup = new Course(null, null, lookupCourseNumber, null, null,

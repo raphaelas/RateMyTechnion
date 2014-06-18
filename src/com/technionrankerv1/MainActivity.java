@@ -554,6 +554,7 @@ public class MainActivity extends SearchResults {
 
 	@Override
 	public void onBackPressed() {
+        finish();
 	}
 	
 	public void professorsPart() {

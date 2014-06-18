@@ -73,6 +73,8 @@ public class ProfessorView extends SearchResults {
 			t2.setTextSize(18);
 			TextView t3 = (TextView) findViewById(R.id.prof_overall);
 			t3.setTextSize(18);
+			TextView t4 = (TextView) findViewById(R.id.professorTotalRatingsCaption);
+			t4.setTextSize(18);
 		}
     	String lookupProfessorName = bundle.getString("professorName");
     	Professor cLookup = new Professor(null, null, null, StringEscapeUtils.escapeJava(lookupProfessorName), true);
