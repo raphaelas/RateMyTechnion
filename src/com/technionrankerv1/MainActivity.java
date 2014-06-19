@@ -510,6 +510,7 @@ public class MainActivity extends SearchResults {
 						// in SearchResults - onOptionsItemSelected().
 						i.putExtra("the username", name);
 						i.putExtra("facultyMap", facultyMap);
+						i.putExtra("previousActivity", "MainActivity");
 						resetGlobalVariables();
 						startActivity(i);
 					} else if (x != 0) {

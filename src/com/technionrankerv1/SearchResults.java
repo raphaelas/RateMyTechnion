@@ -567,6 +567,7 @@ public abstract class SearchResults extends ActionBarActivity {
 					FragmentMainActivity.class);
 			String globalStudentName = a.getStudentName();
 			i1.putExtra("the username", globalStudentName);
+			i1.putExtra("previousActivity", getLocalClassName());
 			if (actionBarCourseValues != null) {
 				i1.putExtra("courseValues", actionBarCourseValues);
 				i1.putExtra("professorValues", actionBarProfessorValues);

@@ -101,13 +101,15 @@ public class CourseView extends SearchResults {
 				@Override
 				public void onClick(View v) {
 					Intent i = new Intent(CourseView.this, ProfessorView.class);
-					Log.d(getLocalClassName(), "Start of listener.");
+					String thisFaculty = a.facultyMap.get(tempPHebrewName);
 					i.putExtra("professorName", tempPHebrewName);
-					i.putExtra("faculty", a.facultyMap.get(tempPHebrewName));
+					if (!thisFaculty.equals("<null>")) {
+						Log.d(getLocalClassName(), thisFaculty);
+						i.putExtra("faculty", a.facultyMap.get(tempPHebrewName));
+					}
 					i.putExtra("courseValues", actionBarCourseValues);
 					i.putExtra("professorValues", actionBarProfessorValues);
 					i.putExtra("facultyMap", scheduleFacultyMap);
-					Log.d(getLocalClassName(), "End of listener.");
 					startActivity(i);
 				}
 				

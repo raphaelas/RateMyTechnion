@@ -18,7 +18,7 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 	private String[] professorValuesToPassToAdapter;
 	private String[] courseValuesToPassToAdapter;
 	public HashMap<String, String> facultyMap;
-	ApplicationWithGlobalVariables a;
+	private String previousActivity;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -26,11 +26,11 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_main_activity);
 		Bundle b = getIntent().getExtras();
+		previousActivity = b.getString("previousActivity");
 		courseValuesToPassToAdapter = b.getStringArray("courseValues");
 		professorValuesToPassToAdapter = b.getStringArray("professorValues");
 		facultyMap = (HashMap<String, String>) getIntent().getSerializableExtra("facultyMap");
 		
-		a = ((ApplicationWithGlobalVariables) getApplication());
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		actionBar = getActionBar();
@@ -62,6 +62,10 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 			public void onPageScrollStateChanged(int arg0) {
 			}
 		});
+		
+		if (!previousActivity.equals("MainActivity")) {
+			getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
 	}
 	
 	public String[] getProfessorValues() {
@@ -90,6 +94,8 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 
 	@Override
 	public void onBackPressed(){
-		
+		if (!previousActivity.equals("MainActivity")) {
+			super.onBackPressed();
+		}
 	}
 }
