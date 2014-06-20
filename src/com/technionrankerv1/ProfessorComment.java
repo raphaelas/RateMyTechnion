@@ -123,6 +123,9 @@ public class ProfessorComment {
 	 * @return the studentsWhoLikedThisComment
 	 */
 	public HashSet<String> getStudentsWhoLikedThisComment() {
+		 if (studentsWhoLikedThisComment == null) {
+			 return new HashSet<String>();
+		 }
 		return studentsWhoLikedThisComment;
 	}
 

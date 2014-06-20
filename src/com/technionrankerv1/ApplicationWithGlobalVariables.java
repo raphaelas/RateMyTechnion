@@ -9,7 +9,7 @@ public class ApplicationWithGlobalVariables extends Application {
 	
     private int ratingsSubmitted = 0;
     private boolean loggedIn = false;
-    private Long studentID = Long.valueOf((long) (Math.random() * 100000000));
+    private Long studentID;
     private HashMap<String, HashSet<String>> courseCommentsLiked = new HashMap<String, HashSet<String>>();
     private HashMap<String, HashSet<String>> professorCommentsLiked = new HashMap<String, HashSet<String>>();
     private String studentName = "";
@@ -77,7 +77,7 @@ public class ApplicationWithGlobalVariables extends Application {
 	 * @param studentID the studentID to set
 	 */
 	public void resetStudentID() {
-		this.studentID = Long.valueOf((long) (Math.random() * 100000000));
+		this.studentID = Long.valueOf(studentName.hashCode());
 	}
 
 	/**
