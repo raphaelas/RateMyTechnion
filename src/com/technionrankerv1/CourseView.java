@@ -268,7 +268,7 @@ public class CourseView extends SearchResults {
 	}
 
 	protected void createProfessorComment(Long courseId, Long studentId) {
-		if (canSubmit) {
+		if ((canSubmit || alreadySubmitted)) {
 			EditText et = (EditText) findViewById(R.id.comment);
 			String studentName = ((ApplicationWithGlobalVariables) this
 					.getApplication()).getStudentName();
