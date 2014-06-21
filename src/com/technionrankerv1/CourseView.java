@@ -26,6 +26,7 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.serverapi.TechnionRankerAPI;
 
@@ -388,6 +389,7 @@ public class CourseView extends SearchResults {
 				textViewCourseRatingSubmitted
 						.setText("Thank you.  Your rating was received.");
 				alreadySubmitted = true;
+				Toast.makeText(getApplicationContext(), "Refreshing page...", Toast.LENGTH_SHORT).show();
 				getAllCourseRatingsDatabase();
 				a.incrementRatingsSubmitted();
 				Course c = new Course(null, null, StringEscapeUtils.escapeJava(a.getStudentName()), Long.valueOf(a.getRatingsSubmitted()), null, null, true);
@@ -399,6 +401,7 @@ public class CourseView extends SearchResults {
 			else {
 				textViewCourseRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
 				textViewCourseRatingSubmitted.setText("Thank you.  Your rating was updated.");
+				Toast.makeText(getApplicationContext(), "Refreshing page...", Toast.LENGTH_SHORT).show();
 				getAllCourseRatingsDatabase();
 			}
 		}
@@ -626,7 +629,7 @@ public class CourseView extends SearchResults {
 			if (res == null) {
 				Log.d(getLocalClassName(),
 						"Get of professor for course failed.");
-				a.decrementRatingsThreshold();
+//				a.decrementRatingsThreshold();
 			} else {
 			}
 		}

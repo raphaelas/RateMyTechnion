@@ -10,8 +10,9 @@
         android:id="@+id/leosProfs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:choiceMode="singleChoice"
         android:divider="@color/gray"
-        android:dividerHeight="1dp"
-        android:layout_marginTop="50dp" />
+        android:dividerHeight="1dp" />
 
 </RelativeLayout>

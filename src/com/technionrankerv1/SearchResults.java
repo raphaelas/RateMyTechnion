@@ -54,6 +54,8 @@ public abstract class SearchResults extends ActionBarActivity {
 	public List<Course> coursesToInsert = new ArrayList<Course>();
 	private ApplicationWithGlobalVariables a;
 	public HashMap<String, String> scheduleFacultyMap;
+	public HashMap<String, String> scheduleEnglishNameMap;
+
 	public String[] actionBarCourseValues;
 	public String[] actionBarProfessorValues;
 
@@ -72,6 +74,8 @@ public abstract class SearchResults extends ActionBarActivity {
 			actionBarCourseValues = b.getStringArray("courseValues");
 			actionBarProfessorValues = b.getStringArray("professorValues");
 			scheduleFacultyMap = (HashMap<String, String>) getIntent().getSerializableExtra("facultyMap");
+			scheduleEnglishNameMap = (HashMap<String, String>) getIntent().getSerializableExtra("englishNameMap");
+
 		}
 		a = ((ApplicationWithGlobalVariables) this.getApplication());
 		// Detect if connected to Internet
@@ -522,6 +526,7 @@ public abstract class SearchResults extends ActionBarActivity {
 						i.putExtra("courseValues", actionBarCourseValues);
 						i.putExtra("professorValues", actionBarProfessorValues);
 						i.putExtra("facultyMap", scheduleFacultyMap);
+						i.putExtra("englishNameMap", scheduleEnglishNameMap);
 					}
 					startActivity(i);
 				} else {
@@ -541,6 +546,8 @@ public abstract class SearchResults extends ActionBarActivity {
 						i.putExtra("courseValues", actionBarCourseValues);
 						i.putExtra("professorValues", actionBarProfessorValues);
 						i.putExtra("facultyMap", scheduleFacultyMap);
+						i.putExtra("englishNameMap", scheduleEnglishNameMap);
+
 					}
 					startActivity(i);
 				}
@@ -572,6 +579,7 @@ public abstract class SearchResults extends ActionBarActivity {
 				i1.putExtra("courseValues", actionBarCourseValues);
 				i1.putExtra("professorValues", actionBarProfessorValues);
 				i1.putExtra("facultyMap", scheduleFacultyMap);
+				i1.putExtra("englishNameMap", scheduleEnglishNameMap);
 			}
 			startActivity(i1);
 			return true;

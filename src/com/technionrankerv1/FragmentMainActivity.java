@@ -18,6 +18,7 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 	private String[] professorValuesToPassToAdapter;
 	private String[] courseValuesToPassToAdapter;
 	public HashMap<String, String> facultyMap;
+	public HashMap<String, String> englishNameMap;
 	private String previousActivity;
 
 	@SuppressWarnings("unchecked")
@@ -30,6 +31,7 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 		courseValuesToPassToAdapter = b.getStringArray("courseValues");
 		professorValuesToPassToAdapter = b.getStringArray("professorValues");
 		facultyMap = (HashMap<String, String>) getIntent().getSerializableExtra("facultyMap");
+		englishNameMap = (HashMap<String, String>) getIntent().getSerializableExtra("englishNameMap");
 		
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);

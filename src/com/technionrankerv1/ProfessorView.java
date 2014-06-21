@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.Toast;
 import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.TextView;
 
@@ -334,6 +335,7 @@ public class ProfessorView extends SearchResults {
 				textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
 				textViewProfessorRatingSubmitted.setText("Thank you.  Your rating was received.");
 				alreadySubmitted = true;
+				Toast.makeText(getApplicationContext(), "Refreshing page...", Toast.LENGTH_SHORT).show();
 				getAllProfessorRatingsDatabase();
 				a.incrementRatingsSubmitted();
 				Course c = new Course(null, null, StringEscapeUtils.escapeJava(a.getStudentName()), Long.valueOf(a.getRatingsSubmitted()), null, null, true);
@@ -344,6 +346,7 @@ public class ProfessorView extends SearchResults {
 			else {
 				textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.white));
 				textViewProfessorRatingSubmitted.setText("Thank you.  Your rating was updated.");
+				Toast.makeText(getApplicationContext(), "Refreshing page...", Toast.LENGTH_SHORT).show();
 				getAllProfessorRatingsDatabase();
 			}
 		}

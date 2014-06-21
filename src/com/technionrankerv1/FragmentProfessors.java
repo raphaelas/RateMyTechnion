@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class FragmentProfessors extends Fragment {
@@ -21,8 +20,7 @@ public class FragmentProfessors extends Fragment {
 		ListView list = (ListView)rootView.findViewById(R.id.leosProfs);
 		String[] tempString2 = ((FragmentMainActivity) getActivity()).
 				getProfessorValues();
-		ArrayAdapter<String> ad=new ArrayAdapter<String>(getActivity(),
-				R.layout.text_item, tempString2);
+		UserProfessorsAdapter ad = new UserProfessorsAdapter(getActivity(), tempString2);
 		list.setAdapter(ad);
 		list.setOnItemClickListener(new OnItemClickListener() {
 

@@ -39,6 +39,7 @@ public class MainActivity extends SearchResults {
 	private String username;
 	private String password;
 	public HashMap<String, String> facultyMap = new HashMap<String, String>();
+	public HashMap<String, String> englishNameMap = new HashMap<String, String>();
 	ApplicationWithGlobalVariables a;
 	Intent i;
 
@@ -482,8 +483,12 @@ public class MainActivity extends SearchResults {
 
 						temp = doc.toString().substring(5325, 5350).split(" ");
 						String name = "visitor";
-						if (temp[2] != null && temp[3] != null)
+						if (temp[2] != null && temp[3] != null) {
 							name = temp[2] + " " + temp[3];
+						}
+						if (!name.contains("\n")) {
+							name = name + "\n";
+						}
 						String rishum = res.cookie("rishum");
 						String _ga = "GA1.3.1829128590.1396009585";
 						Connection.Response res1 = Jsoup
@@ -510,6 +515,7 @@ public class MainActivity extends SearchResults {
 						// in SearchResults - onOptionsItemSelected().
 						i.putExtra("the username", name);
 						i.putExtra("facultyMap", facultyMap);
+						i.putExtra("englishNameMap", englishNameMap);
 						i.putExtra("previousActivity", "MainActivity");
 						resetGlobalVariables();
 						startActivity(i);
@@ -563,7 +569,6 @@ public class MainActivity extends SearchResults {
 		tempString=a.courseList;
 		List<String> profList = new ArrayList<String>();
 		int professorCount = 0;
-		a.setRatingsThreshold(tempString.length*2);
 		for(int i =0; i<tempString.length; i++){
 			GetProfessorClientAsync gpca = new GetProfessorClientAsync();
 			try {
@@ -571,18 +576,20 @@ public class MainActivity extends SearchResults {
 				if (dbProfessor == null) {
 					// profList.add(tempString[i]);
 					Log.d(getLocalClassName(), "We don't have that professor.");
-					a.decrementRatingsThreshold();
+					//a.decrementRatingsThreshold();
 				} else {
 					String hebNameToUse = StringEscapeUtils
 							.unescapeJava(dbProfessor.getHebrewName());
 					profList.add(hebNameToUse);
 					professorCount++;
 					facultyMap.put(hebNameToUse, dbProfessor.getFaculty());
+					englishNameMap.put(hebNameToUse, dbProfessor.getName());
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+		a.setRatingsThreshold(professorCount*2);
 		String[] professorValues = new String[professorCount];
 		for (int i = 0; i < profList.size(); i++) {
 			professorValues[i] = profList.get(i);
@@ -646,7 +653,7 @@ public class MainActivity extends SearchResults {
 			if (res == null) {
 				Log.d(getLocalClassName(),
 						"Get of professor for course failed.");
-				a.decrementRatingsThreshold();
+				//a.decrementRatingsThreshold();
 			} else {
 			}
 		}
