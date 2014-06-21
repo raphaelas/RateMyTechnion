@@ -111,6 +111,7 @@ public class CourseView extends SearchResults {
 					i.putExtra("courseValues", actionBarCourseValues);
 					i.putExtra("professorValues", actionBarProfessorValues);
 					i.putExtra("facultyMap", scheduleFacultyMap);
+					i.putExtra("englishNameMap", scheduleEnglishNameMap);
 					startActivity(i);
 				}
 				
