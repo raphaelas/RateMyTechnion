@@ -1,12 +1,13 @@
 package com.technionrankerv1;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Connection;
@@ -523,7 +524,7 @@ public class MainActivity extends SearchResults {
 						Log.d(getLocalClassName(), "Log in unsucessful");
 						reportError(1);
 					}
-				} catch (IOException e) {
+				} catch (Exception e) {
 					runOnUiThread(new Runnable() {
 						public void run() {
 							errorM.setTextColor(getResources().getColor(
@@ -572,7 +573,7 @@ public class MainActivity extends SearchResults {
 		for(int i =0; i<tempString.length; i++){
 			GetProfessorClientAsync gpca = new GetProfessorClientAsync();
 			try {
-				Professor dbProfessor = gpca.execute(tempString[i]).get();
+				Professor dbProfessor = gpca.execute(tempString[i]).get(10, TimeUnit.SECONDS);
 				if (dbProfessor == null) {
 					// profList.add(tempString[i]);
 					Log.d(getLocalClassName(), "We don't have that professor.");
@@ -607,7 +608,7 @@ public class MainActivity extends SearchResults {
 		for (int i = 0; i < tempString.length; i++) {
 			GetCourseClientAsync gcca = new GetCourseClientAsync();
 			try {
-				List<Course> dbCourseList = gcca.execute(tempString[i]).get();
+				List<Course> dbCourseList = gcca.execute(tempString[i]).get(10, TimeUnit.SECONDS);
 				if (dbCourseList == null || dbCourseList.isEmpty()) {
 					Log.d(getLocalClassName(), tempString[i] + ": We don't have that course.");
 				} else {
@@ -690,14 +691,14 @@ public class MainActivity extends SearchResults {
 		}
 	}
 	
-	private void resetGlobalVariables() {
+	private void resetGlobalVariables() throws TimeoutException {
 		ApplicationWithGlobalVariables a = ((ApplicationWithGlobalVariables) getApplication());
 		GetCourseClientAsync gcca2= new GetCourseClientAsync();
 		int ratingsSubmitted = 0;
 		try {
 			String lookupName = StringEscapeUtils.escapeJava(a.getStudentName());
 			Log.d(getLocalClassName(), lookupName);
-			 List<Course> tempListOfOneStudent = gcca2.execute(lookupName).get();
+			 List<Course> tempListOfOneStudent = gcca2.execute(lookupName).get(10, TimeUnit.SECONDS);
 			 if (tempListOfOneStudent.size() > 0) {
 				 ratingsSubmitted = tempListOfOneStudent.get(0).getProfessorID().intValue();
 			 }

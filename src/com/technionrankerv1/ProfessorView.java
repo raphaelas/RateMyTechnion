@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -81,7 +83,7 @@ public class ProfessorView extends SearchResults {
     	Professor cLookup = new Professor(null, null, null, StringEscapeUtils.escapeJava(lookupProfessorName), true);
     	ClientAsyncGetProfessorByProfessorName cagpbpn = new ClientAsyncGetProfessorByProfessorName();
 		try {
-			professorId = cagpbpn.execute(cLookup).get().get(0).getId();
+			professorId = cagpbpn.execute(cLookup).get(10, TimeUnit.SECONDS).get(0).getId();
 			getAllProfessorRatingsDatabase();
 	    	getAllProfessorCommentsDatabase();
 		} catch (NullPointerException e) {
@@ -89,6 +91,8 @@ public class ProfessorView extends SearchResults {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e) {
 			e.printStackTrace();
 		}
     	TextView professorNameText = (TextView) findViewById(R.id.professorNameText);

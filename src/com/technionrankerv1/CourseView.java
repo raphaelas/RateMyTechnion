@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -92,7 +94,7 @@ public class CourseView extends SearchResults {
 				null, true);
 		ClientAsyncGetCourseByCourseNumber cagpbpn = new ClientAsyncGetCourseByCourseNumber();
 		try {
-			Professor p = gpca.execute(lookupCourseNumber).get();
+			Professor p = gpca.execute(lookupCourseNumber).get(10, TimeUnit.SECONDS);
 			final String tempPHebrewName = StringEscapeUtils.unescapeJava(p.getHebrewName());
 			TextView headProfessor = (TextView) findViewById(R.id.headProfessorText);
 			headProfessor.setPaintFlags(headProfessor.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -116,7 +118,7 @@ public class CourseView extends SearchResults {
 				}
 				
 			});
-			courseId = cagpbpn.execute(cLookup).get().get(0).getId();
+			courseId = cagpbpn.execute(cLookup).get(10, TimeUnit.SECONDS).get(0).getId();
 			getAllCourseRatingsDatabase();
 			getAllCourseCommentsDatabase();
 		} catch (NullPointerException e) {
@@ -124,6 +126,8 @@ public class CourseView extends SearchResults {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e) {
 			e.printStackTrace();
 		}
 		TextView courseNameText = (TextView) findViewById(R.id.textViewCourseName);
