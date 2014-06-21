@@ -182,7 +182,7 @@ public class ProfessorView extends SearchResults {
     }
 	
 	protected void saveProfessorRating(ProfessorRating pr) {
-    	if (!canSubmit) {
+    	if (!canSubmit && !alreadySubmitted) {
 			textViewProfessorRatingSubmitted.setTextColor(getResources().getColor(R.color.gray));
 			textViewProfessorRatingSubmitted.setText("Whoops, you've reached the limit for posting ratings this semester.");
     	}

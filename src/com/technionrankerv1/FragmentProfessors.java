@@ -34,6 +34,8 @@ public class FragmentProfessors extends Fragment {
 				i.putExtra("courseValues", ((FragmentMainActivity) getActivity()).getCourseValues());
 				i.putExtra("professorValues", ((FragmentMainActivity) getActivity()).getProfessorValues());
 				i.putExtra("facultyMap", ((FragmentMainActivity) getActivity()).facultyMap);
+				i.putExtra("englishNameMap", ((FragmentMainActivity) getActivity()).englishNameMap);
+
 				startActivity(i);
 			}
 		});

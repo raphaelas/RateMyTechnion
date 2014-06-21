@@ -222,7 +222,7 @@ public class CourseView extends SearchResults {
 	}
 
 	protected void saveCourseRating(CourseRating cr) {
-		if (!canSubmit) {
+		if (!canSubmit && !alreadySubmitted) {
 			textViewCourseRatingSubmitted.setTextColor(getResources().getColor(
 					R.color.gray));
 			textViewCourseRatingSubmitted
