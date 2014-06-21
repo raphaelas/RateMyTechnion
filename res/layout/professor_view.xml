@@ -255,7 +255,7 @@
                 android:maxLength="70"
                 android:maxLines="2"
                 android:textColor="@android:color/white"
-                android:textColorHint="@android:color/white"
+                android:textColorHint="@color/gray"
                 android:textCursorDrawable="@null" />
         </LinearLayout>
 
