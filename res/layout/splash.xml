@@ -12,9 +12,8 @@
         style="?android:attr/progressBarStyleInverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="175dp"
+        android:layout_centerVertical="true"
         android:visibility="visible" />
 
     <TextView
@@ -23,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/mainSpinner2"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="14dp"
         android:ellipsize="none"
         android:gravity="center_horizontal"
         android:text="@string/LoadingText"
@@ -35,9 +34,10 @@
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_above="@+id/LoadingTextView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="54dp"
-        android:src="@drawable/rmt4" />
+        android:layout_marginBottom="38dp"
+        android:contentDescription="@string/LoadingText"
+        android:src="@drawable/rmt_poster" />
 
 </RelativeLayout>
