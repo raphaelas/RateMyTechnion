@@ -24,10 +24,13 @@ public class FragmentWelcomeView extends Fragment {
 		int threshold = a.getRatingsThreshold();
 		int submitted = a.getRatingsSubmitted();
 		int remaining = threshold - submitted;
-		thresholdText.setText("You have submitted " + submitted + ((submitted == 1) ? " rating." : " ratings.")
-				+ " You may submit " + remaining + " more " + ((remaining == 1) ? "rating" : "ratings") + " this"
-						+ " semester." + ((remaining == 0) ? "\n\nThank you for using RateMyTechnion."
-								+ " See you next semester." : ""));
+		if (submitted >= 0 && threshold >= 0 && remaining >= 0) {
+			thresholdText.setText("You have submitted " + submitted + ((submitted == 1) ? " rating." : " ratings.")
+					+ " You may submit " + remaining + " more " + ((remaining == 1) ? "rating" : "ratings") + " this"
+							+ " semester." + ((remaining == 0) ? "\n\nThank you for using RateMyTechnion."
+									+ " See you next semester." : ""));
+		}
+
 		return rootView;
 	}
 }
