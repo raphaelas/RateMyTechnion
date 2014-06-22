@@ -403,6 +403,10 @@ public abstract class SearchResults extends ActionBarActivity {
 		}
 		return s;
 	}
+	
+	public static boolean isTablet(Context context) {
+		return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -436,17 +440,18 @@ public abstract class SearchResults extends ActionBarActivity {
 
 			@Override
 			public boolean onMenuItemActionExpand(MenuItem item) {
-				if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+				if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
+						|| !isTablet(getApplicationContext())) {
 					if (getLocalClassName().equals("MainActivity")) {
-						// TextView t = (TextView)
-						// findViewById(R.id.introductoryText);
-						// t.setVisibility(View.GONE);
+						 TextView t = (TextView)
+						 findViewById(R.id.introductoryText);
+						 t.setVisibility(View.GONE);
 					} else if (getLocalClassName().equals(
 							"FragmentMainActivity")) {
 						TextView t2 = (TextView) findViewById(R.id.privacyPolicyTextView);
-						if (t2 != null) {
+						//if (t2 != null) {
 							t2.setVisibility(View.GONE);
-						}
+						//}
 					}
 				}
 				return true;
@@ -454,11 +459,12 @@ public abstract class SearchResults extends ActionBarActivity {
 
 			@Override
 			public boolean onMenuItemActionCollapse(MenuItem item) {
-				if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+				if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ||
+						isTablet(getApplicationContext())) {
 					if (getLocalClassName().equals("MainActivity")) {
-						// TextView t = (TextView)
-						// findViewById(R.id.introductoryText);
-						// t.setVisibility(View.VISIBLE);
+						 TextView t = (TextView)
+						 findViewById(R.id.introductoryText);
+						 t.setVisibility(View.VISIBLE);
 					} else if (getLocalClassName().equals(
 							"FragmentMainActivity")) {
 						TextView t2 = (TextView) findViewById(R.id.privacyPolicyTextView);

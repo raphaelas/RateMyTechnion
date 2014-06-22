@@ -70,14 +70,6 @@ public class MainActivity extends SearchResults {
 				return false;
 			}
 		});
-	    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-	    	TextView t = (TextView) findViewById(R.id.introductoryText);
-			t.setVisibility(View.GONE);	
-			EditText usernameInput = (EditText) findViewById(R.id.editText1);
-			ViewGroup.MarginLayoutParams ll = (ViewGroup.MarginLayoutParams) usernameInput.getLayoutParams();
-			ll.topMargin += 150;
-			usernameInput.setLayoutParams(ll);
-	    }
 		final EditText usernameInput = (EditText) findViewById(R.id.editText1);
 		
 		passwordInput.setOnFocusChangeListener(l3);
@@ -97,6 +89,28 @@ public class MainActivity extends SearchResults {
 		});
 	}
 
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
+				&& !isTablet(getApplicationContext())) {
+	    	TextView t = (TextView) findViewById(R.id.introductoryText);
+			t.setVisibility(View.GONE);	
+			EditText usernameInput = (EditText) findViewById(R.id.editText1);
+			ViewGroup.MarginLayoutParams ll = (ViewGroup.MarginLayoutParams) usernameInput.getLayoutParams();
+			ll.topMargin += 150;
+			usernameInput.setLayoutParams(ll);
+		}
+		else {
+	    	TextView t = (TextView) findViewById(R.id.introductoryText);
+			t.setVisibility(View.VISIBLE);	
+			EditText usernameInput = (EditText) findViewById(R.id.editText1);
+			ViewGroup.MarginLayoutParams ll = (ViewGroup.MarginLayoutParams) usernameInput.getLayoutParams();
+			ll.topMargin -= 150;
+			usernameInput.setLayoutParams(ll);
+		}
+	}
+	
 	OnFocusChangeListener l3 = new OnFocusChangeListener() {
 
 		@Override
