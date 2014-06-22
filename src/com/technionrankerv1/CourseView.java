@@ -510,7 +510,12 @@ public class CourseView extends SearchResults {
 				rEnjoyability.setRating(averageEnjoyability);
 				rDifficulty.setRating(averageDifficulty);
 				TextView totalRatingsTextView = (TextView) findViewById(R.id.totalRatingsCountCourse);
-				totalRatingsTextView.setText(totalRatings + "");
+				if (totalRatings >= 0) {
+					totalRatingsTextView.setText(totalRatings + "");
+				}
+				else {
+					totalRatingsTextView.setText(0 + "");
+				}
 			}
 		}
 	}

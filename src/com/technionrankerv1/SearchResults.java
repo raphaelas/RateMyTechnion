@@ -81,7 +81,7 @@ public abstract class SearchResults extends ActionBarActivity {
 		// Detect if connected to Internet
 		ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
 		boolean isInternetPresent = cd.isConnectingToInternet(); // true or
-																	// false
+		// false
 		if (!isInternetPresent) {
 			Log.d(getLocalClassName(),
 					"Warning: there is no Internet connection.");
@@ -97,9 +97,9 @@ public abstract class SearchResults extends ActionBarActivity {
 		} else {
 			professorsAndCourses = globalProfessorsAndCourses;
 		}
-		
-//		ClientAsync t = new ClientAsync();
-//		t.execute();
+
+		//		ClientAsync t = new ClientAsync();
+		//		t.execute();
 
 	}
 
@@ -386,16 +386,16 @@ public abstract class SearchResults extends ActionBarActivity {
 				temp[t] = temp[t].toLowerCase(Locale.ENGLISH);
 			}
 			String firstLetter = temp[t].substring(0, 1); // take the first
-															// letter
+			// letter
 			temp[t] = temp[t].toLowerCase(Locale.ENGLISH); // make the word
-															// lowercase
+			// lowercase
 			String end = temp[t].substring(1, temp[t].length()); // get ride
-																	// of
-																	// the
-																	// first
-																	// letter
+			// of
+			// the
+			// first
+			// letter
 			temp[t] = firstLetter + end; // add firstletter and the rest of
-											// the word
+			// the word
 		}
 		s = "";
 		for (int q = 0; q < temp.length; q++) {
@@ -444,7 +444,9 @@ public abstract class SearchResults extends ActionBarActivity {
 					} else if (getLocalClassName().equals(
 							"FragmentMainActivity")) {
 						TextView t2 = (TextView) findViewById(R.id.privacyPolicyTextView);
-						t2.setVisibility(View.GONE);
+						if (t2 != null) {
+							t2.setVisibility(View.GONE);
+						}
 					}
 				}
 				return true;
@@ -460,7 +462,9 @@ public abstract class SearchResults extends ActionBarActivity {
 					} else if (getLocalClassName().equals(
 							"FragmentMainActivity")) {
 						TextView t2 = (TextView) findViewById(R.id.privacyPolicyTextView);
-						t2.setVisibility(View.VISIBLE);
+						if (t2 != null) {
+							t2.setVisibility(View.VISIBLE);
+						}
 					}
 				}
 				return true;
@@ -493,7 +497,7 @@ public abstract class SearchResults extends ActionBarActivity {
 			}
 		});
 		String[] columnNames = { "_id", "coursesAndProfessors",
-				"hebrewProfessorName" };
+		"hebrewProfessorName" };
 		MatrixCursor cursor = new MatrixCursor(columnNames);
 		String[] from = { "coursesAndProfessors", "hebrewProfessorName" };
 		int[] to = { R.id.lblListItem, R.id.hebrewListItem };
@@ -520,7 +524,7 @@ public abstract class SearchResults extends ActionBarActivity {
 					Intent i = new Intent(SearchResults.this, CourseView.class);
 					i.putExtra("courseNumber", courseNumber);
 					i.putExtra("courseName", courseName);
-//					Log.d(getLocalClassName(), a.facultyMap.get(courseNumber));
+					//					Log.d(getLocalClassName(), a.facultyMap.get(courseNumber));
 					i.putExtra("faculty", a.facultyMap.get(courseNumber));
 					if (actionBarCourseValues != null) {
 						i.putExtra("courseValues", actionBarCourseValues);
@@ -609,12 +613,12 @@ public abstract class SearchResults extends ActionBarActivity {
 			final int CHARACTER_THRESHOLD = 0;
 			if (!TextUtils.isEmpty(newText)
 					&& newText.length() > CHARACTER_THRESHOLD) { // searchView.isExpanded()
-																	// &&
+				// &&
 				search(newText);
 			} else {
 				// Swap cursor with blank cursor to remove all suggestions.
 				String[] columnNames = { "_id", "coursesAndProfessors",
-						"hebrewProfessorName" };
+				"hebrewProfessorName" };
 				MatrixCursor cursor = new MatrixCursor(columnNames);
 				cursorAdapter.swapCursor(cursor);
 			}
@@ -625,23 +629,25 @@ public abstract class SearchResults extends ActionBarActivity {
 			// reset loader, swap cursor, etc.
 			query = query.toLowerCase(Locale.ENGLISH);
 			String[] columnNames = { "_id", "coursesAndProfessors",
-					"hebrewProfessorName" };
+			"hebrewProfessorName" };
 			MatrixCursor cursor = new MatrixCursor(columnNames);
 			String[] temp = new String[3];
 			int id = 0;
-			for (String item : professorsAndCourses) {
-				String toCheck = item.toLowerCase(Locale.ENGLISH);
-				if (toCheck.contains(query)) {
-					temp[0] = Integer.toString(id++);
-					if (!item.contains("\n")) {
-						temp[1] = item;
-						temp[2] = null;
-					} else { // It's a professor.
-						String[] splitted = item.split("\n");
-						temp[1] = splitted[0]; // english name
-						temp[2] = splitted[1]; // hebrew name
+			if (professorsAndCourses != null) {
+				for (String item : professorsAndCourses) {
+					String toCheck = item.toLowerCase(Locale.ENGLISH);
+					if (toCheck.contains(query)) {
+						temp[0] = Integer.toString(id++);
+						if (!item.contains("\n")) {
+							temp[1] = item;
+							temp[2] = null;
+						} else { // It's a professor.
+							String[] splitted = item.split("\n");
+							temp[1] = splitted[0]; // english name
+							temp[2] = splitted[1]; // hebrew name
+						}
+						cursor.addRow(temp);
 					}
-					cursor.addRow(temp);
 				}
 			}
 			cursorAdapter.swapCursor(cursor);
@@ -653,37 +659,37 @@ public abstract class SearchResults extends ActionBarActivity {
 	 * This is used whenever we need to populate the courses or professors
 	 * database tables.
 	 */
-//	private class ClientAsync extends AsyncTask<List<Professor>, Void, String> {
-//
-//		public ClientAsync() {
-//		}
-//
-//		@Override
-//		protected void onPreExecute() {
-//			super.onPreExecute();
-//			Log.d(getLocalClassName(), "Starting SearchResults Async...");
-//		}
-//
-//		/**
-//		 * This is the method that does the database call. Comment everything in
-//		 * this method to ignore the database.
-//		 */
-//		@Override
-//		protected String doInBackground(List<Professor>... params) {
-//			String result = null;
-//			result = new TechnionRankerAPI().dropAllProfessorComments().toString();
-//			return result;
-//		}
-//
-//		@Override
-//		protected void onPostExecute(String res) {
-//			if (res == null)
-//				Log.d(getLocalClassName(), "SearchResults async unsuccessful");
-//			else {
-//				Log.d(getLocalClassName(), "Dropping professor comments: "
-//						+ res);
-//			}
-//		}
-//
-//	}
+	//	private class ClientAsync extends AsyncTask<List<Professor>, Void, String> {
+	//
+	//		public ClientAsync() {
+	//		}
+	//
+	//		@Override
+	//		protected void onPreExecute() {
+	//			super.onPreExecute();
+	//			Log.d(getLocalClassName(), "Starting SearchResults Async...");
+	//		}
+	//
+	//		/**
+	//		 * This is the method that does the database call. Comment everything in
+	//		 * this method to ignore the database.
+	//		 */
+	//		@Override
+	//		protected String doInBackground(List<Professor>... params) {
+	//			String result = null;
+	//			result = new TechnionRankerAPI().dropAllProfessorComments().toString();
+	//			return result;
+	//		}
+	//
+	//		@Override
+	//		protected void onPostExecute(String res) {
+	//			if (res == null)
+	//				Log.d(getLocalClassName(), "SearchResults async unsuccessful");
+	//			else {
+	//				Log.d(getLocalClassName(), "Dropping professor comments: "
+	//						+ res);
+	//			}
+	//		}
+	//
+	//	}
 }

@@ -93,6 +93,9 @@ public class CourseComment {
 	  */
 	 public void addStudentsWhoLikedThisComment(
 			 String studentWhoLikedThisComment) {
+		 if (studentsWhoLikedThisComment == null) {
+			 studentsWhoLikedThisComment = new HashSet<String>();
+		 }
 		 this.studentsWhoLikedThisComment.add(studentWhoLikedThisComment);
 	 }
 	 

@@ -453,6 +453,12 @@ public class ProfessorView extends SearchResults {
 	        	rInteractivity.setRating(averageInteractivity);
 	        	TextView totalRatingsTextView = (TextView) findViewById(R.id.totalRatingsCount);
 	        	totalRatingsTextView.setText(totalRatings + "");
+				if (totalRatings >= 0) {
+					totalRatingsTextView.setText(totalRatings + "");
+				}
+				else {
+					totalRatingsTextView.setText(0 + "");
+				}
 			}
 		}
 	}
