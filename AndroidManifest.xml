@@ -27,7 +27,7 @@
         <activity
             android:name="com.technionrankerv1.MainActivity"
             android:theme="@style/MyTheme"
-            android:configChanges="orientation|screenSize" >
+            android:configChanges="orientation|keyboardHidden|screenSize" >
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".SearchResults" />
