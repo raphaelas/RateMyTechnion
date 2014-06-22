@@ -28,19 +28,7 @@
     <string name="totalRatingsCount">0</string>
     <string name="totalRatingsCaption">Number of Ratings</string>
     <string name="headProfessorCaption">Head Professor</string>
-    
-    
-   
-    
-    
-    
-    
-    
-   
-    
-    
-    
-    
+    <string name="LoadingText">Loading...</string>
     
     <string android:id="@+id/blank" name="blank" android:layout_width="wrap_content" android:layout_height="wrap_content"></string>
     <color name="silver">#C0C0C0</color>
