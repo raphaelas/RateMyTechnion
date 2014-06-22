@@ -111,7 +111,6 @@ public class MainActivity extends SearchResults {
 		}
 	};
 	
-
 	public void setText() {
 		hideSoftKeyboard();
 		final EditText input1 = (EditText) findViewById(R.id.editText1);
@@ -711,6 +710,9 @@ public class MainActivity extends SearchResults {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			e.printStackTrace();
+		}
+		if (ratingsSubmitted > a.getRatingsThreshold()) {
+			ratingsSubmitted = a.getRatingsThreshold();
 		}
 		a.setRatingsSubmitted(ratingsSubmitted);
 		boolean isExistingStudent = false;
