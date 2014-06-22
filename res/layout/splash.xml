@@ -12,8 +12,32 @@
         style="?android:attr/progressBarStyleInverse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginBottom="175dp"
         android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/LoadingTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mainSpinner2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp"
+        android:ellipsize="none"
+        android:gravity="center_horizontal"
+        android:text="@string/LoadingText"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/yourname_textfontsize"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="54dp"
+        android:src="@drawable/rmt4" />
 
 </RelativeLayout>
