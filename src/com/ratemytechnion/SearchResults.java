@@ -434,12 +434,16 @@ public abstract class SearchResults extends ActionBarActivity {
 		}
 		if (getLocalClassName().equals("MainActivity")) {
 			loginItem.setVisible(false);
+			logoutItem.setVisible(false);
+			myAccountItem.setVisible(false);
 		}
 		// Get the SearchView and set the searchable configuration
 		MenuItem searchItem = menu.findItem(R.id.action_search);
 		if (getLocalClassName().equals("SplashActivity")) {
 			searchItem.setVisible(false);
 			loginItem.setVisible(false);
+			logoutItem.setVisible(false);
+			myAccountItem.setVisible(false);
 		}
 
 		final View activityRootView = findViewById(android.R.id.content); // get
