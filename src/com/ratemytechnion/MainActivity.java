@@ -144,7 +144,7 @@ public class MainActivity extends SearchResults {
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		if (isLandscape()) {
+		if (isLandscape() && isTablet(getApplicationContext()) && !hasBeenLifted) {
 			Log.d(getLocalClassName(), "is landscape"+" "+keyBoardIsOpen);
 //			if (!isTablet(getApplicationContext())) {
 //				TextView t = (TextView) findViewById(R.id.introductoryText);
@@ -154,7 +154,7 @@ public class MainActivity extends SearchResults {
 			EditText usernameInput = (EditText) findViewById(R.id.editText1);
 			ViewGroup.MarginLayoutParams ll = (ViewGroup.MarginLayoutParams) usernameInput
 					.getLayoutParams();
-			//ll.topMargin += pushDown;
+			ll.topMargin += pushDown;
 			hasBeenLifted = true;
 			usernameInput.setLayoutParams(ll);
 		//}
@@ -162,7 +162,7 @@ public class MainActivity extends SearchResults {
 			Log.d(getLocalClassName(), "is not landscape");
 			TextView t = (TextView) findViewById(R.id.introductoryText);
 			t.setVisibility(View.VISIBLE);
-			if (hasBeenLifted) {
+			if (hasBeenLifted && !isTablet(getApplicationContext())) {
 				EditText usernameInput = (EditText) findViewById(R.id.editText1);
 				ViewGroup.MarginLayoutParams ll = (ViewGroup.MarginLayoutParams) usernameInput
 						.getLayoutParams();
