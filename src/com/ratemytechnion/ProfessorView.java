@@ -1,4 +1,4 @@
-package com.technionrankerv1;
+package com.ratemytechnion;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
 import org.apache.commons.lang3.StringEscapeUtils;
-
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -27,7 +25,7 @@ import android.widget.RatingBar;
 import android.widget.Toast;
 import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.TextView;
-
+import com.ratemytechnion.R;
 import com.serverapi.TechnionRankerAPI;
 
 /**

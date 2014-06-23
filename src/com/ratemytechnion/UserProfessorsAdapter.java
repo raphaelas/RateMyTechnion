@@ -1,4 +1,4 @@
-package com.technionrankerv1;
+package com.ratemytechnion;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import com.ratemytechnion.R;
 
 public class UserProfessorsAdapter extends ArrayAdapter<String> {
 	private final Context context;

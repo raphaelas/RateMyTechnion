@@ -1,10 +1,8 @@
-package com.technionrankerv1;
+package com.ratemytechnion;
 
 import java.util.Arrays;
 import java.util.Comparator;
-
 import org.apache.commons.lang3.StringEscapeUtils;
-
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -15,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
+import com.ratemytechnion.R;
 import com.serverapi.TechnionRankerAPI;
 
 public class ProfessorCommentsListAdapter extends ArrayAdapter<ProfessorComment> {

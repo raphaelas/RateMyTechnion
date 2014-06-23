@@ -1,4 +1,4 @@
-package com.technionrankerv1;
+package com.ratemytechnion;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,9 +10,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
-
 import org.apache.commons.lang3.StringEscapeUtils;
-
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -44,6 +42,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.ratemytechnion.R;
 
 public abstract class SearchResults extends ActionBarActivity {
 	// private TechnionRankerAPI db = new TechnionRankerAPI();
@@ -438,8 +437,7 @@ public abstract class SearchResults extends ActionBarActivity {
 		}
 		// Get the SearchView and set the searchable configuration
 		MenuItem searchItem = menu.findItem(R.id.action_search);
-		if (getLocalClassName().equals("SplashActivity")
-				|| getLocalClassName().equals("SplashActivityAfterLogin")) {
+		if (getLocalClassName().equals("SplashActivity")) {
 			searchItem.setVisible(false);
 			loginItem.setVisible(false);
 		}

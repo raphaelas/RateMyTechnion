@@ -1,4 +1,4 @@
-package com.technionrankerv1;
+package com.ratemytechnion;
 
 import java.sql.Time;
 import java.util.HashSet;

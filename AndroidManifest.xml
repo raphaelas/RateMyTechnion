@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.technionrankerv1"
+    package="com.ratemytechnion"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -12,13 +12,13 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name="ApplicationWithGlobalVariables"
+        android:name="com.ratemytechnion.ApplicationWithGlobalVariables"
         android:allowBackup="true"
         android:icon="@drawable/rmt4"
         android:label="@string/app_name" >
 
         <activity
-            android:name="com.technionrankerv1.SplashActivity"
+            android:name="com.ratemytechnion.SplashActivity"
             android:theme="@style/MyTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.technionrankerv1.MainActivity"
+            android:name="com.ratemytechnion.MainActivity"
             android:theme="@style/MyTheme"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="adjustResize" >
@@ -35,7 +35,7 @@
                 android:value=".SearchResults" />
         </activity>
         <activity
-            android:name="com.technionrankerv1.SearchResults"
+            android:name="com.ratemytechnion.SearchResults"
             android:label="@string/app_name"
             android:theme="@style/MyTheme" >
             <intent-filter>
@@ -47,7 +47,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name="com.technionrankerv1.FragmentMainActivity"
+            android:name="com.ratemytechnion.FragmentMainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/MyTheme" >
@@ -57,7 +57,7 @@
                 android:value=".SearchResults" />
         </activity>
         <activity
-            android:name="com.technionrankerv1.CourseView"
+            android:name="com.ratemytechnion.CourseView"
             android:label="@string/app_name"
             android:theme="@style/MyTheme" >
             <meta-data
@@ -65,7 +65,7 @@
                 android:value=".SearchResults" />
         </activity>
         <activity
-            android:name="com.technionrankerv1.ProfessorView"
+            android:name="com.ratemytechnion.ProfessorView"
             android:label="@string/app_name"
             android:theme="@style/MyTheme" >
             <meta-data

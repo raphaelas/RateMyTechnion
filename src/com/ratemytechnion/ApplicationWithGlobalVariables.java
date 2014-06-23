@@ -1,4 +1,4 @@
-package com.technionrankerv1;
+package com.ratemytechnion;
 
 import java.util.HashMap;
 import java.util.HashSet;

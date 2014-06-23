@@ -1,4 +1,4 @@
-package com.technionrankerv1;
+package com.ratemytechnion;
 
 public class StudentProfessorCourse {
   private Long id;

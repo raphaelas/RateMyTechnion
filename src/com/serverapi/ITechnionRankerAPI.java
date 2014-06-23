@@ -2,15 +2,15 @@ package com.serverapi;
 
 import java.util.List;
 
+import com.ratemytechnion.Course;
+import com.ratemytechnion.CourseComment;
+import com.ratemytechnion.CourseRating;
+import com.ratemytechnion.Professor;
+import com.ratemytechnion.ProfessorComment;
+import com.ratemytechnion.ProfessorRating;
+import com.ratemytechnion.StudentProfessorCourse;
+import com.ratemytechnion.StudentUser;
 import com.serverapi.utilities.TechnionRankerReturnCodes;
-import com.technionrankerv1.Course;
-import com.technionrankerv1.CourseComment;
-import com.technionrankerv1.CourseRating;
-import com.technionrankerv1.Professor;
-import com.technionrankerv1.ProfessorComment;
-import com.technionrankerv1.ProfessorRating;
-import com.technionrankerv1.StudentProfessorCourse;
-import com.technionrankerv1.StudentUser;
 
 public interface ITechnionRankerAPI {
 

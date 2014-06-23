@@ -1,9 +1,10 @@
-package com.technionrankerv1;
+package com.ratemytechnion;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
+import com.ratemytechnion.R;
 
 public class SplashActivity extends SearchResults {
 

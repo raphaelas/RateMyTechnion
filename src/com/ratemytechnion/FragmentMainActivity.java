@@ -1,7 +1,6 @@
-package com.technionrankerv1;
+package com.ratemytechnion;
 
 import java.util.HashMap;
-
 import android.app.ActionBar;
 import android.app.ActionBar.TabListener;
 import android.app.FragmentTransaction;
@@ -11,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import com.ratemytechnion.R;
 
 public class FragmentMainActivity extends SearchResults implements TabListener {
 	private ViewPager viewPager;

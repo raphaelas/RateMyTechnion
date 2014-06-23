@@ -1,4 +1,4 @@
-package com.technionrankerv1;
+package com.ratemytechnion;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -8,13 +8,11 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -34,7 +32,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.ratemytechnion.R;
 import com.serverapi.TechnionRankerAPI;
 
 public class MainActivity extends SearchResults {
@@ -104,7 +102,7 @@ public class MainActivity extends SearchResults {
 				// Temporary code to test FragmentMainActivity:
 				// Intent i = new Intent(MainActivity.this,
 				// FragmentMainActivity.class);
-				// i.putExtra("the username", "שלום");
+				// i.putExtra("the username", "????????");
 				// startActivity(i);
 				setText();
 			}
@@ -463,7 +461,7 @@ public class MainActivity extends SearchResults {
 
 	/*
 	 * Raphi: This code is for populating Courses and Professors int
-	 * headProfessorIndex = catalogString .indexOf(" אחראים"); int plastIndex =
+	 * headProfessorIndex = catalogString .indexOf(" ????????????"); int plastIndex =
 	 * catalogString.indexOf("PLAST"); int regularProfessorIndex =
 	 * catalogString.indexOf(">", plastIndex) + 1; int endRegularProfessorIndex
 	 * = catalogString.indexOf( "<", regularProfessorIndex); if
@@ -837,21 +835,21 @@ public class MainActivity extends SearchResults {
 	// for (int t = x; t < s.length; t++) {
 	// // edit to add the different prefixes
 	// if (!s[t].contains(" ")
-	// && !s[t].contains("פרופ")
-	// && !s[t].contains("חבר")
+	// && !s[t].contains("????????")
+	// && !s[t].contains("??????")
 	// && !s[t].contains("<")
 	// && !s[t].contains(">")
 	// && !s[t].contains("=")
 	// && !s[t].contains("/")
-	// && !s[t].equals("מר")
-	// && !(s[t].contains("משנה") && !s[t-1].contains("דוד"))
-	// && !s[t].contains("ארכיטקט")
+	// && !s[t].equals("????")
+	// && !(s[t].contains("????????") && !s[t-1].contains("??????"))
+	// && !s[t].contains("??????????????")
 	// && !(s[t].length() == 3 && s[t].substring(0, 2).contains(
-	// "גב") && s[t].substring(2, 3).contains("."))
+	// "????") && s[t].substring(2, 3).contains("."))
 	// && !(s[t].length() == 3 && s[t].substring(0, 2).contains(
-	// "דר") && s[t].substring(2, 3).contains(".")))
+	// "????") && s[t].substring(2, 3).contains(".")))
 	// {
-	// if (s[t].contains("שיץ)")) {
+	// if (s[t].contains("??????)")) {
 	// //Handling Shlomo (Shitz) Shamai of Electrical Engineering (046733):
 	// name = name + " " +
 	// StringEscapeUtils.unescapeHtml4("(&#1513;&#1497;&#1509;) &#1513;&#150n2;&#1488;&#1497;");
