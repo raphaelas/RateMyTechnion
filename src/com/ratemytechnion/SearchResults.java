@@ -56,6 +56,7 @@ public abstract class SearchResults extends ActionBarActivity {
 	private ApplicationWithGlobalVariables a;
 	public HashMap<String, String> scheduleFacultyMap;
 	public HashMap<String, String> scheduleEnglishNameMap;
+	private boolean marginHasBeenDropped = false;
 
 	public String[] actionBarCourseValues;
 	public String[] actionBarProfessorValues;
@@ -483,13 +484,15 @@ public abstract class SearchResults extends ActionBarActivity {
 						}
 					}
 					if (!isTablet(getApplicationContext())
-							&& getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+							&& getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
+							&& !marginHasBeenDropped && getLocalClassName().equals("MainActivity")) {
 							
 						EditText usernameInput1 = (EditText) findViewById(R.id.editText1);
 						ViewGroup.MarginLayoutParams ll = (ViewGroup.MarginLayoutParams) usernameInput1
 								.getLayoutParams();
 						ll.topMargin += 150;
 						usernameInput1.setLayoutParams(ll);
+						marginHasBeenDropped = true;
 					}
 				}
 				return true;
@@ -498,10 +501,13 @@ public abstract class SearchResults extends ActionBarActivity {
 			@Override
 			public boolean onMenuItemActionCollapse(MenuItem item) {
 				if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
-						|| !isTablet(getApplicationContext())) {
+						|| isTablet(getApplicationContext())) {
+
 					if (getLocalClassName().equals("MainActivity")) {
-						TextView t = (TextView) findViewById(R.id.introductoryText);
-						t.setVisibility(View.VISIBLE);
+						if (isTablet(getApplicationContext())) {
+							TextView t = (TextView) findViewById(R.id.introductoryText);
+							t.setVisibility(View.VISIBLE);
+						}
 					} else if (getLocalClassName().equals(
 							"FragmentMainActivity")) {
 						TextView t2 = (TextView) findViewById(R.id.privacyPolicyTextView);

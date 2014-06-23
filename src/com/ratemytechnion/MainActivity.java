@@ -80,16 +80,19 @@ public class MainActivity extends SearchResults {
 
 		if (isLandscape() || !isTablet(getApplicationContext())){ // set text not overlapping
 			if (!isTablet(getApplicationContext())){ 
-				pushDown = 350;
+				//pushDown = 350;
 				Log.d(getLocalClassName(), pushDown+"");
 			}
-			Log.d(getLocalClassName(), "push down to start");
-			EditText usernameInput1 = (EditText) findViewById(R.id.editText1);
-			ViewGroup.MarginLayoutParams ll = (ViewGroup.MarginLayoutParams) usernameInput1
-					.getLayoutParams();
-			ll.topMargin += pushDown;
-			usernameInput1.setLayoutParams(ll);
-			pushDown = 150;
+			if (!hasBeenLifted) {
+				Log.d(getLocalClassName(), "push down to start");
+				EditText usernameInput1 = (EditText) findViewById(R.id.editText1);
+				ViewGroup.MarginLayoutParams ll = (ViewGroup.MarginLayoutParams) usernameInput1
+						.getLayoutParams();
+				ll.topMargin += pushDown;
+				usernameInput1.setLayoutParams(ll);
+				pushDown = 150;
+			}
+
 		}
 		
 		passwordInput.setOnFocusChangeListener(l3);
@@ -99,19 +102,15 @@ public class MainActivity extends SearchResults {
 		loginButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// Temporary code to test FragmentMainActivity:
-				// Intent i = new Intent(MainActivity.this,
-				// FragmentMainActivity.class);
-				// i.putExtra("the username", "????????");
-				// startActivity(i);
 				setText();
 			}
 		});
 		if (!isTablet(getApplicationContext())){
 			Log.d(getLocalClassName(), "this is a phone!");
-			
+			TextView t = (TextView) findViewById(R.id.introductoryText);
+			t.setVisibility(View.GONE);
 		}
-
+		
 		final View activityRootView = findViewById(android.R.id.content); // get
 																			// root
 																			// view
@@ -127,7 +126,7 @@ public class MainActivity extends SearchResults {
 							keyBoardIsOpen = true;
 							t.setVisibility(View.GONE);
 
-						} else {
+						} else if (isTablet(getApplicationContext())){
 							keyBoardIsOpen = false;
 							t.setVisibility(View.VISIBLE);
 						}
@@ -155,22 +154,22 @@ public class MainActivity extends SearchResults {
 			EditText usernameInput = (EditText) findViewById(R.id.editText1);
 			ViewGroup.MarginLayoutParams ll = (ViewGroup.MarginLayoutParams) usernameInput
 					.getLayoutParams();
-			ll.topMargin += pushDown;
-			//hasBeenLifted = true;
+			//ll.topMargin += pushDown;
+			hasBeenLifted = true;
 			usernameInput.setLayoutParams(ll);
 		//}
-		} else {
+		} else if (isTablet(getApplicationContext())){
 			Log.d(getLocalClassName(), "is not landscape");
 			TextView t = (TextView) findViewById(R.id.introductoryText);
 			t.setVisibility(View.VISIBLE);
-			//if (hasBeenLifted) {
+			if (hasBeenLifted) {
 				EditText usernameInput = (EditText) findViewById(R.id.editText1);
 				ViewGroup.MarginLayoutParams ll = (ViewGroup.MarginLayoutParams) usernameInput
 						.getLayoutParams();
 				ll.topMargin -= pushDown;
 				usernameInput.setLayoutParams(ll);
-				//hasBeenLifted = false;
-			//}
+				hasBeenLifted = false;
+			}
 		}
 	}
 
@@ -190,7 +189,7 @@ public class MainActivity extends SearchResults {
 				usernameInput.setLayoutParams(ll);
 				t.setVisibility(View.GONE);
 				hasBeenLifted = true;
-			} else {
+			} else if (isTablet(getApplicationContext())){
 				t.setVisibility(View.VISIBLE);
 			}
 		}
