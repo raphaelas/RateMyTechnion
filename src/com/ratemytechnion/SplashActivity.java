@@ -22,6 +22,7 @@ public class SplashActivity extends SearchResults {
 																// bar
 
 		setContentView(R.layout.splash);
+		((ApplicationWithGlobalVariables) getApplication()).setLoggedIn(false);
 
 		// Start timer and launch main activity
 		IntentLauncher launcher = new IntentLauncher();
