@@ -17,7 +17,7 @@
     <string name="action_search">Search</string>
     <string name="commentsHeader">Comments</string>
     <string name="privacyStatement">Privacy: statement goes here.</string>
-    <string name="instructions">Welcome. Log in to your Technion UG account to rate your courses and professors, or search above.</string>
+    <string name="instructions">Welcome. Log in to your Technion UG account to rate your courses and professors, or use the search above.</string>
     <string name="thumbImageDescription">Thumbs up image</string>
     <string name="emptyCommentsList">There are no comments to show yet.</string>
     <string name="action_my_account">My Account</string>

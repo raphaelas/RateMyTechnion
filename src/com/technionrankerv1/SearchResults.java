@@ -34,17 +34,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.view.MenuItem.OnActionExpandListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public abstract class SearchResults extends ActionBarActivity {
-	//private TechnionRankerAPI db = new TechnionRankerAPI();
+	// private TechnionRankerAPI db = new TechnionRankerAPI();
 	public String[] professorsAndCourses = null;
 	private CursorAdapter cursorAdapter;
 	public HashMap<String, String> hebrewTranslations = new HashMap<String, String>();
@@ -59,10 +61,13 @@ public abstract class SearchResults extends ActionBarActivity {
 	public String[] actionBarCourseValues;
 	public String[] actionBarProfessorValues;
 
+	boolean keyBoardIsOpen = false;
+
 	@SuppressWarnings("unchecked")
 	public void onCreate(Bundle savedInstance) {
 
 		super.onCreate(savedInstance);
+		Log.d(getLocalClassName(), "this is the name");
 		if (!getLocalClassName().equals("MainActivity")
 				&& !getLocalClassName().equals("FragmentMainActivity")
 				&& !getLocalClassName().equals("SplashActivity")
@@ -73,8 +78,10 @@ public abstract class SearchResults extends ActionBarActivity {
 		if (getIntent().hasExtra("courseValues")) {
 			actionBarCourseValues = b.getStringArray("courseValues");
 			actionBarProfessorValues = b.getStringArray("professorValues");
-			scheduleFacultyMap = (HashMap<String, String>) getIntent().getSerializableExtra("facultyMap");
-			scheduleEnglishNameMap = (HashMap<String, String>) getIntent().getSerializableExtra("englishNameMap");
+			scheduleFacultyMap = (HashMap<String, String>) getIntent()
+					.getSerializableExtra("facultyMap");
+			scheduleEnglishNameMap = (HashMap<String, String>) getIntent()
+					.getSerializableExtra("englishNameMap");
 
 		}
 		a = ((ApplicationWithGlobalVariables) this.getApplication());
@@ -98,8 +105,8 @@ public abstract class SearchResults extends ActionBarActivity {
 			professorsAndCourses = globalProfessorsAndCourses;
 		}
 
-		//		ClientAsync t = new ClientAsync();
-		//		t.execute();
+		// ClientAsync t = new ClientAsync();
+		// t.execute();
 
 	}
 
@@ -115,8 +122,8 @@ public abstract class SearchResults extends ActionBarActivity {
 
 		@Override
 		protected Void doInBackground(String[]... params) {
-			a.professorsAndCourses = concat(
-					parseCourses(), parseHebrewProfessors());
+			a.professorsAndCourses = concat(parseCourses(),
+					parseHebrewProfessors());
 			return null;
 		}
 
@@ -147,11 +154,11 @@ public abstract class SearchResults extends ActionBarActivity {
 				String faculty = splitted[2].trim();
 				String hebrewNameToUse = hebName;
 				a.facultyMap.put(hebrewNameToUse, faculty);
-				//This will make the hebrew professor name in a new line after the english name.
+				// This will make the hebrew professor name in a new line after
+				// the english name.
 				if (!engName.equals("<null>")) {
 					professorSet.add(engName + "\n" + hebrewNameToUse);
-				}
-				else {
+				} else {
 					professorSet.add("\n" + hebrewNameToUse);
 				}
 			}
@@ -404,6 +411,10 @@ public abstract class SearchResults extends ActionBarActivity {
 		return s;
 	}
 
+	public static boolean isTablet(Context context) {
+		return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar
@@ -427,20 +438,41 @@ public abstract class SearchResults extends ActionBarActivity {
 		}
 		// Get the SearchView and set the searchable configuration
 		MenuItem searchItem = menu.findItem(R.id.action_search);
-		if (getLocalClassName().equals("SplashActivity") ||
-				getLocalClassName().equals("SplashActivityAfterLogin")) {
+		if (getLocalClassName().equals("SplashActivity")
+				|| getLocalClassName().equals("SplashActivityAfterLogin")) {
 			searchItem.setVisible(false);
 			loginItem.setVisible(false);
 		}
+
+		final View activityRootView = findViewById(android.R.id.content); // get
+																			// root
+																			// view
+		activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(
+				new OnGlobalLayoutListener() {
+					@Override
+					public void onGlobalLayout() {
+						int heightDiff = activityRootView.getRootView()
+								.getHeight() - activityRootView.getHeight();
+						if (heightDiff > 200) { // if more than 200 pixels, its
+												// probably a keyboard...
+							keyBoardIsOpen = true;
+						} else {
+							keyBoardIsOpen = false;
+						}
+					}
+				});
+
 		searchItem.setOnActionExpandListener(new OnActionExpandListener() {
 
 			@Override
-			public boolean onMenuItemActionExpand(MenuItem item) {
-				if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			public boolean onMenuItemActionExpand(MenuItem item) { // on focus
+																	// for
+																	// search
+				if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
+						|| !isTablet(getApplicationContext())) {
 					if (getLocalClassName().equals("MainActivity")) {
-						// TextView t = (TextView)
-						// findViewById(R.id.introductoryText);
-						// t.setVisibility(View.GONE);
+						TextView t = (TextView) findViewById(R.id.introductoryText);
+						t.setVisibility(View.GONE);
 					} else if (getLocalClassName().equals(
 							"FragmentMainActivity")) {
 						TextView t2 = (TextView) findViewById(R.id.privacyPolicyTextView);
@@ -448,23 +480,38 @@ public abstract class SearchResults extends ActionBarActivity {
 							t2.setVisibility(View.GONE);
 						}
 					}
+					if (!isTablet(getApplicationContext())
+							&& getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+							
+						EditText usernameInput1 = (EditText) findViewById(R.id.editText1);
+						ViewGroup.MarginLayoutParams ll = (ViewGroup.MarginLayoutParams) usernameInput1
+								.getLayoutParams();
+						ll.topMargin += 150;
+						usernameInput1.setLayoutParams(ll);
+					}
 				}
 				return true;
 			}
 
 			@Override
 			public boolean onMenuItemActionCollapse(MenuItem item) {
-				if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+				if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE
+						|| !isTablet(getApplicationContext())) {
 					if (getLocalClassName().equals("MainActivity")) {
-						// TextView t = (TextView)
-						// findViewById(R.id.introductoryText);
-						// t.setVisibility(View.VISIBLE);
+						TextView t = (TextView) findViewById(R.id.introductoryText);
+						t.setVisibility(View.VISIBLE);
 					} else if (getLocalClassName().equals(
 							"FragmentMainActivity")) {
 						TextView t2 = (TextView) findViewById(R.id.privacyPolicyTextView);
 						if (t2 != null) {
 							t2.setVisibility(View.VISIBLE);
 						}
+					}
+				}
+				if (!isTablet(getApplicationContext())) {
+					TextView t2 = (TextView) findViewById(R.id.privacyPolicyTextView);
+					if (t2 != null) {
+						t2.setVisibility(View.VISIBLE);
 					}
 				}
 				return true;
@@ -497,7 +544,7 @@ public abstract class SearchResults extends ActionBarActivity {
 			}
 		});
 		String[] columnNames = { "_id", "coursesAndProfessors",
-		"hebrewProfessorName" };
+				"hebrewProfessorName" };
 		MatrixCursor cursor = new MatrixCursor(columnNames);
 		String[] from = { "coursesAndProfessors", "hebrewProfessorName" };
 		int[] to = { R.id.lblListItem, R.id.hebrewListItem };
@@ -524,7 +571,8 @@ public abstract class SearchResults extends ActionBarActivity {
 					Intent i = new Intent(SearchResults.this, CourseView.class);
 					i.putExtra("courseNumber", courseNumber);
 					i.putExtra("courseName", courseName);
-					//					Log.d(getLocalClassName(), a.facultyMap.get(courseNumber));
+					// Log.d(getLocalClassName(),
+					// a.facultyMap.get(courseNumber));
 					i.putExtra("faculty", a.facultyMap.get(courseNumber));
 					if (actionBarCourseValues != null) {
 						i.putExtra("courseValues", actionBarCourseValues);
@@ -590,6 +638,12 @@ public abstract class SearchResults extends ActionBarActivity {
 		case R.id.action_logout:
 			a.setLoggedIn(false);
 			Intent i = new Intent(SearchResults.this, MainActivity.class);
+			// EditText usernameInput = (EditText) findViewById(R.id.editText1);
+			// ViewGroup.MarginLayoutParams ll = (ViewGroup.MarginLayoutParams)
+			// usernameInput
+			// .getLayoutParams();
+			// ll.topMargin += 150;
+			// usernameInput.setLayoutParams(ll);
 			startActivity(i);
 			return true;
 		case R.id.action_login:
@@ -618,7 +672,7 @@ public abstract class SearchResults extends ActionBarActivity {
 			} else {
 				// Swap cursor with blank cursor to remove all suggestions.
 				String[] columnNames = { "_id", "coursesAndProfessors",
-				"hebrewProfessorName" };
+						"hebrewProfessorName" };
 				MatrixCursor cursor = new MatrixCursor(columnNames);
 				cursorAdapter.swapCursor(cursor);
 			}
@@ -629,7 +683,7 @@ public abstract class SearchResults extends ActionBarActivity {
 			// reset loader, swap cursor, etc.
 			query = query.toLowerCase(Locale.ENGLISH);
 			String[] columnNames = { "_id", "coursesAndProfessors",
-			"hebrewProfessorName" };
+					"hebrewProfessorName" };
 			MatrixCursor cursor = new MatrixCursor(columnNames);
 			String[] temp = new String[3];
 			int id = 0;
@@ -659,37 +713,38 @@ public abstract class SearchResults extends ActionBarActivity {
 	 * This is used whenever we need to populate the courses or professors
 	 * database tables.
 	 */
-	//	private class ClientAsync extends AsyncTask<List<Professor>, Void, String> {
+	// private class ClientAsync extends AsyncTask<List<Professor>, Void,
+	// String> {
 	//
-	//		public ClientAsync() {
-	//		}
+	// public ClientAsync() {
+	// }
 	//
-	//		@Override
-	//		protected void onPreExecute() {
-	//			super.onPreExecute();
-	//			Log.d(getLocalClassName(), "Starting SearchResults Async...");
-	//		}
+	// @Override
+	// protected void onPreExecute() {
+	// super.onPreExecute();
+	// Log.d(getLocalClassName(), "Starting SearchResults Async...");
+	// }
 	//
-	//		/**
-	//		 * This is the method that does the database call. Comment everything in
-	//		 * this method to ignore the database.
-	//		 */
-	//		@Override
-	//		protected String doInBackground(List<Professor>... params) {
-	//			String result = null;
-	//			result = new TechnionRankerAPI().dropAllProfessorComments().toString();
-	//			return result;
-	//		}
+	// /**
+	// * This is the method that does the database call. Comment everything in
+	// * this method to ignore the database.
+	// */
+	// @Override
+	// protected String doInBackground(List<Professor>... params) {
+	// String result = null;
+	// result = new TechnionRankerAPI().dropAllProfessorComments().toString();
+	// return result;
+	// }
 	//
-	//		@Override
-	//		protected void onPostExecute(String res) {
-	//			if (res == null)
-	//				Log.d(getLocalClassName(), "SearchResults async unsuccessful");
-	//			else {
-	//				Log.d(getLocalClassName(), "Dropping professor comments: "
-	//						+ res);
-	//			}
-	//		}
+	// @Override
+	// protected void onPostExecute(String res) {
+	// if (res == null)
+	// Log.d(getLocalClassName(), "SearchResults async unsuccessful");
+	// else {
+	// Log.d(getLocalClassName(), "Dropping professor comments: "
+	// + res);
+	// }
+	// }
 	//
-	//	}
+	// }
 }

@@ -8,6 +8,9 @@ import android.app.FragmentTransaction;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 public class FragmentMainActivity extends SearchResults implements TabListener {
 	private ViewPager viewPager;
@@ -21,7 +24,7 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 	public HashMap<String, String> englishNameMap;
 	private String previousActivity;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,9 +33,11 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 		previousActivity = b.getString("previousActivity");
 		courseValuesToPassToAdapter = b.getStringArray("courseValues");
 		professorValuesToPassToAdapter = b.getStringArray("professorValues");
-		facultyMap = (HashMap<String, String>) getIntent().getSerializableExtra("facultyMap");
-		englishNameMap = (HashMap<String, String>) getIntent().getSerializableExtra("englishNameMap");
-		
+		facultyMap = (HashMap<String, String>) getIntent()
+				.getSerializableExtra("facultyMap");
+		englishNameMap = (HashMap<String, String>) getIntent()
+				.getSerializableExtra("englishNameMap");
+
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		actionBar = getActionBar();
@@ -64,12 +69,12 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 			public void onPageScrollStateChanged(int arg0) {
 			}
 		});
-		
+
 		if (!previousActivity.equals("MainActivity")) {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 	}
-	
+
 	public String[] getProfessorValues() {
 		return professorValuesToPassToAdapter;
 	}
@@ -80,6 +85,13 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 
 	@Override
 	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+		if (!isTablet(getApplicationContext())) {
+			TextView t2 = (TextView) findViewById(R.id.privacyPolicyTextView);
+			if (t2 != null) {
+				t2.setVisibility(View.GONE);
+			}
+		}
+		Log.d(getLocalClassName(), "the class");
 	}
 
 	@Override
@@ -93,9 +105,8 @@ public class FragmentMainActivity extends SearchResults implements TabListener {
 	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
 	}
 
-
 	@Override
-	public void onBackPressed(){
+	public void onBackPressed() {
 		if (!previousActivity.equals("MainActivity")) {
 			super.onBackPressed();
 		}

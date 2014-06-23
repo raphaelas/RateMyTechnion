@@ -13,7 +13,6 @@ public class SplashActivity extends SearchResults {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.d(getLocalClassName(), "IM WAITING");
 
 		//this.requestWindowFeature(Window.FEATURE_NO_TITLE); // Removes title bar
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,

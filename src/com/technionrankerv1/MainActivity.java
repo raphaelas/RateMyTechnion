@@ -15,6 +15,7 @@ import org.jsoup.Connection.Method;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -26,6 +27,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnKeyListener;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -38,19 +40,25 @@ import com.serverapi.TechnionRankerAPI;
 public class MainActivity extends SearchResults {
 	private TextView errorM;
 	private String username;
-	private String password;
+	private String password; 
+	private int pushDown = 150;
 	public HashMap<String, String> facultyMap = new HashMap<String, String>();
 	public HashMap<String, String> englishNameMap = new HashMap<String, String>();
 	ApplicationWithGlobalVariables a;
 	Intent i;
+	boolean hasBeenLifted = false;
+	
 
+	// private LinkedHashSet<String> coursesThatDidNotMeetInSpring2014 = new
+	// LinkedHashSet<String>();
+	// private Long currentProfessorId = null;
+	// private Course currentCourse = null;
+	// private HashMap<String, String> PLASTandPGRP = new HashMap<String,
+	// String>();
+	// private HashMap<String, Long> lookedUpProfessors = new HashMap<String,
+	// Long>();
 
-	//private LinkedHashSet<String> coursesThatDidNotMeetInSpring2014 = new LinkedHashSet<String>();
-	//private Long currentProfessorId = null;
-	//private Course currentCourse = null;
-	//private HashMap<String, String> PLASTandPGRP = new HashMap<String, String>();
-	//private HashMap<String, Long> lookedUpProfessors = new HashMap<String, Long>();
-
+	@SuppressLint("CutPasteId")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -70,15 +78,21 @@ public class MainActivity extends SearchResults {
 				return false;
 			}
 		});
-	    if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-	    	TextView t = (TextView) findViewById(R.id.introductoryText);
-			t.setVisibility(View.GONE);	
-			EditText usernameInput = (EditText) findViewById(R.id.editText1);
-			ViewGroup.MarginLayoutParams ll = (ViewGroup.MarginLayoutParams) usernameInput.getLayoutParams();
-			ll.topMargin += 150;
-			usernameInput.setLayoutParams(ll);
-	    }
 		final EditText usernameInput = (EditText) findViewById(R.id.editText1);
+
+		if (isLandscape() || !isTablet(getApplicationContext())){ // set text not overlapping
+			if (!isTablet(getApplicationContext())){ 
+				pushDown = 350;
+				Log.d(getLocalClassName(), pushDown+"");
+			}
+			Log.d(getLocalClassName(), "push down to start");
+			EditText usernameInput1 = (EditText) findViewById(R.id.editText1);
+			ViewGroup.MarginLayoutParams ll = (ViewGroup.MarginLayoutParams) usernameInput1
+					.getLayoutParams();
+			ll.topMargin += pushDown;
+			usernameInput1.setLayoutParams(ll);
+			pushDown = 150;
+		}
 		
 		passwordInput.setOnFocusChangeListener(l3);
 		usernameInput.setOnFocusChangeListener(l3);
@@ -95,22 +109,94 @@ public class MainActivity extends SearchResults {
 				setText();
 			}
 		});
+		if (!isTablet(getApplicationContext())){
+			Log.d(getLocalClassName(), "this is a phone!");
+			
+		}
+
+		final View activityRootView = findViewById(android.R.id.content); // get
+																			// root
+																			// view
+		activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(
+				new OnGlobalLayoutListener() {
+					TextView t = (TextView) findViewById(R.id.introductoryText);
+					@Override
+					public void onGlobalLayout() {
+						int heightDiff = activityRootView.getRootView()
+								.getHeight() - activityRootView.getHeight();
+						if (heightDiff > 200) { // if more than 200 pixels, its
+												// probably a keyboard...
+							keyBoardIsOpen = true;
+							t.setVisibility(View.GONE);
+
+						} else {
+							keyBoardIsOpen = false;
+							t.setVisibility(View.VISIBLE);
+						}
+					}
+				});
+	}
+
+	boolean isLandscape(){
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		if (isLandscape()) {
+			Log.d(getLocalClassName(), "is landscape"+" "+keyBoardIsOpen);
+//			if (!isTablet(getApplicationContext())) {
+//				TextView t = (TextView) findViewById(R.id.introductoryText);
+//				t.setVisibility(View.GONE);
+//			}
+			//if(keyBoardIsOpen){
+			EditText usernameInput = (EditText) findViewById(R.id.editText1);
+			ViewGroup.MarginLayoutParams ll = (ViewGroup.MarginLayoutParams) usernameInput
+					.getLayoutParams();
+			ll.topMargin += pushDown;
+			//hasBeenLifted = true;
+			usernameInput.setLayoutParams(ll);
+		//}
+		} else {
+			Log.d(getLocalClassName(), "is not landscape");
+			TextView t = (TextView) findViewById(R.id.introductoryText);
+			t.setVisibility(View.VISIBLE);
+			//if (hasBeenLifted) {
+				EditText usernameInput = (EditText) findViewById(R.id.editText1);
+				ViewGroup.MarginLayoutParams ll = (ViewGroup.MarginLayoutParams) usernameInput
+						.getLayoutParams();
+				ll.topMargin -= pushDown;
+				usernameInput.setLayoutParams(ll);
+				//hasBeenLifted = false;
+			//}
+		}
 	}
 
 	OnFocusChangeListener l3 = new OnFocusChangeListener() {
 
 		@Override
 		public void onFocusChange(View v, boolean hasFocus) {
+		//	Log.d(getLocalClassName(), keyBoardIsOpen + "");
 			TextView t = (TextView) findViewById(R.id.introductoryText);
-			if (hasFocus) {
+			Log.d(getLocalClassName(), hasBeenLifted+" "+isLandscape());
+			if (!hasBeenLifted && isLandscape()) {
+				EditText usernameInput = (EditText) findViewById(R.id.editText1);
+				ViewGroup.MarginLayoutParams ll = (ViewGroup.MarginLayoutParams) usernameInput
+						.getLayoutParams();
+				Log.d(getLocalClassName(), "push down");
+				ll.topMargin += pushDown;
+				usernameInput.setLayoutParams(ll);
 				t.setVisibility(View.GONE);
-			}
-			else {
+				hasBeenLifted = true;
+			} else {
 				t.setVisibility(View.VISIBLE);
 			}
 		}
 	};
-	
 
 	public void setText() {
 		hideSoftKeyboard();
@@ -497,14 +583,16 @@ public class MainActivity extends SearchResults {
 										"http://techmvs.technion.ac.il:100/cics/wmn/wmnnut03?OP=WK&SEM=201302")
 								.cookie("rishum", rishum).method(Method.POST)
 								.cookie("_ga", _ga).execute();
-						 URL url=res1.url();
-							String tempString=url.toString();
-							String[] stringArray=new String[(int)((tempString.length()-50)/7)-2];
-							int tempint=50;
-							for(int i=0; i<(int)((tempString.length()-50)/7-2);i++){
-								stringArray[i]=tempString.substring(tempint, tempint+6);
-								tempint=tempint+8;
-							}
+						URL url = res1.url();
+						String tempString = url.toString();
+						String[] stringArray = new String[(int) ((tempString
+								.length() - 50) / 7) - 2];
+						int tempint = 50;
+						for (int i = 0; i < (int) ((tempString.length() - 50) / 7 - 2); i++) {
+							stringArray[i] = tempString.substring(tempint,
+									tempint + 6);
+							tempint = tempint + 8;
+						}
 						ApplicationWithGlobalVariables a = ((ApplicationWithGlobalVariables) getApplication());
 						a.setStudentName(name);
 						a.courseList = stringArray.clone();
@@ -529,7 +617,8 @@ public class MainActivity extends SearchResults {
 						public void run() {
 							errorM.setTextColor(getResources().getColor(
 									R.color.red));
-							findViewById(R.id.mainSpinner1).setVisibility(View.INVISIBLE);
+							findViewById(R.id.mainSpinner1).setVisibility(
+									View.INVISIBLE);
 							errorM.setText("Please try again.");
 							Toast.makeText(
 									getApplicationContext(),
@@ -567,20 +656,21 @@ public class MainActivity extends SearchResults {
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
 	}
-	
+
 	public void professorsPart() {
 		String[] tempString = new String[a.courseList.length];
-		tempString=a.courseList;
+		tempString = a.courseList;
 		List<String> profList = new ArrayList<String>();
 		int professorCount = 0;
-		for(int i =0; i<tempString.length; i++){
+		for (int i = 0; i < tempString.length; i++) {
 			GetProfessorClientAsync gpca = new GetProfessorClientAsync();
 			try {
-				Professor dbProfessor = gpca.execute(tempString[i]).get(10, TimeUnit.SECONDS);
+				Professor dbProfessor = gpca.execute(tempString[i]).get(10,
+						TimeUnit.SECONDS);
 				if (dbProfessor == null) {
 					// profList.add(tempString[i]);
 					Log.d(getLocalClassName(), "We don't have that professor.");
-					//a.decrementRatingsThreshold();
+					// a.decrementRatingsThreshold();
 				} else {
 					String hebNameToUse = StringEscapeUtils
 							.unescapeJava(dbProfessor.getHebrewName());
@@ -593,7 +683,7 @@ public class MainActivity extends SearchResults {
 				e.printStackTrace();
 			}
 		}
-		a.setRatingsThreshold(professorCount*2);
+		a.setRatingsThreshold(professorCount * 2);
 		String[] professorValues = new String[professorCount];
 		for (int i = 0; i < profList.size(); i++) {
 			professorValues[i] = profList.get(i);
@@ -604,16 +694,18 @@ public class MainActivity extends SearchResults {
 	public void coursesPart() {
 		String[] tempString = new String[a.courseList.length];
 
-		tempString=a.courseList;
+		tempString = a.courseList;
 
-		List<String> courseList=new ArrayList<String>();
+		List<String> courseList = new ArrayList<String>();
 		int courseCount = 0;
 		for (int i = 0; i < tempString.length; i++) {
 			GetCourseClientAsync gcca = new GetCourseClientAsync();
 			try {
-				List<Course> dbCourseList = gcca.execute(tempString[i]).get(10, TimeUnit.SECONDS);
+				List<Course> dbCourseList = gcca.execute(tempString[i]).get(10,
+						TimeUnit.SECONDS);
 				if (dbCourseList == null || dbCourseList.isEmpty()) {
-					Log.d(getLocalClassName(), tempString[i] + ": We don't have that course.");
+					Log.d(getLocalClassName(), tempString[i]
+							+ ": We don't have that course.");
 				} else {
 					Course currCourse = dbCourseList.get(0);
 					courseList.add(tempString[i] + ": " + currCourse.getName());
@@ -633,7 +725,7 @@ public class MainActivity extends SearchResults {
 	}
 
 	private class GetProfessorClientAsync extends
-	AsyncTask<String, Void, Professor> {
+			AsyncTask<String, Void, Professor> {
 		public GetProfessorClientAsync() {
 		}
 
@@ -648,7 +740,7 @@ public class MainActivity extends SearchResults {
 			Course lookup = new Course(null, null, courseNumber, null, null,
 					null, true);
 			Professor result = new TechnionRankerAPI()
-			.getProfessorForCourse(lookup);
+					.getProfessorForCourse(lookup);
 			return result;
 		}
 
@@ -657,14 +749,14 @@ public class MainActivity extends SearchResults {
 			if (res == null) {
 				Log.d(getLocalClassName(),
 						"Get of professor for course failed.");
-				//a.decrementRatingsThreshold();
+				// a.decrementRatingsThreshold();
 			} else {
 			}
 		}
 	}
 
 	private class GetCourseClientAsync extends
-	AsyncTask<String, Void, List<Course>> {
+			AsyncTask<String, Void, List<Course>> {
 		public GetCourseClientAsync() {
 		}
 
@@ -679,7 +771,7 @@ public class MainActivity extends SearchResults {
 			Course lookup = new Course(null, null, courseNumber, null, null,
 					null, true);
 			List<Course> result = new TechnionRankerAPI()
-			.getCourseByCourseNumber(lookup);
+					.getCourseByCourseNumber(lookup);
 			return result;
 		}
 
@@ -693,18 +785,21 @@ public class MainActivity extends SearchResults {
 			}
 		}
 	}
-	
+
 	private void resetGlobalVariables() throws TimeoutException {
 		ApplicationWithGlobalVariables a = ((ApplicationWithGlobalVariables) getApplication());
-		GetCourseClientAsync gcca2= new GetCourseClientAsync();
+		GetCourseClientAsync gcca2 = new GetCourseClientAsync();
 		int ratingsSubmitted = 0;
 		try {
-			String lookupName = StringEscapeUtils.escapeJava(a.getStudentName());
+			String lookupName = StringEscapeUtils
+					.escapeJava(a.getStudentName());
 			Log.d(getLocalClassName(), lookupName);
-			 List<Course> tempListOfOneStudent = gcca2.execute(lookupName).get(10, TimeUnit.SECONDS);
-			 if (tempListOfOneStudent.size() > 0) {
-				 ratingsSubmitted = tempListOfOneStudent.get(0).getProfessorID().intValue();
-			 }
+			List<Course> tempListOfOneStudent = gcca2.execute(lookupName).get(
+					10, TimeUnit.SECONDS);
+			if (tempListOfOneStudent.size() > 0) {
+				ratingsSubmitted = tempListOfOneStudent.get(0).getProfessorID()
+						.intValue();
+			}
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -712,13 +807,16 @@ public class MainActivity extends SearchResults {
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
+		if (ratingsSubmitted > a.getRatingsThreshold()) {
+			ratingsSubmitted = a.getRatingsThreshold();
+		}
 		a.setRatingsSubmitted(ratingsSubmitted);
 		boolean isExistingStudent = false;
 		Set<String> studentNameSet = a.studentsToRatingsSubmitted.keySet();
 		for (String studentName : studentNameSet) {
 			Log.d(studentName.length() + "", a.getStudentName().length() + "");
 			if (studentName.equals(a.getStudentName())) {
-				//It's an existing student on the device.
+				// It's an existing student on the device.
 				isExistingStudent = true;
 			}
 		}
@@ -756,7 +854,7 @@ public class MainActivity extends SearchResults {
 	// if (s[t].contains("שיץ)")) {
 	// //Handling Shlomo (Shitz) Shamai of Electrical Engineering (046733):
 	// name = name + " " +
-	// StringEscapeUtils.unescapeHtml4("(&#1513;&#1497;&#1509;) &#1513;&#1502;&#1488;&#1497;");
+	// StringEscapeUtils.unescapeHtml4("(&#1513;&#1497;&#1509;) &#1513;&#150n2;&#1488;&#1497;");
 	// }
 	// else {
 	// name = name + " " + s[t];
@@ -777,48 +875,48 @@ public class MainActivity extends SearchResults {
 	// return null;
 	// }
 
-//	private class GetProfessorClientAsync extends
-//			AsyncTask<String, Void, List<Professor>> {
-//		private String currentHebrewName;
-//
-//		public GetProfessorClientAsync() {
-//		}
-//
-//		@Override
-//		protected void onPreExecute() {
-//			super.onPreExecute();
-//		}
-//
-//		@Override
-//		protected List<Professor> doInBackground(String... params) {
-//			String hebrewName = params[0];
-//			currentHebrewName = hebrewName;
-//			String encodedHebrewName = StringEscapeUtils.escapeJava(hebrewName);
-//			Professor lookup = new Professor(null, null, null,
-//					encodedHebrewName, true);
-//			List<Professor> result = new TechnionRankerAPI()
-//					.getProfessorByProfessorHebrewName(lookup);
-//			return result;
-//		}
-//
-//		@Override
-//		protected void onPostExecute(List<Professor> res) {
-//			if (res == null) {
-//				Log.d(getLocalClassName(), "Get of professor failed.");
-//			} else if (res.size() == 0) {
-//				Log.d(getLocalClassName(), "Get of professor returned empty.");
-//			} else {
-//				currentProfessorId = res.get(0).getId();
-//				Log.d(getLocalClassName(),
-//						"The professor id: "
-//								+ currentProfessorId
-//								+ " - "
-//								+ StringEscapeUtils.unescapeJava(res.get(0)
-//										.getHebrewName()));
-//				lookedUpProfessors.put(currentHebrewName, currentProfessorId);
-//			}
-//		}
-//	}
+	// private class GetProfessorClientAsync extends
+	// AsyncTask<String, Void, List<Professor>> {
+	// private String currentHebrewName;
+	//
+	// public GetProfessorClientAsync() {
+	// }
+	//
+	// @Override
+	// protected void onPreExecute() {
+	// super.onPreExecute();
+	// }
+	//
+	// @Override
+	// protected List<Professor> doInBackground(String... params) {
+	// String hebrewName = params[0];
+	// currentHebrewName = hebrewName;
+	// String encodedHebrewName = StringEscapeUtils.escapeJava(hebrewName);
+	// Professor lookup = new Professor(null, null, null,
+	// encodedHebrewName, true);
+	// List<Professor> result = new TechnionRankerAPI()
+	// .getProfessorByProfessorHebrewName(lookup);
+	// return result;
+	// }
+	//
+	// @Override
+	// protected void onPostExecute(List<Professor> res) {
+	// if (res == null) {
+	// Log.d(getLocalClassName(), "Get of professor failed.");
+	// } else if (res.size() == 0) {
+	// Log.d(getLocalClassName(), "Get of professor returned empty.");
+	// } else {
+	// currentProfessorId = res.get(0).getId();
+	// Log.d(getLocalClassName(),
+	// "The professor id: "
+	// + currentProfessorId
+	// + " - "
+	// + StringEscapeUtils.unescapeJava(res.get(0)
+	// .getHebrewName()));
+	// lookedUpProfessors.put(currentHebrewName, currentProfessorId);
+	// }
+	// }
+	// }
 
 	/*
 	 * Raphi: code for populating courses and professors: private class
@@ -860,34 +958,33 @@ public class MainActivity extends SearchResults {
 	 * Log.d(getLocalClassName(), "Insert professor: " + res); } } }
 	 */
 
-	
-//	private class InsertProfessorRatingClientAsync extends
-//			AsyncTask<ProfessorRating, Void, String> {
-//		public InsertProfessorRatingClientAsync() {
-//		}
-//
-//		@Override
-//		protected void onPreExecute() {
-//			super.onPreExecute();
-//		}
-//
-//		@Override
-//		protected String doInBackground(ProfessorRating... params) {
-//			String result = null;
-//			ProfessorRating professorRatingToAdd = params[0];
-//			Log.d(getLocalClassName(), professorRatingToAdd.toString());
-//			result = new TechnionRankerAPI().insertProfessorRating(
-//					professorRatingToAdd).toString();
-//			return result;
-//		}
-//
-//		@Override
-//		protected void onPostExecute(String res) {
-//			if (res == null) {
-//				Log.d(getLocalClassName(), "Insert professor rating failed.");
-//			} else {
-//				Log.d(getLocalClassName(), "Insert professor rating: " + res);
-//			}
-//		}
-//	}
+	// private class InsertProfessorRatingClientAsync extends
+	// AsyncTask<ProfessorRating, Void, String> {
+	// public InsertProfessorRatingClientAsync() {
+	// }
+	//
+	// @Override
+	// protected void onPreExecute() {
+	// super.onPreExecute();
+	// }
+	//
+	// @Override
+	// protected String doInBackground(ProfessorRating... params) {
+	// String result = null;
+	// ProfessorRating professorRatingToAdd = params[0];
+	// Log.d(getLocalClassName(), professorRatingToAdd.toString());
+	// result = new TechnionRankerAPI().insertProfessorRating(
+	// professorRatingToAdd).toString();
+	// return result;
+	// }
+	//
+	// @Override
+	// protected void onPostExecute(String res) {
+	// if (res == null) {
+	// Log.d(getLocalClassName(), "Insert professor rating failed.");
+	// } else {
+	// Log.d(getLocalClassName(), "Insert professor rating: " + res);
+	// }
+	// }
+	// }
 }
